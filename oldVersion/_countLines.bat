@@ -1,2 +1,0 @@
-Python countLine.py
-PAUSE
