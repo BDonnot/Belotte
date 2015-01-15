@@ -1,0 +1,38 @@
+#ifndef END_OF_GAME_H
+#define END_OF_GAME_H
+
+//#include<memory>
+
+#include "Definitions.h"
+#include "Basic_Game_Info.h"
+#include "Images_Text.h"
+#include "Images_Button.h"
+
+/**
+This class aim to easy the display of the last part of the game : who win, the current scores and
+other interesting informations.
+**/
+class End_Of_Game
+{
+    protected :
+       Basic_Game_Info _info;
+       SDL_Surface* _pScreen;
+       Images_Button _again;
+       Images_Button _quit;
+       Images_Text _firstLine;
+       Images_Text _secondLine;
+       Images_Text _firstScore;
+       Images_Text _secondScore;
+    public:
+        End_Of_Game(){}
+        End_Of_Game(SDL_Event* pEvent,SDL_Surface* pScreen,Uint windowsWidth, Uint windowsHeight);
+        virtual ~End_Of_Game();
+        void Display(GAME_PHASES currentPhase);
+        void Update(); //update the scores and the texts.
+        void UpdateEvent(GAME_PHASES currentPhase);
+        GAME_PHASES Next();
+    protected:
+    private:
+};
+
+#endif // END_OF_GAME_H

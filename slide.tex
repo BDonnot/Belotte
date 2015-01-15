@@ -1,0 +1,225 @@
+\documentclass[c,12pt]{beamer}
+%\documentclass[hyperref={pdfpagemode=FullScreen,colorlinks=true},xcolor=table]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[francais]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{beamerthemesplit}%pour avoir un joli plan sur tous les slides
+%\usetheme{Copenhagen}
+\usecolortheme{orchid}%un theme joli et une couleur
+%\usefonttheme{serif}% pour les queues des lettres
+%\usepackage{url}
+%\let\urlorig\url
+%\renewcommand{\url}[1]{
+%  \begin{otherlanguage}{english}\urlorig{#1}\end{otherlanguage}%
+%}
+\usetheme{Warsaw}
+\usecolortheme{seahorse}
+
+%\addtobeamertemplate{footline}{\hfill \insertframenumber/\inserttotalframenumber}
+%\setbeamertemplate{navigation symbols}{\insertframenumber}
+\addtobeamertemplate{footline}{%
+	 \hfill \insertframenumber/\inserttotalframenumber
+	
+    %\vskip1pt%
+    %\setbeamertemplate{footline}[page number]%
+    %\setbeamercolor{page number in head/foot}{use=headline,fg=headline.fg,bg=headline.bg}
+    %\usebeamertemplate{footline}%    
+}{% don't add anything after
+}
+
+\title[]{Belote (Machine Learning)}
+\author[]{Morgane AUSTERN, Benjamin DONNOT, Loïc MICHEL}
+\institute{ENSAE}
+
+\begin{document}
+\frame[plain]%pour que la première page prenne toute la place
+{\titlepage}% pour faire une page de titre
+\section{Introduction}
+	\subsection{Plan}
+\begin{frame}{Plan}
+ \begin{itemize}
+    \onslide<2-> {\item La structure du code}
+    	\newline
+    \onslide<3-> {\item L'interface graphique}
+    	\newline
+    \onslide<4-> {\item L'IA et le "machine learning"}
+  \end{itemize}
+\end{frame}
+
+	\subsection{Mode de jeu}
+\begin{frame}{Mode de jeu}
+ \begin{itemize}
+    \onslide<2-> {\item Belote "classique"}
+    	\newline
+    	
+    \onslide<3-> {\item 4 joueurs IA ou 1 joueur humain et 3 joueurs humains}
+    	\newline
+    	
+    \onslide<4-> {\item Pas de jeu en réseau, aucune possibilité de jouer à 2 humains}
+    	\newline    	
+  \end{itemize}
+\end{frame}
+	\subsection{TortoiseSVN}
+\begin{frame}{TortoiseSVN}
+ \begin{itemize}
+    \onslide<2-> {\item Nous avons utilisé un outil de versionning}
+    	\newline
+    	
+    \onslide<3-> {\item Plus d'efficacité}
+    	\newline
+    	
+    \onslide<4-> {\item Moins d'envois de mails...}
+    	\newline    	
+  \end{itemize}
+\end{frame}
+
+\section{La structure du code}
+\begin{frame}{\textbf{La structure du code} : Plan}
+\begin{itemize}
+	\onslide<2-> {\item La classe Carte }
+	\newline
+	\onslide<3-> {\item Le jeu }
+	\newline
+	\onslide<4-> {\item Les joueurs }
+\end{itemize}
+\end{frame}
+	\subsection{Les cartes}
+\begin{frame}{La classe Carte}
+\begin{itemize}
+	\onslide<2-> {\item Classe de base du jeu}
+	\newline
+	\onslide<3-> {\item Nécessité de matrices (quelle hauteur gagne)}
+	\newline
+	\onslide<4-> {\item Introduction de pseudos hauteurs}
+\end{itemize}
+\end{frame}
+	
+	\subsection{Le jeu}
+\begin{frame}{Classe Jeu}
+\begin{itemize}
+	\onslide<2-> {\item Squelette du programme}
+	\newline
+	\onslide<3-> {\item Envoie des 'requêtes' aux autres classes}
+	\newline
+	\onslide<4-> {\item Interprète et agit en fonction des résultats}
+	\newline
+	\onslide<5-> {\item Difficulté : attendre le bon moment}
+\end{itemize}
+\end{frame}
+
+	\subsection{Les joueurs}
+\begin{frame}{Joueurs : virtualité et P.O.O}
+\begin{itemize}
+	\onslide<2-> {\item Classe virtuelle pure}
+	\newline
+	\onslide<3-> {\item Renvoie à 'Jeu' les informations}
+	\newline
+	\onslide<4-> {\item Sous-traite les choix}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Les joueurs humains}
+\begin{itemize}
+	\onslide<2-> {\item Interaction entre l'homme et la machine}
+	\newline
+	\onslide<3-> {\item Interprète ce que l'humain décide}
+	\newline
+	\onslide<4-> {\item Sous traite le recueil de l'information aux 'Images'}
+\end{itemize}
+\end{frame}
+
+\section{L'interface}
+\begin{frame}{\textbf{L'interface} :Plan}
+\begin{itemize}
+	\onslide<2-> {\item Les Images}
+	\newline
+	\onslide<3-> {\item Boutons et Textes}
+\end{itemize}
+\end{frame}
+	\subsection{Les Images}
+\begin{frame}{La classe 'Images'}
+\begin{itemize}
+	\onslide<2-> {\item Intégration non parfaite aux classes : SDL $\Leftarrow$ C}
+	\newline
+	\onslide<3-> {\item Toutes cliquables}
+	\newline
+	\onslide<4-> {\item Peuvent toutes s'animer, avec ou sans transparence}
+	\newline
+	\onslide<5-> {\item Recueille l'information de l'humain et la renvoie à la machine}
+\end{itemize}
+\end{frame}
+	\subsection{Boutons et Textes}
+\begin{frame}{Interactions avec l'ordinateur}
+	\onslide<2-> {
+	\begin{block}{Boutons}
+		\begin{itemize}
+			\item Change de couleur lorsque la souris est dessus
+			\item Classe d'agrément ...
+		\end{itemize}
+	\end{block}}
+	\onslide<3-> {
+	\begin{block}{Texte}
+		\begin{itemize}
+			\item Permet un rendu de texte sur l'écran
+			\item Permet d'écrire (changement des noms)
+			\item Attention aux fuites mémoires (changement de textes)
+		\end{itemize}
+	\end{block}}
+\end{frame}	
+
+\section{L'IA et le "machine learning"}
+\begin{frame}{\textbf{L'IA et le "machine learning"} : Plan}
+\begin{itemize}
+	\onslide<2-> {\item Prendre et jouer}
+	\newline
+	\onslide<3-> {\item Le machine learning}
+\end{itemize}
+\end{frame}
+	\subsection{Prendre et jouer}
+\begin{frame}{l'Intelligence Artificielle}
+	\onslide<2-> {
+	\begin{block}{Prendre}
+		\begin{itemize}
+			\item \'Evaluation d'un score (nombre de points moyens espérés)
+			\item Prise si score > 60
+			\item Voir "machine learning"
+		\end{itemize}
+	\end{block}}
+	\onslide<3-> {
+	\begin{block}{Choisir une carte}
+		\begin{itemize}
+			\item Réaction parfois 'particulières'
+			\item Défausse des As et des 10...
+			\item Affectation du score en fonction de nombreux paramètres
+			\item Choix de la carte avec le plus gros score
+		\end{itemize}
+	\end{block}}
+\end{frame}
+	\subsection{Le machine learning}
+\begin{frame}{Modification des données chargées}
+\begin{itemize}
+	\onslide<2-> {\item Ne concerne que la partie "prise"}
+	\newline
+	\onslide<3-> {\item Modifie les données en fonction du résultat de la manche}
+	\newline
+	\onslide<4-> {\item Parties entre IA}
+\end{itemize}
+\end{frame}
+\begin{frame}{Combats d'IA}
+\begin{itemize}
+	\onslide<2-> {\item Combat non implémentés, faute de temps}
+	\newline
+	\onslide<3-> {\item Plusieurs joueurs l'ont essayé $\Rightarrow$ plusieurs joueurs IA}
+	\newline
+	\onslide<4-> {\item Données rentrées}
+	\newline
+	\onslide<5-> {\item Attention à l'IA 'trop faible' }
+	\onslide<5-> {\item Attention à l'IA 'trop faible' toto,tutu}
+\end{itemize}
+\end{frame}
+\end{document}
+
+

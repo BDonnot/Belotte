@@ -1,0 +1,8 @@
+#!/bin/bash
+# indique au systÃ¨me que l'argument qui suit est le programme utilisÃ© pour exÃ©cuter ce fichier.
+# En cas gÃ©nÃ©ral les "#" servent Ã  faire des commentaires comme ici
+echo "Mise a jour du repertoire internet"
+git push origin master
+read -n1 -r -p "Press any key to continue..." key
+exit 0
+

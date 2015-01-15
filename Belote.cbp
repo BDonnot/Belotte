@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Belote" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/Belotte" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-std=c++11" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/Belotte" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="AIPlayRandom.cpp" />
+		<Unit filename="AIPlayRandom.h" />
+		<Unit filename="Basic_Click.cpp" />
+		<Unit filename="Basic_Click.h" />
+		<Unit filename="Basic_Game_Info.cpp" />
+		<Unit filename="Basic_Game_Info.h" />
+		<Unit filename="Basic_Images.cpp" />
+		<Unit filename="Basic_Images.h" />
+		<Unit filename="Basic_Text.cpp" />
+		<Unit filename="Basic_Text.h" />
+		<Unit filename="Basic_Transparency.cpp" />
+		<Unit filename="Basic_Transparency.h" />
+		<Unit filename="Bidding.cpp" />
+		<Unit filename="Bidding.h" />
+		<Unit filename="Cards.cpp" />
+		<Unit filename="Cards.h" />
+		<Unit filename="Cards_Deck.cpp" />
+		<Unit filename="Cards_Deck.h" />
+		<Unit filename="Datas.cpp" />
+		<Unit filename="Datas.h" />
+		<Unit filename="Definitions.h" />
+		<Unit filename="Display_Trump.cpp" />
+		<Unit filename="Display_Trump.h" />
+		<Unit filename="End_Of_Game.cpp" />
+		<Unit filename="End_Of_Game.h" />
+		<Unit filename="Foncteurs_Cards.h" />
+		<Unit filename="Foncteurs_Datas.h" />
+		<Unit filename="Game_Coinche.cpp" />
+		<Unit filename="Game_Coinche.h" />
+		<Unit filename="Images_Button.cpp" />
+		<Unit filename="Images_Button.h" />
+		<Unit filename="Images_Click.cpp" />
+		<Unit filename="Images_Click.h" />
+		<Unit filename="Images_Move.cpp" />
+		<Unit filename="Images_Move.h" />
+		<Unit filename="Images_Sprite.cpp" />
+		<Unit filename="Images_Sprite.h" />
+		<Unit filename="Images_SpriteEvent.cpp" />
+		<Unit filename="Images_SpriteEvent.h" />
+		<Unit filename="Images_Sprite_Move.cpp" />
+		<Unit filename="Images_Sprite_Move.h" />
+		<Unit filename="Images_Text.cpp" />
+		<Unit filename="Images_Text.h" />
+		<Unit filename="Images_Transparency.cpp" />
+		<Unit filename="Images_Transparency.h" />
+		<Unit filename="Player.cpp" />
+		<Unit filename="Player.h" />
+		<Unit filename="Player_AI.cpp" />
+		<Unit filename="Player_AI.h" />
+		<Unit filename="Player_Bid.cpp" />
+		<Unit filename="Player_Bid.h" />
+		<Unit filename="Player_Bid_Graphic.cpp" />
+		<Unit filename="Player_Bid_Graphic.h" />
+		<Unit filename="Player_Human.cpp" />
+		<Unit filename="Player_Human.h" />
+		<Unit filename="Player_Name.cpp" />
+		<Unit filename="Player_Name.h" />
+		<Unit filename="PositionGraphic.cpp" />
+		<Unit filename="PositionGraphic.h" />
+		<Unit filename="Quit.cpp" />
+		<Unit filename="Quit.h" />
+		<Unit filename="Random.h" />
+		<Unit filename="Save_Game.cpp" />
+		<Unit filename="Save_Game.h" />
+		<Unit filename="Score_Team.cpp" />
+		<Unit filename="Score_Team.h" />
+		<Unit filename="Score_take.h" />
+		<Unit filename="Screen_Begin.cpp" />
+		<Unit filename="Screen_Begin.h" />
+		<Unit filename="Screen_Option.cpp" />
+		<Unit filename="Screen_Option.h" />
+		<Unit filename="Screen_end.cpp" />
+		<Unit filename="Screen_end.h" />
+		<Unit filename="TakeHumanCoinche.cpp" />
+		<Unit filename="TakeHumanCoinche.h" />
+		<Unit filename="Take_Human.cpp" />
+		<Unit filename="Take_Human.h" />
+		<Unit filename="Text_Typing.cpp" />
+		<Unit filename="Text_Typing.h" />
+		<Unit filename="Tirck_Belot.cpp" />
+		<Unit filename="Tirck_Belot.h" />
+		<Unit filename="Trick.cpp" />
+		<Unit filename="Trick.h" />
+		<Unit filename="TrickStatus.cpp" />
+		<Unit filename="TrickStatus.h" />
+		<Unit filename="Trump_Image.cpp" />
+		<Unit filename="Trump_Image.h" />
+		<Unit filename="Windows_Belot.cpp" />
+		<Unit filename="Windows_Belot.h" />
+		<Unit filename="main.cpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+			<envvars />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
