@@ -1,8 +1,13 @@
 #ifndef PLAYER_AI_H
 #define PLAYER_AI_H
 
+//#include "Definitions.h"
+//#include "Basic_Game_Info.h"
 #include "Player.h"
 #include "Random.h"
+
+#include "AIBetsMemory.h"
+#include "AIGameMemory.h"
 //#include "AIPlayRandom.h"
 /**
 Just do the interface between a player and all the type of possible AI
@@ -10,6 +15,7 @@ Just do the interface between a player and all the type of possible AI
 
 //TO DO remove this class, and create a unique player class, templated with TakeAI and PlayAI for the AI, and
 //create the same two classes for human.
+//TO DO : add the possibility for the players to have a memory...
 template<class TakeAI,class PlayAI>
 class Player_AI : public Player
 {
@@ -17,6 +23,8 @@ class Player_AI : public Player
         Random _rand;
         TakeAI _take;
         PlayAI _play;
+        AIBetsMemory _betsMemory;
+        AIGameMemory _gameMemory;
     public:
         Player_AI(){}
         Player_AI(POSITION_PLAYER number,Uint16 windows_width, Uint16 windows_height,SDL_Event* pevent,Basic_Images* fond,SDL_Surface* screen):

@@ -8,7 +8,7 @@
 #include "Player_Bid.h"
 
 /**
-This class is updated by the bidding, and is used to store all the bets made by the players.
+This class is updated by the bidding, and is used to store all the bets made by the 4 players.
 Only the 3 last bets made are available for the players.
 **/
 

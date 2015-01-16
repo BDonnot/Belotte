@@ -14,6 +14,9 @@
 				<Compiler>
 					<Add option="-std=c++11" />
 				</Compiler>
+				<Linker>
+					<Add option="-lSDLmain -lSDL -lSDL_image -lSDL_ttf" />
+				</Linker>
 			</Target>
 			<Target title="Release">
 				<Option output="bin/Release/Belotte" prefix_auto="1" extension_auto="1" />
@@ -22,17 +25,25 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add option="-std=c++11" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
+					<Add option="-lSDL -lSDL_image -lSDL_ttf" />
 				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="AIBetsMemory.cpp" />
+		<Unit filename="AIBetsMemory.h" />
+		<Unit filename="AIGameMemory.cpp" />
+		<Unit filename="AIGameMemory.h" />
 		<Unit filename="AIPlayRandom.cpp" />
 		<Unit filename="AIPlayRandom.h" />
+		<Unit filename="AITakeBasic.cpp" />
+		<Unit filename="AITakeBasic.h" />
 		<Unit filename="Basic_Click.cpp" />
 		<Unit filename="Basic_Click.h" />
 		<Unit filename="Basic_Game_Info.cpp" />
@@ -43,6 +54,8 @@
 		<Unit filename="Basic_Text.h" />
 		<Unit filename="Basic_Transparency.cpp" />
 		<Unit filename="Basic_Transparency.h" />
+		<Unit filename="BetsMemory.cpp" />
+		<Unit filename="BetsMemory.h" />
 		<Unit filename="Bidding.cpp" />
 		<Unit filename="Bidding.h" />
 		<Unit filename="Cards.cpp" />
@@ -58,6 +71,8 @@
 		<Unit filename="End_Of_Game.h" />
 		<Unit filename="Foncteurs_Cards.h" />
 		<Unit filename="Foncteurs_Datas.h" />
+		<Unit filename="GameMemory.cpp" />
+		<Unit filename="GameMemory.h" />
 		<Unit filename="Game_Coinche.cpp" />
 		<Unit filename="Game_Coinche.h" />
 		<Unit filename="Images_Button.cpp" />

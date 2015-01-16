@@ -1,9 +1,11 @@
 #ifndef PLAYER_H
 #define PLAYER_H
+
 #include <list>
 #include <array>
 #include <algorithm>
 
+#include "Definitions.h"
 #include "Basic_Game_Info.h"
 #include "TrickStatus.h"
 #include "Cards.h"

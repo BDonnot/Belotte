@@ -1,7 +1,7 @@
 #ifndef DEFINITIONS_H_INCLUDED
 #define DEFINITIONS_H_INCLUDED
 
-#define LAG_MIN 100 //lage min between to bid (for human)
+#define LAG_MIN 100 //lage min between two bets (for human)
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 768
 
