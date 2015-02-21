@@ -48,6 +48,7 @@ class MemorizeCards : public BoolStorage<32> //just an efficient way to store al
             setInformation(color*8 + height);
         }
 };
+
 class MemorizeCuts  : public BoolStorage<16> //efficient way to memorize which player cut where
 {
     public :
@@ -68,11 +69,12 @@ class AIGameMemory
         MemorizeCards _fallenCards;
         MemorizeCuts _playerCut;
         CARDS_HEIGHT _heightsMaster[4]; //key : color, stock the height of the cards master in the color
+        POSITION_PLAYER _posPlayer;
 
     public:
-        AIGameMemory();
+        AIGameMemory(POSITION_PLAYER posPlayer):_posPlayer(posPlayer){}
         virtual ~AIGameMemory();
-        void UpdateFullTrick(const std::array<Cards*,4>& trick)
+        void UpdateFullTrick(const std::array<Cards*,4>& trick, POSITION_TRICK posTrick) //posTrick : the position of the player
         {
             CARDS_COLOR colorAsked = trick[0]->GetColour();
             //update the playerCut
