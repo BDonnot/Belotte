@@ -78,5 +78,5 @@ void GameMemory::updateMemory(Cards* currentCard,CARDS_COLOR colorFirst,POSITION
     test += "; height :";
     test += IntToString(_infos.HeightToInt(_heightMaster[iColor]));
     test += "\n";
-    printf(test.c_str());
+//    printf(test.c_str());
 }

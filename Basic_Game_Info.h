@@ -82,14 +82,17 @@ class Basic_Game_Info
         void SetHigherCard(POSITION_TRICK winner); //update _index_strongest_card in case the last player has played a stronger card
         //void SetCurrentPlayer();
 
-        unsigned int CalculateFinalScores(); //calculate who wins (returns the equip of the winner), determined each score, reset the other parameters
+        unsigned int CalculateFinalScores(); //compute who wins (returns the equip of the winner), determined each score, reset the other parameters
 
         void SetMaxBid(unsigned int max_bid);
         void SetColorProposed(CARDS_COLOR color);
 
         POSITION_PLAYER Next(POSITION_PLAYER posPlayer) const;
-        Uint PosPlayerToInt(POSITION_PLAYER posPlayer) const;
+        inline Uint PosPlayerToInt(POSITION_PLAYER posPlayer) const;
         inline POSITION_PLAYER IntToPosPlayer(Uint num) const;
+        inline Uint PosTrickToInt(POSITION_TRICK posTrick) const;
+        inline POSITION_TRICK IntToPosTrick(Uint pos) const;
+        inline POSITION_PLAYER FirstToPlay(POSITION_TRICK posTrick, POSITION_PLAYER playerConcerned) const;
 
         inline CARDS_HEIGHT IntToHeight(Uint num) const;
         inline Uint HeightToInt(CARDS_HEIGHT height) const;
@@ -214,7 +217,7 @@ inline Uint Basic_Game_Info::HeightToInt(CARDS_HEIGHT height) const
     }
 }
 
-inline CARDS_COLOR Basic_Game_Info::IntToColor(Uint color) const
+inline CARDS_COLOR Basic_Game_Info::Basic_Game_Info::IntToColor(Uint color) const
 {
     switch(color)
     {
@@ -238,4 +241,61 @@ inline Uint Basic_Game_Info::ColorToInt(CARDS_COLOR color) const
     }
 }
 
+inline Uint Basic_Game_Info::PosPlayerToInt(POSITION_PLAYER posPlayer) const
+{
+    switch(posPlayer)
+    {
+    case PLAYER0 :
+        return 0;
+    case PLAYER1 :
+        return 1;
+    case PLAYER2:
+        return 2;
+    case PLAYER3 :
+        return 3;
+    default : // TO DO exception here
+        return 4;
+    }
+}
+
+
+inline Uint Basic_Game_Info::PosTrickToInt(POSITION_TRICK posTrick) const
+{
+    switch(posTrick)
+    {
+    case FIRST :
+        return 0;
+    case SECOND :
+        return 1;
+    case THIRD :
+        return 2;
+    case FOURTH :
+        return 3;
+    default : // TO DO exception here
+        return 4;
+    }
+}
+inline POSITION_TRICK Basic_Game_Info::IntToPosTrick(Uint pos) const
+{
+    switch(pos)
+    {
+    case 0 :
+        return FIRST;
+    case 1 :
+        return SECOND;
+    case 2 :
+        return THIRD;
+    case 3 :
+        return FOURTH;
+    default : // TO DO exception here
+        return UNKNOWN;
+    }
+}
+
+inline POSITION_PLAYER Basic_Game_Info::FirstToPlay(POSITION_TRICK posTrick, POSITION_PLAYER playerConcerned) const
+{
+    Uint posT = PosTrickToInt(posTrick);
+    Uint posP = PosPlayerToInt(playerConcerned);
+    return IntToPosPlayer( (posP+static_cast<Uint>(4-posT))% 4 );
+}
 #endif // BASIC_GAME_INFO_H

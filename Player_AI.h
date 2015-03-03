@@ -31,7 +31,9 @@ class Player_AI : public Player
             Player(number,windows_width,windows_height,pevent,fond,screen)
             ,_rand(rand())
             ,_take()
-            ,_play(){}
+            ,_play()
+            ,_betsMemory()
+            ,_gameMemory(number){}
         virtual ~Player_AI(){}
         //Cards* Choose_Card(const std::array<Cards*,4>& trick,int i_master); //choose what card the player play
         //int Take(bool first_round,int color_proposed,int height_proposed); //choose if the player take or not. 127 : no, 255 : not choosen, 0-3 : color at which the player wants to take

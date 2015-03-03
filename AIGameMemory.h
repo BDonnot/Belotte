@@ -53,11 +53,11 @@ class MemorizeCuts  : public BoolStorage<16> //efficient way to memorize which p
 {
     public :
         MemorizeCuts(){}
-        const bool & IsFallen(POSITION_PLAYER player, CARDS_COLOR color) const
+        const bool & Cut(POSITION_PLAYER player, CARDS_COLOR color) const
         {
             return getInfo(player*4 + color);
         }
-        void SetFallen(POSITION_PLAYER player, CARDS_COLOR color)
+        void SetCut(POSITION_PLAYER player, CARDS_COLOR color)
         {
            setInformation(player*4 + color);
         }
@@ -66,6 +66,7 @@ class MemorizeCuts  : public BoolStorage<16> //efficient way to memorize which p
 class AIGameMemory
 {
     protected :
+        Basic_Game_Info _infos;
         MemorizeCards _fallenCards;
         MemorizeCuts _playerCut;
         CARDS_HEIGHT _heightsMaster[4]; //key : color, stock the height of the cards master in the color
@@ -76,11 +77,28 @@ class AIGameMemory
         virtual ~AIGameMemory();
         void UpdateFullTrick(const std::array<Cards*,4>& trick, POSITION_TRICK posTrick) //posTrick : the position of the player
         {
+            Uint i;
             CARDS_COLOR colorAsked = trick[0]->GetColour();
-            //update the playerCut
-            for(Uint i= 1; i < 4; i++)
-            {
+            CARDS_COLOR currentColor;
+            CARDS_HEIGHT currentHeight;
+            POSITION_PLAYER currentPlayer = _infos.FirstToPlay(posTrick,_posPlayer);
 
+            for(i = 0; i < 4; i++)
+            {
+                currentColor = trick[i]->GetColour();
+                currentHeight = trick[i]->GetHeight();
+                Uint intCol = _infos.ColorToInt(currentColor);
+                //update the fallen Cards
+                _fallenCards.SetFallen(currentColor,currentHeight);
+                //update the master cards (in each color)
+                if(trick[i]->Win(_heightsMaster[intCol])) _heightsMaster[intCol] = currentHeight;
+            }
+            //update the playerCut
+            for(i= 1; i < 4; i++)
+            {
+                currentPlayer = _infos.Next(currentPlayer);
+                currentColor = trick[i]->GetColour();
+                if(currentColor != colorAsked) _playerCut.SetCut(currentPlayer,currentColor );
             }
         }
     protected:

@@ -192,22 +192,6 @@ void Basic_Game_Info::SetHigherCard(POSITION_TRICK winner)
 {
     _index_strongest_card = winner;
 }
-Uint Basic_Game_Info::PosPlayerToInt(POSITION_PLAYER posPlayer) const
-{
-    switch(posPlayer)
-    {
-    case PLAYER0 :
-        return 0;
-    case PLAYER1 :
-        return 1;
-    case PLAYER2:
-        return 2;
-    case PLAYER3 :
-        return 3;
-    default : // TO DO exception here
-        return 4;
-    }
-}
 void Basic_Game_Info::SetMaxBid(unsigned int max_bid)
 {
     _max_bid = max_bid;
