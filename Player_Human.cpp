@@ -87,7 +87,7 @@ int Player_Human::do_i_take(bool first_round,int color_proposed,int height_propo
     //classical belote
     return _Take.Has_Taken();
 }
-void Player_Human::UpdateBid(const BetsMemory& bets)
+void Player_Human::updateBid(const BetsMemory& bets)
 {
     //coinche
     const Player_Bid& bid = _TakeCoinche.Has_Taken();

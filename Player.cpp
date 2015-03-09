@@ -123,12 +123,18 @@ CARDS_COLOR Player::Take(bool first_round,CARDS_COLOR color_proposed,CARDS_HEIGH
 {
     return do_i_take(first_round,color_proposed,height_proposed);
 }
+
+void Player::updateEndTrick(const std::array<Cards*,4>& trick,POSITION_TRICK myPos) //do whatever you have to do at the end of each trick
+{
+    updateMemoryTrick(trick,myPos);
+}
 void Player::updatePlayebleCards(const array<Cards*,4>& trick_in_progress)
 {
-    _memory.TellTrick(trick_in_progress,_basic_info.FirstPlayer());
+    //_memory.TellTrick(trick_in_progress,_basic_info.FirstPlayer());
+    auto itEnd = _hand.end();
     if (trick_in_progress[0]==nullptr) //if we are the first to play, we can play everything
     {
-        for(auto it = _hand.begin(); it != _hand.end();++it)
+        for(auto it = _hand.begin(); it != itEnd;++it)
         {
             _playable_cards.push_back(it);
         }
@@ -139,7 +145,7 @@ void Player::updatePlayebleCards(const array<Cards*,4>& trick_in_progress)
                                ,has_colour(trick_in_progress[0]->GetColour())
                                ,has_colour(_basic_info.TrumpColor()));
 
-    for(auto it = _hand.begin(); it != _hand.end();++it)
+    for(auto it = _hand.begin(); it != itEnd;++it)
     {
         if (can_play_card(*it,trick_in_progress)) _playable_cards.push_back(it);
     }
@@ -198,7 +204,7 @@ const Player_Bid& Player::Take(bool previousPlayerChoose,const BetsMemory& bets)
     //if ((_lastBidTurn == _basic_info.BiddingRound())&&(previousPlayerChoose)&&(_currentBid.Color()==NOT_CHOSEN))
     if ((previousPlayerChoose)&&(_currentBid.Color()==NOT_CHOSEN))
     {
-        UpdateBid(bets);
+        updateBid(bets);
         if(_currentBid.Color()!=NOT_CHOSEN)
         {
             _oldBid.AddBid(_currentBid.Color(),_currentBid.Bid());
@@ -209,7 +215,7 @@ const Player_Bid& Player::Take(bool previousPlayerChoose,const BetsMemory& bets)
 }
 const Player_Bid& Player::Take(const BetsMemory& bets) //choose if the player take or not
 {
-    UpdateBid(bets);
+    updateBid(bets);
     if(_currentBid.Color()!=NOT_CHOSEN)
     {
         _oldBid.AddBid(_currentBid.Color(),_currentBid.Bid());
@@ -237,7 +243,7 @@ bool Player::do_I_coinche()
 {
     return false;
 }
-void Player::UpdateMemoryTrick(POSITION_TRICK pos)
+void Player::updateMemoryTrick(const std::array<Cards*,4>& trick,POSITION_TRICK myPos)
 {
 
 }
@@ -277,10 +283,16 @@ const std::string& Player::Getname() const
 */
 void Player::InitMemory()
 {
-    _memory.Reset();
+    //_memory.Reset();
+    initMemoryTrick();
     if(_number != PLAYER0) return;
     Sort_Cards sorting(_basic_info.TrumpColor());
     _hand.sort(sorting);
+}
+
+void ::Player::initMemoryTrick()
+{
+    //NOTHING TO DO
 }
 
 string Player::GetString(const std::string& embraced) const

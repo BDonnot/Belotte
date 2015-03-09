@@ -1,6 +1,7 @@
 #ifndef AIGAMEMEMORY_H
 #define AIGAMEMEMORY_H
 #include <array>
+#include <list>
 #include "Definitions.h"
 #include "Basic_Game_Info.h"
 
@@ -47,6 +48,15 @@ class MemorizeCards : public BoolStorage<32> //just an efficient way to store al
         {
             setInformation(color*8 + height);
         }
+        Uint ComputeFallen(CARDS_COLOR color) //compute the number of cards fallen in a specific color
+        {
+            Uint res = 0;
+            for(Uint j = 0; j < 8; j++)
+            {
+                if(_information[color*8+j]) ++res;
+            }
+            return res;
+        }
 };
 
 class MemorizeCuts  : public BoolStorage<16> //efficient way to memorize which player cut where
@@ -66,6 +76,7 @@ class MemorizeCuts  : public BoolStorage<16> //efficient way to memorize which p
 class AIGameMemory
 {
     protected :
+        std::list<Cards*>* _pHand;
         Basic_Game_Info _infos;
         MemorizeCards _fallenCards;
         MemorizeCuts _playerCut;
@@ -73,35 +84,20 @@ class AIGameMemory
         POSITION_PLAYER _posPlayer;
 
     public:
-        AIGameMemory(POSITION_PLAYER posPlayer):_posPlayer(posPlayer){}
-        virtual ~AIGameMemory();
-        void UpdateFullTrick(const std::array<Cards*,4>& trick, POSITION_TRICK posTrick) //posTrick : the position of the player in the trick
+        AIGameMemory(POSITION_PLAYER posPlayer,std::list<Cards*>* pHand):
+        _pHand(pHand),
+        _posPlayer(posPlayer)
         {
-            Uint i;
-            CARDS_COLOR colorAsked = trick[0]->GetColour();
-            CARDS_COLOR currentColor;
-            CARDS_HEIGHT currentHeight;
-            POSITION_PLAYER currentPlayer = _infos.FirstToPlay(posTrick,_posPlayer);
-
-            for(i = 0; i < 4; i++)
-            {
-                currentColor = trick[i]->GetColour();
-                currentHeight = trick[i]->GetHeight();
-                Uint intCol = _infos.ColorToInt(currentColor);
-                //update the fallen Cards
-                _fallenCards.SetFallen(currentColor,currentHeight);
-                //update the master cards (in each color)
-                if(trick[i]->Win(_heightsMaster[intCol])) _heightsMaster[intCol] = currentHeight;
-            }
-            //update the playerCut
-            for(i= 1; i < 4; i++)
-            {
-                currentPlayer = _infos.Next(currentPlayer);
-                currentColor = trick[i]->GetColour();
-                if(currentColor != colorAsked) _playerCut.SetCut(currentPlayer,currentColor );
-            }
+            InitEverything();
         }
+        virtual ~AIGameMemory();
+        void UpdateFullTrick(const std::array<Cards*,4>& trick, POSITION_TRICK posTrick); //posTrick : the position of the player in the trick
+        void InitEverything(); //call after the trump have been chosen, to set everything :-)
     protected:
+        CARDS_HEIGHT heightUnder(CARDS_HEIGHT height,bool color);
+        void computeNewHeightMaster(); //also update _playerCut
+        void updatePlayerCutSmarter(POSITION_PLAYER firstToPlay); //implemented : if I am the only one to have a color, the other cut ...
+
     private:
 };
 

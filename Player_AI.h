@@ -33,12 +33,14 @@ class Player_AI : public Player
             ,_take()
             ,_play()
             ,_betsMemory()
-            ,_gameMemory(number){}
+            ,_gameMemory(number,&_hand){}
         virtual ~Player_AI(){}
         //Cards* Choose_Card(const std::array<Cards*,4>& trick,int i_master); //choose what card the player play
         //int Take(bool first_round,int color_proposed,int height_proposed); //choose if the player take or not. 127 : no, 255 : not choosen, 0-3 : color at which the player wants to take
     protected:
-        virtual void UpdateBid(const BetsMemory& bets);
+        virtual void updateMemoryTrick(const std::array<Cards*,4>& trick,POSITION_TRICK myPos);
+        virtual void initMemoryTrick();
+        virtual void updateBid(const BetsMemory& bets);
 
         virtual CARDS_COLOR do_i_take(bool first_round,CARDS_COLOR color_proposed,CARDS_HEIGHT height_proposed);
         virtual std::list<Cards*>::iterator what_card_do_i_play(const std::array<Cards*,4>& trick);
@@ -82,12 +84,23 @@ std::list<Cards*>::iterator Player_AI<TakeAI,PlayAI>::what_card_do_i_play(const 
 
 
 template<class TakeAI,class PlayAI>
-void Player_AI<TakeAI,PlayAI>::UpdateBid(const BetsMemory& bets)
+void Player_AI<TakeAI,PlayAI>::updateBid(const BetsMemory& bets)
 {
     //if (_number == 1) _currentBid.Bid(_basic_info.ConvertIntToColor(_rand.generate_number()%4),_basic_info.MaxBid()+10);
     //else _currentBid.Bid(NO,_basic_info.MaxBid()+10);
     _take.Bid(_currentBid,_hand,_rand,bets);
 }
 
+template<class TakeAI,class PlayAI>
+void Player_AI<TakeAI,PlayAI>::updateMemoryTrick(const std::array<Cards*,4>& trick,POSITION_TRICK myPos)
+{
+    _gameMemory.UpdateFullTrick(trick,myPos);
+}
+
+template<class TakeAI,class PlayAI>
+void  Player_AI<TakeAI,PlayAI>::initMemoryTrick()
+{
+    _gameMemory.InitEverything();
+}
 
 #endif // PLAYER_AI_H

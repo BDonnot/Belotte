@@ -14,7 +14,7 @@
 #include "Player_Bid_Graphic.h"
 #include "Foncteurs_Cards.h"
 #include "BetsMemory.h" //for the bets to be remembered
-#include "GameMemory.h" //for the past tricks to be remembered
+//#include "GameMemory.h" //for the past tricks to be remembered
 
 //TO DO handle Belote and Coinche during game phases.
 //template<class TakeAI,class PlayAI>
@@ -38,7 +38,7 @@ class Player
         unsigned int _lastBidTurn;
         std::list<Cards*>::iterator _cardPlayed;
         TrickStatus _currentTrickStatus;
-        GameMemory _memory;
+        //GameMemory _memory;
 
         //for the playing and the taking
         //Random _rand;
@@ -85,7 +85,7 @@ class Player
         //virtual void Update_Trick(std::array<Cards*,4> trick,unsigned int subscript_first_player);
 
         Cards* PlayCard(const std::array<Cards*,4>& trick); //choose the right card to play
-        void UpdateEndTrick(posi); //TO DO
+        void updateEndTrick(const std::array<Cards*,4>& trick,POSITION_TRICK myPos); //do whatever you have to do at the end of each trick
         CARDS_COLOR Take(bool first_round,CARDS_COLOR color_proposed,CARDS_HEIGHT height_proposed); //choose if the player take or not (classic game)
         const Player_Bid& Take(bool previousPlayerChoose,const BetsMemory& bets); //choose if the player take or not (coinche)
         const Player_Bid& Take(const BetsMemory& bets); //choose if the player take or not (coinche)
@@ -109,8 +109,9 @@ class Player
         std::string GetString(const Player_Bid& bid) const; //return <Player : (#)> (bet) <\player>
 
     protected:
-        virtual void UpdateMemoryTrick();
-        virtual void UpdateBid(const BetsMemory& bets){}
+        virtual void updateMemoryTrick(const std::array<Cards*,4>& trick,POSITION_TRICK myPos);
+        virtual void initMemoryTrick();
+        virtual void updateBid(const BetsMemory& bets){}
         virtual bool do_I_coinche();
 
         virtual CARDS_COLOR do_i_take(bool first_round,CARDS_COLOR color_proposed,CARDS_HEIGHT height_proposed);
