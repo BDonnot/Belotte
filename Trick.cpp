@@ -140,6 +140,10 @@ bool Trick::Play() // TO DO code the same way as Bidding.cpp
     }
     if((_currentTrick.back() != nullptr)&&(_ok.Click(true)))
     {
+        for (Uint i = first; i < first+4; ++i, ++counter)
+        {
+            _players[i%4]->UpdateMemoryTrick(_info.IntToPosTrick(i));
+        }
         _oldFirstPlayer = _info.FirstPlayer();
         POSITION_TRICK winner = whoWinTrick();
         array<Uint,4> values;

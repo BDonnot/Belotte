@@ -85,6 +85,7 @@ class Player
         //virtual void Update_Trick(std::array<Cards*,4> trick,unsigned int subscript_first_player);
 
         Cards* PlayCard(const std::array<Cards*,4>& trick); //choose the right card to play
+        void UpdateEndTrick(posi); //TO DO
         CARDS_COLOR Take(bool first_round,CARDS_COLOR color_proposed,CARDS_HEIGHT height_proposed); //choose if the player take or not (classic game)
         const Player_Bid& Take(bool previousPlayerChoose,const BetsMemory& bets); //choose if the player take or not (coinche)
         const Player_Bid& Take(const BetsMemory& bets); //choose if the player take or not (coinche)
@@ -108,6 +109,7 @@ class Player
         std::string GetString(const Player_Bid& bid) const; //return <Player : (#)> (bet) <\player>
 
     protected:
+        virtual void UpdateMemoryTrick();
         virtual void UpdateBid(const BetsMemory& bets){}
         virtual bool do_I_coinche();
 

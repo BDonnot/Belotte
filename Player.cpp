@@ -237,6 +237,10 @@ bool Player::do_I_coinche()
 {
     return false;
 }
+void Player::UpdateMemoryTrick(POSITION_TRICK pos)
+{
+
+}
 void Player::ResetBid(bool betFinished)
 {
     _currentBid.Reset();

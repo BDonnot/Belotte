@@ -75,7 +75,7 @@ class AIGameMemory
     public:
         AIGameMemory(POSITION_PLAYER posPlayer):_posPlayer(posPlayer){}
         virtual ~AIGameMemory();
-        void UpdateFullTrick(const std::array<Cards*,4>& trick, POSITION_TRICK posTrick) //posTrick : the position of the player
+        void UpdateFullTrick(const std::array<Cards*,4>& trick, POSITION_TRICK posTrick) //posTrick : the position of the player in the trick
         {
             Uint i;
             CARDS_COLOR colorAsked = trick[0]->GetColour();
