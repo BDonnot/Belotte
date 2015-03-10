@@ -14,7 +14,7 @@ class TrickStatus
         CARDS_COLOR _colour_asked; //the color asked
         bool _has_col; //does the player have the color asked
         bool _has_trump; //does the plaeyer have trump
-        Uint _myPosition; //Player's position in the trick
+        POSITION_TRICK _myPosition; //Player's position in the trick
         POSITION_TRICK _winner; //winner's position (in the trick)
         CARDS_HEIGHT _maxHeight; //height of the winning card
         CARDS_COLOR _maxColor; //color of the winning cards
@@ -38,7 +38,7 @@ class TrickStatus
         {
             return _has_trump;
         }
-        Uint Position() const
+        POSITION_TRICK Position() const
         {
             return _myPosition;
         }

@@ -11,7 +11,7 @@
 #include "Player.h"
 #include "Player_Human.h"
 #include "Player_AI.h"
-#include "GameMemory.h"
+//#include "GameMemory.h"
 #include "AIPlayRandom.h"
 #include "AITakeBasic.h"
 #include "Basic_Game_Info.h"

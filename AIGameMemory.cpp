@@ -114,9 +114,9 @@ void AIGameMemory::updatePlayerCutSmarter(POSITION_PLAYER firstToPlay)
                 currentPlayer = _infos.Next(currentPlayer);
                 _playerCut.SetCut(currentPlayer,currentColor );
             }
-//            char forPrinting[100];
-//            sprintf(forPrinting,"everybody cut at %d\n",i);
-//            printf(forPrinting);
+            //char forPrinting[100];
+            //sprintf(forPrinting,"everybody cut at %d\n",i);
+            //printf(forPrinting);
         }
     }
 }
