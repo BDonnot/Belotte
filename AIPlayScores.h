@@ -90,8 +90,8 @@ std::list<Cards*>::iterator AIPlayScores<Memory>::Play(const std::array<Cards*,4
             currentScore =  playFirst(**itCard,trick,trickStatus,rand,pisse,play_trump,playerMemory);
             break;
         case SECOND :
-            currentScore =  playFirst(**itCard,trick,trickStatus,rand,pisse,play_trump,playerMemory);
-            //currentScore =  playSecond(**itCard,trick,trickStatus,rand,pisse,play_trump);
+            //currentScore =  playFirst(**itCard,trick,trickStatus,rand,pisse,play_trump,playerMemory);
+            currentScore =  playSecond(**itCard,trick,trickStatus,rand,pisse,play_trump);
             break;
         case THIRD :
             currentScore =  playFirst(**itCard,trick,trickStatus,rand,pisse,play_trump,playerMemory);
@@ -208,7 +208,6 @@ int AIPlayScores<Memory>::playFirst(Cards*pcard,
     return res;
 }
 
-/*
 //int AIPlayScores::playSecond(Carte* pcard, array<Carte*,4> trick,int color_trump,int player_take, int team_take,int i_master,bool pisse,bool play_trump,int number_trick,int color_asked,int height_master,int pseudo_height_master)
 template<class Memory>
 int AIPlayScores<Memory>::playSecond(Cards* pcard,
@@ -220,10 +219,15 @@ int AIPlayScores<Memory>::playSecond(Cards* pcard,
                                      const Memory& playerMemory)
 {
     int res = 0;
-    if (pcard==NULL) return -1000;
-    int color = pcard->GetColour();
-    int height= pcard->GetHeight();
-    int pseudo_height = pcard->convertion(color_trump);
+    CARDS_COLOR color = pcard->GetColour();
+    CARDS_HEIGHT height = pcard->GetHeight();
+    CARDS_COLOR color_trump = _infos.TrumpColor();
+    CARDS_COLOR color_asked = trickStatus.ColourAsked();
+    PLAYER_ID player_take = _infos.Taker();
+    int team_taken = _infos.PosPlayerToInt(player_take)%2;
+    bool oponentCut = playerMemory.OppenentsCut(_player,color);
+    Uint number_trick = _infos.TrickNumber();
+
 //If I have to play a trump
     if ((play_trump)&&(color==color_trump))
     {
@@ -297,6 +301,7 @@ int AIPlayScores<Memory>::playSecond(Cards* pcard,
     }
     return res;
 }
+
 //int AIPlayScores::playThird(Carte* pcard, array<Carte*,4> trick,int color_trump,int player_take, int team_take,int i_master,bool pisse,bool play_trump,int number_trick,int color_asked,int height_master,int pseudo_height_master)
 template<class Memory>
 int AIPlayScores<Memory>::playThird(Cards* pcard,
@@ -528,5 +533,4 @@ int AIPlayScores<Memory>::playFourth(Cards*pcard,
     }
     return res;
 }
-*/
 #endif // AIPLAYSCORES_H

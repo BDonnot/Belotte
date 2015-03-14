@@ -31,7 +31,7 @@ Game_Coinche::Game_Coinche(SDL_Surface* screen,Uint16 screenWidth, Uint16 screen
     {
         //<AITakeBasic,AIPlayRandom<AIGameMemory> >
         //<AITakeBasic,AIPlayRandom<AIGameMemory> >
-        _players[i] =  static_cast<Player*>(new Player_AI<AITakeBasic,AIPlayRandom<AIGameMemory> >(posPlayer[i],screenWidth,screenHeight,_event,&_backSide,_pScreen));
+        _players[i] =  static_cast<Player*>(new Player_AI<AIGameMemory,AITakeBasic,AIPlayRandom<AIGameMemory> >(posPlayer[i],screenWidth,screenHeight,_event,&_backSide,_pScreen));
     }
     _bid.SetPlayers(_players);
     _trick.SetPlayers(_players);

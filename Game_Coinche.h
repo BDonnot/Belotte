@@ -5,6 +5,7 @@
 #include<list>
 #include <fstream>
 
+#include "Basic_Game_Info.h"
 #include "Quit.h"
 #include "Basic_Images.h"
 #include "Cards_Deck.h"
@@ -13,8 +14,13 @@
 #include "Player_AI.h"
 //#include "GameMemory.h"
 #include "AIPlayRandom.h"
+#include "AIPlayScores.h"
+#include "AIGameMemory.h"
+//#include "AIBetsMemory.h"
+//#include "AIGameMemory.h"
+//#include "AIPlayRandom.h"
+
 #include "AITakeBasic.h"
-#include "Basic_Game_Info.h"
 #include "Screen_Begin.h"
 #include "Screen_Option.h"
 #include "Screen_end.h"

@@ -7,7 +7,7 @@
 #include "Random.h"
 
 #include "AIBetsMemory.h"
-#include "AIGameMemory.h"
+//#include "AIGameMemory.h"
 //#include "AIPlayRandom.h"
 /**
 Just do the interface between a player and all the type of possible AI
@@ -16,13 +16,13 @@ Just do the interface between a player and all the type of possible AI
 //TO DO remove this class, and create a unique player class, templated with TakeAI and PlayAI for the AI, and
 //create the same two classes for human.
 //TO DO : add the possibility for the players to have a memory...
-template<class TakeAI,class PlayAI>
+template<class GameMemory,class TakeAI, class PlayAI>
 class Player_AI : public Player
 {
     protected :
         Random _rand;
         AIBetsMemory _betsMemory;
-        AIGameMemory _gameMemory;
+        GameMemory _gameMemory;
         TakeAI _take;
         PlayAI _play;
     public:
@@ -58,8 +58,8 @@ class Player_AI : public Player
 };
 
 
-template<class TakeAI,class PlayAI>
-CARDS_COLOR Player_AI<TakeAI,PlayAI>::do_i_take(bool first_round,CARDS_COLOR color_proposed,CARDS_HEIGHT height_proposed) //by default, take if 3 (or more) cards in the color proposed
+template<class GameMemory,class TakeAI, class PlayAI>
+CARDS_COLOR Player_AI<GameMemory,TakeAI,PlayAI>::do_i_take(bool first_round,CARDS_COLOR color_proposed,CARDS_HEIGHT height_proposed) //by default, take if 3 (or more) cards in the color proposed
 { //classical belote (to do : remove -- just change the PlayAI class one for classical belot, the other one for coinche)
     int number_cards = 0;
     if (first_round)
@@ -76,29 +76,29 @@ CARDS_COLOR Player_AI<TakeAI,PlayAI>::do_i_take(bool first_round,CARDS_COLOR col
     return NO;
 }
 
-template<class TakeAI,class PlayAI>
-std::list<Cards*>::iterator Player_AI<TakeAI,PlayAI>::what_card_do_i_play(const std::array<Cards*,4>& trick) //by default, play a random card
+template<class GameMemory,class TakeAI, class PlayAI>
+std::list<Cards*>::iterator Player_AI<GameMemory,TakeAI,PlayAI>::what_card_do_i_play(const std::array<Cards*,4>& trick) //by default, play a random card
 {
     return _play.Play(trick,_playable_cards,_hand,_rand,_currentTrickStatus,_gameMemory);
 }
 
 
-template<class TakeAI,class PlayAI>
-void Player_AI<TakeAI,PlayAI>::updateBid(const BetsMemory& bets)
+template<class GameMemory,class TakeAI, class PlayAI>
+void Player_AI<GameMemory,TakeAI,PlayAI>::updateBid(const BetsMemory& bets)
 {
     //if (_number == 1) _currentBid.Bid(_basic_info.ConvertIntToColor(_rand.generate_number()%4),_basic_info.MaxBid()+10);
     //else _currentBid.Bid(NO,_basic_info.MaxBid()+10);
     _take.Bid(_currentBid,_hand,_rand,bets);
 }
 
-template<class TakeAI,class PlayAI>
-void Player_AI<TakeAI,PlayAI>::updateMemoryTrick(const std::array<Cards*,4>& trick,POSITION_TRICK myPos)
+template<class GameMemory,class TakeAI, class PlayAI>
+void Player_AI<GameMemory,TakeAI,PlayAI>::updateMemoryTrick(const std::array<Cards*,4>& trick,POSITION_TRICK myPos)
 {
     _gameMemory.UpdateFullTrick(trick,myPos);
 }
 
-template<class TakeAI,class PlayAI>
-void  Player_AI<TakeAI,PlayAI>::initMemoryTrick()
+template<class GameMemory,class TakeAI, class PlayAI>
+void  Player_AI<GameMemory,TakeAI,PlayAI>::initMemoryTrick()
 {
     _gameMemory.InitEverything();
 }
