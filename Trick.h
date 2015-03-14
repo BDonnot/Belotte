@@ -29,7 +29,7 @@ class Trick
         Uint _cardsPlayedThisTurn;
         PositionGraphic _posCard;
         Score_Team _scoreTeam;
-        POSITION_PLAYER _oldFirstPlayer;
+        PLAYER_ID _oldFirstPlayer;
 
     public:
         Trick();
@@ -47,7 +47,7 @@ class Trick
     protected:
         void updatePosCard(Uint playerNumber);
         POSITION_TRICK whoWinTrick();
-        void posReturn(POSITION_PLAYER posPlayer);
+        void posReturn(PLAYER_ID posPlayer);
     private:
 };
 

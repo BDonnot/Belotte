@@ -12,9 +12,9 @@ class Basic_Game_Info
 {
     protected:
         static unsigned long long _clock;
-        static POSITION_PLAYER _giver;
+        static PLAYER_ID _giver;
 
-        static POSITION_PLAYER _taker;
+        static PLAYER_ID _taker;
         //static unsigned int _firstToBid; //number of the first player who must bid.
         static CARDS_COLOR _trump_color;
         static unsigned int _max_bid;
@@ -23,7 +23,7 @@ class Basic_Game_Info
 
         static unsigned int _trick_number;
         static POSITION_TRICK _index_strongest_card;
-        static POSITION_PLAYER _position_first_player; //the first player who will played the trick
+        static PLAYER_ID _position_first_player; //the first player who will played the trick
         static unsigned int _number_card_played;
 
         static std::array<unsigned int,2> _final_scores;
@@ -42,11 +42,11 @@ class Basic_Game_Info
         void AddClock(unsigned long long diffTime);
         //void SetClock(unsigned long long clock);
 
-        inline const POSITION_PLAYER& Taker() const;
-        inline const POSITION_PLAYER& Giver() const;
+        inline const PLAYER_ID& Taker() const;
+        inline const PLAYER_ID& Giver() const;
         inline const POSITION_TRICK& StrongestCard() const;
         inline const unsigned int& NumberCardsPlayed() const;
-        inline const POSITION_PLAYER& FirstPlayer() const;
+        inline const PLAYER_ID& FirstPlayer() const;
         inline const unsigned int& TrickNumber() const;
 
         inline const CARDS_COLOR& TrumpColor() const;
@@ -68,7 +68,7 @@ class Basic_Game_Info
         void NextPlayerBid(){_position_first_player = Next(_position_first_player);}
 
 
-        void SetTaker(const POSITION_PLAYER taker);
+        void SetTaker(const PLAYER_ID taker);
         void SetTrumpColor(const CARDS_COLOR trump_color);
 
         void SetScores(POSITION_TRICK trick_winner
@@ -87,12 +87,12 @@ class Basic_Game_Info
         void SetMaxBid(unsigned int max_bid);
         void SetColorProposed(CARDS_COLOR color);
 
-        POSITION_PLAYER Next(POSITION_PLAYER posPlayer) const;
-        inline Uint PosPlayerToInt(POSITION_PLAYER posPlayer) const;
-        inline POSITION_PLAYER IntToPosPlayer(Uint num) const;
+        PLAYER_ID Next(PLAYER_ID posPlayer) const;
+        inline Uint PosPlayerToInt(PLAYER_ID posPlayer) const;
+        inline PLAYER_ID IntToPosPlayer(Uint num) const;
         inline Uint PosTrickToInt(POSITION_TRICK posTrick) const;
         inline POSITION_TRICK IntToPosTrick(Uint pos) const;
-        inline POSITION_PLAYER FirstToPlay(POSITION_TRICK posTrick, POSITION_PLAYER playerConcerned) const;
+        inline PLAYER_ID FirstToPlay(POSITION_TRICK posTrick, PLAYER_ID playerConcerned) const;
 
         inline CARDS_HEIGHT IntToHeight(Uint num) const;
         inline Uint HeightToInt(CARDS_HEIGHT height) const;
@@ -104,17 +104,17 @@ class Basic_Game_Info
     protected:
         void setTrickNumber(); //the SetTrickNumber can increase of only 1 unit each time
         Uint posTrickToInt(POSITION_TRICK posTrick);
-        POSITION_PLAYER posTrickToPlayer(POSITION_PLAYER firstToPlay,POSITION_TRICK posTrick);
+        PLAYER_ID posTrickToPlayer(PLAYER_ID firstToPlay,POSITION_TRICK posTrick);
     private:
         //Basic_Game_Info(const Basic_Game_Info& other);
         //Basic_Game_Info& operator=(const Basic_Game_Info& other);
 };
 
-inline const POSITION_PLAYER& Basic_Game_Info::Taker() const
+inline const PLAYER_ID& Basic_Game_Info::Taker() const
 {
     return _taker;
 }
-inline const POSITION_PLAYER& Basic_Game_Info::Giver() const
+inline const PLAYER_ID& Basic_Game_Info::Giver() const
 {
     return _giver;
 }
@@ -142,7 +142,7 @@ inline const unsigned int& Basic_Game_Info::NumberCardsPlayed() const
 {
     return _number_card_played;
 }
-inline const POSITION_PLAYER& Basic_Game_Info::FirstPlayer() const
+inline const PLAYER_ID& Basic_Game_Info::FirstPlayer() const
 {
     return _position_first_player;
 }
@@ -173,7 +173,7 @@ inline const Uint& Basic_Game_Info::WindowsHeight()
     return _windowsHeight;
 }
 
-inline POSITION_PLAYER Basic_Game_Info::IntToPosPlayer(Uint num) const
+inline PLAYER_ID Basic_Game_Info::IntToPosPlayer(Uint num) const
 {
     switch(num)
     {
@@ -241,7 +241,7 @@ inline Uint Basic_Game_Info::ColorToInt(CARDS_COLOR color) const
     }
 }
 
-inline Uint Basic_Game_Info::PosPlayerToInt(POSITION_PLAYER posPlayer) const
+inline Uint Basic_Game_Info::PosPlayerToInt(PLAYER_ID posPlayer) const
 {
     switch(posPlayer)
     {
@@ -292,7 +292,7 @@ inline POSITION_TRICK Basic_Game_Info::IntToPosTrick(Uint pos) const
     }
 }
 
-inline POSITION_PLAYER Basic_Game_Info::FirstToPlay(POSITION_TRICK posTrick, POSITION_PLAYER playerConcerned) const
+inline PLAYER_ID Basic_Game_Info::FirstToPlay(POSITION_TRICK posTrick, PLAYER_ID playerConcerned) const
 {
     Uint posT = PosTrickToInt(posTrick);
     Uint posP = PosPlayerToInt(playerConcerned);

@@ -1,5 +1,5 @@
 #include "AIPlayScores.h"
-
+/*
 AIPlayScores::AIPlayScores()
 {
     //ctor
@@ -65,7 +65,7 @@ int AIPlayScores::playFirst(Cards*pcard,const std::array<Cards*,4>& trick,const 
     CARDS_COLOR color = pcard->GetColour();
     CARDS_HEIGHT height = pcard->GetHeight();
     CARDS_COLOR color_trump = _infos.TrumpColor();
-    POSITION_PLAYER player_take = _infos.Taker();
+    PLAYER_ID player_take = _infos.Taker();
     int team_taken = _infos.PosPlayerToInt(player_take)%2;
     //int pseudo_height = pcard ->convertion(color_trump);
 
@@ -87,7 +87,6 @@ int AIPlayScores::playFirst(Cards*pcard,const std::array<Cards*,4>& trick,const 
     }
     if (!play_trump&&(color==color_trump)) res += _play_1st.value(7,0); //res=-15
     //Case of friend call : TO DO
-    /*
     if (_calls[modulo(_number+2,4)*4+color]) //add an additional condition : if the teammate does a call and we are not the strongest in this colour
     {
         res += _play_1st.value(8,0); //res=5
@@ -110,7 +109,6 @@ int AIPlayScores::playFirst(Cards*pcard,const std::array<Cards*,4>& trick,const 
             else res += _play_1st.value(17,0); //res=7
         }
     }
-    */
     //Case of the major card
     if (pcard->convertion(color_trump) == _color_master[color])
     {
@@ -439,3 +437,4 @@ int AIPlayScores::playFourth(Cards*,const std::array<Cards*,4>& trick,const Tric
     }
     return res;
 }
+*/

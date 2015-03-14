@@ -24,8 +24,8 @@ bool Bidding::Bid(GAME_PHASES currentPhase) //TO DO test, test test !
     if (currentPhase != BIDDING) return false;
     bool choose = true;
     bool biddingOver = false;
-    POSITION_PLAYER playerBid = _infos.FirstPlayer();
-    POSITION_PLAYER giver = _infos.Giver();
+    PLAYER_ID playerBid = _infos.FirstPlayer();
+    PLAYER_ID giver = _infos.Giver();
 
     Uint i_playerBid = _infos.PosPlayerToInt(playerBid);
     const Player_Bid& bid = _players[i_playerBid]->Take(_bets);
@@ -49,7 +49,7 @@ bool Bidding::Bid(GAME_PHASES currentPhase) //TO DO test, test test !
     if(biddingOver) return true; //ajust this.
     return false;
 }
-void Bidding::handleBet(const Player_Bid& bid, POSITION_PLAYER ibet)
+void Bidding::handleBet(const Player_Bid& bid, PLAYER_ID ibet)
 {
     if(bid.GetColorBid() != NO) //attention la fin des encheres seront fausses, puisque ce truc change le preneur a chaque fois...
     {
@@ -82,7 +82,7 @@ bool Bidding::Click(bool Short)
 void Bidding::SummarizeBet()
 {
     //the first player to play is the player after the giver
-    POSITION_PLAYER playerBid = _infos.FirstPlayer();
+    PLAYER_ID playerBid = _infos.FirstPlayer();
     while(playerBid != _infos.Giver())
     {
         _infos.NextPlayerBid();

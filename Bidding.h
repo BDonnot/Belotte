@@ -40,8 +40,8 @@ class Bidding
 
         std::string GetString(); //not const because it erase the bets made in _bets.
     protected:
-        //bool isBetsOver(POSITION_PLAYER posPlayer);
-        void handleBet(const Player_Bid& bid, POSITION_PLAYER ibet);
+        //bool isBetsOver(PLAYER_ID posPlayer);
+        void handleBet(const Player_Bid& bid, PLAYER_ID ibet);
         void handleText();
     private:
 };

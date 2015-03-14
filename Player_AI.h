@@ -21,19 +21,19 @@ class Player_AI : public Player
 {
     protected :
         Random _rand;
-        TakeAI _take;
-        PlayAI _play;
         AIBetsMemory _betsMemory;
         AIGameMemory _gameMemory;
+        TakeAI _take;
+        PlayAI _play;
     public:
         Player_AI(){}
-        Player_AI(POSITION_PLAYER number,Uint16 windows_width, Uint16 windows_height,SDL_Event* pevent,Basic_Images* fond,SDL_Surface* screen):
+        Player_AI(PLAYER_ID number,Uint16 windows_width, Uint16 windows_height,SDL_Event* pevent,Basic_Images* fond,SDL_Surface* screen):
             Player(number,windows_width,windows_height,pevent,fond,screen)
             ,_rand(rand())
-            ,_take()
-            ,_play()
             ,_betsMemory()
-            ,_gameMemory(number,&_hand){}
+            ,_gameMemory(number,&_hand)
+            ,_take()
+            ,_play(_number){}
         virtual ~Player_AI(){}
         //Cards* Choose_Card(const std::array<Cards*,4>& trick,int i_master); //choose what card the player play
         //int Take(bool first_round,int color_proposed,int height_proposed); //choose if the player take or not. 127 : no, 255 : not choosen, 0-3 : color at which the player wants to take
@@ -79,7 +79,7 @@ CARDS_COLOR Player_AI<TakeAI,PlayAI>::do_i_take(bool first_round,CARDS_COLOR col
 template<class TakeAI,class PlayAI>
 std::list<Cards*>::iterator Player_AI<TakeAI,PlayAI>::what_card_do_i_play(const std::array<Cards*,4>& trick) //by default, play a random card
 {
-    return _play.Play(trick,_playable_cards,_hand,_rand,_currentTrickStatus);
+    return _play.Play(trick,_playable_cards,_hand,_rand,_currentTrickStatus,_gameMemory);
 }
 
 

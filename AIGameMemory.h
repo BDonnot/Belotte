@@ -63,11 +63,11 @@ class MemorizeCuts  : public BoolStorage<16> //efficient way to memorize which p
 {
     public :
         MemorizeCuts(){}
-        const bool & Cut(POSITION_PLAYER player, CARDS_COLOR color) const
+        const bool & Cut(PLAYER_ID player, CARDS_COLOR color) const
         {
             return getInfo(player*4 + color);
         }
-        void SetCut(POSITION_PLAYER player, CARDS_COLOR color)
+        void SetCut(PLAYER_ID player, CARDS_COLOR color)
         {
            setInformation(player*4 + color);
         }
@@ -81,10 +81,10 @@ class AIGameMemory
         MemorizeCards _fallenCards;
         MemorizeCuts _playerCut;
         CARDS_HEIGHT _heightsMaster[4]; //key : color, stock the height of the cards master in the color
-        POSITION_PLAYER _posPlayer;
+        PLAYER_ID _posPlayer;
 
     public:
-        AIGameMemory(POSITION_PLAYER posPlayer,std::list<Cards*>* pHand):
+        AIGameMemory(PLAYER_ID posPlayer,std::list<Cards*>* pHand):
         _pHand(pHand),
         _posPlayer(posPlayer)
         {
@@ -93,10 +93,13 @@ class AIGameMemory
         virtual ~AIGameMemory();
         void UpdateFullTrick(const std::array<Cards*,4>& trick, POSITION_TRICK posTrick); //posTrick : the position of the player in the trick
         void InitEverything(); //call after the trump have been chosen, to set everything :-)
+        CARDS_HEIGHT Master(CARDS_COLOR color) const;
+        bool Cut(PLAYER_ID player,CARDS_COLOR color) const; //Do 'player' cut at 'color'
+        bool OppenentsCut(PLAYER_ID playerConcerned,CARDS_COLOR color) const;
     protected:
         CARDS_HEIGHT heightUnder(CARDS_HEIGHT height,bool color);
         void computeNewHeightMaster(); //also update _playerCut
-        void updatePlayerCutSmarter(POSITION_PLAYER firstToPlay); //implemented : if I am the only one to have a color, the other cut ...
+        void updatePlayerCutSmarter(PLAYER_ID firstToPlay); //implemented : if I am the only one to have a color, the other cut ...
 
     private:
 };

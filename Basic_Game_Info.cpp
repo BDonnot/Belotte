@@ -1,9 +1,9 @@
 #include "Basic_Game_Info.h"
 using namespace std;
 unsigned long long Basic_Game_Info::_clock = 0;
-POSITION_PLAYER Basic_Game_Info::_giver = PLAYER2;
+PLAYER_ID Basic_Game_Info::_giver = PLAYER2;
 
-POSITION_PLAYER Basic_Game_Info::_taker = GHOST;
+PLAYER_ID Basic_Game_Info::_taker = GHOST;
 CARDS_COLOR Basic_Game_Info::_trump_color = NOT_CHOSEN;
 unsigned int Basic_Game_Info::_max_bid = 70;
 CARDS_COLOR Basic_Game_Info::_color_proposed = NOT_CHOSEN;
@@ -11,7 +11,7 @@ CARDS_COLOR Basic_Game_Info::_color_proposed = NOT_CHOSEN;
 
 unsigned int Basic_Game_Info::_trick_number = 0;
 POSITION_TRICK Basic_Game_Info::_index_strongest_card= UNKNOWN;
-POSITION_PLAYER Basic_Game_Info::_position_first_player = PLAYER0; //the first person how play the trick
+PLAYER_ID Basic_Game_Info::_position_first_player = PLAYER0; //the first person how play the trick
 unsigned int Basic_Game_Info::_number_card_played = 0; //cards played in the current trick
 
 array<unsigned int,2> Basic_Game_Info::_final_scores = {0,0};
@@ -31,11 +31,11 @@ Basic_Game_Info::~Basic_Game_Info()
 {
     //dtor
 }
-void Basic_Game_Info::SetTaker(POSITION_PLAYER taker)
+void Basic_Game_Info::SetTaker(PLAYER_ID taker)
 {
     _taker = taker;
 }
-POSITION_PLAYER Basic_Game_Info::Next(POSITION_PLAYER posPlayer) const
+PLAYER_ID Basic_Game_Info::Next(PLAYER_ID posPlayer) const
 {
     switch(posPlayer)
     {
@@ -77,11 +77,11 @@ Uint Basic_Game_Info::posTrickToInt(POSITION_TRICK posTrick)
         return 4;
     }
 }
-POSITION_PLAYER Basic_Game_Info::posTrickToPlayer(POSITION_PLAYER firstToPlay,POSITION_TRICK posTrick)
+PLAYER_ID Basic_Game_Info::posTrickToPlayer(PLAYER_ID firstToPlay,POSITION_TRICK posTrick)
 {
     if(posTrick == UNKNOWN) return GHOST;
     Uint trick = posTrickToInt(posTrick);
-    POSITION_PLAYER res = firstToPlay;
+    PLAYER_ID res = firstToPlay;
     for(Uint i = 0; i < trick; i++)
     {
         res = Next(res);

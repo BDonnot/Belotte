@@ -24,13 +24,14 @@ Game_Coinche::Game_Coinche(SDL_Surface* screen,Uint16 screenWidth, Uint16 screen
 {
     PositionGraphic pos(0,0,TOP_LEFT);
     _backSide.SetPosition(pos);
-    POSITION_PLAYER posPlayer[4] = {PLAYER0,PLAYER1,PLAYER2,PLAYER3};
+    PLAYER_ID posPlayer[4] = {PLAYER0,PLAYER1,PLAYER2,PLAYER3};
     _players[0] = static_cast<Player*>(new Player_Human(posPlayer[0],screenWidth,screenHeight,_event,&_backSide,_pScreen));
 //    _players[0] = static_cast<Player*>(new Player_AI(posPlayer[0],screenWidth,screenHeight,_event,&_backSide,_pScreen));
     for (Uint i = 1; i < 4; i++)
     {
-        //<AITakeBasic,AIPlayRandom>
-        _players[i] =  static_cast<Player*>(new Player_AI<AITakeBasic,AIPlayRandom>(posPlayer[i],screenWidth,screenHeight,_event,&_backSide,_pScreen));
+        //<AITakeBasic,AIPlayRandom<AIGameMemory> >
+        //<AITakeBasic,AIPlayRandom<AIGameMemory> >
+        _players[i] =  static_cast<Player*>(new Player_AI<AITakeBasic,AIPlayRandom<AIGameMemory> >(posPlayer[i],screenWidth,screenHeight,_event,&_backSide,_pScreen));
     }
     _bid.SetPlayers(_players);
     _trick.SetPlayers(_players);

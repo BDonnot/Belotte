@@ -16,7 +16,7 @@ void AIGameMemory::UpdateFullTrick(const std::array<Cards*,4>& trick, POSITION_T
     CARDS_COLOR colorAsked = trick[0]->GetColour();
     CARDS_COLOR currentColor;
     CARDS_HEIGHT currentHeight;
-    POSITION_PLAYER currentPlayer = _infos.FirstToPlay(posTrick,_posPlayer);
+    PLAYER_ID currentPlayer = _infos.FirstToPlay(posTrick,_posPlayer);
     bool modify = false;
     for(i = 0; i < 4; i++)
     {
@@ -95,7 +95,7 @@ void AIGameMemory::computeNewHeightMaster()
     }
 }
 
-void AIGameMemory::updatePlayerCutSmarter(POSITION_PLAYER firstToPlay)
+void AIGameMemory::updatePlayerCutSmarter(PLAYER_ID firstToPlay)
 {
     for(Uint i = 0; i < 4; i++)
     {
@@ -108,7 +108,7 @@ void AIGameMemory::updatePlayerCutSmarter(POSITION_PLAYER firstToPlay)
         }
         if(nbHand == nbLeft)
         {
-            POSITION_PLAYER currentPlayer = firstToPlay;
+            PLAYER_ID currentPlayer = firstToPlay;
             for(i= 1; i < 4; i++)
             {
                 currentPlayer = _infos.Next(currentPlayer);
@@ -119,4 +119,21 @@ void AIGameMemory::updatePlayerCutSmarter(POSITION_PLAYER firstToPlay)
             //printf(forPrinting);
         }
     }
+}
+
+CARDS_HEIGHT AIGameMemory::Master(CARDS_COLOR color) const
+{
+    return(_heightsMaster[_infos.ColorToInt(color)]);
+}
+
+bool AIGameMemory::Cut(PLAYER_ID player,CARDS_COLOR color) const
+{
+    return _playerCut.Cut(player,color);
+}
+
+bool AIGameMemory::OppenentsCut(PLAYER_ID playerConcerned,CARDS_COLOR color) const
+{
+    PLAYER_ID opp1 =  _infos.Next(playerConcerned);
+    PLAYER_ID opp2 =  _infos.Next(_infos.Next(opp1));
+    return _playerCut.Cut(opp1,color) || _playerCut.Cut(opp2,color) ;
 }

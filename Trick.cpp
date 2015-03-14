@@ -73,7 +73,7 @@ void Trick::Display(GAME_PHASES currentPhase)
     else
     {
         _infoPreviousTrick.Display(_pScreen);
-        POSITION_PLAYER posPlayer = _oldFirstPlayer;
+        PLAYER_ID posPlayer = _oldFirstPlayer;
          for(Uint i = 0; i < 4; ++i)
         {
             if(_previousTrick[i]==nullptr) break;
@@ -223,7 +223,7 @@ void Trick::WinnerTakeCards()
     _previousTrick = _currentTrick;
     _currentTrick = {nullptr,nullptr,nullptr,nullptr};
 }
-void Trick::posReturn(POSITION_PLAYER posPlayer)
+void Trick::posReturn(PLAYER_ID posPlayer)
 {
     switch(posPlayer)
     {

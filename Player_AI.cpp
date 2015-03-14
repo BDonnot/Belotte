@@ -1,6 +1,6 @@
 #include "Player_AI.h"
 /*
-Player_AI::Player_AI(POSITION_PLAYER number,Uint16 windows_width, Uint16 windows_height,SDL_Event* pevent,Basic_Images* fond,SDL_Surface* screen):
+Player_AI::Player_AI(PLAYER_ID number,Uint16 windows_width, Uint16 windows_height,SDL_Event* pevent,Basic_Images* fond,SDL_Surface* screen):
 Player(number,windows_width,windows_height,pevent,fond,screen)
 ,_rand(2520)
 {

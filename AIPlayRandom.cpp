@@ -1,5 +1,5 @@
 #include "AIPlayRandom.h"
-
+/*
 std::list<Cards*>::iterator AIPlayRandom::Play(const std::array<Cards*,4>& trick
                                        ,std::list<std::list<Cards*>::iterator>& playbleCards
                                        ,const std::list<Cards*>& hand
@@ -18,10 +18,5 @@ std::list<Cards*>::iterator AIPlayRandom::Play(const std::array<Cards*,4>& trick
         std::advance(it,rand.generate_number()%(n-1));
         return (*it);
     }
-}
-/*
-int AIPlayRandom::test()
-{
-    return 1;
 }
 */

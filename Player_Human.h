@@ -10,7 +10,7 @@ class Player_Human : public Player
 {
     public:
         Player_Human(){}
-        Player_Human(POSITION_PLAYER number,Uint16 windows_width, Uint16 windows_height,SDL_Event* pevent,Basic_Images* fond,SDL_Surface* screen):
+        Player_Human(PLAYER_ID number,Uint16 windows_width, Uint16 windows_height,SDL_Event* pevent,Basic_Images* fond,SDL_Surface* screen):
             Player(number,windows_width,windows_height,pevent,fond,screen)
             ,_TakeCoinche(pevent,screen,windows_width,windows_height)
             ,_rand(rand()){}

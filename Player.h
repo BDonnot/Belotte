@@ -28,7 +28,7 @@ class Player
         std::list<Cards*> _hand; //the hand of the player
         std::list<std::list<Cards*>::iterator> _playable_cards; //the card a player can play in a trick
         //std::array<Uint16,3> _pos; //the position and the option associated
-        const POSITION_PLAYER _number; //the number
+        const PLAYER_ID _number; //the number
         //UpdateCardMouvement _UpdateCardMouvement; //to update the cards
         DisplayCardPlayer _DisplayCardPlayer;//to display the cards the proper way
         SDL_Surface* _screen;
@@ -47,7 +47,7 @@ class Player
 
     public:
         Player():_number(PLAYER0){}
-        Player(POSITION_PLAYER number,Uint windows_width, Uint windows_height,SDL_Event* pevent,Basic_Images* fond,SDL_Surface* screen):
+        Player(PLAYER_ID number,Uint windows_width, Uint windows_height,SDL_Event* pevent,Basic_Images* fond,SDL_Surface* screen):
             _basic_info()
             ,_pos(SetPosition(number,windows_width,windows_height))
             ,_name(fond
