@@ -35,8 +35,8 @@ int main( int argc, char* args[] )
 {
 //    ofstream output("datas/games.blt", ios::app);
     Basic_Game_Info _info;
-    //srand((time(NULL)));
-    srand(7);
+    srand((time(NULL)));
+    //srand(7);
     for (int i = 0; i < 100; i++) {std::rand();}
     SDL_Surface* _screen = nullptr;
     SDL_Init( SDL_INIT_EVERYTHING );
