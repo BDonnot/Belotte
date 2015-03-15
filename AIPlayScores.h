@@ -54,10 +54,10 @@ class AIPlayScores
                                          ,const TrickStatus& trickStatus
                                          ,const Memory& playerMemory);
     protected:
-        int playFirst(Cards* pcard,const std::array<Cards*,4>& trick,const TrickStatus& trickStatus,Random& rand,bool pisse, bool play_trump,const Memory& playerMemory);
-        int playSecond(Cards* pcard,const std::array<Cards*,4>& trick,const TrickStatus& trickStatus,Random& rand,bool pisse, bool play_trump,const Memory& playerMemory);
-        int playThird(Cards* pcard,const std::array<Cards*,4>& trick,const TrickStatus& trickStatus,Random& rand,bool pisse, bool play_trump,const Memory& playerMemory);
-        int playFourth(Cards* pcard,const std::array<Cards*,4>& trick,const TrickStatus& trickStatus,Random& rand,bool pisse, bool play_trump,const Memory& playerMemory);
+        int playFirst(const Cards* pcard,const std::array<Cards*,4>& trick,const TrickStatus& trickStatus,Random& rand,bool pisse, bool play_trump,const Memory& playerMemory);
+        int playSecond(const Cards* pcard,const std::array<Cards*,4>& trick,const TrickStatus& trickStatus,Random& rand,bool pisse, bool play_trump,const Memory& playerMemory);
+        int playThird(const Cards* pcard,const std::array<Cards*,4>& trick,const TrickStatus& trickStatus,Random& rand,bool pisse, bool play_trump,const Memory& playerMemory);
+        int playFourth(const Cards* pcard,const std::array<Cards*,4>& trick,const TrickStatus& trickStatus,Random& rand,bool pisse, bool play_trump,const Memory& playerMemory);
     private:
 };
 
@@ -69,7 +69,7 @@ std::list<Cards*>::iterator AIPlayScores<Memory>::Play(const std::array<Cards*,4
                                        ,const TrickStatus& trickStatus
                                        ,const Memory& playerMemory)
 {
-    std::list<Cards*>::iterator res = playbleCards.begin();
+    std::list<Cards*>::iterator res = *playbleCards.begin();
     Cards* pcard= nullptr;
     int MaxScore = -10000,currentScore;
     CARDS_COLOR color_asked = trickStatus.ColourAsked();
@@ -78,7 +78,7 @@ std::list<Cards*>::iterator AIPlayScores<Memory>::Play(const std::array<Cards*,4
     bool play_trump; //I can play at least one trump
     for (auto it : playbleCards)
     {
-        pcard = **it;
+        pcard = *it;
         if (( pcard->GetColour() != color_asked)&&( pcard->GetColour() != color_trump)) pisse = true;
         if ( pcard->GetColour() == color_trump) play_trump = true;
     }
@@ -87,16 +87,16 @@ std::list<Cards*>::iterator AIPlayScores<Memory>::Play(const std::array<Cards*,4
         switch(trickStatus.Position()) //TO DO : find a more elegant way
         {
         case FIRST :
-            currentScore =  playFirst(**itCard,trick,trickStatus,rand,pisse,play_trump,playerMemory);
+            currentScore =  playFirst(*itCard,trick,trickStatus,rand,pisse,play_trump,playerMemory);
             break;
         case SECOND :
-            currentScore =  playSecond(**itCard,trick,trickStatus,rand,pisse,play_trump);
+            currentScore =  playSecond(*itCard,trick,trickStatus,rand,pisse,play_trump,playerMemory);
             break;
         case THIRD :
-            currentScore =  playThird(**itCard,trick,trickStatus,rand,pisse,play_trump);
+            currentScore =  playThird(*itCard,trick,trickStatus,rand,pisse,play_trump,playerMemory);
             break;
         case FOURTH :
-            currentScore =  playFourth(**itCard,trick,trickStatus,rand,pisse,play_trump);
+            currentScore =  playFourth(*itCard,trick,trickStatus,rand,pisse,play_trump,playerMemory);
             break;
         default : //TO DO : exception here
             currentScore = -10000;
@@ -105,7 +105,7 @@ std::list<Cards*>::iterator AIPlayScores<Memory>::Play(const std::array<Cards*,4
 
         if(currentScore > MaxScore)
         {
-            res = *itCard;
+            res = itCard;
             MaxScore = currentScore;
         }
     }
@@ -114,7 +114,7 @@ std::list<Cards*>::iterator AIPlayScores<Memory>::Play(const std::array<Cards*,4
 
 //int AIPlayScores::playFirst(Carte* pcard, int color_trump,int player_take, int team_taken,bool play_trump,int pseudo_height_trump_max, int number_trick)
 template<class Memory>
-int AIPlayScores<Memory>::playFirst(Cards*pcard,
+int AIPlayScores<Memory>::playFirst(const Cards*pcard,
                                     const std::array<Cards*,4>& trick,
                                     const TrickStatus& trickStatus,
                                     Random& rand,
@@ -126,15 +126,20 @@ int AIPlayScores<Memory>::playFirst(Cards*pcard,
     CARDS_COLOR color = pcard->GetColour();
     CARDS_HEIGHT height = pcard->GetHeight();
     CARDS_COLOR color_trump = _infos.TrumpColor();
-    PLAYER_ID player_take = _infos.Taker();
-    int team_taken = _infos.PosPlayerToInt(player_take)%2;
-    bool oponentCut = playerMemory.OppenentsCut(_player,color);
+    //PLAYER_ID player_take = _infos.Taker();
+    //int team_taken = _infos.PosPlayerToInt(player_take)%2;
+    bool oponentCut = playerMemory.OpponentsCut(color);
     Uint number_trick = _infos.TrickNumber();
-    CARDS_HEIGHT heightsOrder[8];
+    CARDS_HEIGHT heightsOrder[8] =  {ACE,TEN,KING,QUEEN,JACK,NINE,EIGHT,SEVEN};
     if(color == color_trump)
-        heightsOrder = {JACK,NINE,ACE,TEN,KING,QUEEN,EIGHT,SEVEN};
-    else
-        heightsOrder = {ACE,TEN,KING,QUEEN,JACK,NINE,EIGHT,SEVEN};
+    {
+        heightsOrder[0] = JACK;
+        heightsOrder[1] = NINE;
+        heightsOrder[2] = ACE;
+        heightsOrder[3] = TEN;
+        heightsOrder[4] = KING;
+        heightsOrder[5] = QUEEN;
+    }
     PLAYER_ID teammate = _infos.IntToPosPlayer( _infos.PosPlayerToInt(_player)+2 %4 );
 
     if (pcard == nullptr) return -10000; //TO DO : exception here
@@ -155,7 +160,7 @@ int AIPlayScores<Memory>::playFirst(Cards*pcard,
     if (!play_trump&&(color==color_trump)) res += _play_1st.value(7,0); //res=-15
     //Case of friend call : TO DO
 
-    if (playerMemory.Call(teammate)) //add an additional condition : if the teammate does a call and we are not the strongest in this colour
+    if (playerMemory.Call(teammate,color)) //add an additional condition : if the teammate does a call and we are not the strongest in this colour
     {
         res += _play_1st.value(8,0); //res=5
         if (height==TEN) //10
@@ -179,7 +184,7 @@ int AIPlayScores<Memory>::playFirst(Cards*pcard,
     }
 
     //Case of the major card
-    if (color == playerMemory.Master(color))
+    if (height == playerMemory.Master(color))
     {
         res += _play_1st.value(18,0); //res=12
         if (height==TEN) //10
@@ -211,7 +216,7 @@ int AIPlayScores<Memory>::playFirst(Cards*pcard,
 
 //int AIPlayScores::playSecond(Carte* pcard, array<Carte*,4> trick,int color_trump,int player_take, int team_take,int i_master,bool pisse,bool play_trump,int number_trick,int color_asked,int height_master,int pseudo_height_master)
 template<class Memory>
-int AIPlayScores<Memory>::playSecond(Cards* pcard,
+int AIPlayScores<Memory>::playSecond(const Cards* pcard,
                                      const std::array<Cards*,4>& trick,
                                      const TrickStatus& trickStatus,
                                      Random& rand,
@@ -224,16 +229,21 @@ int AIPlayScores<Memory>::playSecond(Cards* pcard,
     CARDS_HEIGHT height = pcard->GetHeight();
     CARDS_COLOR color_trump = _infos.TrumpColor();
     CARDS_COLOR color_asked = trickStatus.ColourAsked();
-    PLAYER_ID player_take = _infos.Taker();
-    int team_taken = _infos.PosPlayerToInt(player_take)%2;
-    bool oponentCut = playerMemory.OppenentsCut(_player,color);
+    //PLAYER_ID player_take = _infos.Taker();
+    //int team_taken = _infos.PosPlayerToInt(player_take)%2;
+    bool oponentCut = playerMemory.OpponentsCut(color);
     Uint number_trick = _infos.TrickNumber();
-    CARDS_HEIGHT heightsOrder[8];
+    CARDS_HEIGHT heightsOrder[8] =  {ACE,TEN,KING,QUEEN,JACK,NINE,EIGHT,SEVEN};
     if(color == color_trump)
-        heightsOrder = {JACK,NINE,ACE,TEN,KING,QUEEN,EIGHT,SEVEN};
-    else
-        heightsOrder = {ACE,TEN,KING,QUEEN,JACK,NINE,EIGHT,SEVEN};
-    PLAYER_ID teammate = _infos.IntToPosPlayer( _infos.PosPlayerToInt(_player)+2 %4 );
+    {
+        heightsOrder[0] = JACK;
+        heightsOrder[1] = NINE;
+        heightsOrder[2] = ACE;
+        heightsOrder[3] = TEN;
+        heightsOrder[4] = KING;
+        heightsOrder[5] = QUEEN;
+    }
+    //PLAYER_ID teammate = _infos.IntToPosPlayer( _infos.PosPlayerToInt(_player)+2 %4 );
 //If I have to play a trump
     if ((play_trump)&&(color==color_trump))
     {
@@ -310,7 +320,7 @@ int AIPlayScores<Memory>::playSecond(Cards* pcard,
 
 //int AIPlayScores::playThird(Carte* pcard, array<Carte*,4> trick,int color_trump,int player_take, int team_take,int i_master,bool pisse,bool play_trump,int number_trick,int color_asked,int height_master,int pseudo_height_master)
 template<class Memory>
-int AIPlayScores<Memory>::playThird(Cards* pcard,
+int AIPlayScores<Memory>::playThird(const Cards* pcard,
                                     const std::array<Cards*,4>& trick,
                                     const TrickStatus& trickStatus,
                                     Random& rand,
@@ -323,15 +333,20 @@ int AIPlayScores<Memory>::playThird(Cards* pcard,
     CARDS_HEIGHT height = pcard->GetHeight();
     CARDS_COLOR color_trump = _infos.TrumpColor();
     CARDS_COLOR color_asked = trickStatus.ColourAsked();
-    PLAYER_ID player_take = _infos.Taker();
-    int team_taken = _infos.PosPlayerToInt(player_take)%2;
-    bool oponentCut = playerMemory.OpponentsCut(_player,color);
-    Uint number_trick = _infos.TrickNumber();
-    CARDS_HEIGHT heightsOrder[8];
+    //PLAYER_ID player_take = _infos.Taker();
+    //int team_taken = _infos.PosPlayerToInt(player_take)%2;
+    bool oponentCut = playerMemory.OpponentsCut(color);
+    //Uint number_trick = _infos.TrickNumber();
+    CARDS_HEIGHT heightsOrder[8] =  {ACE,TEN,KING,QUEEN,JACK,NINE,EIGHT,SEVEN};
     if(color == color_trump)
-        heightsOrder = {JACK,NINE,ACE,TEN,KING,QUEEN,EIGHT,SEVEN};
-    else
-        heightsOrder = {ACE,TEN,KING,QUEEN,JACK,NINE,EIGHT,SEVEN};
+    {
+        heightsOrder[0] = JACK;
+        heightsOrder[1] = NINE;
+        heightsOrder[2] = ACE;
+        heightsOrder[3] = TEN;
+        heightsOrder[4] = KING;
+        heightsOrder[5] = QUEEN;
+    }
     POSITION_TRICK i_master = trickStatus.Winner();
     //PLAYER_ID teammate = _infos.IntToPosPlayer( _infos.PosPlayerToInt(_player)+2 %4 );
 //TO DO : change i_master ! -> it is a positiong trick, not a player id...
@@ -443,7 +458,7 @@ int AIPlayScores<Memory>::playThird(Cards* pcard,
 }
 //int AIPlayScores::playFourth(Carte* pcard, array<Carte*,4> trick,int color_trump,int player_take, int team_take,int i_master,bool pisse,bool play_trump,int number_trick,int color_asked,int height_master,int pseudo_height_master)
 template<class Memory>
-int AIPlayScores<Memory>::playFourth(Cards*pcard,
+int AIPlayScores<Memory>::playFourth(const Cards*pcard,
                                      const std::array<Cards*,4>& trick,
                                      const TrickStatus& trickStatus,
                                      Random& rand,
@@ -456,16 +471,23 @@ int AIPlayScores<Memory>::playFourth(Cards*pcard,
     CARDS_HEIGHT height = pcard->GetHeight();
     CARDS_COLOR color_trump = _infos.TrumpColor();
     CARDS_COLOR color_asked = trickStatus.ColourAsked();
-    PLAYER_ID player_take = _infos.Taker();
-    int team_taken = _infos.PosPlayerToInt(player_take)%2;
-    bool oponentCut = playerMemory.OpponentsCut(_player,color);
+    //PLAYER_ID player_take = _infos.Taker();
+    //int team_taken = _infos.PosPlayerToInt(player_take)%2;
+    //bool oponentCut = playerMemory.OpponentsCut(_player,color);
     Uint number_trick = _infos.TrickNumber();
-    CARDS_HEIGHT heightsOrder[8];
+    /*
+    CARDS_HEIGHT heightsOrder[8] =  {ACE,TEN,KING,QUEEN,JACK,NINE,EIGHT,SEVEN};
     if(color == color_trump)
-        heightsOrder = {JACK,NINE,ACE,TEN,KING,QUEEN,EIGHT,SEVEN};
-    else
-        heightsOrder = {ACE,TEN,KING,QUEEN,JACK,NINE,EIGHT,SEVEN};
-    POSITION_TRICK i_master = trickStatus.Winner();
+    {
+        heightsOrder[0] = JACK;
+        heightsOrder[1] = NINE;
+        heightsOrder[2] = ACE;
+        heightsOrder[3] = TEN;
+        heightsOrder[4] = KING;
+        heightsOrder[5] = QUEEN;
+    }
+    */
+    //POSITION_TRICK i_master = trickStatus.Winner();
 
     //If we play trump
     if ((play_trump)&&(color == color_trump))
