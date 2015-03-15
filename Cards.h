@@ -41,7 +41,7 @@ class Cards : public Images_Sprite_Move<2>,public Basic_Click,public Basic_Trans
         const CARDS_HEIGHT& GetHeight() const;
         const Uint& Value() const;
 
-        bool Win(CARDS_HEIGHT height_other); //true if the card win | card1.Win(heightCard2) == true if card1 beats card 2.
+        bool Win(CARDS_HEIGHT height_other) const; //true if the card win | card1.Win(heightCard2) == true if card1 beats card 2.
         void Reset();
 
         std::string GetString() const;
@@ -52,8 +52,8 @@ class Cards : public Images_Sprite_Move<2>,public Basic_Click,public Basic_Trans
         Cards(const Cards& other);
         Cards& operator=(const Cards& other);
         void Revealing();
-        void updateMouvement(); //to update the timers for the mouvement
-        Uint HeightToInt(CARDS_HEIGHT height_card);
+        void updateMouvement(); //to update the timers for the movement
+        Uint HeightToInt(CARDS_HEIGHT height_card) const; //TO DO : remove
 
 };
 

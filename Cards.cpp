@@ -13,7 +13,7 @@ using namespace::std;
 std::array<unsigned int,8> Cards::_value_trump = {0,0,14,10,20,3,4,11};
 std::array<unsigned int,8> Cards::_value_no_trump = {0,0,0,10,2,3,4,11};
 
-bool Cards::Win(CARDS_HEIGHT heightOther) //
+bool Cards::Win(CARDS_HEIGHT heightOther) const //
 {
     Uint height_card = HeightToInt(_height_card);
     Uint height_other = HeightToInt(heightOther);
@@ -22,7 +22,7 @@ bool Cards::Win(CARDS_HEIGHT heightOther) //
     return _matrix_win_no_trump[height_card][height_other];
 }
 
-Uint Cards::HeightToInt(CARDS_HEIGHT height_card)
+Uint Cards::HeightToInt(CARDS_HEIGHT height_card) const
 {
     switch(height_card)
     {
