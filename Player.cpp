@@ -124,7 +124,7 @@ CARDS_COLOR Player::Take(bool first_round,CARDS_COLOR color_proposed,CARDS_HEIGH
     return do_i_take(first_round,color_proposed,height_proposed);
 }
 
-void Player::updateEndTrick(const std::array<Cards*,4>& trick,POSITION_TRICK myPos) //do whatever you have to do at the end of each trick
+void Player::UpdateEndTrick(const std::array<Cards*,4>& trick,POSITION_TRICK myPos) //do whatever you have to do at the end of each trick
 {
     updateMemoryTrick(trick,myPos);
 }

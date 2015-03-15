@@ -31,6 +31,8 @@ Game_Coinche::Game_Coinche(SDL_Surface* screen,Uint16 screenWidth, Uint16 screen
     {
         //<AITakeBasic,AIPlayRandom<AIGameMemory> >
         //<AITakeBasic,AIPlayScores<AIGameMemory> >
+        //<AIGameMemory,AITakeBasic,AIPlayRandom<AIGameMemory> >
+        //<AIGameMemory,AITakeBasic,AIPlayScores<AIGameMemory> >
         _players[i] =  static_cast<Player*>(new Player_AI<AIGameMemory,AITakeBasic,AIPlayScores<AIGameMemory> >(posPlayer[i],screenWidth,screenHeight,_event,&_backSide,_pScreen));
     }
     _bid.SetPlayers(_players);
@@ -155,10 +157,10 @@ void Game_Coinche::playGame(bool& keep_playing)
             {
                 _saveGame.SaveTake(_infos.Taker(),_infos.TrumpColor(),_infos.MaxBid());
                 _trick.Update();
-                ///for(auto it = _players.begin(); it != _players.end();++it)
-                ///{
-                    ///(*it)->InitMemory();
-                ///}
+                for(auto it = _players.begin(); it != _players.end();++it)
+                {
+                    (*it)->InitMemory();
+                }
             }
             else _saveGame.EndGame();
         }

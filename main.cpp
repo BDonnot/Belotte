@@ -31,6 +31,12 @@ int SIMON = 3; //un ami qui aime beaucoup la belote
 #include "Bidding.h"
 #include "Save_Game.h"
 
+//TO DO : cf mail de simon du 15 mars
+//TO DO : ouvrir est souvent une bonne idée
+//TO DO : jouer atout quand son partenaire a pris !!!
+//eviter de jouer une couleur dans laquelle on a un 10
+//TO DO : ne pas lancer son dernier atout
+//TO DO : ne pas défausser ses AS : essayer de garder ses cartes maitresses !
 int main( int argc, char* args[] )
 {
 //    ofstream output("datas/games.blt", ios::app);

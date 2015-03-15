@@ -1,12 +1,9 @@
 #include "Datas.h"
-#include <stdlib.h>
-#include <fstream>
-#include <sstream>
 using namespace std;
 
 Datas::Datas()
 {
-    //ctor
+    _selected = new int[1];
 }
 Datas::Datas(const string& path)
 {
@@ -38,11 +35,12 @@ Datas::Datas(const string& path,int num_line)
     _datas_selected_1 = nul;
     _datas_selected_2 = nul;
     _datas_selected_3 = nul;
+    _selected = new int[_number_of_datas];
 }
 Datas::~Datas()
 {
     //dtor
-    delete _selected;
+    delete [] _selected;
 }
 void Datas::reset_choices()
 {

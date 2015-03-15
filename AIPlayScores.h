@@ -10,18 +10,11 @@
 #include "TrickStatus.h"
 #include "Datas.h"
 //#include "AIGameMemory.h"
+/** The AI player will play according to a score. These one are defined in some csv files**/
+
 //TO DO : implement the possibility to have another memory
 //TO DO : resoudre les histoires avec les pseudo height, la moins bonne idée du monde..
-/** The AI player will play according to a score. These one are defined in some csv files**/
 //TO : hash table instead of indices in the current file "datas.h"
-/*template<POSITION_TRICK>
-class WrapperScore
-{
-    public :
-        WrapperScore(POSITION_TRICK pos){};
-        Uint operator()(Cards* pcard,const std::array<Cards*,4>& trick,const TrickStatus& trickStatus);
-};
-*/
 template<class Memory>
 class AIPlayScores
 {

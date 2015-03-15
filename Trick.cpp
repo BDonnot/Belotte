@@ -142,7 +142,7 @@ bool Trick::Play() // TO DO code the same way as Bidding.cpp
     {
         for (Uint i = first; i < first+4; ++i, ++counter)
         {
-            _players[i%4]->updateEndTrick(_currentTrick,_info.IntToPosTrick(i));
+            _players[i%4]->UpdateEndTrick(_currentTrick,_info.IntToPosTrick(i));
         }
         _oldFirstPlayer = _info.FirstPlayer();
         POSITION_TRICK winner = whoWinTrick();

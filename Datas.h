@@ -1,6 +1,9 @@
 #ifndef DATAS_H
 #define DATAS_H
 
+#include <stdlib.h>
+#include <fstream>
+#include <sstream>
 #include <vector>
 #include <string>
 
