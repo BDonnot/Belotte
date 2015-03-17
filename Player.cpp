@@ -263,7 +263,7 @@ void Player::GiveCardsBack(list<Cards*>& deck)
     {
         (*it)->Reset_Click();
         (*it)->InitMouvement(_number==PLAYER0,pos,1000,0); //HERE FOR REVEALING CARDS
-        //(*it)->InitMouvement(true,pos,1000,0); //HERE FOR REVEALING CARDS
+        // (*it)->InitMouvement(true,pos,1000,0); //HERE FOR REVEALING CARDS
     }
     deck.splice(deck.end(),_hand);
     //_oldBid.Reset();
@@ -290,7 +290,7 @@ void Player::InitMemory()
     _hand.sort(sorting);
 }
 
-void ::Player::initMemoryTrick()
+void Player::initMemoryTrick()
 {
     //NOTHING TO DO
 }

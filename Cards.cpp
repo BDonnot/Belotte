@@ -1,6 +1,7 @@
 #include "Cards.h"
-using namespace::std;
 
+using namespace::std;
+/*
 //array<std::array<bool,8>,8 > Cards::_matrix_win_trump = {false,false,false,false,false,false,false,false
 //                                                        ,true,false,false,false,false,false,false,false
 //                                                        ,true,true,false,true,false,true,true,true
@@ -21,7 +22,6 @@ bool Cards::Win(CARDS_HEIGHT heightOther) const //
         return _matrix_win_trump[height_card][height_other];
     return _matrix_win_no_trump[height_card][height_other];
 }
-
 Uint Cards::HeightToInt(CARDS_HEIGHT height_card) const
 {
     switch(height_card)
@@ -46,73 +46,30 @@ Uint Cards::HeightToInt(CARDS_HEIGHT height_card) const
             return 0;
     }
 }
-Cards::Cards():
-_height_card(UNINTIALIZED)
-,_color_card(NOT_CHOSEN)
-{
-    //ctor
-}
+*/
+
 Cards::Cards(CARDS_HEIGHT height, CARDS_COLOR color,SDL_Event* event):
-Images_Sprite_Move<2>("images/sprite_carte (70-90).jpg")
-,Basic_Click(event)
-,Basic_Transparency(SDL_ALPHA_OPAQUE)
-,_height_card(height)
-,_color_card(color)
+Cards_Basic(height,color),
+Images_Sprite_Move<2>("images/sprite_carte (70-90).jpg"),
+Basic_Click(event),
+Basic_Transparency(SDL_ALPHA_OPAQUE)
 {
-//    vector<int> x = {0,80*(height+1)};
-//    vector<int> y = {100*color,100*color};
-//    vector<int> width = {70,70};
-//    vector<int> hei = {90,90};
-//    Set_dimension_sprite(x,y,width,hei);
     array<Uint,2> x = {0,80*(static_cast<Uint>(height)+1)};
     array<Uint,2> y = {100*static_cast<Uint>(color),100*static_cast<Uint>(color)};
     array<Uint,2> width = {70,70};
     array<Uint,2> hei = {90,90};
     SetDimensionSprite(x,y,width,hei);
-//    _height_card = height;
-//    _color_card = color;
     ChangeSprite(0);
     _Up = false;
     _half_duration = 0;
     _first_sprite = false;
-    _matrix_win_trump[0] = {false,false,false,false,false,false,false,false};
-    _matrix_win_trump[1] = {true,false,false,false,false,false,false,false};
-    _matrix_win_trump[2] = {true,true,false,true,false,true,true,true};
-    _matrix_win_trump[3] = {true,true,false,false,false,true,true,false};
-    _matrix_win_trump[4] = {true,true,true,true,false,true,true,true};
-    _matrix_win_trump[5] = {true,true,false,false,false,false,false,false};
-    _matrix_win_trump[6] = {true,true,false,false,false,true,false,false};
-    _matrix_win_trump[7] = {true,true,false,true,false,true,true,false};
-
-    _matrix_win_no_trump[0] = {false,false,false,false,false,false,false,false};
-    _matrix_win_no_trump[1] = {true,false,false,false,false,false,false,false};
-    _matrix_win_no_trump[2] = {true,true,false,false,false,false,false,false};
-    _matrix_win_no_trump[3] = {true,true,true,false,true,true,true,false};
-    _matrix_win_no_trump[4] = {true,true,true,false,false,false,false,false};
-    _matrix_win_no_trump[5] = {true,true,true,false,true,false,false,false};
-    _matrix_win_no_trump[6] = {true,true,true,false,true,true,false,false};
-    _matrix_win_no_trump[7] = {true,true,true,true,true,true,true,false};
-}
-Cards::~Cards()
-{
-    //dtor
 }
 
-Cards::Cards(const Cards& other):
-_height_card(UNINTIALIZED)
-,_color_card(NOT_CHOSEN)
+Cards::Cards(const Cards& other)
 {
     //copy ctor
 }
 
-const CARDS_COLOR& Cards::GetColour() const
-{
-    return _color_card;
-}
-const CARDS_HEIGHT& Cards::GetHeight() const
-{
-    return _height_card;
-}
 Cards& Cards::operator=(const Cards& rhs)
 {
     if (this == &rhs) return *this; // handle self assignment
@@ -200,23 +157,8 @@ const bool& Cards::GetUp() const
 {
     return _Up;
 }
-const Uint& Cards::Value() const
-{
-    if (_info.TrumpColor() != _color_card)
-        return _value_no_trump[_height_card];
-    return _value_trump[_height_card];
-}
 void Cards::Reset()
 {
     Reset_Click();
     _Up = false;
-}
-std::string Cards::GetString() const
-{
-    string res = "<cards>";
-    res += IntToString(_color_card);
-    res += ",";
-    res += IntToString(_height_card);
-    res += "<\\cards>";
-    return res;
 }
