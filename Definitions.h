@@ -1,15 +1,17 @@
 #ifndef DEFINITIONS_H_INCLUDED
 #define DEFINITIONS_H_INCLUDED
 
-#define LAG_MIN 100 //lage min between two bets (for human)
+#define LAG_MIN 100 //lag min between two bets (for human)
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 768
+#define MINBET 79 //we force the bid to be strictly above 79
 
 #include<string>
 #include<ostream>
 #include<sstream>
 
 typedef unsigned int Uint;
+
 
 enum POSITION_OPTION{CENTER=0
                     ,TOP_LEFT //y_x

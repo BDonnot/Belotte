@@ -23,6 +23,7 @@ class Trick :public Trick_Basic
         Images_Text _infoPreviousTrick;
         Images_Button _ok;
         PositionGraphic _posCard;
+        Score_Team _scoreTeam;
 
     public:
         Trick();

@@ -1,5 +1,6 @@
 #include "Score_Team.h"
 using namespace::std;
+
 Score_Team::Score_Team()
 {
     //ctor

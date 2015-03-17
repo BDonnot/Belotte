@@ -51,7 +51,7 @@ bool Bidding::Bid(GAME_PHASES currentPhase) //TO DO test, test test !
 }
 void Bidding::handleBet(const Player_Bid& bid, PLAYER_ID ibet)
 {
-    if(bid.GetColorBid() != NO) //attention la fin des encheres seront fausses, puisque ce truc change le preneur a chaque fois...
+    if(bid.GetColorBid() != NO)
     {
         _infos.SetMaxBid(bid.Bid());
         _infos.SetTrumpColor(bid.Color());

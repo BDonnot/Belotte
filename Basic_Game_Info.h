@@ -84,7 +84,7 @@ class Basic_Game_Info
 
         unsigned int CalculateFinalScores(); //compute who wins (returns the equip of the winner), determined each score, reset the other parameters
 
-        void SetMaxBid(unsigned int max_bid);
+        void SetMaxBid(unsigned int max_bid); //TO DO : smarter way here...
         void SetColorProposed(CARDS_COLOR color);
 
         PLAYER_ID Next(PLAYER_ID posPlayer) const;

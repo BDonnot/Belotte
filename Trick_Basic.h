@@ -25,12 +25,11 @@ class Trick_Basic
         std::array<Cards*,4> _previousTrick;
         Uint _cardsPlayedThisTurn;
         PLAYER_ID _oldFirstPlayer;
-        Score_Team _scoreTeam;
         Cards_Deck* _pDeck;
 
     public:
         Trick_Basic();
-        Trick_Basic(Cards_Deck* pDeck,const std::array<Player*,4>& players,SDL_Surface* pScreen);
+        Trick_Basic(Cards_Deck* pDeck,const std::array<Player*,4>& players);
         virtual ~Trick_Basic();
 
         void SetPlayers(const std::array<Player*,4>& players);

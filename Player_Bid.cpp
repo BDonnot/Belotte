@@ -3,7 +3,7 @@ using namespace std;
 
 Player_Bid::Player_Bid():
 _color_bid(NOT_CHOSEN)
-,_bid(80)
+,_bid(MINBET)
 {
     //ctor
 }
@@ -22,23 +22,24 @@ const Uint Player_Bid::Bid() const
 }
 bool Player_Bid::Bid(CARDS_COLOR color,Uint bid)
 {
+    Uint minbid = _info.MaxBid() == MINBET ? MINBET+1 : _info.MaxBid(); //TO ENSURE THAT WE BET AT LEAST MINBET+1
     switch (color)
     {
     case NOT_CHOSEN :
         _color_bid = NOT_CHOSEN;
-        _bid = max<Uint>(bid,_info.MaxBid());
+        _bid = max<Uint>(bid,minbid);
         //handleGraphicsIfAny();
         return false;
     case NO :
         _color_bid = NO;
-        _bid = _info.MaxBid();
+        _bid = minbid;
         handleGraphicsIfAny();
         return true;
     default :
         if(bid <= _info.MaxBid())
         {
             _color_bid = NOT_CHOSEN;
-            _bid = _info.MaxBid();
+            _bid = minbid;
             return false;
         }
         _color_bid = color;
@@ -62,7 +63,7 @@ void Player_Bid::handleGraphicsIfAny()
 void Player_Bid::Reset()
 {
     _color_bid = NOT_CHOSEN;
-    _bid = max<Uint>(80,_info.MaxBid());
+    _bid = max<Uint>(MINBET,_info.MaxBid());
     //_displayed_logo_color = true;
 }
  const CARDS_COLOR& Player_Bid::GetColorBid() const

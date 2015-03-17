@@ -11,7 +11,7 @@ Trick::~Trick()
 }
 
 Trick::Trick(Cards_Deck* pDeck,const std::array<Player*,4>& players,Uint windowsWidth,Uint windowsHeight,SDL_Event* pevent,SDL_Surface* pScreen):
-Trick_Basic(pDeck,players,pScreen),
+Trick_Basic(pDeck,players),
 //_info()
 //,_pDeck(pDeck)
 //,_players(players)
@@ -27,7 +27,8 @@ _teamName("fonts/MLSGY.ttf",20,{255,255,255},"???"),
 _contract("fonts/MLSGY.ttf",20,{255,255,255},"???"),
 _infoPreviousTrick("fonts/MLSGY.ttf",25,{255,255,255},"???"),
 _ok(pevent,"OK",PositionGraphic(windowsWidth/2,windowsHeight - 225,CENTER)),
-_posCard()
+_posCard(),
+_scoreTeam(pScreen)
 {
     array<Uint,4> x = {0,150,0,150};
     array<Uint,4> y = {0,0,150,150};
@@ -108,6 +109,7 @@ void Trick::Update()
     string text = "Equipe ";
     text +=Player_Bid_Graphic::IntToString(_info.TrumpColor(),_info.Taker()%2+1);
     _teamName.ChangeText(text);
+    //_scoreTeam.Update();
 }
 
 void Trick::updatePosCard(Uint player)
@@ -134,6 +136,7 @@ void Trick::updatePosCard(Uint player)
 
 void Trick::GatherCards()
 {
+    _scoreTeam.Update();
     posReturn(_info.FirstPlayer());
     for(Uint i = 0; i < 4; ++i)
     {

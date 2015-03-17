@@ -6,14 +6,13 @@ Trick_Basic::Trick_Basic()
     //ctor
 }
 
-Trick_Basic::Trick_Basic(Cards_Deck* pDeck,const std::array<Player*,4>& players,SDL_Surface* pScreen):
+Trick_Basic::Trick_Basic(Cards_Deck* pDeck,const std::array<Player*,4>& players):
 _info(),
 _pDeck(pDeck),
 _players(players),
 _currentTrick(),
 _previousTrick(),
 _cardsPlayedThisTurn(0),
-_scoreTeam(pScreen),
 _oldFirstPlayer(GHOST)
 {
     _currentTrick = {nullptr,nullptr,nullptr,nullptr};
@@ -87,7 +86,7 @@ bool Trick_Basic::Play() // TO DO code the same way as Bidding.cpp
     Uint first = _info.FirstPlayer();
     Cards* pcard = nullptr;
     Uint counter = 0;
-    _scoreTeam.Update();
+    //_scoreTeam.Update();
     for (Uint i = first; i < first+4; ++i, ++counter)
     {
         if(_currentTrick[counter] != nullptr) continue;
