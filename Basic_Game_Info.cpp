@@ -5,7 +5,7 @@ PLAYER_ID Basic_Game_Info::_giver = PLAYER2;
 
 PLAYER_ID Basic_Game_Info::_taker = GHOST;
 CARDS_COLOR Basic_Game_Info::_trump_color = NOT_CHOSEN;
-unsigned int Basic_Game_Info::_max_bid = 70;
+unsigned int Basic_Game_Info::_max_bid = 80;
 CARDS_COLOR Basic_Game_Info::_color_proposed = NOT_CHOSEN;
 //unsigned int Basic_Game_Info::_biddingCount = 0;
 
@@ -146,7 +146,7 @@ unsigned int Basic_Game_Info::CalculateFinalScores() //calculate who wins (retur
     _trick_number = 0;
     _running_scores = {0,0};
     _tricks_win = {0,0};
-    _max_bid = 70;
+    _max_bid = 80;
     //setGiver();
     return winner;
 }

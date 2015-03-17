@@ -130,10 +130,10 @@ void TakeHumanCoinche::UpdateClock(Uint32 clock)
 {
     _clock = clock;
 }
-void TakeHumanCoinche::Reset()
+void TakeHumanCoinche::Reset(bool reset_unconfirmedBid)
 {
     _confirmedBid.Bid(NOT_CHOSEN,_info.MaxBid());
-    //_unconfirmedBid.Bid(NOT_CHOSEN,_info.MaxBid());
+    if(reset_unconfirmedBid) _unconfirmedBid.Bid(NOT_CHOSEN,_info.MaxBid());
     _plus.Reset_Click();
     _minus.Reset_Click();
     _coeur.Reset_Click();

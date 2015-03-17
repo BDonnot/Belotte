@@ -47,7 +47,7 @@ class TakeHumanCoinche
         void UpdateClock(Uint32 time);
 
         const Player_Bid& Has_Taken();
-        void Reset();
+        void Reset(bool reset_unconfirmedBid);
     protected:
         void Update();
         void ChangeText(Uint number);

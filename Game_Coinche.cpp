@@ -191,14 +191,15 @@ void Game_Coinche::playGame(bool& keep_playing)
         {
             _saveGame.EndGame();
             //TO DO : move elsewhere !
-            char forPrinting[100];
-            sprintf(forPrinting,"max bid is %d\n",_infos.MaxBid());
-            printf(forPrinting);
-            for(auto player : _players)
-            {
-                player->ResetBid(true); //basically ensure that the players are correctly betting (removing all memory of the previous phases
+            //char forPrinting[100];
+            //sprintf(forPrinting,"max bid is %d\n",_infos.MaxBid());
+            //printf(forPrinting);
+            //_infos.SetMaxBid(70);
+            //for(auto player : _players)
+            //{
+              //  player->ResetBid(true); //basically ensure that the players are correctly betting (removing all memory of the previous phases
                 //player->InitMemory(); //the same for the memory of the previous trick
-            }
+            //}
         }
         return;
     default :
