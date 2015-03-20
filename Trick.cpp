@@ -58,7 +58,8 @@ void Trick::Display(GAME_PHASES currentPhase)
         for(Uint i = 0; i < 4; ++i)
         {
             if(_currentTrick[i]==nullptr) break;
-            _currentTrick[i]->Display(_pScreen);
+            //_currentTrick[i]->Display(_pScreen);
+            _currentTrick[i]->Display();
         }
     }
     else
@@ -72,7 +73,8 @@ void Trick::Display(GAME_PHASES currentPhase)
             _previousTrick[i]->SetPosition(_posCard);
             _previousTrick[i]->ChangeSprite(1);
             posPlayer = _info.Next(posPlayer);
-            _previousTrick[i]->Display(_pScreen);
+            //_previousTrick[i]->Display(_pScreen);
+            _previousTrick[i]->Display();
         }
     }
     if ((_currentTrick.back() != nullptr)&&(currentPhase == PLAYING)) _ok.Display(_pScreen);

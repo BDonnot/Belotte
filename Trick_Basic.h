@@ -21,8 +21,8 @@ class Trick_Basic
         std::array<Player*,4> _players;
         //std::array<Cards_Basic*,4> _currentTrick;
         //std::array<Cards_Basic*,4> _previousTrick;
-        std::array<Cards*,4> _currentTrick;
-        std::array<Cards*,4> _previousTrick;
+        std::array<Cards_Basic*,4> _currentTrick;
+        std::array<Cards_Basic*,4> _previousTrick;
         Uint _cardsPlayedThisTurn;
         PLAYER_ID _oldFirstPlayer;
         Cards_Deck* _pDeck;
@@ -44,7 +44,7 @@ class Trick_Basic
         {
             return true;
         }
-        virtual void animateIfGraphic(Cards* pcard, Uint i)
+        virtual void animateIfGraphic(Cards_Basic* pcard, Uint i)
         {
 
         }

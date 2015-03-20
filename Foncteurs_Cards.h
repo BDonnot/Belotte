@@ -59,7 +59,8 @@ class DisplayCardPlayer //handle the positionning of the card in the hand
             _nb_cards++;
             UpdatePosHand(pcard->GetUp());
             pcard->UpdatePositionHand(_pos_hand);
-            pcard->Display(_screen);
+            //pcard->Display(_screen);
+            pcard->Display();
         }
     private :
         unsigned int _nb_cards;
@@ -106,7 +107,8 @@ class DisplayCardPile
         DisplayCardPile(SDL_Surface* screen):_screen(screen){}
         void operator()(Cards* pcard)
         {
-            pcard->Display(_screen);
+            //pcard->Display(_screen);
+            pcard->Display();
         }
     private :
         SDL_Surface* _screen;

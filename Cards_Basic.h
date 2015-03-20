@@ -6,6 +6,7 @@
 
 #include "Definitions.h"
 #include "Basic_Game_Info.h"
+#include "PositionGraphic.h" //non UI Related ...
 /**This class implement the basic concept of a card, and the related methods. It does not depend on the graphic interface**/
 //TO DO : find a more elegant way for 'getString()'
 class Cards_Basic
@@ -29,6 +30,19 @@ class Cards_Basic
 
         bool Win(CARDS_HEIGHT height_other) const; //true if the card win | card1.Win(heightCard2) == true if card1 beats card 2.
         std::string GetString() const;
+
+        //UI RELATED METHOD
+        virtual void Display(){}
+        virtual void Update_on_it(){} //true if the mouse is on it
+
+        virtual void InitMouvement(bool transparency,PositionGraphic pos,Uint duration,Uint time_lag){}//to init a mouvement
+        virtual void UpdatePositionHand(PositionGraphic& pos_end){}
+
+        virtual void Up(bool go_up){} //up the card if go_up, otherwise down the card
+        virtual void Reveal(Uint duration,Uint time_lag,Uint current_time){} //reveal or hide the card, depending on which part of the card is visible
+        virtual void Reset(){}
+
+        virtual const bool GetUp() const {return false;}
     protected:
     private:
 };

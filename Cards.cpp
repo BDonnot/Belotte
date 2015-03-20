@@ -48,11 +48,12 @@ Uint Cards::HeightToInt(CARDS_HEIGHT height_card) const
 }
 */
 
-Cards::Cards(CARDS_HEIGHT height, CARDS_COLOR color,SDL_Event* event):
+Cards::Cards(CARDS_HEIGHT height, CARDS_COLOR color,SDL_Event* event,SDL_Surface * pScreen):
 Cards_Basic(height,color),
 Images_Sprite_Move<2>("images/sprite_carte (70-90).jpg"),
 Basic_Click(event),
-Basic_Transparency(SDL_ALPHA_OPAQUE)
+Basic_Transparency(SDL_ALPHA_OPAQUE),
+_pScreen(pScreen)
 {
     array<Uint,2> x = {0,80*(static_cast<Uint>(height)+1)};
     array<Uint,2> y = {100*static_cast<Uint>(color),100*static_cast<Uint>(color)};
@@ -104,7 +105,7 @@ void Cards::act()
 void Cards::InitMouvement(bool transparency,PositionGraphic pos,Uint32 duration,Uint32 time_lag)
 {
     Uint32 current_time = _info.Time();
-    if (transparency) Reveal(duration,time_lag,current_time);
+    if(transparency && (GetSpriteNumber() ==  0)) Reveal(duration,time_lag,current_time);
     pos.SetProperPosition(_width,_height);
     Set_animate(pos,duration,time_lag);
 }
@@ -153,7 +154,7 @@ void Cards::Reveal(Uint32 duration,Uint32 time_lag,Uint32 current_time) //init t
     _half_duration = duration /2;
     Set_Transparent((Uint8) 30,_half_duration,time_lag,_info.Time());
 }
-const bool& Cards::GetUp() const
+const bool Cards::GetUp() const
 {
     return _Up;
 }
@@ -161,4 +162,9 @@ void Cards::Reset()
 {
     Reset_Click();
     _Up = false;
+}
+void Cards::Display()
+{
+    static_cast<Images_Sprite_Move<2> * >(this)->Display(_pScreen);
+    //Display(_pScreen);
 }

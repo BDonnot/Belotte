@@ -16,6 +16,7 @@ def count(files) :
 				count = 0
 			if(re.search('\*/',line) and not(count)) :
 				count = 1
+			#~ if((len(line) > 1) and  (re.search(r"^[ \t]*/{2}",line) and count):
 			if((len(line) > 1) and  (line[0:2]  !=  "//")&count):
 				numberLines += 1
 		fichier.close()

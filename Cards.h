@@ -10,6 +10,7 @@ class Cards :public Cards_Basic, public Images_Sprite_Move<2>,public Basic_Click
 {
     protected:
         //const Basic_Game_Info _basic_info;
+        SDL_Surface * _pScreen;
         bool _Up; //true if the card if up
         bool _first_sprite;
         Uint32 _half_duration;
@@ -18,18 +19,19 @@ class Cards :public Cards_Basic, public Images_Sprite_Move<2>,public Basic_Click
 
     public:
         Cards(){}
-        Cards(CARDS_HEIGHT height,CARDS_COLOR color,SDL_Event* event);
+        Cards(CARDS_HEIGHT height,CARDS_COLOR color,SDL_Event* event,SDL_Surface * _pScreen);
         virtual ~Cards(){}
         void Update_on_it(); //true if the mouse is on it
 
-        void InitMouvement(bool transparency,PositionGraphic pos,Uint32 duration,Uint32 time_lag);//to init a mouvement
+        void InitMouvement(bool transparency,PositionGraphic pos,Uint duration,Uint time_lag);//to init a mouvement
         void UpdatePositionHand(PositionGraphic& pos_end);
 
         void Up(bool go_up); //up the card if go_up, otherwise down the card
-        void Reveal(Uint32 duration,Uint32 time_lag,Uint32 current_time); //reveal or hide the card, depending on which part of the card is visible
+        void Reveal(Uint duration,Uint time_lag,Uint current_time); //reveal or hide the card, depending on which part of the card is visible
         void Reset();
 
-        const bool& GetUp() const;
+        const bool GetUp() const;
+        void Display();
 
     protected:
         void act();

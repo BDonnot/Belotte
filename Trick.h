@@ -43,10 +43,10 @@ class Trick :public Trick_Basic
         {
             return _ok.Click(true);
         }
-        virtual void animateIfGraphic(Cards* pcard, Uint i)
+        virtual void animateIfGraphic(Cards_Basic* pcard, Uint i)
         {
             updatePosCard(i%4);
-            pcard->InitMouvement(pcard->GetSpriteNumber() == 0,_posCard,1000,(i%4)*50);
+            pcard->InitMouvement(true,_posCard,1000,(i%4)*50);
         }
     private:
 };

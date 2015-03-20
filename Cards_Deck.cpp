@@ -22,7 +22,7 @@ _DisplayCardPile(screen)
     {
         for(int color = 0; color < 4; color++)
         {
-            pcard = new Cards(Height[height],Color[color],event);
+            pcard = new Cards(Height[height],Color[color],event,screen);
             pcard->SetPosition(_screenCenter);
             _pile.push_back(pcard);
         }

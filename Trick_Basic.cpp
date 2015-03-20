@@ -8,12 +8,12 @@ Trick_Basic::Trick_Basic()
 
 Trick_Basic::Trick_Basic(Cards_Deck* pDeck,const std::array<Player*,4>& players):
 _info(),
-_pDeck(pDeck),
 _players(players),
 _currentTrick(),
 _previousTrick(),
 _cardsPlayedThisTurn(0),
-_oldFirstPlayer(GHOST)
+_oldFirstPlayer(GHOST),
+_pDeck(pDeck)
 {
     _currentTrick = {nullptr,nullptr,nullptr,nullptr};
     _previousTrick = {nullptr,nullptr,nullptr,nullptr};
