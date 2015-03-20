@@ -5,15 +5,19 @@
 #include <array>
 #include <algorithm>
 
+//NON UI dependent
 #include "Definitions.h"
 #include "Basic_Game_Info.h"
+#include "Player_Bid.h"
 #include "TrickStatus.h"
+#include "Foncteurs_CardsBasic.h"
+
+//UI dependent
 #include "Cards.h"
 #include "Player_Name.h"
-#include "Player_Bid.h"
 #include "Player_Bid_Graphic.h"
-#include "Foncteurs_Cards.h"
 #include "BetsMemory.h" //for the bets to be remembered
+#include "Foncteurs_Cards.h"
 //#include "GameMemory.h" //for the past tricks to be remembered
 
 //TO DO handle Belote and Coinche during game phases.

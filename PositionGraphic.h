@@ -1,8 +1,9 @@
 #ifndef POSITIONGRAPHIC_H
 #define POSITIONGRAPHIC_H
 #include <array>
-#include "Definitions.h"
 
+#include "Definitions.h"
+//NON UI DEPENDENT
 class PositionGraphic
 {
     protected :

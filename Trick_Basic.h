@@ -6,7 +6,7 @@
 
 #include "Basic_Game_Info.h"
 #include "Cards_Basic.h"
-#include "Cards.h" // TO DO : graphics here : to remove
+//#include "Cards.h" // TO DO : graphics here : to remove
 #include "Player.h" // TO DO : graphics here : to remove
 #include "Score_Team.h" // TO DO : graphics here : to remove
 #include "Cards_Deck.h" // TO DO : graphics here : to remove

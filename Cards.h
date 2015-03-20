@@ -27,9 +27,10 @@ class Cards :public Cards_Basic, public Images_Sprite_Move<2>,public Basic_Click
 
         void Up(bool go_up); //up the card if go_up, otherwise down the card
         void Reveal(Uint32 duration,Uint32 time_lag,Uint32 current_time); //reveal or hide the card, depending on which part of the card is visible
+        void Reset();
 
         const bool& GetUp() const;
-        void Reset();
+
     protected:
         void act();
 

@@ -33,12 +33,17 @@ int SIMON = 3; //un ami qui aime beaucoup la belote
 
 //TO DO : cf mail de simon du 15 mars
 //TO DO : cf mail de papa du 17 mars
+
+//TO DO : minimiser les classes UI dependent
+
 //TO DO : ouvrir est souvent une bonne idée
 //TO DO : jouer atout quand son partenaire a pris !!!
+//TO DO : mettre ses AS quand on a la main et qu'on est en defense
+//TO DO : ne pas mettre des points quand le plis n'est pas remporte
+
 //eviter de jouer une couleur dans laquelle on a un 10
 //TO DO : ne pas lancer son dernier atout
 //TO DO : ne pas défausser ses AS : essayer de garder ses cartes maitresses !
-//TO DO : rajouter un classe Deck_Basic, Trick_Basic, Player_Basic sans interface graphique du tout !
 //TO DO : cleaner "data.h"
 int main( int argc, char* args[] )
 {
