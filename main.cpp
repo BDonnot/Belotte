@@ -30,6 +30,12 @@ int SIMON = 3; //un ami qui aime beaucoup la belote
 #include "Game_Coinche.h"
 #include "Bidding.h"
 #include "Save_Game.h"
+//Bug corriges :
+//dernier pli qui vaut 10
+//bug graphique : plus possible de mises a 70
+//reset effectif de la derniere mise pour le joueur humain
+//recalcule de certains score
+//les points sont toujours bien attribues a la fin de la partie
 
 //TO DO : cf mail de simon du 15 mars
 //TO DO : cf mail de papa du 17 mars
@@ -52,8 +58,8 @@ int main( int argc, char* args[] )
     srand((time(NULL)));
     //srand(7);
     for (int i = 0; i < 100; i++) {std::rand();}
-    SDL_Surface* _screen = nullptr;
     SDL_Init( SDL_INIT_EVERYTHING );
+    SDL_Surface* _screen = nullptr;
     SDL_EnableUNICODE( SDL_ENABLE );
 //    SDL_Event* _pEvent = new SDL_Event;
     _screen = SDL_SetVideoMode( SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE | SDL_RESIZABLE);

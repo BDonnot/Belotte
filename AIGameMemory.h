@@ -95,7 +95,7 @@ class AIGameMemory
     protected :
         Basic_Game_Info _infos;
         PLAYER_ID _posPlayer;
-        std::list<Cards*>* _pHand;
+        std::list<Cards* >* _pHand;
         MemorizeCards _fallenCards; //
 
         MemorizeCutsCalls _playerCut; //

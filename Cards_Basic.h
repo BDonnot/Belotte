@@ -9,6 +9,13 @@
 #include "PositionGraphic.h" //non UI Related ...
 /**This class implement the basic concept of a card, and the related methods. It does not depend on the graphic interface**/
 //TO DO : find a more elegant way for 'getString()'
+
+//Mouse_Over()
+//Click(bool)
+//Reset_Click()
+//ChangeSprite(Uint)
+//Display()
+//SetPosition(PositionGraphic&)
 class Cards_Basic
 {
     protected :
@@ -32,17 +39,26 @@ class Cards_Basic
         std::string GetString() const;
 
         //UI RELATED METHOD
-        virtual void Display(){}
-        virtual void Update_on_it(){} //true if the mouse is on it
+        //virtual void InitMouvement(bool transparency,PositionGraphic pos,Uint duration,Uint time_lag){}//to init a mouvement
+        //virtual void Display(){}
 
-        virtual void InitMouvement(bool transparency,PositionGraphic pos,Uint duration,Uint time_lag){}//to init a mouvement
+        //virtual void SetPosition(PositionGraphic& pos_final){}
+        //virtual void ChangeSprite(Uint sprite_number){}
+
+        /*
+        virtual bool Click(bool Short){ return false;}
+        virtual void Reset_Click(){}
+        virtual bool Mouse_Over(){return false;}
+        virtual void Update_on_it(){}
+
+
         virtual void UpdatePositionHand(PositionGraphic& pos_end){}
 
         virtual void Up(bool go_up){} //up the card if go_up, otherwise down the card
         virtual void Reveal(Uint duration,Uint time_lag,Uint current_time){} //reveal or hide the card, depending on which part of the card is visible
         virtual void Reset(){}
 
-        virtual const bool GetUp() const {return false;}
+        virtual const bool GetUp() const {return false;}*/
     protected:
     private:
 };

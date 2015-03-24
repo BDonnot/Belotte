@@ -1,17 +1,11 @@
 #include "Trick_Basic.h"
 
 using namespace::std;
-Trick_Basic::Trick_Basic()
-{
-    //ctor
-}
 
 Trick_Basic::Trick_Basic(Cards_Deck* pDeck,const std::array<Player*,4>& players):
-_info(),
 _players(players),
 _currentTrick(),
 _previousTrick(),
-_cardsPlayedThisTurn(0),
 _oldFirstPlayer(GHOST),
 _pDeck(pDeck)
 {
@@ -51,7 +45,7 @@ void Trick_Basic::WinnerTakeCards()
         if(_previousTrick[i] == nullptr) break; //TO DO : exception here !
         _pDeck->GetCardBack(_previousTrick[i]);
     }
-    if(_info.TrickNumber()==8)
+    if(_trickMemory.TrickNumber()==8)
     {
         for(Uint i = 0; i < 4; ++i)
         {
@@ -63,6 +57,7 @@ void Trick_Basic::WinnerTakeCards()
     _currentTrick = {nullptr,nullptr,nullptr,nullptr};
 }
 
+/*
 POSITION_TRICK Trick_Basic::whoWinTrick()
 {
     POSITION_TRICK res = FIRST;
@@ -80,13 +75,13 @@ POSITION_TRICK Trick_Basic::whoWinTrick()
     }
     return res;
 }
+*/
 
 bool Trick_Basic::Play() // TO DO code the same way as Bidding.cpp
 {
-    Uint first = _info.FirstPlayer();
+    //Uint first = _info.FirstPlayer();
     Cards* pcard = nullptr;
     Uint counter = 0;
-    //_scoreTeam.Update();
     for (Uint i = first; i < first+4; ++i, ++counter)
     {
         if(_currentTrick[counter] != nullptr) continue;
@@ -97,30 +92,39 @@ bool Trick_Basic::Play() // TO DO code the same way as Bidding.cpp
         //graphics bellow
         animateIfGraphic(pcard,i);
 
-        POSITION_TRICK winner = whoWinTrick();
-        _info.SetHigherCard(winner);
-        _info.SetNumberCardsPlayed();
+        //POSITION_TRICK winner = whoWinTrick();
+        //_info.SetHigherCard(winner); //TO DO
+        //_info.SetNumberCardsPlayed(); //TO DO
         break;
 
     }
-    //graphic here
+    //graphic here (in trick finished)
     if((_currentTrick.back() != nullptr)&&(trickFinished()))
     {
-        for (Uint i = first; i < first+4; ++i, ++counter)
-        {
-            _players[i%4]->UpdateEndTrick(_currentTrick,_info.IntToPosTrick(i));
-        }
-        _oldFirstPlayer = _info.FirstPlayer();
-        POSITION_TRICK winner = whoWinTrick();
-        array<Uint,4> values;
-        for (Uint i = 0; i < 4; ++i)
-        {
-            values[i] = _currentTrick[i]->Value();
-        }
-        _info.SetScores(winner,values);
+        terminatecurrentTrick(first,counter);
         return true;
     }
     return false;
+}
+
+void Trick_Basic::terminatecurrentTrick(Uint first,Uint counter)
+{
+    for (Uint i = first; i < first+4; ++i, ++counter)
+    {
+        _players[i%4]->UpdateEndTrick(_currentTrick,_info.IntToPosTrick(i));
+    }
+    //_oldFirstPlayer = _info.FirstPlayer();
+    //POSITION_TRICK winner = whoWinTrick();
+
+/*
+    array<Uint,4> values; //TO DO
+    for (Uint i = 0; i < 4; ++i)
+    {
+        values[i] = _currentTrick[i]->Value();
+    }
+    //if (_info.TrickNumber() == 8) values[0] += 10;
+    //_info.SetScores(winner,values);
+    */
 }
 
 void Trick_Basic::SetPlayers(const array<Player*,4>& players)

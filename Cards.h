@@ -1,48 +1,30 @@
 #ifndef CARDS_H
 #define CARDS_H
 
-#include "Basic_Click.h"
-#include "Basic_Transparency.h"
-#include "Images_Sprite_Move.h"
+
+/**
+CardsUI : depends on the graphical interface
+**/
 #include "Cards_Basic.h"
+#include "Cards_SDL.h"
 
-class Cards :public Cards_Basic, public Images_Sprite_Move<2>,public Basic_Click,public Basic_Transparency
+class Cards : public Cards_Basic, public Cards_SDL
 {
-    protected:
-        //const Basic_Game_Info _basic_info;
-        SDL_Surface * _pScreen;
-        bool _Up; //true if the card if up
-        bool _first_sprite;
-        Uint32 _half_duration;
-//        static std::array<std::array<bool,8>,8 > _matrix_win_trump;
-//        static std::array<std::array<bool,8>,8 > _matrix_win_no_trump; //No_trump[height_1][height_2] : return true if height_2 wins over height_1
-
     public:
         Cards(){}
-        Cards(CARDS_HEIGHT height,CARDS_COLOR color,SDL_Event* event,SDL_Surface * _pScreen);
+        Cards(CARDS_HEIGHT height,CARDS_COLOR color,SDL_Event* event,SDL_Surface * pScreen):
+            Cards_Basic(height,color),
+            Cards_SDL(_infos.HeightToInt(height),_infos.ColorToInt(color),event,pScreen){}
         virtual ~Cards(){}
-        void Update_on_it(); //true if the mouse is on it
-
-        void InitMouvement(bool transparency,PositionGraphic pos,Uint duration,Uint time_lag);//to init a mouvement
-        void UpdatePositionHand(PositionGraphic& pos_end);
-
-        void Up(bool go_up); //up the card if go_up, otherwise down the card
-        void Reveal(Uint duration,Uint time_lag,Uint current_time); //reveal or hide the card, depending on which part of the card is visible
-        void Reset();
-
-        const bool GetUp() const;
-        void Display();
-
+        virtual void Display()
+        {
+            static_cast< Images_Sprite<2> * >(this)->Display(_pScreen);
+        }
     protected:
-        void act();
 
     private:
         Cards(const Cards& other);
         Cards& operator=(const Cards& other);
-        void Revealing();
-        void updateMouvement(); //to update the timers for the movement
-        //Uint HeightToInt(CARDS_HEIGHT height_card) const; //TO DO : remove
 
 };
-
 #endif // CARDS_H

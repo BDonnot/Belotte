@@ -2,7 +2,6 @@
 #define FONCTEURS_CARDS_H_INCLUDED
 //UI DEPENDENT
 #include "Cards.h"
-//#include "fonctions_annexes.h"
 
 class DisplayCardPlayer //handle the positionning of the card in the hand
 {
@@ -114,6 +113,7 @@ class DisplayCardPile
         SDL_Surface* _screen;
 
 };
+
 class UpdateCardMouse
 {
     public :

@@ -15,14 +15,14 @@ class Basic_Game_Info
         static PLAYER_ID _giver;
 
         static PLAYER_ID _taker;
-        //static unsigned int _firstToBid; //number of the first player who must bid.
+        ////static unsigned int _firstToBid; //number of the first player who must bid.
         static CARDS_COLOR _trump_color;
         static unsigned int _max_bid;
         static CARDS_COLOR _color_proposed;
-        //static unsigned int _biddingCount;
+        ////static unsigned int _biddingCount;
 
-        static unsigned int _trick_number;
-        static POSITION_TRICK _index_strongest_card;
+        //static unsigned int _trick_number;
+        //static POSITION_TRICK _index_strongest_card;
         static PLAYER_ID _position_first_player; //the first player who will played the trick
         static unsigned int _number_card_played;
 
@@ -40,19 +40,19 @@ class Basic_Game_Info
 
         const unsigned long long& Time() const;
         void AddClock(unsigned long long diffTime);
-        //void SetClock(unsigned long long clock);
+        ////void SetClock(unsigned long long clock);
 
         inline const PLAYER_ID& Taker() const;
         inline const PLAYER_ID& Giver() const;
-        inline const POSITION_TRICK& StrongestCard() const;
-        inline const unsigned int& NumberCardsPlayed() const;
-        inline const PLAYER_ID& FirstPlayer() const;
-        inline const unsigned int& TrickNumber() const;
+        //inline const POSITION_TRICK& StrongestCard() const;
+        //inline const unsigned int& NumberCardsPlayed() const;
+        //inline const PLAYER_ID& FirstPlayer() const;
+        //inline const unsigned int& TrickNumber() const;
 
         inline const CARDS_COLOR& TrumpColor() const;
         inline const CARDS_COLOR& ColorProposed() const;
         inline const unsigned int& BiddingRound() const;
-        //void ResetBiddingCount();
+        ////void ResetBiddingCount();
         inline const std::array<unsigned int,2>& RunningScores() const;
         inline const std::array<unsigned int,2>& FinalScores() const;
 
@@ -71,6 +71,7 @@ class Basic_Game_Info
         void SetTaker(const PLAYER_ID taker);
         void SetTrumpColor(const CARDS_COLOR trump_color);
 
+        /*
         void SetScores(POSITION_TRICK trick_winner
                        ,unsigned int value_card_played_by_player_0 //update the score during the game
                        ,unsigned int value_card_played_by_player_1
@@ -78,11 +79,12 @@ class Basic_Game_Info
                        ,unsigned int value_card_played_by_player_3);
         void SetScores(POSITION_TRICK trick_winner
                        ,const std::array<unsigned int,4>& value_cards_played);
-        void SetNumberCardsPlayed();
-        void SetHigherCard(POSITION_TRICK winner); //update _index_strongest_card in case the last player has played a stronger card
-        //void SetCurrentPlayer();
+                       */
+        //void SetNumberCardsPlayed();
+        //void SetHigherCard(POSITION_TRICK winner); //update _index_strongest_card in case the last player has played a stronger card
+        ////void SetCurrentPlayer();
 
-        unsigned int CalculateFinalScores(); //compute who wins (returns the equip of the winner), determined each score, reset the other parameters
+        IntIntPair CalculateFinalScores(); //compute who wins (returns the equip of the winner), determined each score, reset the other parameters
 
         void SetMaxBid(unsigned int max_bid); //TO DO : smarter way here...
         void SetColorProposed(CARDS_COLOR color);
@@ -100,14 +102,14 @@ class Basic_Game_Info
         inline Uint ColorToInt(CARDS_COLOR color) const;
 
         void SetGiver(); //the giver is always the person at the left of the current giver
-//        POSITION_TRICK Next(POSITION_TRICK posTrick) const;
+////        POSITION_TRICK Next(POSITION_TRICK posTrick) const;
     protected:
         void setTrickNumber(); //the SetTrickNumber can increase of only 1 unit each time
         Uint posTrickToInt(POSITION_TRICK posTrick);
         PLAYER_ID posTrickToPlayer(PLAYER_ID firstToPlay,POSITION_TRICK posTrick);
     private:
-        //Basic_Game_Info(const Basic_Game_Info& other);
-        //Basic_Game_Info& operator=(const Basic_Game_Info& other);
+        ////Basic_Game_Info(const Basic_Game_Info& other);
+        ////Basic_Game_Info& operator=(const Basic_Game_Info& other);
 };
 
 inline const PLAYER_ID& Basic_Game_Info::Taker() const
@@ -122,10 +124,12 @@ inline const CARDS_COLOR& Basic_Game_Info::TrumpColor() const
 {
     return _trump_color;
 }
+/*
 inline const unsigned int& Basic_Game_Info::TrickNumber() const
 {
     return _trick_number;
 }
+*/
 inline const std::array<unsigned int,2>& Basic_Game_Info::RunningScores() const
 {
     return _running_scores;
@@ -134,6 +138,7 @@ inline const std::array<unsigned int,2>& Basic_Game_Info::FinalScores() const
 {
     return _final_scores;
 }
+/*
 inline const POSITION_TRICK& Basic_Game_Info::StrongestCard() const
 {
     return _index_strongest_card;
@@ -146,6 +151,7 @@ inline const PLAYER_ID& Basic_Game_Info::FirstPlayer() const
 {
     return _position_first_player;
 }
+*/
 inline const unsigned int& Basic_Game_Info::MaxBid() const
 {
     return _max_bid;

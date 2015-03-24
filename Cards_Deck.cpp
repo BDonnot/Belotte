@@ -31,9 +31,9 @@ _DisplayCardPile(screen)
 
 Cards_Deck::~Cards_Deck()
 {
-    for(list<Cards*>::iterator it = _pile.begin(); it!=_pile.end(); ++it)
+    for(Cards * pcards : _pile)
     {
-        delete (*it);
+        delete (pcards);
     }
 }
 void Cards_Deck::BeginGame()

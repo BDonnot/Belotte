@@ -53,14 +53,16 @@ void End_Of_Game::Update()
 {
     Uint taker = _info.Taker();
     Uint bid = _info.MaxBid();
-    Uint winner = _info.CalculateFinalScores();
-    bool winnerWon = winner%2 == taker%2;
+    ScoreWinner scoreWinner = _info.CalculateFinalScores();
+    bool winnerWon = scoreWinner.second == taker;
     string text1 = "";
     string text2 = "";
     if(winnerWon)
     {
         text1 = "L'attaque a remporte son contrat de ";
         text1 += IntToString(bid);
+        text1 += " en ayant marque ";
+        text1 += IntToString(scoreWinner.first);
         text1 += " points.";
         text2 = "Le contrat est donc rempli, et les scores sont donc de :";
     }
@@ -68,6 +70,8 @@ void End_Of_Game::Update()
     {
         text1 = "L'attaque a perdu son contrat de ";
         text1 += IntToString(bid);
+        text1 += " en ayant marque ";
+        text1 += IntToString(scoreWinner.first);
         text1 += " points.";
         text2 = "Le contrat est donc chuté, et les scores sont donc de :";
     }

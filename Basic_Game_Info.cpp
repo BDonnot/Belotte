@@ -88,6 +88,7 @@ PLAYER_ID Basic_Game_Info::posTrickToPlayer(PLAYER_ID firstToPlay,POSITION_TRICK
     }
     return res;
 }
+/*
 void Basic_Game_Info::SetScores(POSITION_TRICK ptrick_winner
                                 ,unsigned int value_card_played_by_player_0 //update the score during the game
                                 ,unsigned int value_card_played_by_player_1
@@ -118,28 +119,33 @@ void Basic_Game_Info::setTrickNumber()
 {
     _trick_number++;
 }
-unsigned int Basic_Game_Info::CalculateFinalScores() //calculate who wins (returns the equip of the winner), determined each score, reset the other parameters
+*/
+ScoreWinner Basic_Game_Info::CalculateFinalScores() //compute who wins (returns the equip of the winner), determined each score, reset the other parameters
 {
-    //calculate the scores
-    unsigned int taker = _taker%2; //team of the taker
-    unsigned int winner = taker;
-    if(_running_scores[taker] > _running_scores[1-taker]) //the taker win
+    //compute the scores
+    ScoreWinner res;
+    unsigned int takerTeam = _taker % 2; //team of the taker
+    unsigned int winner = takerTeam;
+    res.first = _running_scores[takerTeam];
+    if(_running_scores[takerTeam] > _running_scores[1-takerTeam]) //the taker win
     {
-        if (_tricks_win[taker] == 8)
-            _final_scores[taker] += 250;
+        if (_tricks_win[takerTeam] == 8)
+            _final_scores[takerTeam] += 250;
         else
         {
-            _final_scores[taker] += _max_bid;
-//            _final_scores[taker] += _running_scores[taker];
-//            _final_scores[1-taker] += _running_scores[1-taker];
+            _final_scores[takerTeam] += _max_bid;
         }
     }
     else
     {
-        _final_scores[1-taker] += 160;
-        winner = 1-taker;
+        _final_scores[1-takerTeam] += 160;
+        winner = 1-takerTeam;
     }
 
+        //char forPrinting[100];
+        //sprintf(forPrinting,"taker : %d, winner : %d",_taker,winner);
+        //printf(forPrinting);
+    res.second = winner;
     //reset the values
     _trump_color = NOT_CHOSEN;
     _taker = GHOST;
@@ -147,13 +153,13 @@ unsigned int Basic_Game_Info::CalculateFinalScores() //calculate who wins (retur
     _running_scores = {0,0};
     _tricks_win = {0,0};
     _max_bid = MINBET;
-    //setGiver();
-    return winner;
+    return res;
 }
 void Basic_Game_Info::SetColorProposed(CARDS_COLOR color)
 {
     _color_proposed = color;
 }
+/*
 void Basic_Game_Info::SetNumberCardsPlayed()
 {
 //    _number_card_played = 0;
@@ -164,6 +170,8 @@ void Basic_Game_Info::SetNumberCardsPlayed()
 //    _position_first_player++;
 //    _position_next_player%=4;
 }
+*/
+
 /*
 void Basic_Game_Info::SetClock(unsigned long long clock)
 {
@@ -187,11 +195,11 @@ void Basic_Game_Info::ResetBiddingCount()
     ///_biddingCount = 0;
     setGiver();
 }
-*/
 void Basic_Game_Info::SetHigherCard(POSITION_TRICK winner)
 {
     _index_strongest_card = winner;
 }
+*/
 
 void Basic_Game_Info::SetMaxBid(unsigned int max_bid)
 {

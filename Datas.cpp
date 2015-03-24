@@ -39,7 +39,6 @@ Datas::Datas(const string& path,int num_line)
 }
 Datas::~Datas()
 {
-    //dtor
     delete [] _selected;
 }
 void Datas::reset_choices()

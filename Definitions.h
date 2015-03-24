@@ -9,9 +9,10 @@
 #include<string>
 #include<ostream>
 #include<sstream>
+#include<utility> //pair
 
 typedef unsigned int Uint;
-
+typedef std::pair<Uint,Uint> IntIntPair;
 
 enum POSITION_OPTION{CENTER=0
                     ,TOP_LEFT //y_x

@@ -26,9 +26,9 @@ class Trick :public Trick_Basic
         Score_Team _scoreTeam;
 
     public:
-        Trick();
+        Trick(){}
         Trick(Cards_Deck* pDeck,const std::array<Player*,4>& players,Uint windowsWidth,Uint WindowsHeight,SDL_Event* pevent,SDL_Surface* pScreen);
-        virtual ~Trick();
+        virtual ~Trick(){}
 
         void Update(); //update the the logos of taker, trump color and the contract
         void Display(GAME_PHASES currentPhase);
@@ -43,7 +43,7 @@ class Trick :public Trick_Basic
         {
             return _ok.Click(true);
         }
-        virtual void animateIfGraphic(Cards_Basic* pcard, Uint i)
+        virtual void animateIfGraphic(Cards* pcard, Uint i)
         {
             updatePosCard(i%4);
             pcard->InitMouvement(true,_posCard,1000,(i%4)*50);

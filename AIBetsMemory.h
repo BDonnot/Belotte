@@ -3,6 +3,7 @@
 
 #include "Definitions.h"
 #include "Basic_Game_Info.h"
+
 /**
 This class handles the memory of the AI players. It will store (hopefully in an efficient manner)
 all the informations a player need to take the right decision.

@@ -17,7 +17,7 @@ Basic_Transparency::~Basic_Transparency()
 {
     //dtor
 }
-void Basic_Transparency::Transparency()
+void Basic_Transparency::transparency()
 {
     if ((_timer_alpha_current >= _timer_alpha_start)&&(_timer_alpha_current < _timer_alpha_end))
     {

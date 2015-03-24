@@ -17,6 +17,6 @@ Images_Transparency::~Images_Transparency()
 }
 void Images_Transparency::act()
 {
-    Transparency();
+    transparency();
     SDL_SetAlpha( _surface.get(), SDL_SRCALPHA | SDL_RLEACCEL, _alpha );
 }

@@ -9,6 +9,7 @@
 #include "Random.h"
 #include "TrickStatus.h"
 #include "Datas.h"
+#include "TrickBasic_Memory.h"
 //#include "AIGameMemory.h"
 /** The AI player will play according to a score. These one are defined in some csv files**/
 
@@ -47,15 +48,15 @@ class AIPlayScores
                                          ,const TrickStatus& trickStatus
                                          ,const Memory& playerMemory);
     protected:
-        int playFirst(const Cards* pcard,const std::array<Cards*,4>& trick,const TrickStatus& trickStatus,Random& rand,bool pisse, bool play_trump,const Memory& playerMemory);
-        int playSecond(const Cards* pcard,const std::array<Cards*,4>& trick,const TrickStatus& trickStatus,Random& rand,bool pisse, bool play_trump,const Memory& playerMemory);
-        int playThird(const Cards* pcard,const std::array<Cards*,4>& trick,const TrickStatus& trickStatus,Random& rand,bool pisse, bool play_trump,const Memory& playerMemory);
-        int playFourth(const Cards* pcard,const std::array<Cards*,4>& trick,const TrickStatus& trickStatus,Random& rand,bool pisse, bool play_trump,const Memory& playerMemory);
+        int playFirst(const Cards* pcard,const TrickBasic_Memory& trick,const TrickStatus& trickStatus,Random& rand,bool pisse, bool play_trump,const Memory& playerMemory);
+        int playSecond(const Cards* pcard,const TrickBasic_Memory& trick,const TrickStatus& trickStatus,Random& rand,bool pisse, bool play_trump,const Memory& playerMemory);
+        int playThird(const Cards* pcard,const TrickBasic_Memory& trick,const TrickStatus& trickStatus,Random& rand,bool pisse, bool play_trump,const Memory& playerMemory);
+        int playFourth(const Cards* pcard,const TrickBasic_Memory& trick,const TrickStatus& trickStatus,Random& rand,bool pisse, bool play_trump,const Memory& playerMemory);
     private:
 };
 
 template<class Memory>
-std::list<Cards*>::iterator AIPlayScores<Memory>::Play(const std::array<Cards*,4>& trick
+std::list<Cards*>::iterator AIPlayScores<Memory>::Play(const TrickBasic_Memory& trick
                                        ,std::list<std::list<Cards*>::iterator>& playbleCards
                                        ,const std::list<Cards*>& hand
                                        ,Random& rand
@@ -108,7 +109,7 @@ std::list<Cards*>::iterator AIPlayScores<Memory>::Play(const std::array<Cards*,4
 //int AIPlayScores::playFirst(Carte* pcard, int color_trump,int player_take, int team_taken,bool play_trump,int pseudo_height_trump_max, int number_trick)
 template<class Memory>
 int AIPlayScores<Memory>::playFirst(const Cards*pcard,
-                                    const std::array<Cards*,4>& trick,
+                                    const TrickBasic_Memory& trick,
                                     const TrickStatus& trickStatus,
                                     Random& rand,
                                     bool pisse,
@@ -119,10 +120,10 @@ int AIPlayScores<Memory>::playFirst(const Cards*pcard,
     CARDS_COLOR color = pcard->GetColour();
     CARDS_HEIGHT height = pcard->GetHeight();
     CARDS_COLOR color_trump = _infos.TrumpColor();
-    //PLAYER_ID player_take = _infos.Taker();
-    //int team_taken = _infos.PosPlayerToInt(player_take)%2;
+    PLAYER_ID player_take = _infos.Taker();
+    int team_taken = _infos.PosPlayerToInt(player_take)%2;
     bool oponentCut = playerMemory.OpponentsCut(color);
-    Uint number_trick = _infos.TrickNumber();
+    Uint number_trick = trick.TrickNumber();
     CARDS_HEIGHT heightsOrder[8] =  {ACE,TEN,KING,QUEEN,JACK,NINE,EIGHT,SEVEN};
     if(color == color_trump)
     {
@@ -136,10 +137,29 @@ int AIPlayScores<Memory>::playFirst(const Cards*pcard,
     PLAYER_ID teammate = _infos.IntToPosPlayer( _infos.PosPlayerToInt(_player)+2 %4 );
 
     if (pcard == nullptr) return -10000; //TO DO : exception here
-    //trumps case
-    if (play_trump&&(color==color_trump))
+    //if I or my teammate took, I try to play trump
+    if (team_taken == _infos.PosPlayerToInt(_player)%2 && playerMemory.NbColorPlayed(color_trump) == 0)
     {
-        res += _play_1st.value(0,0); //res = 20
+        if(color == color_trump )
+        {
+            res += _play_1st.value(28,0); //res = 30
+            if(playerMemory.Greatest(color_trump) == JACK) //if I have the jack
+            {
+                if(height == JACK) res += _play_1st.value(29,0); //res += 10
+                else res += _play_1st.value(30,0); //res += -10
+            }
+        }
+        else res += _play_1st.value(31,0); //res -= 30
+
+    }
+    if(playerMemory.OpponentsCut(color_trump)) //if the opponents have no more trump, I don't play trump
+    {
+        if(color == color_trump) res += _play_1st.value(32,0); //res -= 50
+    }
+    //trumps case
+    if (play_trump && (color==color_trump))
+    {
+        res += _play_1st.value(0,0); //res = 30
         if (height==playerMemory.Master(color))
         {
             if (number_trick == 6) res += _play_1st.value(1,0); //res = -17
@@ -182,23 +202,24 @@ int AIPlayScores<Memory>::playFirst(const Cards*pcard,
         res += _play_1st.value(18,0); //res=12
         if (height==TEN) //10
         {
-            res += _play_1st.value(19,0); //17
-            if (oponentCut) res += _play_1st.value(20,0); //res=-25
+            if (!oponentCut) res += _play_1st.value(19,0); //17
+            else res += _play_1st.value(20,0); //res=-25
         }
         if (height==ACE) //ace
         {
-            res += _play_1st.value(21,0); //res=35
-            if (oponentCut) res += _play_1st.value(22,0); //res=-30
+            if (!oponentCut) res += _play_1st.value(21,0); //res=35
+            else res += _play_1st.value(22,0); //res=-30
         }
         if (height==KING) //king
         {
-            res += _play_1st.value(23,0); //res=5
-            if (oponentCut) res += _play_1st.value(24,0); //res=-12
+            if (!oponentCut) res += _play_1st.value(23,0); //res=5
+            else res += _play_1st.value(24,0); //res=-12
         }
-        if (playerMemory.NbColorPlayed(color) == 0)
+        if (playerMemory.NbColorPlayed(color) == 0) //if the color has not been played
         {
-            if (height == heightsOrder[1]) res += _play_1st.value(25,0); // res=-15
-            if (height == heightsOrder[2]) res += _play_1st.value(26,0); // res=-9
+            if (height == heightsOrder[1]) res += _play_1st.value(25,0); // res= 15
+            else res += _play_1st.value(26,0); // res=-9
+            //if (height == heightsOrder[2]) res += _play_1st.value(26,0); // res=-9
         }
         if ((number_trick == 6)&&(color == color_trump)) res += _play_1st.value(27,0); //res=-10
     }
@@ -210,7 +231,7 @@ int AIPlayScores<Memory>::playFirst(const Cards*pcard,
 //int AIPlayScores::playSecond(Carte* pcard, array<Carte*,4> trick,int color_trump,int player_take, int team_take,int i_master,bool pisse,bool play_trump,int number_trick,int color_asked,int height_master,int pseudo_height_master)
 template<class Memory>
 int AIPlayScores<Memory>::playSecond(const Cards* pcard,
-                                     const std::array<Cards*,4>& trick,
+                                     const TrickBasic_Memory& trick,
                                      const TrickStatus& trickStatus,
                                      Random& rand,
                                      bool pisse,
@@ -225,7 +246,7 @@ int AIPlayScores<Memory>::playSecond(const Cards* pcard,
     //PLAYER_ID player_take = _infos.Taker();
     //int team_taken = _infos.PosPlayerToInt(player_take)%2;
     bool oponentCut = playerMemory.OpponentsCut(color);
-    Uint number_trick = _infos.TrickNumber();
+    Uint number_trick = trick.TrickNumber();
     CARDS_HEIGHT heightsOrder[8] =  {ACE,TEN,KING,QUEEN,JACK,NINE,EIGHT,SEVEN};
     if(color == color_trump)
     {
@@ -314,7 +335,7 @@ int AIPlayScores<Memory>::playSecond(const Cards* pcard,
 //int AIPlayScores::playThird(Carte* pcard, array<Carte*,4> trick,int color_trump,int player_take, int team_take,int i_master,bool pisse,bool play_trump,int number_trick,int color_asked,int height_master,int pseudo_height_master)
 template<class Memory>
 int AIPlayScores<Memory>::playThird(const Cards* pcard,
-                                    const std::array<Cards*,4>& trick,
+                                    const TrickBasic_Memory& trick,
                                     const TrickStatus& trickStatus,
                                     Random& rand,
                                     bool pisse,
@@ -329,7 +350,7 @@ int AIPlayScores<Memory>::playThird(const Cards* pcard,
     //PLAYER_ID player_take = _infos.Taker();
     //int team_taken = _infos.PosPlayerToInt(player_take)%2;
     bool oponentCut = playerMemory.OpponentsCut(color);
-    //Uint number_trick = _infos.TrickNumber();
+    //Uint number_trick = trick.TrickNumber();
     CARDS_HEIGHT heightsOrder[8] =  {ACE,TEN,KING,QUEEN,JACK,NINE,EIGHT,SEVEN};
     if(color == color_trump)
     {
@@ -452,7 +473,7 @@ int AIPlayScores<Memory>::playThird(const Cards* pcard,
 //int AIPlayScores::playFourth(Carte* pcard, array<Carte*,4> trick,int color_trump,int player_take, int team_take,int i_master,bool pisse,bool play_trump,int number_trick,int color_asked,int height_master,int pseudo_height_master)
 template<class Memory>
 int AIPlayScores<Memory>::playFourth(const Cards*pcard,
-                                     const std::array<Cards*,4>& trick,
+                                     const TrickBasic_Memory& trick,
                                      const TrickStatus& trickStatus,
                                      Random& rand,
                                      bool pisse,

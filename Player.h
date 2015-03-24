@@ -72,11 +72,12 @@ class Player
             _pos = SetPosition(number,windows_width,windows_height);
             _screen = screen;
         }
+
         virtual ~Player()
         {
-            for (auto it = _hand.begin(); it != _hand.end(); ++it)
+            for (Cards * pcards : _hand)
             {
-                delete(*it);
+                delete(pcards);
             }
         }
 
@@ -88,8 +89,8 @@ class Player
         virtual void Update_Mouse(GAME_PHASES currentPhase); //to update the position of the mouse, the click etc.
         //virtual void Update_Trick(std::array<Cards*,4> trick,unsigned int subscript_first_player);
 
-        Cards* PlayCard(const std::array<Cards*,4>& trick); //choose the right card to play
-        void UpdateEndTrick(const std::array<Cards*,4>& trick,POSITION_TRICK myPos); //do whatever you have to do at the end of each trick
+        Cards* PlayCard(const TrickBasic_Memory& trick); //choose the right card to play
+        void UpdateEndTrick(const TrickBasic_Memory& trick,POSITION_TRICK myPos); //do whatever you have to do at the end of each trick
         CARDS_COLOR Take(bool first_round,CARDS_COLOR color_proposed,CARDS_HEIGHT height_proposed); //choose if the player take or not (classic game)
         const Player_Bid& Take(bool previousPlayerChoose,const BetsMemory& bets); //choose if the player take or not (coinche)
         const Player_Bid& Take(const BetsMemory& bets); //choose if the player take or not (coinche)
@@ -113,13 +114,13 @@ class Player
         std::string GetString(const Player_Bid& bid) const; //return <Player : (#)> (bet) <\player>
 
     protected:
-        virtual void updateMemoryTrick(const std::array<Cards*,4>& trick,POSITION_TRICK myPos);
+        virtual void updateMemoryTrick(const TrickBasic_Memory& trick,POSITION_TRICK myPos);
         virtual void initMemoryTrick();
         virtual void updateBid(const BetsMemory& bets){}
         virtual bool do_I_coinche();
 
         virtual CARDS_COLOR do_i_take(bool first_round,CARDS_COLOR color_proposed,CARDS_HEIGHT height_proposed);
-        virtual std::list<Cards*>::iterator what_card_do_i_play(const std::array<Cards*,4>& trick) {return _hand.end();}
+        virtual std::list<Cards*>::iterator what_card_do_i_play(const TrickBasic_Memory& trick) {return _hand.end();}
 
         int how_many_colour(CARDS_COLOR colour);
 
@@ -132,9 +133,9 @@ class Player
         //std::array<Uint16,2> SetPositionCards(int number,Uint16 windows_width, Uint16 widows_height);
 
         bool has_higher(CARDS_COLOR color_asked,CARDS_HEIGHT max_height);
-        void updatePlayebleCards(const std::array<Cards*,4>& trick_in_progress);
+        void updatePlayebleCards(const TrickBasic_Memory& trick_in_progress);
         bool can_play_card(Cards* PmyCard
-                           ,const std::array<Cards*,4>& trick_in_progress);
+                           ,const TrickBasic_Memory& trick_in_progress);
 //        bool can_play_card(Cards* PmyCard
 //                           ,const std::array<Cards*,4>& trick_in_progress
 //                           ,CARDS_COLOR trumpColor

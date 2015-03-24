@@ -29,8 +29,6 @@ Game_Coinche::Game_Coinche(SDL_Surface* screen,Uint16 screenWidth, Uint16 screen
 //    _players[0] = static_cast<Player*>(new Player_AI(posPlayer[0],screenWidth,screenHeight,_event,&_backSide,_pScreen));
     for (Uint i = 1; i < 4; i++)
     {
-        //<AITakeBasic,AIPlayRandom<AIGameMemory> >
-        //<AITakeBasic,AIPlayScores<AIGameMemory> >
         //<AIGameMemory,AITakeBasic,AIPlayRandom<AIGameMemory> >
         //<AIGameMemory,AITakeBasic,AIPlayScores<AIGameMemory> >
         _players[i] =  static_cast<Player*>(new Player_AI<AIGameMemory,AITakeBasic,AIPlayScores<AIGameMemory> >(posPlayer[i],screenWidth,screenHeight,_event,&_backSide,_pScreen));
