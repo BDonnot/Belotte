@@ -38,12 +38,12 @@ class Player_AI : public Player
         //Cards* Choose_Card(const std::array<Cards*,4>& trick,int i_master); //choose what card the player play
         //int Take(bool first_round,int color_proposed,int height_proposed); //choose if the player take or not. 127 : no, 255 : not choosen, 0-3 : color at which the player wants to take
     protected:
-        virtual void updateMemoryTrick(const std::array<Cards*,4>& trick,POSITION_TRICK myPos);
+        virtual void updateMemoryTrick(const TrickBasic_Memory& trick,POSITION_TRICK myPos);
         virtual void initMemoryTrick();
         virtual void updateBid(const BetsMemory& bets);
 
         virtual CARDS_COLOR do_i_take(bool first_round,CARDS_COLOR color_proposed,CARDS_HEIGHT height_proposed);
-        virtual std::list<Cards*>::iterator what_card_do_i_play(const std::array<Cards*,4>& trick);
+        virtual std::list<Cards*>::iterator what_card_do_i_play(const TrickBasic_Memory& trick);
 
         virtual void resetTake(){ _take.Reset(); } //merge with ResetBid() when the template of Player_AI will be upped to Player, thus removing Player_Human and Player_AI
 
@@ -77,7 +77,7 @@ CARDS_COLOR Player_AI<GameMemory,TakeAI,PlayAI>::do_i_take(bool first_round,CARD
 }
 
 template<class GameMemory,class TakeAI, class PlayAI>
-std::list<Cards*>::iterator Player_AI<GameMemory,TakeAI,PlayAI>::what_card_do_i_play(const std::array<Cards*,4>& trick) //by default, play a random card
+std::list<Cards*>::iterator Player_AI<GameMemory,TakeAI,PlayAI>::what_card_do_i_play(const TrickBasic_Memory& trick) //by default, play a random card
 {
     return _play.Play(trick,_playable_cards,_hand,_rand,_currentTrickStatus,_gameMemory);
 }
@@ -92,7 +92,7 @@ void Player_AI<GameMemory,TakeAI,PlayAI>::updateBid(const BetsMemory& bets)
 }
 
 template<class GameMemory,class TakeAI, class PlayAI>
-void Player_AI<GameMemory,TakeAI,PlayAI>::updateMemoryTrick(const std::array<Cards*,4>& trick,POSITION_TRICK myPos)
+void Player_AI<GameMemory,TakeAI,PlayAI>::updateMemoryTrick(const TrickBasic_Memory& trick,POSITION_TRICK myPos)
 {
     _gameMemory.UpdateFullTrick(trick,myPos);
 }

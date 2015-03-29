@@ -17,6 +17,7 @@ _infos()
     _textAfterBet0.SetPosition(pos);
     pos.Set(_infos.WindowsWidth()/2,4*_infos.WindowsHeight()/9,CENTER);
     _textAfterBet1.SetPosition(pos);
+    _bidder = _infos.Next(_infos.Giver());
 }
 
 bool Bidding::Bid(GAME_PHASES currentPhase) //TO DO test, test test !
@@ -24,19 +25,23 @@ bool Bidding::Bid(GAME_PHASES currentPhase) //TO DO test, test test !
     if (currentPhase != BIDDING) return false;
     bool choose = true;
     bool biddingOver = false;
-    PLAYER_ID playerBid = _infos.FirstPlayer();
     PLAYER_ID giver = _infos.Giver();
 
-    Uint i_playerBid = _infos.PosPlayerToInt(playerBid);
+    //char forPrinting[100];
+    //sprintf(forPrinting,"the giver is %d",giver);
+    //printf(forPrinting);
+
+    Uint i_playerBid = _infos.PosPlayerToInt(_bidder);
     const Player_Bid& bid = _players[i_playerBid]->Take(_bets);
     choose = bid.GetColorBid() != NOT_CHOSEN;
     if (!choose) return false;
-    _infos.NextPlayerBid();
-    handleBet(bid,playerBid); //TO DO move to BetsMemory
+    //_infos.NextPlayerBid();
+    _bidder = _infos.Next(_bidder);
+    handleBet(bid,_bidder); //TO DO move to BetsMemory
 
     _bets.TellBet(bid);
 
-    if(playerBid == giver)
+    if(_bidder == giver)
     {
         Uint firstBiddingPlayer = (giver+1)%4;
         for (Uint i = firstBiddingPlayer; i < firstBiddingPlayer+4; i++)
@@ -45,7 +50,7 @@ bool Bidding::Bid(GAME_PHASES currentPhase) //TO DO test, test test !
         }
     }
 
-    biddingOver = _bets.IsBetsOver(playerBid);
+    biddingOver = _bets.IsBetsOver(_bidder);
     if(biddingOver) return true; //ajust this.
     return false;
 }
@@ -82,13 +87,7 @@ bool Bidding::Click(bool Short)
 void Bidding::SummarizeBet()
 {
     //the first player to play is the player after the giver
-    PLAYER_ID playerBid = _infos.FirstPlayer();
-    while(playerBid != _infos.Giver())
-    {
-        _infos.NextPlayerBid();
-        playerBid = _infos.FirstPlayer();
-    }
-    _infos.NextPlayerBid();
+    _bidder = _infos.Next(_infos.Giver());
 
     switch (_infos.TrumpColor()) //setting the displayed objects
     {

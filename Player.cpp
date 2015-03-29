@@ -105,9 +105,9 @@ bool Player::has_higher(CARDS_COLOR color_asked,CARDS_HEIGHT max_height) //true 
     }
     return false;
 }
-Cards* Player::PlayCard(const array<Cards*,4>& trick)
+Cards* Player::PlayCard(const TrickBasic_Memory& trick)
 {
-    if(_hand.size() != static_cast<Uint>(8-_basic_info.TrickNumber())) return nullptr;
+    if(_hand.size() != static_cast<Uint>(8-trick.TrickNumber())) return nullptr;
     if(_playable_cards.size()==0)
     {
         updatePlayebleCards(trick); //TO DO this is called multiple times
@@ -124,15 +124,15 @@ CARDS_COLOR Player::Take(bool first_round,CARDS_COLOR color_proposed,CARDS_HEIGH
     return do_i_take(first_round,color_proposed,height_proposed);
 }
 
-void Player::UpdateEndTrick(const std::array<Cards*,4>& trick,POSITION_TRICK myPos) //do whatever you have to do at the end of each trick
+void Player::UpdateEndTrick(const TrickBasic_Memory& trick,POSITION_TRICK myPos) //do whatever you have to do at the end of each trick
 {
     updateMemoryTrick(trick,myPos);
 }
-void Player::updatePlayebleCards(const array<Cards*,4>& trick_in_progress)
+void Player::updatePlayebleCards(const TrickBasic_Memory& trick_in_progress)
 {
     //_memory.TellTrick(trick_in_progress,_basic_info.FirstPlayer());
     auto itEnd = _hand.end();
-    if (trick_in_progress[0]==nullptr) //if we are the first to play, we can play everything
+    if (trick_in_progress.NumberCardsPlayed() == 0) //if we are the first to play, we can play everything
     {
         for(auto it = _hand.begin(); it != itEnd;++it)
         {
@@ -142,7 +142,7 @@ void Player::updatePlayebleCards(const array<Cards*,4>& trick_in_progress)
     }
 
     _currentTrickStatus.Update(trick_in_progress
-                               ,has_colour(trick_in_progress[0]->GetColour())
+                               ,has_colour(trick_in_progress.ColorAsked())
                                ,has_colour(_basic_info.TrumpColor()));
 
     for(auto it = _hand.begin(); it != itEnd;++it)
@@ -151,27 +151,28 @@ void Player::updatePlayebleCards(const array<Cards*,4>& trick_in_progress)
     }
 }
 
-bool Player::can_play_card(Cards* PmyCard
-                           ,const array<Cards*,4>& trick_in_progress)
+bool Player::can_play_card(Cards* PmyCard,const TrickBasic_Memory& trick)
 {
     if (PmyCard==nullptr)
         return false;
     CARDS_COLOR my_colour = PmyCard->GetColour();
+    CARDS_HEIGHT maxHeight = trick.HeightMaster();
+    CARDS_COLOR maxColor = trick.ColorMaster();
     if (_currentTrickStatus.HasCol()) //If we have the color asked we have to played it
     {
-        if(_currentTrickStatus.ColourAsked()!= _basic_info.TrumpColor()) //we must play in the color if we can
-            return (_currentTrickStatus.ColourAsked() == my_colour);
-        return (my_colour == _basic_info.TrumpColor())&&((PmyCard->Win(_currentTrickStatus.MaxHeight()))
-                                                         ||(!has_higher(_basic_info.TrumpColor(),_currentTrickStatus.MaxHeight())));
+        if(trick.ColorAsked() != _currentTrickStatus.TrumpColor()) //we must play in the color if we can
+            return (my_colour == trick.ColorAsked());
+        return (my_colour == _currentTrickStatus.TrumpColor())&&((PmyCard->Win(maxHeight))
+                                                         ||(!has_higher(_currentTrickStatus.TrumpColor(),maxHeight)));
     }
     //So I do not have the color
-    if ((!_currentTrickStatus.HasTrump())||(static_cast<Uint>(_currentTrickStatus.Winner()%2) == static_cast<Uint>(_currentTrickStatus.Position()%2))) return true; //I can play what I want if I dont have the color asked and : I dont have trump or my partner is the master
+    if ((!_currentTrickStatus.HasTrump())||(static_cast<Uint>(trick.CurrentWinner()%2) == static_cast<Uint>(trick.NumberCardsPlayed()%2))) return true; //I can play what I want if I dont have the color asked and : I dont have trump or my partner is the master
     //So I do have trump, my partner is no master, and I do not have the color asked.
-    bool trumpPlayed = _currentTrickStatus.MaxColor() == _basic_info.TrumpColor();
+    bool trumpPlayed = maxColor == _currentTrickStatus.TrumpColor();
     if(trumpPlayed)
-        return (my_colour == _basic_info.TrumpColor())&&((PmyCard->Win(_currentTrickStatus.MaxHeight()))
-                                                         ||(!has_higher(_basic_info.TrumpColor(),_currentTrickStatus.MaxHeight())));
-    return my_colour == _basic_info.TrumpColor();
+        return (my_colour == _currentTrickStatus.TrumpColor())&&((PmyCard->Win(maxHeight))
+                                                         ||(!has_higher(_currentTrickStatus.TrumpColor(),maxHeight)));
+    return my_colour == _currentTrickStatus.TrumpColor();
 }
 
 bool Player::has_colour(CARDS_COLOR colour) //do I have the color
@@ -183,11 +184,12 @@ bool Player::has_colour(CARDS_COLOR colour) //do I have the color
     }
     return false;
 }
-bool Player::trump_played(const std::array<Cards*,4>& trick_in_progress)
+/*
+bool Player::trump_played(const TrickBasic_Memory& trick_in_progress)
 {
     return trick_in_progress[_basic_info.StrongestCard()+2]->GetColour() == _basic_info.TrumpColor();
 }
-
+*/
 CARDS_COLOR Player::do_i_take(bool first_round,CARDS_COLOR color_proposed,CARDS_HEIGHT height_proposed)
 {
     return NO;
@@ -243,7 +245,7 @@ bool Player::do_I_coinche()
 {
     return false;
 }
-void Player::updateMemoryTrick(const std::array<Cards*,4>& trick,POSITION_TRICK myPos)
+void Player::updateMemoryTrick(const TrickBasic_Memory& trick,POSITION_TRICK myPos)
 {
 
 }
@@ -275,12 +277,6 @@ CARDS_COLOR Player::CurrentColorBid()
         return _oldBid.Color();
     return _currentBid.Color();
 }
-/*
-const std::string& Player::Getname() const
-{
-    return _name.Name();
-}
-*/
 void Player::InitMemory()
 {
     //_memory.Reset();

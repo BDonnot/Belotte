@@ -6,6 +6,7 @@
 #include "Basic_Game_Info.h"
 
 #include "Cards.h"
+#include "TrickBasic_Memory.h"
 /**
 This class handles the memory of the AI players. It will store (hopefully in an efficient manner)
 all the informations a player need to take the right decision.
@@ -121,7 +122,7 @@ class AIGameMemory
                 InitEverything();
             }
         virtual ~AIGameMemory();
-        void UpdateFullTrick(const std::array<Cards*,4>& trick, POSITION_TRICK posTrick); //posTrick : the position of the player in the trick
+        void UpdateFullTrick(const TrickBasic_Memory& trick, POSITION_TRICK posTrick); //posTrick : the position of the player in the trick
         void InitEverything(); //call after the trump have been chosen, to set everything :-)
         CARDS_HEIGHT Master(CARDS_COLOR color) const;
 

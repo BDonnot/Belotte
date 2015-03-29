@@ -2,9 +2,6 @@
 #define BASIC_GAME_INFO_H
 
 #include <array>
-//#include<string>
-//#include<ostream>
-//#include<sstream>
 
 #include "Definitions.h"
 

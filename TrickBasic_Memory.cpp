@@ -15,7 +15,7 @@ void TrickBasic_Memory::Reset()
 {
     _trickNumber = 0;
     _cardsPlayed = 0;
-    _to_play = GHOST;
+    _to_play = _infos.Next(_infos.Giver());
     _winner = UNKNOWN;
     _scores.first = 0;
     _scores.second = 0;
@@ -36,7 +36,7 @@ void TrickBasic_Memory::updateWinner()
     }
     CARDS_COLOR colorTrump = _infos.TrumpColor();
     CARDS_COLOR color = _currentTrick[_cardsPlayed]->GetColour();
-    CARDS_HEIGHT height = _currentTrick[_cardsPlayed]->GetHeight();
+    //CARDS_HEIGHT height = _currentTrick[_cardsPlayed]->GetHeight();
 
     bool needUpdate = false; //do the last cards played is master
     if(color == colorTrump)
@@ -49,20 +49,20 @@ void TrickBasic_Memory::updateWinner()
         if(_colorMaster == colorTrump) needUpdate = false;
         else
         {
-            if(color != colorAsked) needUpdate = false;
+            if(color != _colorAsked) needUpdate = false;
             else needUpdate = _currentTrick[_cardsPlayed]->Win(_heightMaster);
         }
     }
     if(needUpdate)
     {
-        winner = winner + 1 % 4
-        _colorMaster = _currentTrick[winner]->GetColour();
-        _heightMaster = _currentTrick[winner]->GetHeight();
-        _winner = _infos.IntToPosTrick(winner);
+        _winner = _infos.IntToPosTrick(_cardsPlayed-1);
+        _colorMaster = _currentTrick[_cardsPlayed]->GetColour();
+        _heightMaster = _currentTrick[_cardsPlayed]->GetHeight();
+        _winner = _infos.IntToPosTrick(_cardsPlayed);
     }
 }
 
-void finishTrick()
+void TrickBasic_Memory::finishTrick()
 {
     Uint pointsInTheTrick = 0;
     for(auto pcards : _currentTrick) { pointsInTheTrick += pcards->Value(); }
@@ -79,7 +79,7 @@ void TrickBasic_Memory::updateToPlay()
         break;
     case SECOND :
         _to_play = _infos.Next(_to_play);
-        break
+        break;
     case THIRD :
         _to_play = _infos.Next(_infos.Next(_to_play));
         break;

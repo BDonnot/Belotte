@@ -41,7 +41,7 @@ class AIPlayScores
             }
 
         virtual ~AIPlayScores(){}
-        std::list<Cards*>::iterator Play(const std::array<Cards*,4>& trick
+        std::list<Cards*>::iterator Play(const TrickBasic_Memory& trick
                                          ,std::list<std::list<Cards*>::iterator>& plyableCards
                                          ,const std::list<Cards*>& hand
                                          ,Random& rand
@@ -66,8 +66,8 @@ std::list<Cards*>::iterator AIPlayScores<Memory>::Play(const TrickBasic_Memory& 
     std::list<Cards*>::iterator res = *playbleCards.begin();
     Cards* pcard= nullptr;
     int MaxScore = -10000,currentScore;
-    CARDS_COLOR color_asked = trickStatus.ColourAsked();
-    CARDS_COLOR color_trump = _infos.TrumpColor();
+    CARDS_COLOR color_asked = trick.ColorAsked();
+    CARDS_COLOR color_trump = trickStatus.TrumpColor();
     bool pisse; //I can play another colour than the one asked, or trump
     bool play_trump; //I can play at least one trump
     for (auto it : playbleCards)
@@ -241,8 +241,8 @@ int AIPlayScores<Memory>::playSecond(const Cards* pcard,
     int res = 0;
     CARDS_COLOR color = pcard->GetColour();
     CARDS_HEIGHT height = pcard->GetHeight();
-    CARDS_COLOR color_trump = _infos.TrumpColor();
-    CARDS_COLOR color_asked = trickStatus.ColourAsked();
+    CARDS_COLOR color_trump = trickStatus.TrumpColor();
+    CARDS_COLOR color_asked = trick.ColorAsked();
     //PLAYER_ID player_take = _infos.Taker();
     //int team_taken = _infos.PosPlayerToInt(player_take)%2;
     bool oponentCut = playerMemory.OpponentsCut(color);
@@ -345,8 +345,8 @@ int AIPlayScores<Memory>::playThird(const Cards* pcard,
     int res = 0;
     CARDS_COLOR color = pcard->GetColour();
     CARDS_HEIGHT height = pcard->GetHeight();
-    CARDS_COLOR color_trump = _infos.TrumpColor();
-    CARDS_COLOR color_asked = trickStatus.ColourAsked();
+    CARDS_COLOR color_trump = trickStatus.TrumpColor();
+    CARDS_COLOR color_asked = trick.ColorAsked();
     //PLAYER_ID player_take = _infos.Taker();
     //int team_taken = _infos.PosPlayerToInt(player_take)%2;
     bool oponentCut = playerMemory.OpponentsCut(color);
@@ -361,7 +361,7 @@ int AIPlayScores<Memory>::playThird(const Cards* pcard,
         heightsOrder[4] = KING;
         heightsOrder[5] = QUEEN;
     }
-    POSITION_TRICK i_master = trickStatus.Winner();
+    POSITION_TRICK i_master = trick.CurrentWinner();
     //PLAYER_ID teammate = _infos.IntToPosPlayer( _infos.PosPlayerToInt(_player)+2 %4 );
 //TO DO : change i_master ! -> it is a positiong trick, not a player id...
 //If I can play trump
@@ -483,12 +483,12 @@ int AIPlayScores<Memory>::playFourth(const Cards*pcard,
     int res = 0;
     CARDS_COLOR color = pcard->GetColour();
     CARDS_HEIGHT height = pcard->GetHeight();
-    CARDS_COLOR color_trump = _infos.TrumpColor();
-    CARDS_COLOR color_asked = trickStatus.ColourAsked();
+    CARDS_COLOR color_trump = trickStatus.TrumpColor();
+    CARDS_COLOR color_asked = trick.ColorAsked();
     //PLAYER_ID player_take = _infos.Taker();
     //int team_taken = _infos.PosPlayerToInt(player_take)%2;
     //bool oponentCut = playerMemory.OpponentsCut(_player,color);
-    Uint number_trick = _infos.TrickNumber();
+    Uint number_trick = trick.TrickNumber();
     /*
     CARDS_HEIGHT heightsOrder[8] =  {ACE,TEN,KING,QUEEN,JACK,NINE,EIGHT,SEVEN};
     if(color == color_trump)
@@ -501,7 +501,7 @@ int AIPlayScores<Memory>::playFourth(const Cards*pcard,
         heightsOrder[5] = QUEEN;
     }
     */
-    //POSITION_TRICK i_master = trickStatus.Winner();
+    //POSITION_TRICK i_master = trick.CurrentWinner();
 
     //If we play trump
     if ((play_trump)&&(color == color_trump))
@@ -519,7 +519,7 @@ int AIPlayScores<Memory>::playFourth(const Cards*pcard,
         }
     }
 // If my teammate is major
-    if (trickStatus.Winner() == SECOND)
+    if (trick.CurrentWinner() == SECOND)
     {
         if (color == color_trump) res += _play_4th.value(2,0); //res=-30
         else
@@ -576,7 +576,7 @@ int AIPlayScores<Memory>::playFourth(const Cards*pcard,
         }
         else
         {
-            if (trickStatus.Winner() == SECOND)
+            if (trick.CurrentWinner() == SECOND)
             {
                res += _play_4th.value(21,0); //res=5
                 if (height==playerMemory.Greatest(color)) res += _play_4th.value(22,0); //res=15
@@ -595,7 +595,7 @@ int AIPlayScores<Memory>::playFourth(const Cards*pcard,
 //If it is the penultimate trick, we try to keep our trump for the last trick
     if ((number_trick == 6)&&(color == color_trump)) res += _play_4th.value(29,0); //res=-8
 //"Passe" of the ace, not always (risky)
-    if ((color != color_trump)&&(height == ACE)&&(playerMemory.NbColorPlayed(color_asked)==0)&&(trickStatus.MaxHeight() != TEN)&&(!playerMemory.CardsFallen(color,TEN)))
+    if ((color != color_trump)&&(height == ACE)&&(playerMemory.NbColorPlayed(color_asked)==0)&&(trick.HeightMaster() != TEN)&&(!playerMemory.CardsFallen(color,TEN)))
     {
         if (rand.generate_number() >= 768) res += _play_4th.value(30,0); //res=-9 /3 chance out of 4 not to "passe"
     }

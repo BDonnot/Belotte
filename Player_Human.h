@@ -24,7 +24,7 @@ class Player_Human : public Player
         virtual void ResetBid(bool betFinished);
 
         virtual int do_i_take(bool first_round,int color_proposed,int height_proposed);
-        virtual std::list<Cards*>::iterator what_card_do_i_play(const std::array<Cards*,4>& trick);
+        virtual std::list<Cards*>::iterator what_card_do_i_play(const TrickBasic_Memory& trick);
 
     private:
         Take_Human _Take;

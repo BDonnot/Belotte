@@ -10,10 +10,10 @@ AIGameMemory::~AIGameMemory()
     //dtor
 }
 
-void AIGameMemory::UpdateFullTrick(const std::array<Cards*,4>& trick, POSITION_TRICK posTrick)
+void AIGameMemory::UpdateFullTrick(const TrickBasic_Memory& trick, POSITION_TRICK posTrick)
 {
     Uint i;
-    CARDS_COLOR colorAsked = trick[0]->GetColour();
+    CARDS_COLOR colorAsked = trick.ColorAsked();
     Uint intCol = _infos.ColorToInt(colorAsked);
     _nbColorPlayed[intCol] += 1;
     CARDS_COLOR currentColor;
@@ -101,9 +101,6 @@ void AIGameMemory::computeNewHeightMaster()
             currentMaster = heightUnder(currentMaster,isTrump);
         }
         _heightsMaster[i] = currentMaster;
-        //char forPrinting[100];
-        //sprintf(forPrinting,"new height master for color %d is %d\n",i,_infos.HeightToInt(currentMaster));
-        //printf(forPrinting);
     }
 }
 

@@ -38,7 +38,7 @@ class Trick_Basic : public TrickBasic_Memory
         Uint TrickNumber() const {return _trickMemory.TrickNumber(); }
         std::string GetString() const;
     protected:
-        void terminatecurrentTrick(Uint first,Uint counter); //compute the score
+        void terminatecurrentTrick(Uint first); //compute the score
         POSITION_TRICK whoWinTrick();
         virtual bool trickFinished(){ return true;}
         //virtual void animateIfGraphic(Cards_Basic* pcard, Uint i){}

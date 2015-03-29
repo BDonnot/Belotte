@@ -22,7 +22,7 @@ class Bidding
         Images_Text _textAfterBet1;
         Images_Button _ok;
         Cards_Deck* _pDeck;
-        //std::list<CARDS_COLOR> _colorBets;
+        PLAYER_ID _bidder;
 
     public:
         Bidding(){}

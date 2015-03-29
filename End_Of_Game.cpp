@@ -53,7 +53,7 @@ void End_Of_Game::Update()
 {
     Uint taker = _info.Taker();
     Uint bid = _info.MaxBid();
-    ScoreWinner scoreWinner = _info.CalculateFinalScores();
+    IntIntPair scoreWinner = _info.CalculateFinalScores();
     bool winnerWon = scoreWinner.second == taker;
     string text1 = "";
     string text2 = "";

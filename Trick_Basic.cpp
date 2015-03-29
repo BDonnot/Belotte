@@ -4,7 +4,7 @@ using namespace::std;
 
 Trick_Basic::Trick_Basic(Cards_Deck* pDeck,const std::array<Player*,4>& players):
 _players(players),
-_currentTrick(),
+//_currentTrick(),
 _previousTrick(),
 _oldFirstPlayer(GHOST),
 _pDeck(pDeck)
@@ -26,7 +26,7 @@ Trick_Basic::~Trick_Basic()
 string Trick_Basic::GetString() const
 {
     string res = "<trick : ";
-    res += IntToString(_info.TrickNumber());
+    res += IntToString(_number_cards_play);
     res += ">";
     Uint first = _oldFirstPlayer;
     Uint counter = 0;
@@ -79,6 +79,20 @@ POSITION_TRICK Trick_Basic::whoWinTrick()
 
 bool Trick_Basic::Play() // TO DO code the same way as Bidding.cpp
 {
+    Uint i = _infos.PosPlayerToInt(_to_play);
+    if (_cardsPlayed == 0 && (trickFinished()) ) //the trick is over
+    {
+        terminatecurrentTrick(i);
+        return true;
+    }
+    Cards * pcard = _players[i]->PlayCard(static_cast<TrickBasic_Memory&>(*this));
+    if(pcard == nullptr) { return false; }
+    _currentTrick[_cardsPlayed] = pcard;
+    playerPlayed();
+    //graphics bellow
+    animateIfGraphic(pcard,i);
+    return false;
+    /*
     //Uint first = _info.FirstPlayer();
     Cards* pcard = nullptr;
     Uint counter = 0;
@@ -105,13 +119,15 @@ bool Trick_Basic::Play() // TO DO code the same way as Bidding.cpp
         return true;
     }
     return false;
+    */
+
 }
 
-void Trick_Basic::terminatecurrentTrick(Uint first,Uint counter)
+void Trick_Basic::terminatecurrentTrick(Uint first)
 {
-    for (Uint i = first; i < first+4; ++i, ++counter)
+    for (Uint i = first; i < first+4; ++i)
     {
-        _players[i%4]->UpdateEndTrick(_currentTrick,_info.IntToPosTrick(i));
+        _players[i%4]->UpdateEndTrick(static_cast<TrickBasic_Memory&>(*this),_infos.IntToPosTrick(i));
     }
     //_oldFirstPlayer = _info.FirstPlayer();
     //POSITION_TRICK winner = whoWinTrick();

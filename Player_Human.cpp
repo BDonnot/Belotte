@@ -60,7 +60,7 @@ void Player_Human::Display(GAME_PHASES currentPhase)
 }
 
 //Play
-std::list<Cards*>::iterator Player_Human::what_card_do_i_play(const std::array<Cards*,4>& trick)
+std::list<Cards*>::iterator Player_Human::what_card_do_i_play(const TrickBasic_Memory& trick)
 {
    //_playable_cards = _hand;
    std::list<Cards*>::iterator pcard = _hand.end();

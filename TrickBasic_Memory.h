@@ -37,8 +37,14 @@ class TrickBasic_Memory
         const PLAYER_ID NextPlaying() const {return _to_play;}
         const POSITION_TRICK CurrentWinner() const {return _winner;}
         const IntIntPair& CurrentScores() const {return _scores;}
+        const CARDS_COLOR ColorAsked() const {return _colorAsked; }
+        const CARDS_COLOR ColorMaster() const {return _colorMaster; }
+        const CARDS_HEIGHT HeightMaster() const {return _heightMaster; }
+        const Cards* operator[](Uint i) const { return _currentTrick[i];}
 
-        void PlayerPlay()
+        void Reset(); //at the end of the game (8 trick)
+    protected:
+        void playerPlayed() //to do once the player have played
         {
             updateWinner();
             _to_play = _infos.Next(_to_play);
@@ -52,10 +58,7 @@ class TrickBasic_Memory
             }
 
         }
-        void Reset(); //at the end of the game (8 trick)
-    protected:
         void updateWinner(); //update the player who currently win the trick
-
         void finishTrick();
         void updateToPlay(); //at the end of the trick, and store the scores
         void updateScores(Uint pointsInTheTrick);

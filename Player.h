@@ -10,6 +10,7 @@
 #include "Basic_Game_Info.h"
 #include "Player_Bid.h"
 #include "TrickStatus.h"
+#include "TrickBasic_Memory.h"
 #include "Foncteurs_CardsBasic.h"
 
 //UI dependent
@@ -134,8 +135,7 @@ class Player
 
         bool has_higher(CARDS_COLOR color_asked,CARDS_HEIGHT max_height);
         void updatePlayebleCards(const TrickBasic_Memory& trick_in_progress);
-        bool can_play_card(Cards* PmyCard
-                           ,const TrickBasic_Memory& trick_in_progress);
+        bool can_play_card(Cards* PmyCard,const TrickBasic_Memory& trick);
 //        bool can_play_card(Cards* PmyCard
 //                           ,const std::array<Cards*,4>& trick_in_progress
 //                           ,CARDS_COLOR trumpColor
@@ -147,7 +147,7 @@ class Player
 //                           ,CARDS_HEIGHT maxHeight
 //                           ,CARDS_COLOR maxColor);
         bool has_colour(CARDS_COLOR color);
-        bool trump_played(const std::array<Cards*,4>& trick_in_progress);
+        // bool trump_played(const std::array<Cards*,4>& trick_in_progress);
 
 //        bool can_play_trump(Cards* PmyCard,const std::array<Cards*,4>& trick_in_progress);
 //        bool can_discarding(const std::array<Cards*,4>& trick_in_progress,CARDS_COLOR trump_colour);

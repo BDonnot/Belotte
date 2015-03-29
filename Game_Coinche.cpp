@@ -175,7 +175,7 @@ void Game_Coinche::playGame(bool& keep_playing)
     case AFTER_TRICK1 :
          _trick.WinnerTakeCards();
         _currentPhase = PLAYING;
-        if(_infos.TrickNumber() == 8)
+        if(_trick.TrickNumber() == 8)
         {
             _endGame.Update();
             const array<Uint,2>& scores = _infos.FinalScores();

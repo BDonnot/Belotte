@@ -64,7 +64,7 @@ void Trick::Display(GAME_PHASES currentPhase)
             updatePosCard(posPlayer);
             _previousTrick[i]->SetPosition(_posCard);
             _previousTrick[i]->ChangeSprite(1);
-            posPlayer = _info.Next(posPlayer);
+            posPlayer = _infos.Next(posPlayer);
             //_previousTrick[i]->Display(_pScreen);
             _previousTrick[i]->Display();
         }
@@ -81,7 +81,7 @@ void Trick::UpdateEvent(GAME_PHASES currentPhase)
 
 void Trick::Update()
 {
-    switch(_info.TrumpColor())
+    switch(_infos.TrumpColor())
     {
     case DIAMOND :
         _logo.ChangeSprite(0);
@@ -99,9 +99,9 @@ void Trick::Update()
         _logo.ChangeSprite(0);
         break;
     }
-    _contract.ChangeText(Player_Bid_Graphic::IntToString(_info.TrumpColor(),_info.MaxBid()));
+    _contract.ChangeText(Player_Bid_Graphic::IntToString(_infos.TrumpColor(),_infos.MaxBid()));
     string text = "Equipe ";
-    text +=Player_Bid_Graphic::IntToString(_info.TrumpColor(),_info.Taker()%2+1);
+    text +=Player_Bid_Graphic::IntToString(_infos.TrumpColor(),_infos.Taker()%2+1);
     _teamName.ChangeText(text);
     //_scoreTeam.Update();
 }
@@ -111,16 +111,16 @@ void Trick::updatePosCard(Uint player)
     switch(player)
     {
         case 0 :
-            _posCard.Set(_info.WindowsWidth()/2, _info.WindowsHeight()/2+80,CENTER);
+            _posCard.Set(_infos.WindowsWidth()/2, _infos.WindowsHeight()/2+80,CENTER);
             return;
         case 1 :
-            _posCard.Set(_info.WindowsWidth()/2 +55, _info.WindowsHeight()/2,CENTER);
+            _posCard.Set(_infos.WindowsWidth()/2 +55, _infos.WindowsHeight()/2,CENTER);
             return;
         case 2 :
-            _posCard.Set(_info.WindowsWidth()/2, _info.WindowsHeight()/2-80,CENTER);
+            _posCard.Set(_infos.WindowsWidth()/2, _infos.WindowsHeight()/2-80,CENTER);
             return;
         case 3 :
-            _posCard.Set(_info.WindowsWidth()/2-55, _info.WindowsHeight()/2,CENTER);
+            _posCard.Set(_infos.WindowsWidth()/2-55, _infos.WindowsHeight()/2,CENTER);
             return;
         default :
             _posCard.Set(0,0,TOP_LEFT);
@@ -131,7 +131,8 @@ void Trick::updatePosCard(Uint player)
 void Trick::GatherCards()
 {
     _scoreTeam.Update();
-    posReturn(_info.FirstPlayer());
+    //posReturn(_infos.FirstPlayer());
+    posReturn(_to_play);
     for(Uint i = 0; i < 4; ++i)
     {
         if(_currentTrick[i] == nullptr) break; //TO DO : exception here !
@@ -144,16 +145,16 @@ void Trick::posReturn(PLAYER_ID posPlayer)
     switch(posPlayer)
     {
         case PLAYER0 :
-            _posCard.Set(_info.WindowsWidth()/2,_info.WindowsHeight()-120,CENTER);
+            _posCard.Set(_infos.WindowsWidth()/2,_infos.WindowsHeight()-120,CENTER);
             return;
         case PLAYER1 :
-            _posCard.Set(_info.WindowsWidth() -100,_info.WindowsHeight()/2,CENTER);
+            _posCard.Set(_infos.WindowsWidth() -100,_infos.WindowsHeight()/2,CENTER);
             return;
         case PLAYER2 :
-            _posCard.Set(_info.WindowsWidth()/2,120,CENTER);
+            _posCard.Set(_infos.WindowsWidth()/2,120,CENTER);
             return;
         case PLAYER3 :
-            _posCard.Set(100,_info.WindowsHeight()/2,CENTER);
+            _posCard.Set(100,_infos.WindowsHeight()/2,CENTER);
             return;
         default : //TO DO exception here
             _posCard.Set(0,0,TOP_LEFT);
