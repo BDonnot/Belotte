@@ -160,9 +160,6 @@ void AIGameMemory::updateEverythingElse(PLAYER_ID firstToPlay)
                 currentPlayer = _infos.Next(currentPlayer);
                 _playerCut.SetCut(currentPlayer,color );
             }
-            //char forPrinting[100];
-            //sprintf(forPrinting,"everybody cut at %d\n",i);
-            //printf(forPrinting);
         }
         if (_greatest[i] == _heightsMaster[i] )_IAmMaster[i] = true;
         computeScoreLongeAndProtectPoint(_cardsPerColor[i],_longe[i],_protectPoints[i]);

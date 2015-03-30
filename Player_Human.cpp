@@ -98,7 +98,7 @@ void Player_Human::ResetBid(bool betFinished)
     _TakeCoinche.Reset(betFinished);
     _currentBid.Reset();
     if(!betFinished) return;
-    _lastBidTurn = 0;
+    //_lastBidTurn = 0;
     _oldBid.Reset();
     //resetTake();
 }

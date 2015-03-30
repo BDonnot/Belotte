@@ -6,7 +6,7 @@ Trick_Basic::Trick_Basic(Cards_Deck* pDeck,const std::array<Player*,4>& players)
 _players(players),
 //_currentTrick(),
 _previousTrick(),
-_oldFirstPlayer(GHOST),
+//_oldFirstPlayer(GHOST),
 _pDeck(pDeck)
 {
     _currentTrick = {nullptr,nullptr,nullptr,nullptr};
@@ -26,7 +26,7 @@ Trick_Basic::~Trick_Basic()
 string Trick_Basic::GetString() const
 {
     string res = "<trick : ";
-    res += IntToString(_number_cards_play);
+    res += IntToString(_cardsPlayed);
     res += ">";
     Uint first = _oldFirstPlayer;
     Uint counter = 0;
@@ -45,7 +45,7 @@ void Trick_Basic::WinnerTakeCards()
         if(_previousTrick[i] == nullptr) break; //TO DO : exception here !
         _pDeck->GetCardBack(_previousTrick[i]);
     }
-    if(_trickMemory.TrickNumber()==8)
+    if(_trickNumber==8)
     {
         for(Uint i = 0; i < 4; ++i)
         {
@@ -55,33 +55,17 @@ void Trick_Basic::WinnerTakeCards()
     }
     _previousTrick = _currentTrick;
     _currentTrick = {nullptr,nullptr,nullptr,nullptr};
+    //printf("WinnerTakeCards for trick %d \n",_trickNumber);
 }
-
-/*
-POSITION_TRICK Trick_Basic::whoWinTrick()
-{
-    POSITION_TRICK res = FIRST;
-    for(Uint i = 1; i <4; i++)
-    {
-        if(_currentTrick[i]==nullptr) break; //TO DO : exception here !
-        if(_currentTrick[i]->GetColour()==_currentTrick[res]->GetColour())
-        {
-            if(_currentTrick[i]->Win(_currentTrick[res]->GetHeight())) res = _posTrick[i];
-        }
-        else
-        {
-            if(_currentTrick[i]->GetColour()==_info.TrumpColor()) res = _posTrick[i];
-        }
-    }
-    return res;
-}
-*/
 
 bool Trick_Basic::Play() // TO DO code the same way as Bidding.cpp
 {
     Uint i = _infos.PosPlayerToInt(_to_play);
-    if (_cardsPlayed == 0 && (trickFinished()) ) //the trick is over
+    trickFinished();
+    //TO DO c'est moche !
+    if (_cardsPlayed == 4 && _trickFinished) //the trick is over
     {
+        trickOver();
         terminatecurrentTrick(i);
         return true;
     }
@@ -92,55 +76,14 @@ bool Trick_Basic::Play() // TO DO code the same way as Bidding.cpp
     //graphics bellow
     animateIfGraphic(pcard,i);
     return false;
-    /*
-    //Uint first = _info.FirstPlayer();
-    Cards* pcard = nullptr;
-    Uint counter = 0;
-    for (Uint i = first; i < first+4; ++i, ++counter)
-    {
-        if(_currentTrick[counter] != nullptr) continue;
-        pcard = _players[i%4]->PlayCard(_currentTrick);
-        if(pcard == nullptr) break; //the player has not chosen yet
-        _currentTrick[counter] = pcard;
-
-        //graphics bellow
-        animateIfGraphic(pcard,i);
-
-        //POSITION_TRICK winner = whoWinTrick();
-        //_info.SetHigherCard(winner); //TO DO
-        //_info.SetNumberCardsPlayed(); //TO DO
-        break;
-
-    }
-    //graphic here (in trick finished)
-    if((_currentTrick.back() != nullptr)&&(trickFinished()))
-    {
-        terminatecurrentTrick(first,counter);
-        return true;
-    }
-    return false;
-    */
-
 }
 
 void Trick_Basic::terminatecurrentTrick(Uint first)
 {
-    for (Uint i = first; i < first+4; ++i)
+    for (Uint i = first,counter = 0; i < first+4; ++i, ++counter)
     {
-        _players[i%4]->UpdateEndTrick(static_cast<TrickBasic_Memory&>(*this),_infos.IntToPosTrick(i));
+        _players[i%4]->UpdateEndTrick(static_cast<const TrickBasic_Memory&>(*this),_infos.IntToPosTrick(counter));
     }
-    //_oldFirstPlayer = _info.FirstPlayer();
-    //POSITION_TRICK winner = whoWinTrick();
-
-/*
-    array<Uint,4> values; //TO DO
-    for (Uint i = 0; i < 4; ++i)
-    {
-        values[i] = _currentTrick[i]->Value();
-    }
-    //if (_info.TrickNumber() == 8) values[0] += 10;
-    //_info.SetScores(winner,values);
-    */
 }
 
 void Trick_Basic::SetPlayers(const array<Player*,4>& players)

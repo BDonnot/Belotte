@@ -39,9 +39,10 @@ class Trick :public Trick_Basic
     protected:
         void updatePosCard(Uint playerNumber);
         void posReturn(PLAYER_ID posPlayer);
-        virtual bool trickFinished()
+        virtual void trickFinished()
         {
-            return _ok.Click(true);
+            //printf("ok ; %d\n",_trickFinished);
+            _trickFinished = _trickFinished || _ok.Click(true);
         }
         virtual void animateIfGraphic(Cards* pcard, Uint i)
         {

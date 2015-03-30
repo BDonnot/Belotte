@@ -135,6 +135,7 @@ void Game_Coinche::playGame(bool& keep_playing)
     case PREBET :
         _deck.GiveCards(_players);
         _saveGame.SaveHands(_players);
+        _trick.Reset();
         _timeNextAction = _infos.Time() + 2000;
         _currentPhase = BIDDING;
         _bid.Reset();
@@ -164,19 +165,23 @@ void Game_Coinche::playGame(bool& keep_playing)
         }
         return;
     case PLAYING :
+        //printf("playing trick %d\n",_trick.TrickNumber());
         if(_trick.Play()) _currentPhase = AFTER_TRICK0;
         return;
     case AFTER_TRICK0 :
+        //printf("AFTER_TRICK0 %d \n",_trick.TrickNumber());
         _saveGame.SaveTrick(_trick);
         _trick.GatherCards();
-        _timeNextAction = _infos.Time() + 600;
+        _timeNextAction = _infos.Time() + 600; //TO DO : improve here ...
         _currentPhase = AFTER_TRICK1;
         return;
     case AFTER_TRICK1 :
+        //printf("AFTER_TRICK1 %d \n",_trick.TrickNumber());
          _trick.WinnerTakeCards();
         _currentPhase = PLAYING;
         if(_trick.TrickNumber() == 8)
         {
+            //printf("game over\n");
             _endGame.Update();
             const array<Uint,2>& scores = _infos.FinalScores();
             _saveGame.SaveScores(scores[0],scores[1]);
@@ -184,20 +189,11 @@ void Game_Coinche::playGame(bool& keep_playing)
         }
         return;
     case SCORES :
+        //printf("Should be displaying scores\n");
         _currentPhase = _endGame.Next();
         if(_currentPhase!=SCORES)
         {
             _saveGame.EndGame();
-            //TO DO : move elsewhere !
-            //char forPrinting[100];
-            //sprintf(forPrinting,"max bid is %d\n",_infos.MaxBid());
-            //printf(forPrinting);
-            //_infos.SetMaxBid(70);
-            //for(auto player : _players)
-            //{
-              //  player->ResetBid(true); //basically ensure that the players are correctly betting (removing all memory of the previous phases
-                //player->InitMemory(); //the same for the memory of the previous trick
-            //}
         }
         return;
     default :

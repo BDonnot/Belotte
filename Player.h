@@ -40,7 +40,7 @@ class Player
         SDL_Event* _event;
         Player_Bid _currentBid;
         Player_Bid_Graphic _oldBid;
-        unsigned int _lastBidTurn;
+        //unsigned int _lastBidTurn;
         std::list<Cards*>::iterator _cardPlayed;
         TrickStatus _currentTrickStatus;
         //GameMemory _memory;
@@ -67,7 +67,7 @@ class Player
             ,_DisplayCardPlayer(screen,windows_width,windows_height,number)
             ,_currentBid()
             ,_oldBid(number,pevent,screen,windows_width,windows_height)
-            ,_lastBidTurn(0)
+            //,_lastBidTurn(0)
             ,_cardPlayed(_hand.end())
         {
             _pos = SetPosition(number,windows_width,windows_height);
@@ -100,7 +100,7 @@ class Player
         const unsigned int GetHandSize() const { return _hand.size(); }
         const std::string& Getname() const { return _name.Name(); }
         virtual void ResetBid(bool betFinished);
-        const Uint GetLastBidTurn() const {return _lastBidTurn;}
+        //const Uint GetLastBidTurn() const {return _lastBidTurn;}
 //        void ResetBid(bool betFinished);
 
         void GiveCardsBack(std::list<Cards*>& deck);

@@ -27,18 +27,14 @@ bool Bidding::Bid(GAME_PHASES currentPhase) //TO DO test, test test !
     bool biddingOver = false;
     PLAYER_ID giver = _infos.Giver();
 
-    //char forPrinting[100];
-    //sprintf(forPrinting,"the giver is %d",giver);
-    //printf(forPrinting);
-
     Uint i_playerBid = _infos.PosPlayerToInt(_bidder);
+    //printf("%d is bidding\n",i_playerBid);
     const Player_Bid& bid = _players[i_playerBid]->Take(_bets);
     choose = bid.GetColorBid() != NOT_CHOSEN;
     if (!choose) return false;
-    //_infos.NextPlayerBid();
-    _bidder = _infos.Next(_bidder);
+    printf("%d has chosen\n",_bidder);
     handleBet(bid,_bidder); //TO DO move to BetsMemory
-
+    //_infos.NextPlayerBid();
     _bets.TellBet(bid);
 
     if(_bidder == giver)
@@ -49,8 +45,8 @@ bool Bidding::Bid(GAME_PHASES currentPhase) //TO DO test, test test !
             _players[i%4]->ResetBid(false);
         }
     }
-
     biddingOver = _bets.IsBetsOver(_bidder);
+    _bidder = _infos.Next(_bidder);
     if(biddingOver) return true; //ajust this.
     return false;
 }
@@ -61,6 +57,7 @@ void Bidding::handleBet(const Player_Bid& bid, PLAYER_ID ibet)
         _infos.SetMaxBid(bid.Bid());
         _infos.SetTrumpColor(bid.Color());
         _infos.SetTaker(ibet);
+        printf("%d took at %d at color %d",ibet,bid.Bid(),bid.Color());
     }
 }
 

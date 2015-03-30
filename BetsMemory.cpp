@@ -26,7 +26,6 @@ std::string BetsMemory::GetString()
 {
     if(_bets.size() == 0) return ""; //TO DO Exception here !
     if(_itSaved == _bets.end()) return ""; //TO DO probably exception here too !
-    //printf("toto\n");
     std::string res = (*_itSaved).GetString();
     ++_itSaved;
     return res;

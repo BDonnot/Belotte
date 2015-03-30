@@ -92,7 +92,7 @@ IntIntPair Basic_Game_Info::CalculateFinalScores() //compute who wins (returns t
     unsigned int takerTeam = _taker % 2; //team of the taker
     unsigned int winner = takerTeam;
     res.first = _running_scores[takerTeam];
-    if(_running_scores[takerTeam] > _running_scores[1-takerTeam]) //the taker win
+    if(_running_scores[takerTeam] > _running_scores[1-takerTeam] && _running_scores[takerTeam] > _max_bid) //the taker win
     {
         if (_tricks_win[takerTeam] == 8)
             _final_scores[takerTeam] += 250;
@@ -119,25 +119,7 @@ void Basic_Game_Info::SetColorProposed(CARDS_COLOR color)
 {
     _color_proposed = color;
 }
-/*
-void Basic_Game_Info::SetNumberCardsPlayed()
-{
-//    _number_card_played = 0;
-//    if(update)
-//        _index_strongest_card = _number_card_played;
-    _number_card_played++;
-//    _number_card_played %= 4;
-//    _position_first_player++;
-//    _position_next_player%=4;
-}
-*/
 
-/*
-void Basic_Game_Info::SetClock(unsigned long long clock)
-{
-    _clock = clock;
-}
-*/
 void Basic_Game_Info::AddClock(unsigned long long diffTime)
 {
     _clock += diffTime;
@@ -177,9 +159,17 @@ const CARDS_HEIGHT Basic_Game_Info::ConvertIntToHeight(int i)
         return _int_to_height[i];
     return UNINTIALIZED;
 }
-//string Basic_Game_Info::IntToString(Uint number)
-//{
-//    ostringstream convert;
-//    convert << number;
-//    return convert.str();
-//}
+void Basic_Game_Info::SetScores(PLAYER_ID trick_winner,const IntIntPair& scores)
+{
+    switch(trick_winner)
+    {
+    case PLAYER0 : case PLAYER2 :
+        _running_scores[0] = scores.first;
+        break;
+    case PLAYER1: case PLAYER3 :
+        _running_scores[1] = scores.second;
+        break;
+    default : //TO DO exception here
+        break;
+    }
+}

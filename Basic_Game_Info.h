@@ -67,7 +67,7 @@ class Basic_Game_Info
 
         void SetTaker(const PLAYER_ID taker);
         void SetTrumpColor(const CARDS_COLOR trump_color);
-
+        void SetScores(PLAYER_ID trick_winner,const IntIntPair& scores); //to IMPROVE !
         /*
         void SetScores(POSITION_TRICK trick_winner
                        ,unsigned int value_card_played_by_player_0 //update the score during the game

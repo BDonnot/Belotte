@@ -4,15 +4,6 @@ using namespace std;
 
 Trick::Trick(Cards_Deck* pDeck,const std::array<Player*,4>& players,Uint windowsWidth,Uint windowsHeight,SDL_Event* pevent,SDL_Surface* pScreen):
 Trick_Basic(pDeck,players),
-//_info()
-//,_pDeck(pDeck)
-//,_players(players)
-//,_currentTrick()
-//,_previousTrick()
-//,_cardsPlayedThisTurn(0)
-//,_scoreTeam(_pScreen)
-//_posTrick(),
-//_oldFirstPlayer(GHOST),
 _pScreen(pScreen),
 _logo("images/sprite_trunk.png",pevent),
 _teamName("fonts/MLSGY.ttf",20,{255,255,255},"???"),
@@ -47,10 +38,9 @@ void Trick::Display(GAME_PHASES currentPhase)
     _contract.Display(_pScreen);
     if(!_logo.Mouse_Over())
     {
-        for(Uint i = 0; i < 4; ++i)
+        for(Uint i = 0; i < 4 ; ++i) //TO DO : improve for the times GatherCards et WinnertakCards ...
         {
             if(_currentTrick[i]==nullptr) break;
-            //_currentTrick[i]->Display(_pScreen);
             _currentTrick[i]->Display();
         }
     }
@@ -58,10 +48,10 @@ void Trick::Display(GAME_PHASES currentPhase)
     {
         _infoPreviousTrick.Display(_pScreen);
         PLAYER_ID posPlayer = _oldFirstPlayer;
-         for(Uint i = 0; i < 4; ++i)
+        for(Uint i = 0; i < 4; ++i)
         {
             if(_previousTrick[i]==nullptr) break;
-            updatePosCard(posPlayer);
+            updatePosCard(_infos.PosPlayerToInt(posPlayer));
             _previousTrick[i]->SetPosition(_posCard);
             _previousTrick[i]->ChangeSprite(1);
             posPlayer = _infos.Next(posPlayer);
@@ -139,6 +129,7 @@ void Trick::GatherCards()
         //_currentTrick[i]->InitMouvement(true,_posCard,600,0);
         _currentTrick[i]->InitMouvement(true,_posCard,600,0);
     }
+    //printf("gather cards for trick %d \n",_trickNumber);
 }
 void Trick::posReturn(PLAYER_ID posPlayer)
 {

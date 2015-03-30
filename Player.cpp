@@ -107,7 +107,8 @@ bool Player::has_higher(CARDS_COLOR color_asked,CARDS_HEIGHT max_height) //true 
 }
 Cards* Player::PlayCard(const TrickBasic_Memory& trick)
 {
-    if(_hand.size() != static_cast<Uint>(8-trick.TrickNumber())) return nullptr;
+    if(_hand.size() + trick.TrickNumber()  != 8 ) return nullptr;
+    //if(_number != PLAYER0) printf("%d va jouer \n",_basic_info.PosPlayerToInt(_number));
     if(_playable_cards.size()==0)
     {
         updatePlayebleCards(trick); //TO DO this is called multiple times
@@ -184,22 +185,10 @@ bool Player::has_colour(CARDS_COLOR colour) //do I have the color
     }
     return false;
 }
-/*
-bool Player::trump_played(const TrickBasic_Memory& trick_in_progress)
-{
-    return trick_in_progress[_basic_info.StrongestCard()+2]->GetColour() == _basic_info.TrumpColor();
-}
-*/
 CARDS_COLOR Player::do_i_take(bool first_round,CARDS_COLOR color_proposed,CARDS_HEIGHT height_proposed)
 {
     return NO;
 }
-/*
-std::list<Cards*>::iterator Player::what_card_do_i_play(const std::array<Cards*,4>& trick)
-{
-    return _hand.end();
-}
-*/
 
 const Player_Bid& Player::Take(bool previousPlayerChoose,const BetsMemory& bets) //choose if the player take or not
 {
@@ -210,7 +199,7 @@ const Player_Bid& Player::Take(bool previousPlayerChoose,const BetsMemory& bets)
         if(_currentBid.Color()!=NOT_CHOSEN)
         {
             _oldBid.AddBid(_currentBid.Color(),_currentBid.Bid());
-            _lastBidTurn++;
+            //_lastBidTurn++;
         }
     }
     return _currentBid;
@@ -225,18 +214,7 @@ const Player_Bid& Player::Take(const BetsMemory& bets) //choose if the player ta
     }
     return _currentBid;
 }
-/*
-void Player::UpdateBid()
-{
-    //nothing to do here !
-}
-*/
-/*
-const unsigned int Player::GetHandSize() const
-{
-    return _hand.size();
-}
-*/
+
 const bool Player::Coinche()
 {
     return do_I_coinche();
@@ -253,7 +231,7 @@ void Player::ResetBid(bool betFinished)
 {
     _currentBid.Reset();
     if (!betFinished) return;
-    _lastBidTurn = 0;
+    //_lastBidTurn = 0;
     _oldBid.Reset();
     resetTake();
     //_memory.Reset();
