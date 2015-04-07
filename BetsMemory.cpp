@@ -45,7 +45,7 @@ bool BetsMemory::IsBetsOver(PLAYER_ID posPlayer) const
     auto itBet = _bets.rbegin();
     for(Uint i = 0; i < 3; i++)
     {
-        res &= (*itBet).GetColorBid()==NO;
+        res &= (*itBet).Color()==NO;
         //next = _infos.Next(next);
         ++itBet;
     }

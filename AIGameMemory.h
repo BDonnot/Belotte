@@ -42,21 +42,21 @@ class MemorizeCards : public BoolStorage<32> //just an efficient way to store al
 {
     public :
         MemorizeCards(){}
-        const bool & IsFallen(CARDS_COLOR color, CARDS_HEIGHT height) const
+        const bool & IsFallen(Card_Color color, Card_Height height) const
         {
-            Uint iColor = _infos.ColorToInt(color);
-            Uint iHeight = _infos.HeightToInt(height);
+            Uint iColor = color.ToInt();
+            Uint iHeight = height.ToInt();
             return getInfo(iColor*8 + iHeight);
         }
-        void SetFallen(CARDS_COLOR color, CARDS_HEIGHT height)
+        void SetFallen(Card_Color color, Card_Height height)
         {
-            Uint iColor = _infos.ColorToInt(color);
-            Uint iHeight = _infos.HeightToInt(height);
+            Uint iColor = color.ToInt();
+            Uint iHeight = height.ToInt();
             setInformation(iColor*8 + iHeight);
         }
-        Uint ComputeFallen(CARDS_COLOR color) const //compute the number of cards fallen in a specific color
+        Uint ComputeFallen(Card_Color color) const //compute the number of cards fallen in a specific color
         {
-            Uint iColor = _infos.ColorToInt(color);
+            Uint iColor = color.ToInt();
             Uint res = 0;
             for(Uint j = 0; j < 8; j++)
             {
@@ -70,27 +70,20 @@ class MemorizeCutsCalls  : public BoolStorage<16> //efficient way to memorize wh
 {
     public :
         MemorizeCutsCalls(){}
-        const bool & Cut(PLAYER_ID player, CARDS_COLOR color) const
+        const bool & Cut(PLAYER_ID player, Card_Color color) const
         {
             Uint iPlayer = _infos.PosPlayerToInt(player);
-            Uint iColor = _infos.ColorToInt(color);
+            Uint iColor = color.ToInt();
             return getInfo(iPlayer*4 + iColor);
         }
-        void SetCut(PLAYER_ID player, CARDS_COLOR color)
+        void SetCut(PLAYER_ID player, Card_Color color)
         {
             Uint iPlayer = _infos.PosPlayerToInt(player);
-            Uint iColor = _infos.ColorToInt(color);
+            Uint iColor = color.ToInt();
             setInformation(iPlayer*4 + iColor);
         }
 };
-//greatest(color) : the gratest card I have
-//smallest(color)
-//score longe(color) (init at the beginning)
-//protect_point(color) (do i have points that i need to protect : TEN not master without ACE for example)
-//_nb_resting_cards
-//is_master
-//_nb_resting_cards
-//got_ten
+
 class AIGameMemory
 {
     protected :
@@ -103,10 +96,10 @@ class AIGameMemory
         MemorizeCutsCalls _playerCalls; //
         Uint _nbColorPlayed[4]; //key : color ; number of times each color have been played first
 
-        CARDS_HEIGHT _heightsMaster[4]; //key : color, stock the height of the cards master in the color
+        Card_Height _heightsMaster[4]; //key : color, stock the height of the cards master in the color
 
-        CARDS_HEIGHT _greatest[4];  //key : color -> stock the height of the greatest cards I have per color
-        CARDS_HEIGHT _smallest[4];  //key : color -> stock the height of the smallest cards I have per color
+        Card_Height _greatest[4];  //key : color -> stock the height of the greatest cards I have per color
+        Card_Height _smallest[4];  //key : color -> stock the height of the smallest cards I have per color
         Uint _nbRemaining[4]; //key : color ; number of cards remaining in my hand per color
         Uint _longe[4]; //key : color ; score for the longe (number of cards in the color)
         bool _IAmMaster[4]; //key : color ; am i the master in the color
@@ -122,42 +115,42 @@ class AIGameMemory
                 InitEverything();
             }
         virtual ~AIGameMemory();
-        void UpdateFullTrick(const TrickBasic_Memory& trick, POSITION_TRICK posTrick); //posTrick : the position of the player in the trick
+        void UpdateFullTrick(const TrickBasic_Memory& trick,const Position_Trick& posTrick); //posTrick : the position of the player in the trick
         void InitEverything(); //call after the trump have been chosen, to set everything :-)
-        CARDS_HEIGHT Master(CARDS_COLOR color) const;
+        Card_Height Master(const Card_Color& color) const;
 
-        bool Cut(PLAYER_ID player,CARDS_COLOR color) const; //see *CallCut for more information
-        bool OpponentsCut(CARDS_COLOR color) const;
-        bool TeammateCut(CARDS_COLOR color) const;
-        bool NextCut(CARDS_COLOR color) const; //see *CallCut for more information
-        bool Call(PLAYER_ID player,CARDS_COLOR color) const;
-        bool OpponentsCall(CARDS_COLOR color) const;
-        bool TeammateCall(CARDS_COLOR color) const;
-        bool NextCall(CARDS_COLOR color) const;//see *CallCut for more information
+        bool Cut(PLAYER_ID player,const Card_Color& color) const; //see *CallCut for more information
+        bool OpponentsCut(const Card_Color& color) const;
+        bool TeammateCut(const Card_Color& color) const;
+        bool NextCut(const Card_Color& color) const; //see *CallCut for more information
+        bool Call(PLAYER_ID player,const Card_Color& color) const;
+        bool OpponentsCall(const Card_Color& color) const;
+        bool TeammateCall(const Card_Color& color) const;
+        bool NextCall(const Card_Color& color) const;//see *CallCut for more information
 
-        Uint NbFallen(CARDS_COLOR color) const; //number of cards fallen in a specific color
-        Uint NbColorPlayed(CARDS_COLOR color) const; //number of time each color have been played (first)
-        Uint ScoreLonge(CARDS_COLOR color) const;
+        Uint NbFallen(const Card_Color& color) const; //number of cards fallen in a specific color
+        Uint NbColorPlayed(const Card_Color& color) const; //number of time each color have been played (first)
+        Uint ScoreLonge(const Card_Color& color) const;
 
-        bool AllRemainingCards(CARDS_COLOR color) const; //do I have all the remaining cards in the color
-        bool AmIMaster(CARDS_COLOR color) const; //Have I the strongest card in the color
+        bool AllRemainingCards(const Card_Color& color) const; //do I have all the remaining cards in the color
+        bool AmIMaster(const Card_Color& color) const; //Have I the strongest card in the color
         bool DoMyTeamTook() const;
-        bool CardsFallen(CARDS_COLOR color,CARDS_HEIGHT height) const;
-        bool HaveTen(CARDS_COLOR color) const;
-        bool ProtectPoints(CARDS_COLOR color) const;
+        bool CardsFallen(const Card_Color& color,const Card_Height& height) const;
+        bool HaveTen(const Card_Color& color) const;
+        bool ProtectPoints(const Card_Color& color) const;
 
-        CARDS_HEIGHT Greatest(CARDS_COLOR color) const; //return the greatest cards I have in the color
-        CARDS_HEIGHT Smallest(CARDS_COLOR color) const; //return the smallest cards I have in the color
+        Card_Height Greatest(const Card_Color& color) const; //return the greatest cards I have in the color
+        Card_Height Smallest(const Card_Color& color) const; //return the smallest cards I have in the color
 
     protected:
-        CARDS_HEIGHT heightUnder(CARDS_HEIGHT height,bool color);
+        //Card_Height heightUnder(const Card_Height& height,bool color);
         void computeNewHeightMaster(); //also update _playerCut
         void updateEverythingElse(PLAYER_ID firstToPlay); //update everything that need to go through the hand of the player.
 
-        bool callCut(PLAYER_ID player,CARDS_COLOR color,const MemorizeCutsCalls& StoreCallCut) const; //dot the 'player' call/cut at the 'color'
-        bool opponentsCallCut(CARDS_COLOR color,const MemorizeCutsCalls& StoreCallCut) const; //do my opponents call/cut at the 'color'
-        bool teammateCallCut(CARDS_COLOR color,const MemorizeCutsCalls& StoreCallCut) const; //do my  teammate call/cut at the 'color'
-        bool nextCallCut(CARDS_COLOR color,const MemorizeCutsCalls& StoreCallCut) const; //do the player who play after me call/cut at the 'color'
+        bool callCut(PLAYER_ID player,const Card_Color& color,const MemorizeCutsCalls& StoreCallCut) const; //dot the 'player' call/cut at the 'color'
+        bool opponentsCallCut(const Card_Color& color,const MemorizeCutsCalls& StoreCallCut) const; //do my opponents call/cut at the 'color'
+        bool teammateCallCut(const Card_Color& color,const MemorizeCutsCalls& StoreCallCut) const; //do my  teammate call/cut at the 'color'
+        bool nextCallCut(const Card_Color& color,const MemorizeCutsCalls& StoreCallCut) const; //do the player who play after me call/cut at the 'color'
         void computeScoreLongeAndProtectPoint(std::list<const Cards*>& cardsInTheColor,Uint& scoreLonge, bool& protectPoints); //always per color
     private:
 };

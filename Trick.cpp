@@ -48,6 +48,7 @@ void Trick::Display(GAME_PHASES currentPhase)
     {
         _infoPreviousTrick.Display(_pScreen);
         PLAYER_ID posPlayer = _oldFirstPlayer;
+        printf("old first player is %d \n",posPlayer);
         for(Uint i = 0; i < 4; ++i)
         {
             if(_previousTrick[i]==nullptr) break;
@@ -71,7 +72,7 @@ void Trick::UpdateEvent(GAME_PHASES currentPhase)
 
 void Trick::Update()
 {
-    switch(_infos.TrumpColor())
+    switch(_infos.TrumpColor().Color())
     {
     case DIAMOND :
         _logo.ChangeSprite(0);
@@ -93,6 +94,7 @@ void Trick::Update()
     string text = "Equipe ";
     text +=Player_Bid_Graphic::IntToString(_infos.TrumpColor(),_infos.Taker()%2+1);
     _teamName.ChangeText(text);
+    Reset();
     //_scoreTeam.Update();
 }
 

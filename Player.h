@@ -32,23 +32,14 @@ class Player
         Player_Name _name; //his name
         std::list<Cards*> _hand; //the hand of the player
         std::list<std::list<Cards*>::iterator> _playable_cards; //the card a player can play in a trick
-        //std::array<Uint16,3> _pos; //the position and the option associated
         const PLAYER_ID _number; //the number
-        //UpdateCardMouvement _UpdateCardMouvement; //to update the cards
         DisplayCardPlayer _DisplayCardPlayer;//to display the cards the proper way
         SDL_Surface* _screen;
         SDL_Event* _event;
         Player_Bid _currentBid;
         Player_Bid_Graphic _oldBid;
-        //unsigned int _lastBidTurn;
         std::list<Cards*>::iterator _cardPlayed;
         TrickStatus _currentTrickStatus;
-        //GameMemory _memory;
-
-        //for the playing and the taking
-        //Random _rand;
-        //TakeAI _take;
-        //PlayAI _play;
 
     public:
         Player():_number(PLAYER0){}
@@ -67,7 +58,6 @@ class Player
             ,_DisplayCardPlayer(screen,windows_width,windows_height,number)
             ,_currentBid()
             ,_oldBid(number,pevent,screen,windows_width,windows_height)
-            //,_lastBidTurn(0)
             ,_cardPlayed(_hand.end())
         {
             _pos = SetPosition(number,windows_width,windows_height);
@@ -85,14 +75,12 @@ class Player
 
         void ReceivedCard(Cards* pcard,unsigned int card_number); //received a card, during the phase of giving
         virtual void Display(GAME_PHASES currentPhase); //to display the right thing : the name, the image, and the cards in the hand.
-        //void Update_Mouvement(Uint32 current_time); //to update the movement of the card
 
         virtual void Update_Mouse(GAME_PHASES currentPhase); //to update the position of the mouse, the click etc.
-        //virtual void Update_Trick(std::array<Cards*,4> trick,unsigned int subscript_first_player);
 
         Cards* PlayCard(const TrickBasic_Memory& trick); //choose the right card to play
-        void UpdateEndTrick(const TrickBasic_Memory& trick,POSITION_TRICK myPos); //do whatever you have to do at the end of each trick
-        CARDS_COLOR Take(bool first_round,CARDS_COLOR color_proposed,CARDS_HEIGHT height_proposed); //choose if the player take or not (classic game)
+        void UpdateEndTrick(const TrickBasic_Memory& trick,const Position_Trick& myPos); //do whatever you have to do at the end of each trick
+        Card_Color Take(bool first_round,const Card_Color& color_proposed,const Card_Height& height_proposed); //choose if the player take or not (classic game)
         const Player_Bid& Take(bool previousPlayerChoose,const BetsMemory& bets); //choose if the player take or not (coinche)
         const Player_Bid& Take(const BetsMemory& bets); //choose if the player take or not (coinche)
         const bool Coinche();
@@ -100,11 +88,9 @@ class Player
         const unsigned int GetHandSize() const { return _hand.size(); }
         const std::string& Getname() const { return _name.Name(); }
         virtual void ResetBid(bool betFinished);
-        //const Uint GetLastBidTurn() const {return _lastBidTurn;}
-//        void ResetBid(bool betFinished);
 
         void GiveCardsBack(std::list<Cards*>& deck);
-        CARDS_COLOR CurrentColorBid();
+        const Card_Color& CurrentColorBid();
 
         void InitMemory(); //and sort the hand
         //void
@@ -115,44 +101,26 @@ class Player
         std::string GetString(const Player_Bid& bid) const; //return <Player : (#)> (bet) <\player>
 
     protected:
-        virtual void updateMemoryTrick(const TrickBasic_Memory& trick,POSITION_TRICK myPos);
+        virtual void updateMemoryTrick(const TrickBasic_Memory& trick,const Position_Trick& myPos);
         virtual void initMemoryTrick();
         virtual void updateBid(const BetsMemory& bets){}
         virtual bool do_I_coinche();
 
-        virtual CARDS_COLOR do_i_take(bool first_round,CARDS_COLOR color_proposed,CARDS_HEIGHT height_proposed);
+        virtual Card_Color do_i_take(bool first_round,const Card_Color& color_proposed,const Card_Height& height_proposed);
         virtual std::list<Cards*>::iterator what_card_do_i_play(const TrickBasic_Memory& trick) {return _hand.end();}
 
-        int how_many_colour(CARDS_COLOR colour);
+        int how_many_colour(const Card_Color& colour);
 
         virtual void resetTake(){} //for the AI to be able to forget the previous bets
     private:
         PositionGraphic SetPosition(int number,Uint16 windows_width, Uint16 widows_height); //to properly set the right position
-        //std::array<Uint16,3> SetPosition(int number,Uint16 windows_width, Uint16 widows_height); //to properly set the right position
         std::string SetName(int number); //to set the default name
         std::string SetPathImage(int number); //to set the path of the image of the player
-        //std::array<Uint16,2> SetPositionCards(int number,Uint16 windows_width, Uint16 widows_height);
 
-        bool has_higher(CARDS_COLOR color_asked,CARDS_HEIGHT max_height);
+        bool has_higher(const Card_Color&  color_asked,const Card_Height& max_height);
         void updatePlayebleCards(const TrickBasic_Memory& trick_in_progress);
         bool can_play_card(Cards* PmyCard,const TrickBasic_Memory& trick);
-//        bool can_play_card(Cards* PmyCard
-//                           ,const std::array<Cards*,4>& trick_in_progress
-//                           ,CARDS_COLOR trumpColor
-//                           ,CARDS_COLOR colour_asked
-//                           ,bool has_col
-//                           ,bool has_trump
-//                           ,Uint myPosition
-//                           ,POSITION_TRICK winner
-//                           ,CARDS_HEIGHT maxHeight
-//                           ,CARDS_COLOR maxColor);
-        bool has_colour(CARDS_COLOR color);
-        // bool trump_played(const std::array<Cards*,4>& trick_in_progress);
-
-//        bool can_play_trump(Cards* PmyCard,const std::array<Cards*,4>& trick_in_progress);
-//        bool can_discarding(const std::array<Cards*,4>& trick_in_progress,CARDS_COLOR trump_colour);
-        //unsigned int getPosition(const std::array<Cards*,4>& trick_in_progress);
-        //unsigned int strongest_card(unsigned int position,const std::array<Cards*,4>& trick_in_progress,CARDS_COLOR trump_colour);
+        bool has_colour(const Card_Color& color);
 };
 /*
 template<class TakeAI,class PlayAI>
@@ -262,7 +230,7 @@ int Player<TakeAI,PlayAI>::how_many_colour(CARDS_COLOR colour) //how many cards 
 }
 
 template<class TakeAI,class PlayAI>
-bool Player<TakeAI,PlayAI>::has_higher(CARDS_COLOR color_asked,CARDS_HEIGHT max_height) //true if the player has a higher card in his game
+bool Player<TakeAI,PlayAI>::has_higher(CARDS_COLOR color_asked,Card_Height max_height) //true if the player has a higher card in his game
 {
     for (list<Cards*>::iterator it = _hand.begin(); it != _hand.end(); ++it)
     {
@@ -289,7 +257,7 @@ Cards* Player<TakeAI,PlayAI>::PlayCard(const array<Cards*,4>& trick)
 }
 
 template<class TakeAI,class PlayAI>
-CARDS_COLOR Player<TakeAI,PlayAI>::Take(bool first_round,CARDS_COLOR color_proposed,CARDS_HEIGHT height_proposed)
+CARDS_COLOR Player<TakeAI,PlayAI>::Take(bool first_round,CARDS_COLOR color_proposed,Card_Height height_proposed)
 {
     return do_i_take(first_round,color_proposed,height_proposed);
 }
@@ -358,7 +326,7 @@ bool Player<TakeAI,PlayAI>::trump_played(const std::array<Cards*,4>& trick_in_pr
 }
 
 template<class TakeAI,class PlayAI>
-CARDS_COLOR Player<TakeAI,PlayAI>::do_i_take(bool first_round,CARDS_COLOR color_proposed,CARDS_HEIGHT height_proposed)
+CARDS_COLOR Player<TakeAI,PlayAI>::do_i_take(bool first_round,CARDS_COLOR color_proposed,Card_Height height_proposed)
 {
     return NO;
 }

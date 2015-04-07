@@ -40,7 +40,7 @@ void DisplayOldBets::operator()(const Player_Bid& bid)
 {
     //_pLogo->Change_sprite(bid.Color());
     string text;
-    switch(bid.Color())
+    switch(bid.Color().Color())
     {
     case NOT_CHOSEN :
         return ;
@@ -53,7 +53,7 @@ void DisplayOldBets::operator()(const Player_Bid& bid)
         break;
     default :
         text = Player_Bid_Graphic::IntToString(bid.Color(),bid.Bid());
-        _pLogo->ChangeSprite(colorToInt(bid.Color()));
+        _pLogo->ChangeSprite(bid.Color().ToInt());
         _pos_real = _pos_th.Shift(_nb_bets,_shift);
         _pLogo->SetPosition(_pos_real);
         _pLogo->Display(_screen);
@@ -133,7 +133,7 @@ Player_Bid()
 }
 void Player_Bid_Graphic::HandleColor()
 {
-    switch(_color_bid)
+    switch(_color_bid.Color())
     {
     case DIAMOND :
         _color.ChangeSprite(0);
@@ -156,10 +156,10 @@ void Player_Bid_Graphic::HandleColor()
         return;
     }
 }
-string Player_Bid_Graphic::IntToString(const CARDS_COLOR& color,const Uint& number)
+string Player_Bid_Graphic::IntToString(const Card_Color & color,const Uint& number)
 {
     string Result;
-    if(color==NO)
+    if(color.Color()==NO)
     {
         Result = "Passe";
     }
@@ -204,7 +204,7 @@ void Player_Bid_Graphic::UpdateEvent()
 {
     _bubble.Update_on_it();
 }
-bool Player_Bid_Graphic::AddBid(CARDS_COLOR color, Uint bid)
+bool Player_Bid_Graphic::AddBid(const Card_Color& color, Uint bid)
 {
     _listOldBet.push_front(Player_Bid(static_cast<Player_Bid&>(*this)));
     if(Bid(color,bid)) return true;

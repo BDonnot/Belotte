@@ -56,7 +56,7 @@ void Take_Human::Change(bool first_round)
         return ;
     }
     _question.ChangeText(_question_which_color);
-    switch (_info.ColorProposed())
+    switch (_info.ColorProposed().Color())
     {
     case DIAMOND :
         _coeur.SetPosition(pos0);
@@ -89,33 +89,33 @@ Take_Human::~Take_Human()
 {
     //dtor
 }
-CARDS_COLOR Take_Human::Has_Taken() //255 if the human did'nt choose yet, 127 if he passes, otherwie the number of the color choosen
+Card_Color Take_Human::Has_Taken() //255 if the human did'nt choose yet, 127 if he passes, otherwie the number of the color choosen
 {
     if( _first_round)
     {
         if (_yes.Click(true)) return _info.ColorProposed();
-        if (_no.Click(true)) return NO;
+        if (_no.Click(true)) return Card_Color(NO);
         return NOT_CHOSEN;
     }
     //it is the second round
-    switch (_info.ColorProposed())
+    switch (_info.ColorProposed().Color())
     {
-    case 0 :
+    case DIAMOND :
         if (_coeur.Click(true)) return HEART;
         if (_pique.Click(true)) return SPADE;
         if (_trefle.Click(true)) return CLUB;
         break;
-    case 1 :
+    case HEART :
         if (_carreau.Click(true)) return DIAMOND;
         if (_pique.Click(true)) return SPADE;
         if (_trefle.Click(true)) return CLUB;
         break;
-    case 2 :
+    case SPADE :
         if (_carreau.Click(true)) return DIAMOND;
         if (_coeur.Click(true)) return HEART;
         if (_trefle.Click(true)) return CLUB;
         break;
-    case 3 :
+    case CLUB :
         if (_carreau.Click(true)) return DIAMOND;
         if (_coeur.Click(true)) return HEART;
         if (_pique.Click(true)) return SPADE;
@@ -136,24 +136,24 @@ void Take_Human::Display()
         _no.Display(_screen);
         return ;
     }
-    switch(_info.ColorProposed())
+    switch(_info.ColorProposed().Color())
     {
-    case 0 :
+    case DIAMOND :
         _coeur.Display(_screen);
         _pique.Display(_screen);
         _trefle.Display(_screen);
         break;
-    case 1 :
+    case HEART :
         _carreau.Display(_screen);
         _pique.Display(_screen);
         _trefle.Display(_screen);
         break;
-    case 2 :
+    case SPADE :
         _carreau.Display(_screen);
         _coeur.Display(_screen);
         _trefle.Display(_screen);
         break;
-    case 3 :
+    case CLUB :
         _carreau.Display(_screen);
         _coeur.Display(_screen);
         _pique.Display(_screen);
@@ -192,7 +192,7 @@ void Take_Human::Update()
 string Take_Human::DefineQuestion()
 {
     string res = "Voulez-vous prendre à";
-    switch(_info.ColorProposed())
+    switch(_info.ColorProposed().Color())
     {
     case DIAMOND :
         res += " carreau ?";

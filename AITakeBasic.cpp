@@ -23,72 +23,59 @@ void AITakeBasic::Bid(Player_Bid& bid,const std::list<Cards*>& hand,Random& rand
     if(bidTeammate.Color() == NOT_CHOSEN)
         return iChoose(bid,hand);
     return iFollow(bid,hand,bidTeammate);
-    /*
-    if(_basic_info.MaxBid() <= 80)
-        bid.Bid(_basic_info.ConvertIntToColor(rand.generate_number()%4),_basic_info.MaxBid()+10);
-    else
-        bid.Bid(NO,_basic_info.MaxBid()+10);
-    */
-
 }
 
 void AITakeBasic::iChoose(Player_Bid& bid,const std::list<Cards*>& hand)
 {
     Uint maxBet = _basic_info.MaxBid();
 
-    CARDS_COLOR color = NOT_CHOSEN;
+    Card_Color color(NOT_CHOSEN);
     Uint high = 0;
     Uint counter = 0;
 
-    CARDS_COLOR colorBet = NOT_CHOSEN;
+    Card_Color colorBet(NOT_CHOSEN);
     Uint highBet = maxBet;
-
-    for(auto it = hand.begin(); it != hand.end(); ++it)
+    const Card_Color notChosen(NOT_CHOSEN);
+    for(auto pcard : hand)
     {
-        if((*it)->GetHeight() == JACK)
+        if(pcard->GetHeight() == JACK)
         {
-            color = (*it)->GetColour();
+            color = pcard->GetColour();
             counter = 0;
             high = 80;
-            for(auto it2 = hand.begin(); it2 != hand.end(); ++it2)
+            for(auto pcard2 : hand)
             {
-                if((*it2)->GetColour() == color )
+                if(pcard2->GetColour() == color )
                 {
                     counter++;
-                    if(((*it2)->GetHeight() == NINE)) high = 90;
+                    if((pcard2->GetHeight() == NINE)) high = 90;
                 }
             }
             if((counter >= 3 )&&(high > highBet))
             {
-                colorBet = color;
+                colorBet = Card_Color(color);
                 highBet = high;
             }
             else
             {
-                color = NOT_CHOSEN;
+                color = notChosen;
                 high = 0;
             }
         }
     }
-    if(colorBet !=NOT_CHOSEN) bid.Bid(colorBet,highBet);
-    else bid.Bid(NO,maxBet+10);
-
-/*
-    if(maxBet <= 80)
-        bid.Bid(_basic_info.ConvertIntToColor(0),maxBet+10);
-    else
-        bid.Bid(NO,maxBet+10);
-*/
+    if(colorBet != notChosen) bid.Bid(colorBet,highBet);
+    else bid.Bid(Card_Color(NO),maxBet+10);
 }
 
 void AITakeBasic::iFollow(Player_Bid& bid,const std::list<Cards*>& hand,const Player_Bid& bidTeammate)
 {
     Uint myBet = bidTeammate.Bid();
-    CARDS_COLOR teammateColor = bidTeammate.GetColorBid();
+    Card_Color teammateColor = bidTeammate.Color();
     Uint maxBet = _basic_info.MaxBid();
-    for(auto it = hand.begin(); it != hand.end(); ++it)
+    for(auto pcard : hand)
     {
-        if(((*it)->GetHeight() == ACE)&&((*it)->GetColour()!=teammateColor)) myBet+=10;
+        if((pcard->GetHeight() == ACE)&&(pcard->GetColour()!=teammateColor)) myBet+=7;
+        else if((pcard->GetHeight() == NINE)&&(pcard->GetColour() == teammateColor)) myBet+=10;
     }
     if(myBet > maxBet) bid.Bid(teammateColor,myBet);
     else bid.Bid(NO,maxBet+10);

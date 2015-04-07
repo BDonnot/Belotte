@@ -7,12 +7,9 @@
 
 #include "Cards.h"
 #include "Player.h"
-//#include <boost/interprocess/smart_ptr/shared_ptr.hpp>
-
 #include "Foncteurs_Cards.h"
 #include "Random.h"
 
-//typedef boost::shared_ptr<Cards> sPtr;
 
 class Cards_Deck
 {
@@ -34,7 +31,7 @@ class Cards_Deck
         void GiveCards(const std::list<Player*>& li_players);
         void GiveCards(const std::array<Player*,4>& li_players);
         void Display(GAME_PHASES currentPhase);
-        //void Update(Uint32 current_time);
+
         const bool FirstGame();
         const bool Click(GAME_PHASES currentPhase);
         void UpdateEvent(GAME_PHASES currentPhase);

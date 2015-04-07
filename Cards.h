@@ -12,9 +12,9 @@ class Cards : public Cards_Basic, public Cards_SDL
 {
     public:
         Cards(){}
-        Cards(CARDS_HEIGHT height,CARDS_COLOR color,SDL_Event* event,SDL_Surface * pScreen):
+        Cards(const Card_Height& height,const Card_Color& color,SDL_Event* event,SDL_Surface * pScreen):
             Cards_Basic(height,color),
-            Cards_SDL(_infos.HeightToInt(height),_infos.ColorToInt(color),event,pScreen){}
+            Cards_SDL(height.ToInt(),color.ToInt(),event,pScreen){}
         virtual ~Cards(){}
         virtual void Display()
         {

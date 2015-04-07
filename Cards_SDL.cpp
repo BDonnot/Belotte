@@ -7,8 +7,8 @@ Cards_SDL::Cards_SDL(Uint height,Uint color,SDL_Event* event,SDL_Surface * pscre
     Images_Sprite_Move<2>("images/sprite_carte (70-90).jpg"),
     _pScreen(pscreen)
 {
-    array<Uint,2> x = {0,80*(static_cast<Uint>(height)+1)};
-    array<Uint,2> y = {100*static_cast<Uint>(color),100*static_cast<Uint>(color)};
+    array<Uint,2> x = {0,80*(height+1)};
+    array<Uint,2> y = {100*(color),100*(color)};
     array<Uint,2> width = {70,70};
     array<Uint,2> hei = {90,90};
     SetDimensionSprite(x,y,width,hei);

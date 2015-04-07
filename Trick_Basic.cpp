@@ -11,7 +11,7 @@ _pDeck(pDeck)
 {
     _currentTrick = {nullptr,nullptr,nullptr,nullptr};
     _previousTrick = {nullptr,nullptr,nullptr,nullptr};
-    _posTrick = {FIRST,SECOND,THIRD,FOURTH};
+    //_posTrick = {FIRST,SECOND,THIRD,FOURTH};
 }
 
 Trick_Basic::~Trick_Basic()
@@ -82,7 +82,7 @@ void Trick_Basic::terminatecurrentTrick(Uint first)
 {
     for (Uint i = first,counter = 0; i < first+4; ++i, ++counter)
     {
-        _players[i%4]->UpdateEndTrick(static_cast<const TrickBasic_Memory&>(*this),_infos.IntToPosTrick(counter));
+        _players[i%4]->UpdateEndTrick(static_cast<const TrickBasic_Memory&>(*this),Position_Trick(counter));
     }
 }
 

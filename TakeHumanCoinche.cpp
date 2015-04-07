@@ -41,6 +41,7 @@ TakeHumanCoinche::TakeHumanCoinche(SDL_Event* event,SDL_Surface* screen,Uint16 w
     _plus.SetPosition(pos);
     pos.Set(windows_width/2 + 50,windows_height/2-70,TOP_LEFT);
     _minus.SetPosition(pos);
+    Reset(true);
 
 }
 
@@ -82,18 +83,19 @@ void TakeHumanCoinche::UpdateMouse(GAME_PHASES currentPhase)
 }
 void TakeHumanCoinche::Update()
 {
-    //bool change = false;
     if(_info.Time() < _clock_min_before_new_change)
     {
-        _unconfirmedBid.Bid(NOT_CHOSEN);
+        //_unconfirmedBid.Bid(NOT_CHOSEN);
+
          return;
     }
     Uint Number = max<Uint>(_info.MaxBid(),_unconfirmedBid.Bid());
+    Uint minBet = max<Uint>(_info.MaxBid(),80);
+    //Uint Number = _unconfirmedBid.Bid();
     if(_plus.Click(true))
     {
         _clock_min_before_new_change = _info.Time() + LAG_MIN;
         string text = _score.GetText();
-        //if ( ! (istringstream(text) >> Number) ) Number = max<Uint>(_info.MaxBid(),_info.MaxBid());
         (Number < 270 ) ? Number += 10 : Number = 270;
         _unconfirmedBid.Bid(Number);
     }
@@ -101,8 +103,7 @@ void TakeHumanCoinche::Update()
     {
         _clock_min_before_new_change = _info.Time() + LAG_MIN;
         string text = _score.GetText();
-        //if ( ! (istringstream(text) >> Number) ) Number = _info.MaxBid();
-        (Number > (max<Uint>(80,_info.MaxBid())+10)) ? Number -= 10 : Number = _info.MaxBid();
+        (Number > minBet + 10 ) ? Number -= 10 : Number = minBet;
         _unconfirmedBid.Bid(Number);
     }
     if (_coeur.Click(false)) _unconfirmedBid.Bid(HEART,Number);
@@ -110,15 +111,12 @@ void TakeHumanCoinche::Update()
     if (_pique.Click(false)) _unconfirmedBid.Bid(SPADE,Number);
     if (_trefle.Click(false)) _unconfirmedBid.Bid(CLUB,Number);
     //if (_pass.Click(false)) _unconfirmedBid.Bid(NO,Number);
+    //printf("bid %d \n",Number);
     ChangeText(Number);
 }
 void TakeHumanCoinche::ChangeText(Uint number)
 {
-    string text;
-    ostringstream convert;
-    convert << number;
-    text = convert.str();
-    _score.ChangeText(text);
+    _score.ChangeText(IntToString(number));
 }
 const Player_Bid& TakeHumanCoinche::Has_Taken()
 {
@@ -132,8 +130,8 @@ void TakeHumanCoinche::UpdateClock(Uint32 clock)
 }
 void TakeHumanCoinche::Reset(bool reset_unconfirmedBid)
 {
-    _confirmedBid.Bid(NOT_CHOSEN,_info.MaxBid());
-    if(reset_unconfirmedBid) _unconfirmedBid.Bid(NOT_CHOSEN,_info.MaxBid());
+    _confirmedBid.Bid(NOT_CHOSEN,80);
+    if(reset_unconfirmedBid) _unconfirmedBid.Bid(NOT_CHOSEN,80);
     _plus.Reset_Click();
     _minus.Reset_Click();
     _coeur.Reset_Click();

@@ -38,11 +38,11 @@ class Player_AI : public Player
         //Cards* Choose_Card(const std::array<Cards*,4>& trick,int i_master); //choose what card the player play
         //int Take(bool first_round,int color_proposed,int height_proposed); //choose if the player take or not. 127 : no, 255 : not choosen, 0-3 : color at which the player wants to take
     protected:
-        virtual void updateMemoryTrick(const TrickBasic_Memory& trick,POSITION_TRICK myPos);
+        virtual void updateMemoryTrick(const TrickBasic_Memory& trick,const Position_Trick& myPos);
         virtual void initMemoryTrick();
         virtual void updateBid(const BetsMemory& bets);
 
-        virtual CARDS_COLOR do_i_take(bool first_round,CARDS_COLOR color_proposed,CARDS_HEIGHT height_proposed);
+        virtual Card_Color do_i_take(bool first_round,const Card_Color& color_proposed,const Card_Height& height_proposed);
         virtual std::list<Cards*>::iterator what_card_do_i_play(const TrickBasic_Memory& trick);
 
         virtual void resetTake(){ _take.Reset(); } //merge with ResetBid() when the template of Player_AI will be upped to Player, thus removing Player_Human and Player_AI
@@ -59,17 +59,17 @@ class Player_AI : public Player
 
 
 template<class GameMemory,class TakeAI, class PlayAI>
-CARDS_COLOR Player_AI<GameMemory,TakeAI,PlayAI>::do_i_take(bool first_round,CARDS_COLOR color_proposed,CARDS_HEIGHT height_proposed) //by default, take if 3 (or more) cards in the color proposed
+Card_Color Player_AI<GameMemory,TakeAI,PlayAI>::do_i_take(bool first_round,const Card_Color& color_proposed,const Card_Height& height_proposed) //by default, take if 3 (or more) cards in the color proposed
 { //classical belote (to do : remove -- just change the PlayAI class one for classical belot, the other one for coinche)
     int number_cards = 0;
     if (first_round)
     {
         number_cards = how_many_colour(color_proposed);
-        return ((number_cards>3) ? color_proposed: NO);
+        return ((number_cards>3) ? color_proposed: Card_Color(NO));
     }
     for(int i = 0; i < 4; i++)
     {
-        CARDS_COLOR res = do_i_take(true,_basic_info.ConvertIntToColor(i),height_proposed);
+        Card_Color res = do_i_take(true,Card_Color(i),height_proposed);
         if((res!=NO)&&(res!=color_proposed))
             return res;
     }
@@ -92,7 +92,7 @@ void Player_AI<GameMemory,TakeAI,PlayAI>::updateBid(const BetsMemory& bets)
 }
 
 template<class GameMemory,class TakeAI, class PlayAI>
-void Player_AI<GameMemory,TakeAI,PlayAI>::updateMemoryTrick(const TrickBasic_Memory& trick,POSITION_TRICK myPos)
+void Player_AI<GameMemory,TakeAI,PlayAI>::updateMemoryTrick(const TrickBasic_Memory& trick,const Position_Trick& myPos)
 {
     _gameMemory.UpdateFullTrick(trick,myPos);
 }

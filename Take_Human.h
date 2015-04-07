@@ -30,7 +30,7 @@ class Take_Human
         virtual ~Take_Human();
         void Display();
         void UpdateMouse();
-        CARDS_COLOR Has_Taken(); //255 if the human did'nt took, otherwie the number of the color choosen
+        Card_Color Has_Taken(); //255 if the human did'nt took, otherwie the number of the color choosen
         void Change(bool first_round);
         void Reset();
         void Update();

@@ -12,7 +12,7 @@ It is also an visual element.
 class Player_Bid
 {
     protected :
-        CARDS_COLOR _color_bid;
+        Card_Color _color_bid;
         Uint _bid;
         Basic_Game_Info _info;
 
@@ -21,13 +21,12 @@ class Player_Bid
         //Player_Bid(const Player_Bid& rhs);
         virtual ~Player_Bid();
 
-        const CARDS_COLOR Color() const;
-        const Uint Bid() const;
-        const CARDS_COLOR& GetColorBid() const;
+        const Card_Color& Color() const {return _color_bid;}
+        const Uint& Bid() const {return _bid;}
 
-        bool Bid(CARDS_COLOR color,Uint bid); //true (and set whatever needs to be) if the bid can be done, false otherwise
+        bool Bid(const Card_Color& color,Uint bid); //true (and set whatever needs to be) if the bid can be done, false otherwise
         bool Bid(Uint bid);
-        bool Bid(CARDS_COLOR color);
+        bool Bid(const Card_Color& color);
         //void BidNum(Uint bid);
         void Reset();
 

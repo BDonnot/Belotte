@@ -57,8 +57,8 @@ class Player_Bid_Graphic : public Player_Bid
         void Display(SDL_Surface* screen,GAME_PHASES currentPhase);
         void Coinche();
         void UpdateEvent();
-        bool AddBid(CARDS_COLOR color,Uint bid);
-        static std::string IntToString(const CARDS_COLOR& color,const Uint& number);
+        bool AddBid(const Card_Color& color,Uint bid);
+        static std::string IntToString(const Card_Color& color,const Uint& number);
 
         std::string GetString(Uint biddingTurn) const;
     protected:

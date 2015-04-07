@@ -12,18 +12,10 @@ Player_Bid::~Player_Bid()
 {
     //dtor
 }
-const CARDS_COLOR Player_Bid::Color() const
-{
-    return _color_bid;
-}
-const Uint Player_Bid::Bid() const
-{
-    return _bid;
-}
-bool Player_Bid::Bid(CARDS_COLOR color,Uint bid)
+bool Player_Bid::Bid(const Card_Color& color,Uint bid)
 {
     Uint minbid = _info.MaxBid() == MINBET ? MINBET+1 : _info.MaxBid(); //TO ENSURE THAT WE BET AT LEAST MINBET+1
-    switch (color)
+    switch (color.Color())
     {
     case NOT_CHOSEN :
         _color_bid = NOT_CHOSEN;
@@ -52,7 +44,7 @@ bool Player_Bid::Bid(Uint bid)
 {
     return Bid(_color_bid,bid);
 }
-bool Player_Bid::Bid(CARDS_COLOR color)
+bool Player_Bid::Bid(const Card_Color& color)
 {
     return Bid(color,_bid);
 }
@@ -66,20 +58,16 @@ void Player_Bid::Reset()
     _bid = max<Uint>(MINBET,_info.MaxBid());
     //_displayed_logo_color = true;
 }
- const CARDS_COLOR& Player_Bid::GetColorBid() const
- {
-     return _color_bid;
- }
 
  std::string Player_Bid::GetString() const
  {
     string res = "";
     if(_color_bid==NOT_CHOSEN) return res;
     res += "<bid>";
-    switch(_color_bid)
+    switch(_color_bid.Color())
     {
         case HEART : case CLUB : case SPADE : case DIAMOND :
-            res += IntToString(_color_bid);
+            res += IntToString(_color_bid.ToInt());
             res += ",";
             res += IntToString(_bid);
         break;

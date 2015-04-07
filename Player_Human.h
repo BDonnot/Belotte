@@ -8,6 +8,11 @@
 
 class Player_Human : public Player
 {
+    private:
+        Take_Human _Take;
+        TakeHumanCoinche _TakeCoinche;
+        UpdateCardMouse _UpdateCardMouse; //to update if the mouse is over a card or not
+
     public:
         Player_Human(){}
         Player_Human(PLAYER_ID number,Uint16 windows_width, Uint16 windows_height,SDL_Event* pevent,Basic_Images* fond,SDL_Surface* screen):
@@ -17,20 +22,14 @@ class Player_Human : public Player
         virtual ~Player_Human(){}
         virtual void Update_Mouse(GAME_PHASES currentPhase);
         virtual void Display(GAME_PHASES currentPhase);
-        //virtual Cards* Choose_Card(const std::array<Cards*,4>& trick,int i_master); //choose what card the player play
-        //virtual int Take(bool first_round,int color_proposed,int height_proposed); //choose if the player take or not. 127 : no, 255 : not choosen, 0-3 : color at which the player wants to take
+
     protected:
         virtual void updateBid(const BetsMemory& bets);
-        virtual void ResetBid(bool betFinished);
+        virtual void resetBid(bool betFinished);
 
-        virtual int do_i_take(bool first_round,int color_proposed,int height_proposed);
         virtual std::list<Cards*>::iterator what_card_do_i_play(const TrickBasic_Memory& trick);
 
     private:
-        Take_Human _Take;
-        TakeHumanCoinche _TakeCoinche;
-        UpdateCardMouse _UpdateCardMouse; //to update if the mouse is over a card or not
-
         Player_Human(const Player_Human& other){}
         Player_Human& operator=(const Player_Human& rhs)
         {

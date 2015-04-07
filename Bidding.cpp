@@ -28,13 +28,14 @@ bool Bidding::Bid(GAME_PHASES currentPhase) //TO DO test, test test !
     PLAYER_ID giver = _infos.Giver();
 
     Uint i_playerBid = _infos.PosPlayerToInt(_bidder);
-    //printf("%d is bidding\n",i_playerBid);
+
     const Player_Bid& bid = _players[i_playerBid]->Take(_bets);
-    choose = bid.GetColorBid() != NOT_CHOSEN;
+    choose = bid.Color() != Card_Color(NOT_CHOSEN);
     if (!choose) return false;
     printf("%d has chosen\n",_bidder);
+    printf("max bet : %d, current bet : %d\n",_infos.MaxBid(),bid.Bid());
     handleBet(bid,_bidder); //TO DO move to BetsMemory
-    //_infos.NextPlayerBid();
+
     _bets.TellBet(bid);
 
     if(_bidder == giver)
@@ -52,12 +53,12 @@ bool Bidding::Bid(GAME_PHASES currentPhase) //TO DO test, test test !
 }
 void Bidding::handleBet(const Player_Bid& bid, PLAYER_ID ibet)
 {
-    if(bid.GetColorBid() != NO)
+    if(bid.Color() != Card_Color(NO))
     {
         _infos.SetMaxBid(bid.Bid());
         _infos.SetTrumpColor(bid.Color());
         _infos.SetTaker(ibet);
-        printf("%d took at %d at color %d",ibet,bid.Bid(),bid.Color());
+        printf("%d took at %d at color %d \n",ibet,bid.Bid(),bid.Color().Color());
     }
 }
 
@@ -86,7 +87,7 @@ void Bidding::SummarizeBet()
     //the first player to play is the player after the giver
     _bidder = _infos.Next(_infos.Giver());
 
-    switch (_infos.TrumpColor()) //setting the displayed objects
+    switch (_infos.TrumpColor().Color()) //setting the displayed objects
     {
     case NOT_CHOSEN : case NO :
         _textAfterBet0.ChangeText("Personne n'a pris, on redonne !");
@@ -110,7 +111,7 @@ GAME_PHASES Bidding::NextPhase()
     }
 
     Uint i_start = ((_infos.Giver()+1)%4);
-    switch (_infos.TrumpColor())
+    switch (_infos.TrumpColor().Color())
     {
     case NO : case NOT_CHOSEN:
         for (Uint i = i_start; i < i_start+4; i++)
@@ -139,7 +140,7 @@ void Bidding::handleText()
         break;
     }
     res +=" a pris à";
-    switch(_infos.TrumpColor())
+    switch(_infos.TrumpColor().Color())
     {
     case HEART:
         res += " coeur.";
@@ -158,7 +159,7 @@ void Bidding::handleText()
     }
     _textAfterBet0.ChangeText(res);
     res = "Le contrat est de ";
-    res += Player_Bid_Graphic::IntToString(_infos.TrumpColor(),_infos.MaxBid());
+    res += Player_Bid_Graphic::IntToString(_infos.TrumpColor().Color(),_infos.MaxBid());
     res += " points.";
     _textAfterBet1.ChangeText(res);
 }
@@ -166,14 +167,11 @@ void Bidding::handleText()
 string Bidding::GetString()
 {
     string res = "<bet>";
-    //Uint maxTurn = _infos.BiddingRound();
     Uint firstPlayer = (_infos.Giver()+1)%4;
 
     Uint betsNum = _bets.GetSize();
-    //res += IntToString(betsNum);
-    //res += "\t";
     Uint counter = 1;
-    //for (Uint turn = 1; turn <= maxTurn+1; ++turn)
+
     while(true)
     {
         for(Uint player = firstPlayer; player < firstPlayer+4; ++player)

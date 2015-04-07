@@ -13,7 +13,6 @@ class Bidding
     protected :
         Basic_Game_Info _infos;
         std::array<Player*,4> _players;
-        //std::list<Player_Bid> _bets; //list of all the bets
         BetsMemory _bets;
         SDL_Event* _pEvent;
         SDL_Surface* _pScreen;
@@ -40,7 +39,6 @@ class Bidding
 
         std::string GetString(); //not const because it erase the bets made in _bets.
     protected:
-        //bool isBetsOver(PLAYER_ID posPlayer);
         void handleBet(const Player_Bid& bid, PLAYER_ID ibet);
         void handleText();
     private:

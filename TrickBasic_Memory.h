@@ -21,12 +21,12 @@ class TrickBasic_Memory
         Uint _cardsPlayed; //the number of cards played : 0 to 4
         PLAYER_ID _to_play;
         PLAYER_ID _oldFirstPlayer;
-        POSITION_TRICK _winner;
+        Position_Trick _winner;
         IntIntPair _scores;
 
-        CARDS_COLOR _colorAsked;
-        CARDS_COLOR _colorMaster;
-        CARDS_HEIGHT _heightMaster;
+        Card_Color _colorAsked;
+        Card_Color _colorMaster;
+        Card_Height _heightMaster;
 
         bool _trickFinished;
 
@@ -38,11 +38,11 @@ class TrickBasic_Memory
         const Uint& TrickNumber() const {return _trickNumber;}
         const Uint& NumberCardsPlayed() const {return _cardsPlayed;}
         const PLAYER_ID& NextPlaying() const {return _to_play;}
-        const POSITION_TRICK& CurrentWinner() const {return _winner;}
+        const Position_Trick& CurrentWinner() const {return _winner;}
         const IntIntPair& CurrentScores() const {return _scores;}
-        const CARDS_COLOR& ColorAsked() const {return _colorAsked;}
-        const CARDS_COLOR& ColorMaster() const {return _colorMaster;}
-        const CARDS_HEIGHT& HeightMaster() const {return _heightMaster;}
+        const Card_Color& ColorAsked() const {return _colorAsked;}
+        const Card_Color& ColorMaster() const {return _colorMaster;}
+        const Card_Height& HeightMaster() const {return _heightMaster;}
         const Cards* operator[](Uint i) const {return _currentTrick[i];}
 
         void Reset(); //at the end of the game (8 trick)

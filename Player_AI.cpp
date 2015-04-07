@@ -37,7 +37,7 @@ int Player_AI::Take(bool first_round,int color_proposed,int height_proposed)
 
 
 /*
-CARDS_COLOR Player_AI::do_i_take(bool first_round,CARDS_COLOR color_proposed,CARDS_HEIGHT height_proposed) //by default, take if 3 (or more) cards in the color proposed
+CARDS_COLOR Player_AI::do_i_take(bool first_round,CARDS_COLOR color_proposed,Card_Height height_proposed) //by default, take if 3 (or more) cards in the color proposed
 {
     int number_cards = 0;
     if (first_round)

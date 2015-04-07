@@ -4,41 +4,17 @@ using namespace::std;
 std::array<unsigned int,8> Cards_Basic::_value_trump = {0,0,14,10,20,3,4,11};
 std::array<unsigned int,8> Cards_Basic::_value_no_trump = {0,0,0,10,2,3,4,11};
 
-bool Cards_Basic::Win(CARDS_HEIGHT heightOther) const //
+bool Cards_Basic::Win(const Card_Height& heightOther) const //
 {
-    Uint height_card = _infos.HeightToInt(_height_card);
-    Uint height_other = _infos.HeightToInt(heightOther);
-    if (_infos.TrumpColor()==_color_card)
+    Uint height_card = _height_card.ToInt();
+    Uint height_other = heightOther.ToInt();
+    //printf("My height is %d \n",height_card);
+    //printf("The other height is %d\n",height_other);
+    if (_infos.TrumpColor() == _color_card)
         return _matrix_win_trump[height_card][height_other];
     return _matrix_win_no_trump[height_card][height_other];
 }
-/*
-Uint Cards_Basic::HeightToInt(CARDS_HEIGHT height_card) const
-{
-    switch(height_card)
-    {
-        case SEVEN :
-            return 0;
-        case EIGHT :
-            return 1;
-        case NINE :
-            return 2;
-        case TEN :
-            return 3;
-        case JACK :
-            return 4;
-        case QUEEN :
-            return 5;
-        case KING :
-            return 6;
-        case ACE :
-            return 7;
-        default :
-            return 0;
-    }
-}
-*/
-Cards_Basic::Cards_Basic(CARDS_HEIGHT height, CARDS_COLOR color):
+Cards_Basic::Cards_Basic(const Card_Height& height, const Card_Color& color):
 _height_card(height),
 _color_card(color)
 {
@@ -61,11 +37,11 @@ _color_card(color)
     _matrix_win_no_trump[7] = {true,true,true,true,true,true,true,false};
 }
 
-const CARDS_COLOR& Cards_Basic::GetColour() const
+const Card_Color& Cards_Basic::GetColour() const
 {
     return _color_card;
 }
-const CARDS_HEIGHT& Cards_Basic::GetHeight() const
+const Card_Height& Cards_Basic::GetHeight() const
 {
     return _height_card;
 }
@@ -73,16 +49,16 @@ const CARDS_HEIGHT& Cards_Basic::GetHeight() const
 const Uint& Cards_Basic::Value() const
 {
     if (_infos.TrumpColor() != _color_card)
-        return _value_no_trump[_height_card];
-    return _value_trump[_height_card];
+        return _value_no_trump[_height_card.ToInt()];
+    return _value_trump[_height_card.ToInt()];
 }
 
 std::string Cards_Basic::GetString() const
 {
     string res = "<cards>";
-    res += IntToString(_color_card);
+    res += IntToString(_color_card.ToInt());
     res += ",";
-    res += IntToString(_height_card);
+    res += IntToString(_height_card.ToInt());
     res += "<\\cards>";
     return res;
 }

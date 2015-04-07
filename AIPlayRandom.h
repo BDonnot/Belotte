@@ -24,7 +24,6 @@ class AIPlayRandom
                                          ,Random& rand
                                          ,const TrickStatus& trickStatus
                                          ,const Memory& playerMemory);
-        //int test();
 
     protected:
     private:

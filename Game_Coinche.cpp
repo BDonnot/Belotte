@@ -154,7 +154,7 @@ void Game_Coinche::playGame(bool& keep_playing)
             _currentPhase = _bid.NextPhase();
             if(_currentPhase == PLAYING)
             {
-                _saveGame.SaveTake(_infos.Taker(),_infos.TrumpColor(),_infos.MaxBid());
+                _saveGame.SaveTake(_infos.Taker(),_infos.TrumpColor().ToInt(),_infos.MaxBid());
                 _trick.Update();
                 for(auto it = _players.begin(); it != _players.end();++it)
                 {

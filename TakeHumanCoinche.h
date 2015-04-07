@@ -31,6 +31,7 @@ class TakeHumanCoinche
         Images_Button _plus;
         Images_Button _minus;
         Images_Text _score;
+
         Player_Bid _unconfirmedBid;
         Player_Bid _confirmedBid;
 

@@ -87,7 +87,7 @@ void Player::Update_Mouse(GAME_PHASES currentPhase)
     if ((currentPhase == BIDDING)||(currentPhase == AFTER_BET))
         _oldBid.UpdateEvent();
 }
-int Player::how_many_colour(CARDS_COLOR colour) //how many cards I have in the color
+int Player::how_many_colour(const Card_Color& colour) //how many cards I have in the color
 {
     int res = 0;
     for (list<Cards*>::iterator it = _hand.begin(); it != _hand.end(); ++it)
@@ -96,11 +96,11 @@ int Player::how_many_colour(CARDS_COLOR colour) //how many cards I have in the c
     }
     return res;
 }
-bool Player::has_higher(CARDS_COLOR color_asked,CARDS_HEIGHT max_height) //true if the player has a higher card in his game
+bool Player::has_higher(const Card_Color& color_asked,const Card_Height& max_height) //true if the player has a higher card in his game
 {
-    for (list<Cards*>::iterator it = _hand.begin(); it != _hand.end(); ++it)
+    for (auto pcard : _hand)
     {
-        if (((*it)->GetColour()==color_asked)&&((*it)->Win(max_height)))
+        if ((pcard->GetColour()==color_asked)&&(pcard->Win(max_height)))
             return true;
     }
     return false;
@@ -120,12 +120,12 @@ Cards* Player::PlayCard(const TrickBasic_Memory& trick)
     _playable_cards.clear();
     return res;
 }
-CARDS_COLOR Player::Take(bool first_round,CARDS_COLOR color_proposed,CARDS_HEIGHT height_proposed)
+Card_Color Player::Take(bool first_round,const Card_Color& color_proposed,const Card_Height& height_proposed)
 {
     return do_i_take(first_round,color_proposed,height_proposed);
 }
 
-void Player::UpdateEndTrick(const TrickBasic_Memory& trick,POSITION_TRICK myPos) //do whatever you have to do at the end of each trick
+void Player::UpdateEndTrick(const TrickBasic_Memory& trick,const Position_Trick& myPos) //do whatever you have to do at the end of each trick
 {
     updateMemoryTrick(trick,myPos);
 }
@@ -156,9 +156,9 @@ bool Player::can_play_card(Cards* PmyCard,const TrickBasic_Memory& trick)
 {
     if (PmyCard==nullptr)
         return false;
-    CARDS_COLOR my_colour = PmyCard->GetColour();
-    CARDS_HEIGHT maxHeight = trick.HeightMaster();
-    CARDS_COLOR maxColor = trick.ColorMaster();
+    Card_Color my_colour = PmyCard->GetColour();
+    Card_Height maxHeight = trick.HeightMaster();
+    Card_Color maxColor = trick.ColorMaster();
     if (_currentTrickStatus.HasCol()) //If we have the color asked we have to played it
     {
         if(trick.ColorAsked() != _currentTrickStatus.TrumpColor()) //we must play in the color if we can
@@ -167,7 +167,7 @@ bool Player::can_play_card(Cards* PmyCard,const TrickBasic_Memory& trick)
                                                          ||(!has_higher(_currentTrickStatus.TrumpColor(),maxHeight)));
     }
     //So I do not have the color
-    if ((!_currentTrickStatus.HasTrump())||(static_cast<Uint>(trick.CurrentWinner()%2) == static_cast<Uint>(trick.NumberCardsPlayed()%2))) return true; //I can play what I want if I dont have the color asked and : I dont have trump or my partner is the master
+    if ((!_currentTrickStatus.HasTrump())||(static_cast<Uint>(trick.CurrentWinner().ToInt()%2) == static_cast<Uint>(trick.NumberCardsPlayed()%2))) return true; //I can play what I want if I dont have the color asked and : I dont have trump or my partner is the master
     //So I do have trump, my partner is no master, and I do not have the color asked.
     bool trumpPlayed = maxColor == _currentTrickStatus.TrumpColor();
     if(trumpPlayed)
@@ -176,18 +176,18 @@ bool Player::can_play_card(Cards* PmyCard,const TrickBasic_Memory& trick)
     return my_colour == _currentTrickStatus.TrumpColor();
 }
 
-bool Player::has_colour(CARDS_COLOR colour) //do I have the color
+bool Player::has_colour(const Card_Color& colour) //do I have the color
 {
-    for (list<Cards*>::iterator it = _hand.begin(); it != _hand.end(); ++it)
+    for (auto pcard : _hand)
     {
-        if ((*it)->GetColour() == colour)
+        if (pcard->GetColour() == colour)
             return true;
     }
     return false;
 }
-CARDS_COLOR Player::do_i_take(bool first_round,CARDS_COLOR color_proposed,CARDS_HEIGHT height_proposed)
+Card_Color Player::do_i_take(bool first_round,const Card_Color& color_proposed,const Card_Height& height_proposed)
 {
-    return NO;
+    return Card_Color(NO);
 }
 
 const Player_Bid& Player::Take(bool previousPlayerChoose,const BetsMemory& bets) //choose if the player take or not
@@ -223,7 +223,7 @@ bool Player::do_I_coinche()
 {
     return false;
 }
-void Player::updateMemoryTrick(const TrickBasic_Memory& trick,POSITION_TRICK myPos)
+void Player::updateMemoryTrick(const TrickBasic_Memory& trick,const Position_Trick& myPos)
 {
 
 }
@@ -249,9 +249,9 @@ void Player::GiveCardsBack(list<Cards*>& deck)
     //_oldBid.Reset();
     //ResetBid(true);
 }
-CARDS_COLOR Player::CurrentColorBid()
+const Card_Color& Player::CurrentColorBid()
 {
-    if (_currentBid.Color() == NOT_CHOSEN)
+    if (_currentBid.Color() == Card_Color(NOT_CHOSEN))
         return _oldBid.Color();
     return _currentBid.Color();
 }
@@ -260,7 +260,7 @@ void Player::InitMemory()
     //_memory.Reset();
     initMemoryTrick();
     if(_number != PLAYER0) return;
-    Sort_Cards sorting(_basic_info.TrumpColor());
+    Sort_Cards sorting;
     _hand.sort(sorting);
 }
 
