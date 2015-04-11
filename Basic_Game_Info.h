@@ -9,14 +9,14 @@ class Basic_Game_Info
 {
     protected:
         static unsigned long long _clock;
-        static PLAYER_ID _giver;
+        static Player_ID _giver;
 
-        static PLAYER_ID _taker;
+        static Player_ID _taker;
         static Card_Color _trump_color;
         static unsigned int _max_bid;
         static Card_Color _color_proposed;
 
-        static PLAYER_ID _position_first_player; //the first player who will played the trick
+        static Player_ID _position_first_player; //the first player who will played the trick
         static unsigned int _number_card_played;
 
         static std::array<unsigned int,2> _final_scores;
@@ -32,8 +32,8 @@ class Basic_Game_Info
         const unsigned long long& Time() const;
         void AddClock(unsigned long long diffTime);
 
-        inline const PLAYER_ID& Taker() const;
-        inline const PLAYER_ID& Giver() const;
+        inline const Player_ID& Taker() const;
+        inline const Player_ID& Giver() const;
 
         inline const Card_Color& TrumpColor() const;
         inline const Card_Color& ColorProposed() const;
@@ -47,34 +47,34 @@ class Basic_Game_Info
         inline static const Uint& WindowsWidth();
         inline static const Uint& WindowsHeight();
 
-        void NextPlayerBid(){_position_first_player = Next(_position_first_player);}
+        void NextPlayerBid(){_position_first_player.Next();}
 
 
-        void SetTaker(const PLAYER_ID taker);
+        void SetTaker(const Player_ID& taker);
         void SetTrumpColor(const Card_Color& trump_color);
-        void SetScores(PLAYER_ID trick_winner,const IntIntPair& scores); //to IMPROVE !
+        void SetScores(const Player_ID& trick_winner,const IntIntPair& scores); //to IMPROVE !
 
         IntIntPair CalculateFinalScores(); //compute who wins (returns the equip of the winner), determined each score, reset the other parameters
 
         void SetMaxBid(unsigned int max_bid); //TO DO : smarter way here...
         void SetColorProposed(const Card_Color& color);
 
-        PLAYER_ID Next(PLAYER_ID posPlayer) const;
-        inline Uint PosPlayerToInt(PLAYER_ID posPlayer) const;
-        inline PLAYER_ID IntToPosPlayer(Uint num) const;
-        inline PLAYER_ID FirstToPlay(const Position_Trick& posTrick, PLAYER_ID playerConcerned) const;
+        //PLAYER_ID Next(PLAYER_ID posPlayer) const;
+        //inline Uint PosPlayerToInt(PLAYER_ID posPlayer) const;
+        //inline PLAYER_ID IntToPosPlayer(Uint num) const;
+        inline Player_ID FirstToPlay(const Position_Trick& posTrick, const Player_ID& playerConcerned) const;
 
         void SetGiver(); //the giver is always the person at the left of the current giver
     protected:
         void setTrickNumber(); //the SetTrickNumber can increase of only 1 unit each time
-        PLAYER_ID posTrickToPlayer(PLAYER_ID firstToPlay,const Position_Trick& posTrick);
+        Player_ID posTrickToPlayer(const Player_ID& firstToPlay,const Position_Trick& posTrick);
 };
 
-inline const PLAYER_ID& Basic_Game_Info::Taker() const
+inline const Player_ID& Basic_Game_Info::Taker() const
 {
     return _taker;
 }
-inline const PLAYER_ID& Basic_Game_Info::Giver() const
+inline const Player_ID& Basic_Game_Info::Giver() const
 {
     return _giver;
 }
@@ -110,7 +110,7 @@ inline const Uint& Basic_Game_Info::WindowsHeight()
 {
     return _windowsHeight;
 }
-
+/*
 inline PLAYER_ID Basic_Game_Info::IntToPosPlayer(Uint num) const
 {
     switch(num)
@@ -122,6 +122,7 @@ inline PLAYER_ID Basic_Game_Info::IntToPosPlayer(Uint num) const
         default: return GHOST; // TO DO exception here
     }
 }
+
 inline Uint Basic_Game_Info::PosPlayerToInt(PLAYER_ID posPlayer) const
 {
     switch(posPlayer)
@@ -138,11 +139,11 @@ inline Uint Basic_Game_Info::PosPlayerToInt(PLAYER_ID posPlayer) const
         return 4;
     }
 }
-
-inline PLAYER_ID Basic_Game_Info::FirstToPlay(const Position_Trick& posTrick, PLAYER_ID playerConcerned) const
+*/
+inline Player_ID Basic_Game_Info::FirstToPlay(const Position_Trick& posTrick, const Player_ID& playerConcerned) const
 {
     Uint posT = posTrick.ToInt();
-    Uint posP = PosPlayerToInt(playerConcerned);
-    return IntToPosPlayer( (posP+static_cast<Uint>(4-posT))% 4 );
+    Uint posP = playerConcerned.ToInt();
+    return Player_ID( (posP+static_cast<Uint>(4-posT))% 4 );
 }
 #endif // BASIC_GAME_INFO_H

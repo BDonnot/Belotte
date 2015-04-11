@@ -22,14 +22,14 @@ class AIPlayScores
     protected:
         Basic_Game_Info _infos;
         const Uint _type;
-        const PLAYER_ID _player;
+        const Player_ID _player;
 
         Datas _play_1st;
         Datas _play_2nd;
         Datas _play_3rd;
         Datas _play_4th;
     public:
-        AIPlayScores(PLAYER_ID player):
+        AIPlayScores(const Player_ID& player):
             _type(1),
             _player(player),
             _play_1st("datas/_a_eval_score_play_1st.csv",_type),
@@ -122,8 +122,8 @@ int AIPlayScores<Memory>::playFirst(const Cards*pcard,
 
     CARDS_HEIGHT height_ = pcard->GetHeight().Height();
 
-    PLAYER_ID player_take = _infos.Taker();
-    int team_taken = _infos.PosPlayerToInt(player_take)%2;
+    Player_ID player_take = _infos.Taker();
+    int team_taken = (player_take.ToInt()%2);
     bool oponentCut = playerMemory.OpponentsCut(color);
     Uint number_trick = trick.TrickNumber();
     CARDS_HEIGHT heightsOrder[8] =  {ACE,TEN,KING,QUEEN,JACK,NINE,EIGHT,SEVEN};
@@ -136,11 +136,11 @@ int AIPlayScores<Memory>::playFirst(const Cards*pcard,
         heightsOrder[4] = KING;
         heightsOrder[5] = QUEEN;
     }
-    PLAYER_ID teammate = _infos.IntToPosPlayer( _infos.PosPlayerToInt(_player)+2 %4 );
+    Player_ID teammate = _player.Teammate();
 
     if (pcard == nullptr) return -10000; //TO DO : exception here
     //if I or my teammate took, I try to play trump
-    if (team_taken == _infos.PosPlayerToInt(_player)%2 && playerMemory.NbColorPlayed(color_trump) == 0)
+    if (team_taken == (_player.ToInt()%2) && playerMemory.NbColorPlayed(color_trump) == 0)
     {
         if(color == color_trump )
         {
@@ -363,12 +363,13 @@ int AIPlayScores<Memory>::playThird(const Cards* pcard,
         heightsOrder[5] = QUEEN;
     }
     Position_Trick i_master = trick.CurrentWinner();
-    //PLAYER_ID teammate = _infos.IntToPosPlayer( _infos.PosPlayerToInt(_player)+2 %4 );
+    Position_Trick First(FIRST);
+    //Player_ID teammate = _player.Teammate();
 //TO DO : change i_master ! -> it is a positiong trick, not a player id...
 //If I can play trump
     if (play_trump)
     {
-        if ((color_asked!=color_trump)&&(i_master==FIRST)&&(color==color_trump)) res += _play_3rd.value(0,0);//res=-10, we don't play  trump if the partner is mayor
+        if ((color_asked!=color_trump)&&(i_master==First)&&(color==color_trump)) res += _play_3rd.value(0,0);//res=-10, we don't play  trump if the partner is mayor
         if ((color==color_trump)&&(color==color_asked))
         {
             if (playerMemory.AmIMaster(color)) res += _play_3rd.value(1,0); //res=20
@@ -391,7 +392,7 @@ int AIPlayScores<Memory>::playThird(const Cards* pcard,
         }
     }
 //If my teammate is major
-    if (i_master == FIRST)
+    if (i_master == First)
     {
         if (color==color_trump)
         {
@@ -411,7 +412,7 @@ int AIPlayScores<Memory>::playThird(const Cards* pcard,
                 else res += _play_3rd.value(17,0); //res=3
             }
         }
-        //add the case where the opponent don't cut (or has no more trumps) and my partner hase the master card in the colour
+        //add the case where the opponent don't cut (or has no more trumps) and my partner has the master card in the colour
     }
 //I have the 10 in the colour
     if ((color==color_asked)&&(playerMemory.HaveTen(color)))

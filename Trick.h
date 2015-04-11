@@ -37,8 +37,8 @@ class Trick :public Trick_Basic
         void GatherCards();
 
     protected:
-        void updatePosCard(Uint playerNumber);
-        void posReturn(PLAYER_ID posPlayer);
+        void updatePosCard(const Player_ID& playerNumber);
+        void posReturn(const Player_ID& posPlayer);
         virtual void trickFinished()
         {
             //printf("ok ; %d\n",_trickFinished);

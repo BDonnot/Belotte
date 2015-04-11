@@ -56,7 +56,7 @@ void Player_Human::updateBid(const BetsMemory& bets)
     const Player_Bid& bid = _TakeCoinche.Has_Taken();
     _currentBid.Bid(bid.Color(),bid.Bid());
 }
-void Player_Human::resetBid(bool betFinished)
+void Player_Human::ResetBid(bool betFinished)
 {
     _TakeCoinche.Reset(betFinished);
     //_TakeCoinche.Reset(false);

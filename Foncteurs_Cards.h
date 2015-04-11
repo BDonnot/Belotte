@@ -7,10 +7,10 @@ class DisplayCardPlayer //handle the positionning of the card in the hand
 {
     public :
         DisplayCardPlayer(){};
-        DisplayCardPlayer(SDL_Surface* screen,Uint windows_width,Uint windows_height,Uint player_number)
+        DisplayCardPlayer(SDL_Surface* screen,Uint windows_width,Uint windows_height,const Player_ID& player_number)
         {
             _screen = screen;
-            bool vertical_move = (player_number%2==1);
+            bool vertical_move = (player_number.ToInt()%2 == 1);
             if (vertical_move)
             {
                 _shift.at(0)= 0;
@@ -23,21 +23,21 @@ class DisplayCardPlayer //handle the positionning of the card in the hand
             }
             Uint& pos_x = _pos_player.Getx();
             Uint& pos_y = _pos_player.Gety();
-            switch(player_number)
+            switch(player_number.ID())
             {
-                case 0 :
+                case PLAYER0 :
                     pos_x = windows_width/2 ;
                     pos_y = windows_height - 150;
                     break;
-                case 1 :
+                case PLAYER1 :
                     pos_x = windows_width - 135;
                     pos_y = windows_height/2;
                     break;
-                case 2 :
+                case PLAYER2 :
                     pos_x = windows_width/2 ;
                     pos_y = 150;
                     break;
-                case 3 :
+                case PLAYER3 :
                     pos_x = 135;
                     pos_y = windows_height/2;
                     break;

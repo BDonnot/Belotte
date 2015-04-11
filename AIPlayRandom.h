@@ -14,9 +14,9 @@ template<class Memory>
 class AIPlayRandom
 {
     protected :
-        const PLAYER_ID _player;
+        const Player_ID _player;
     public:
-        AIPlayRandom(PLAYER_ID player):_player(player){}
+        AIPlayRandom(const Player_ID& player):_player(player){}
         virtual ~AIPlayRandom(){}
         std::list<Cards*>::iterator Play(const std::array<Cards*,4>& trick
                                          ,std::list<std::list<Cards*>::iterator>& plyableCards

@@ -32,7 +32,7 @@ class Player
         Player_Name _name; //his name
         std::list<Cards*> _hand; //the hand of the player
         std::list<std::list<Cards*>::iterator> _playable_cards; //the card a player can play in a trick
-        const PLAYER_ID _number; //the number
+        const Player_ID _number; //the number
         DisplayCardPlayer _DisplayCardPlayer;//to display the cards the proper way
         SDL_Surface* _screen;
         SDL_Event* _event;
@@ -43,12 +43,12 @@ class Player
 
     public:
         Player():_number(PLAYER0){}
-        Player(PLAYER_ID number,Uint windows_width, Uint windows_height,SDL_Event* pevent,Basic_Images* fond,SDL_Surface* screen):
+        Player(const Player_ID& number,Uint windows_width, Uint windows_height,SDL_Event* pevent,Basic_Images* fond,SDL_Surface* screen):
             _basic_info()
-            ,_pos(SetPosition(number,windows_width,windows_height))
+            ,_pos(setPosition(number,windows_width,windows_height))
             ,_name(fond
-                   ,SetName(number)
-                   ,SetPathImage(number)
+                   ,setName(number)
+                   ,setPathImage(number)
                    ,pevent
                    ,windows_width
                    ,windows_height
@@ -60,7 +60,7 @@ class Player
             ,_oldBid(number,pevent,screen,windows_width,windows_height)
             ,_cardPlayed(_hand.end())
         {
-            _pos = SetPosition(number,windows_width,windows_height);
+            //_pos = setPosition(number,windows_width,windows_height);
             _screen = screen;
         }
 
@@ -113,9 +113,9 @@ class Player
 
         virtual void resetTake(){} //for the AI to be able to forget the previous bets
     private:
-        PositionGraphic SetPosition(int number,Uint16 windows_width, Uint16 widows_height); //to properly set the right position
-        std::string SetName(int number); //to set the default name
-        std::string SetPathImage(int number); //to set the path of the image of the player
+        PositionGraphic setPosition(const Player_ID& number,Uint16 windows_width, Uint16 widows_height); //to properly set the right position
+        std::string setName(const Player_ID&  number); //to set the default name
+        std::string setPathImage(const Player_ID&  number); //to set the path of the image of the player
 
         bool has_higher(const Card_Color&  color_asked,const Card_Height& max_height);
         void updatePlayebleCards(const TrickBasic_Memory& trick_in_progress);

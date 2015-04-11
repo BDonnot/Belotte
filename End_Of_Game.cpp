@@ -51,7 +51,7 @@ void End_Of_Game::UpdateEvent(GAME_PHASES currentPhase)
 }
 void End_Of_Game::Update()
 {
-    Uint taker = _info.Taker();
+    Uint taker = _info.Taker().ToInt();
     Uint bid = _info.MaxBid();
     IntIntPair scoreWinner = _info.CalculateFinalScores();
     bool winnerWon = scoreWinner.second == taker;

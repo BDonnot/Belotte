@@ -47,16 +47,13 @@ void Trick::Display(GAME_PHASES currentPhase)
     else
     {
         _infoPreviousTrick.Display(_pScreen);
-        PLAYER_ID posPlayer = _oldFirstPlayer;
-        printf("old first player is %d \n",posPlayer);
+        Player_ID posPlayer(_oldFirstPlayer);
         for(Uint i = 0; i < 4; ++i)
         {
             if(_previousTrick[i]==nullptr) break;
-            updatePosCard(_infos.PosPlayerToInt(posPlayer));
-            _previousTrick[i]->SetPosition(_posCard);
-            _previousTrick[i]->ChangeSprite(1);
-            posPlayer = _infos.Next(posPlayer);
-            //_previousTrick[i]->Display(_pScreen);
+            updatePosCard(posPlayer);
+            _previousTrick[i]->InitMouvement(true,_posCard,600,0);
+            posPlayer.Next();
             _previousTrick[i]->Display();
         }
     }
@@ -92,26 +89,26 @@ void Trick::Update()
     }
     _contract.ChangeText(Player_Bid_Graphic::IntToString(_infos.TrumpColor(),_infos.MaxBid()));
     string text = "Equipe ";
-    text +=Player_Bid_Graphic::IntToString(_infos.TrumpColor(),_infos.Taker()%2+1);
+    text +=Player_Bid_Graphic::IntToString(_infos.TrumpColor(),_infos.Taker().ToInt()%2+1);
     _teamName.ChangeText(text);
     Reset();
     //_scoreTeam.Update();
 }
 
-void Trick::updatePosCard(Uint player)
+void Trick::updatePosCard(const Player_ID& player)
 {
-    switch(player)
+    switch(player.ID())
     {
-        case 0 :
+        case PLAYER0 :
             _posCard.Set(_infos.WindowsWidth()/2, _infos.WindowsHeight()/2+80,CENTER);
             return;
-        case 1 :
+        case PLAYER1 :
             _posCard.Set(_infos.WindowsWidth()/2 +55, _infos.WindowsHeight()/2,CENTER);
             return;
-        case 2 :
+        case PLAYER2 :
             _posCard.Set(_infos.WindowsWidth()/2, _infos.WindowsHeight()/2-80,CENTER);
             return;
-        case 3 :
+        case PLAYER3 :
             _posCard.Set(_infos.WindowsWidth()/2-55, _infos.WindowsHeight()/2,CENTER);
             return;
         default :
@@ -127,15 +124,15 @@ void Trick::GatherCards()
     posReturn(_to_play);
     for(Uint i = 0; i < 4; ++i)
     {
-        if(_currentTrick[i] == nullptr) break; //TO DO : exception here !
+        //if(_currentTrick[i] == nullptr) break; //TO DO : exception here !
         //_currentTrick[i]->InitMouvement(true,_posCard,600,0);
         _currentTrick[i]->InitMouvement(true,_posCard,600,0);
     }
     //printf("gather cards for trick %d \n",_trickNumber);
 }
-void Trick::posReturn(PLAYER_ID posPlayer)
+void Trick::posReturn(const Player_ID& posPlayer)
 {
-    switch(posPlayer)
+    switch(posPlayer.ID())
     {
         case PLAYER0 :
             _posCard.Set(_infos.WindowsWidth()/2,_infos.WindowsHeight()-120,CENTER);

@@ -19,8 +19,8 @@ class TrickBasic_Memory
         Basic_Game_Info _infos;
         Uint _trickNumber; //the current trick number : 1 to 8
         Uint _cardsPlayed; //the number of cards played : 0 to 4
-        PLAYER_ID _to_play;
-        PLAYER_ID _oldFirstPlayer;
+        Player_ID _to_play;
+        Player_ID _oldFirstPlayer;
         Position_Trick _winner;
         IntIntPair _scores;
 
@@ -37,7 +37,7 @@ class TrickBasic_Memory
 
         const Uint& TrickNumber() const {return _trickNumber;}
         const Uint& NumberCardsPlayed() const {return _cardsPlayed;}
-        const PLAYER_ID& NextPlaying() const {return _to_play;}
+        const Player_ID& NextPlaying() const {return _to_play;}
         const Position_Trick& CurrentWinner() const {return _winner;}
         const IntIntPair& CurrentScores() const {return _scores;}
         const Card_Color& ColorAsked() const {return _colorAsked;}

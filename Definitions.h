@@ -30,7 +30,8 @@ enum OPTION_OUTPUT{OPTION_QUIT,OPTION_RETURN,OPTION_CONTINUE};
 #include "CARDS_HEIGHT.h"
 #include "CARDS_COLOR.h"
 #include "POSITION_TRICK.h"
-enum PLAYER_ID {PLAYER0,PLAYER1,PLAYER2,PLAYER3,GHOST};
+#include "PLAYER_ID.h"
+
 
 
 inline std::string IntToString(Uint number)

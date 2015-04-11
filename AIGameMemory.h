@@ -70,15 +70,15 @@ class MemorizeCutsCalls  : public BoolStorage<16> //efficient way to memorize wh
 {
     public :
         MemorizeCutsCalls(){}
-        const bool & Cut(PLAYER_ID player, Card_Color color) const
+        const bool & Cut(const Player_ID& player, Card_Color color) const
         {
-            Uint iPlayer = _infos.PosPlayerToInt(player);
+            Uint iPlayer = player.ToInt();
             Uint iColor = color.ToInt();
             return getInfo(iPlayer*4 + iColor);
         }
-        void SetCut(PLAYER_ID player, Card_Color color)
+        void SetCut(const Player_ID& player, Card_Color color)
         {
-            Uint iPlayer = _infos.PosPlayerToInt(player);
+            Uint iPlayer = player.ToInt();
             Uint iColor = color.ToInt();
             setInformation(iPlayer*4 + iColor);
         }
@@ -88,7 +88,7 @@ class AIGameMemory
 {
     protected :
         Basic_Game_Info _infos;
-        PLAYER_ID _posPlayer;
+        Player_ID _posPlayer;
         std::list<Cards* >* _pHand;
         MemorizeCards _fallenCards; //
 
@@ -108,7 +108,7 @@ class AIGameMemory
 
 
     public:
-        AIGameMemory(PLAYER_ID posPlayer,std::list<Cards*>* pHand):
+        AIGameMemory(const Player_ID& posPlayer,std::list<Cards*>* pHand):
             _posPlayer(posPlayer),
             _pHand(pHand)
             {
@@ -119,11 +119,11 @@ class AIGameMemory
         void InitEverything(); //call after the trump have been chosen, to set everything :-)
         Card_Height Master(const Card_Color& color) const;
 
-        bool Cut(PLAYER_ID player,const Card_Color& color) const; //see *CallCut for more information
+        bool Cut(const Player_ID& player,const Card_Color& color) const; //see *CallCut for more information
         bool OpponentsCut(const Card_Color& color) const;
         bool TeammateCut(const Card_Color& color) const;
         bool NextCut(const Card_Color& color) const; //see *CallCut for more information
-        bool Call(PLAYER_ID player,const Card_Color& color) const;
+        bool Call(const Player_ID& player,const Card_Color& color) const;
         bool OpponentsCall(const Card_Color& color) const;
         bool TeammateCall(const Card_Color& color) const;
         bool NextCall(const Card_Color& color) const;//see *CallCut for more information
@@ -145,13 +145,13 @@ class AIGameMemory
     protected:
         //Card_Height heightUnder(const Card_Height& height,bool color);
         void computeNewHeightMaster(); //also update _playerCut
-        void updateEverythingElse(PLAYER_ID firstToPlay); //update everything that need to go through the hand of the player.
+        void updateEverythingElse(const Player_ID& firstToPlay); //update everything that need to go through the hand of the player.
 
-        bool callCut(PLAYER_ID player,const Card_Color& color,const MemorizeCutsCalls& StoreCallCut) const; //dot the 'player' call/cut at the 'color'
+        bool callCut(const Player_ID& player,const Card_Color& color,const MemorizeCutsCalls& StoreCallCut) const; //dot the 'player' call/cut at the 'color'
         bool opponentsCallCut(const Card_Color& color,const MemorizeCutsCalls& StoreCallCut) const; //do my opponents call/cut at the 'color'
         bool teammateCallCut(const Card_Color& color,const MemorizeCutsCalls& StoreCallCut) const; //do my  teammate call/cut at the 'color'
         bool nextCallCut(const Card_Color& color,const MemorizeCutsCalls& StoreCallCut) const; //do the player who play after me call/cut at the 'color'
-        void computeScoreLongeAndProtectPoint(std::list<const Cards*>& cardsInTheColor,Uint& scoreLonge, bool& protectPoints); //always per color
+        void computeScoreLongeAndProtectPoint(std::list<const Cards*>& cardsInTheColor,Uint& scoreLonge, bool& protectPoints,bool iAmMasterColor,const Card_Height& greatest); //always per color
     private:
 };
 

@@ -25,13 +25,13 @@ Game_Coinche::Game_Coinche(SDL_Surface* screen,Uint16 screenWidth, Uint16 screen
     PositionGraphic pos(0,0,TOP_LEFT);
     _backSide.SetPosition(pos);
     PLAYER_ID posPlayer[4] = {PLAYER0,PLAYER1,PLAYER2,PLAYER3};
-    _players[0] = static_cast<Player*>(new Player_Human(posPlayer[0],screenWidth,screenHeight,_event,&_backSide,_pScreen));
+    _players[0] = static_cast<Player*>(new Player_Human(Player_ID(posPlayer[0]),screenWidth,screenHeight,_event,&_backSide,_pScreen));
 //    _players[0] = static_cast<Player*>(new Player_AI(posPlayer[0],screenWidth,screenHeight,_event,&_backSide,_pScreen));
     for (Uint i = 1; i < 4; i++)
     {
         //<AIGameMemory,AITakeBasic,AIPlayRandom<AIGameMemory> >
         //<AIGameMemory,AITakeBasic,AIPlayScores<AIGameMemory> >
-        _players[i] =  static_cast<Player*>(new Player_AI<AIGameMemory,AITakeBasic,AIPlayScores<AIGameMemory> >(posPlayer[i],screenWidth,screenHeight,_event,&_backSide,_pScreen));
+        _players[i] =  static_cast<Player*>(new Player_AI<AIGameMemory,AITakeBasic,AIPlayScores<AIGameMemory> >(Player_ID(posPlayer[i]),screenWidth,screenHeight,_event,&_backSide,_pScreen));
     }
     _bid.SetPlayers(_players);
     _trick.SetPlayers(_players);
@@ -154,7 +154,7 @@ void Game_Coinche::playGame(bool& keep_playing)
             _currentPhase = _bid.NextPhase();
             if(_currentPhase == PLAYING)
             {
-                _saveGame.SaveTake(_infos.Taker(),_infos.TrumpColor().ToInt(),_infos.MaxBid());
+                _saveGame.SaveTake(_infos.Taker().ToInt(),_infos.TrumpColor().ToInt(),_infos.MaxBid());
                 _trick.Update();
                 for(auto it = _players.begin(); it != _players.end();++it)
                 {

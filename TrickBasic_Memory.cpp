@@ -63,7 +63,7 @@ void TrickBasic_Memory::updateWinner()
         _heightMaster = _currentTrick[_cardsPlayed]->GetHeight();
         _winner = Position_Trick(_cardsPlayed);
     }
-    printf("after player %d played, the winner is %d \n",_cardsPlayed,_winner.Position());
+    //printf("after player %d played, the winner is %d \n",_cardsPlayed,_winner.Position());
 }
 
 void TrickBasic_Memory::finishTrick()
@@ -78,29 +78,33 @@ void TrickBasic_Memory::finishTrick()
 
 void TrickBasic_Memory::updateToPlay()
 {
+    //printf("updateToPlay : first player is %d \n",_to_play.ID());
     _oldFirstPlayer = _to_play;
-    switch(_winner.Position())
+    switch(_winner.Position()) //TO DO better to do here !
     {
     case FIRST :
         break;
     case SECOND :
-        _to_play = _infos.Next(_to_play);
+        _to_play.Next();
         break;
     case THIRD :
-        _to_play = _infos.Next(_infos.Next(_to_play));
+        _to_play.Next();
+        _to_play.Next();
         break;
     case FOURTH :
-        _to_play = _infos.Next(_infos.Next(_infos.Next(_to_play)));
+        _to_play.Next();
+        _to_play.Next();
+        _to_play.Next();
         break;
     default : //TO DO exception here
-        _to_play = GHOST;
+        _to_play = Player_ID(GHOST);
         break;
     }
 }
 
 void TrickBasic_Memory::updateScores(Uint pointsInTheTrick)
 {
-    switch(_to_play)
+    switch(_to_play.ID())
     {
     case PLAYER0 : case PLAYER2 :
         _scores.first += pointsInTheTrick;
@@ -120,12 +124,12 @@ void TrickBasic_Memory::trickOver()
     _cardsPlayed = 0;
     _trickNumber++;
     finishTrick();
-    _winner = UNKNOWN;
-    _oldFirstPlayer = GHOST;
+    _winner = Position_Trick(UNKNOWN);
+    //_oldFirstPlayer = Player_ID(GHOST);
 }
 void TrickBasic_Memory::playerPlayed()
 {
     updateWinner();
-    _to_play = _infos.Next(_to_play);
+    _to_play.Next();
     _cardsPlayed++;
 }

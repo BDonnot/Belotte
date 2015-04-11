@@ -31,7 +31,7 @@ class DisplayOldBets //handle the positioning of the card in the hand
         DisplayOldBets(SDL_Surface* screen
                        ,Uint windows_width
                        ,Uint windows_height
-                       ,Uint player_number
+                       ,const Player_ID& player_number
                        ,Images_Text* text
                        ,Images_Sprite<4>* logo);
         void Reset();
@@ -52,7 +52,7 @@ class Player_Bid_Graphic : public Player_Bid
         DisplayOldBets _dsplOldBets;
     public:
         Player_Bid_Graphic();
-        Player_Bid_Graphic(Uint player_number,SDL_Event* pevent,SDL_Surface* screen,Uint windows_width,Uint windows_height);
+        Player_Bid_Graphic(const Player_ID& player_number,SDL_Event* pevent,SDL_Surface* screen,Uint windows_width,Uint windows_height);
         virtual ~Player_Bid_Graphic();
         void Display(SDL_Surface* screen,GAME_PHASES currentPhase);
         void Coinche();

@@ -28,7 +28,7 @@ class BetsMemory
         const Player_Bid& AskBet() const; //return the bet made by the teammate, if any.
         const Uint GetSize() const;
         std::string GetString();
-        bool IsBetsOver(PLAYER_ID posPlayer) const ;
+        bool IsBetsOver() const ;
     protected:
     private:
 };

@@ -28,7 +28,7 @@ string Trick_Basic::GetString() const
     string res = "<trick : ";
     res += IntToString(_cardsPlayed);
     res += ">";
-    Uint first = _oldFirstPlayer;
+    Uint first = _oldFirstPlayer.ToInt();
     Uint counter = 0;
     for(Uint i = first; i < first+4; ++i, ++counter)
     {
@@ -60,7 +60,7 @@ void Trick_Basic::WinnerTakeCards()
 
 bool Trick_Basic::Play() // TO DO code the same way as Bidding.cpp
 {
-    Uint i = _infos.PosPlayerToInt(_to_play);
+    Uint i = _to_play.ToInt();
     trickFinished();
     //TO DO c'est moche !
     if (_cardsPlayed == 4 && _trickFinished) //the trick is over

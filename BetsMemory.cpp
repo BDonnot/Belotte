@@ -36,11 +36,9 @@ const Uint BetsMemory::GetSize() const
     return _bets.size();
 }
 
-bool BetsMemory::IsBetsOver(PLAYER_ID posPlayer) const
+bool BetsMemory::IsBetsOver() const //TO DO : change signature
 {
     if (_bets.size() <= 3) return false;
-    //if ((_infos.BiddingRound()==0)&&(posPlayer != _infos.Giver())) return false;
-    //PLAYER_ID next = _infos.Next(posPlayer);
     bool res = true;
     auto itBet = _bets.rbegin();
     for(Uint i = 0; i < 3; i++)

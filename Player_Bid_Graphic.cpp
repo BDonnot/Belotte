@@ -3,16 +3,16 @@
 using namespace std;
 
 DisplayOldBets::DisplayOldBets(SDL_Surface* screen
-               ,Uint windows_width
-               ,Uint windows_height
-               ,Uint player_number
-               ,Images_Text* text
-               ,Images_Sprite<4>* logo):
+                               ,Uint windows_width
+                               ,Uint windows_height
+                               ,const Player_ID& player_number
+                               ,Images_Text* text
+                               ,Images_Sprite<4>* logo):
 _screen(screen)
 ,_pText(text)
 ,_pLogo(logo)
 {
-    bool vertical_move = (player_number%2==1);
+    bool vertical_move = (player_number.ToInt()%2==1);
     if (vertical_move)
     {
         _shift.at(0)= 0;
@@ -29,7 +29,7 @@ _screen(screen)
                             ,{200,windows_height/2-135}};
     //POSITION_OPTION pos_opt[4] = {BOTTOM_CENTER,CENTER_RIGHT,TOP_CENTER,CENTER_LEFT};
     //PositionGraphic pos(position[player_number][0],position[player_number][1],pos_opt[player_number]);
-    _pos_th.Set(position[player_number][0],position[player_number][1],CENTER);
+    _pos_th.Set(position[player_number.ToInt()][0],position[player_number.ToInt()][1],CENTER);
 
 }
 void DisplayOldBets::Reset()
@@ -92,7 +92,7 @@ Player_Bid_Graphic::~Player_Bid_Graphic()
 {
     //dtor
 }
-Player_Bid_Graphic::Player_Bid_Graphic(Uint player_number,SDL_Event* pevent,SDL_Surface* screen,Uint windows_width,Uint windows_height):
+Player_Bid_Graphic::Player_Bid_Graphic(const Player_ID& player_number,SDL_Event* pevent,SDL_Surface* screen,Uint windows_width,Uint windows_height):
 Player_Bid()
 ,_bubble("images/sprite_bulles.png",pevent)
 ,_text("fonts/MLSGY.ttf",20,{255,255,255},"Passe")
@@ -107,14 +107,14 @@ Player_Bid()
                             ,{windows_width/2 + 150,0}
                             ,{0,windows_height/2-150}};
     POSITION_OPTION pos_opt[4] = {BOTTOM_CENTER,CENTER_RIGHT,TOP_CENTER,CENTER_LEFT};
-    PositionGraphic pos(position[player_number][0],position[player_number][1],pos_opt[player_number]);
+    PositionGraphic pos(position[player_number.ToInt()][0],position[player_number.ToInt()][1],pos_opt[player_number.ToInt()]);
 
     array<Uint,4> x = {0,200,400,600};
     array<Uint,4> y = {0,0,0,0};
     array<Uint,4> width = {160,160,160,160};
     array<Uint,4> height = {92,92,92,92};
     _bubble.SetDimensionSprite(x,y,width,height);
-    _bubble.ChangeSprite(player_number);
+    _bubble.ChangeSprite(player_number.ToInt());
     _bubble.SetPosition(pos);
 
     //positioning correctly the text and the images :

@@ -8,21 +8,21 @@ void Player::ReceivedCard(Cards* pcard,unsigned int card_number)
     pcard->InitMouvement(_number==PLAYER0,_pos,1000,50*card_number);
     _hand.push_back(pcard);
 }
-PositionGraphic Player::SetPosition(int number,Uint16 windows_width, Uint16 windows_height)
+PositionGraphic Player::setPosition(const Player_ID& number,Uint16 windows_width, Uint16 windows_height)
 {
     PositionGraphic res;
-    switch (number)
+    switch (number.ID())
     {
-        case 0 : //you : the bottom player (sud)
+        case PLAYER0 : //you : the bottom player (sud)
             res.Set(windows_width/2,windows_height,BOTTOM_CENTER);
             return res;
-        case 1 : //the left player (ouest)
+        case PLAYER1 : //the left player (ouest)
             res.Set(windows_width,windows_height/2,CENTER_RIGHT);
             return res;
-        case 2 : //the top player (nord)
+        case PLAYER2 : //the top player (nord)
             res.Set(windows_width/2,0,TOP_CENTER);
             return res;
-        case 3 : //the left player (ouest)
+        case PLAYER3 : //the left player (ouest)
             res.Set(0,windows_height/2,CENTER_LEFT);
             return res;
         default : //TO DO exception here
@@ -30,21 +30,21 @@ PositionGraphic Player::SetPosition(int number,Uint16 windows_width, Uint16 wind
             return res;
     }
 }
-string Player::SetName(int number)
+string Player::setName(const Player_ID&  number)
 {
     string res;
-    switch(number)
+    switch(number.ID())
     {
-        case 0 : //you : the bottom player (sud)
+        case PLAYER0 : //you : the bottom player (sud)
             res = "Sud";
             return res;
-        case 1 : //the left player (ouest)
+        case PLAYER1 : //the left player (ouest)
             res = "Ouest";
             return res;
-        case 2 : //the top player (nord)
+        case PLAYER2 : //the top player (nord)
             res = "Nord";
             return res;
-        case 3 : //the left player (ouest)
+        case PLAYER3 : //the left player (ouest)
             res = "Est";
             return res;
         default: //TO DO exception here
@@ -52,21 +52,21 @@ string Player::SetName(int number)
     }
     return "";
 }
-string Player::SetPathImage(int number)
+string Player::setPathImage(const Player_ID&  number)
 {
     string res;
-    switch(number)
+    switch(number.ID())
     {
-        case 0 : //you : the bottom player (sud)
+        case PLAYER0 : //you : the bottom player (sud)
             res = "images/you.jpg";
             return res;
-        case 1 : //the left player (ouest)
+        case PLAYER1 : //the left player (ouest)
             res = "images/maul.jpg";
             return res;
-        case 2 : //the top player (nord)
+        case PLAYER2 : //the top player (nord)
             res = "images/yoda.jpg";
             return res;
-        case 3 : //the left player (ouest)
+        case PLAYER3 : //the left player (ouest)
             res = "images/vador.jpg";
             return res;
         default: // TO DO exception here
@@ -231,7 +231,6 @@ void Player::ResetBid(bool betFinished)
 {
     _currentBid.Reset();
     if (!betFinished) return;
-    //_lastBidTurn = 0;
     _oldBid.Reset();
     resetTake();
     //_memory.Reset();
@@ -272,7 +271,7 @@ void Player::initMemoryTrick()
 string Player::GetString(const std::string& embraced) const
 {
     string res = "<player : ";
-    res += IntToString(_number);
+    res += IntToString(_number.ToInt());
     res += ">";
     res += embraced;
     res += "<\\player>";

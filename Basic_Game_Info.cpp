@@ -1,14 +1,14 @@
 #include "Basic_Game_Info.h"
 using namespace std;
 unsigned long long Basic_Game_Info::_clock = 0;
-PLAYER_ID Basic_Game_Info::_giver = PLAYER3;
+Player_ID Basic_Game_Info::_giver = Player_ID(PLAYER3);
 
-PLAYER_ID Basic_Game_Info::_taker = GHOST;
+Player_ID Basic_Game_Info::_taker = Player_ID(GHOST);
 Card_Color Basic_Game_Info::_trump_color = Card_Color(NOT_CHOSEN);
 unsigned int Basic_Game_Info::_max_bid = MINBET;
 Card_Color Basic_Game_Info::_color_proposed = Card_Color(NOT_CHOSEN);
 
-PLAYER_ID Basic_Game_Info::_position_first_player = PLAYER0; //the first person how play the trick
+Player_ID Basic_Game_Info::_position_first_player = Player_ID(PLAYER0); //the first person how play the trick
 unsigned int Basic_Game_Info::_number_card_played = 0; //cards played in the current trick
 
 array<unsigned int,2> Basic_Game_Info::_final_scores = {0,0};
@@ -26,13 +26,14 @@ Basic_Game_Info::~Basic_Game_Info()
 {
     //dtor
 }
-void Basic_Game_Info::SetTaker(PLAYER_ID taker)
+void Basic_Game_Info::SetTaker(const Player_ID& taker)
 {
     _taker = taker;
 }
-PLAYER_ID Basic_Game_Info::Next(PLAYER_ID posPlayer) const
+/*
+PLAYER_ID Basic_Game_Info::Next(const Player_ID& posPlayer) const
 {
-    switch(posPlayer)
+    switch(posPlayer.ID())
     {
     case PLAYER0 :
         return PLAYER1;
@@ -46,24 +47,25 @@ PLAYER_ID Basic_Game_Info::Next(PLAYER_ID posPlayer) const
         return GHOST;
     }
 }
-
+*/
 void Basic_Game_Info::SetGiver() //the giver is always the person at the right
 {
-    _giver = Next(_giver);
-    _position_first_player = Next(_giver);
+    _giver.Next();
+    _position_first_player = _giver;
+    _position_first_player.Next();
 }
 void Basic_Game_Info::SetTrumpColor(const Card_Color& trump_color)
 {
     _trump_color = trump_color;
 }
-PLAYER_ID Basic_Game_Info::posTrickToPlayer(PLAYER_ID firstToPlay,const Position_Trick& posTrick)
+Player_ID Basic_Game_Info::posTrickToPlayer(const Player_ID& firstToPlay,const Position_Trick& posTrick)
 {
     if(posTrick == UNKNOWN) return GHOST;
     Uint trick = posTrick.ToInt();
-    PLAYER_ID res = firstToPlay;
+    Player_ID res(firstToPlay);
     for(Uint i = 0; i < trick; i++)
     {
-        res = Next(res);
+        res.Next();
     }
     return res;
 }
@@ -71,7 +73,7 @@ IntIntPair Basic_Game_Info::CalculateFinalScores() //compute who wins (returns t
 {
     //compute the scores
     IntIntPair res;
-    unsigned int takerTeam = _taker % 2; //team of the taker
+    unsigned int takerTeam = _taker.ToInt() % 2; //team of the taker
     unsigned int winner = takerTeam;
     res.first = _running_scores[takerTeam];
     if(_running_scores[takerTeam] > _running_scores[1-takerTeam] && _running_scores[takerTeam] > _max_bid) //the taker win
@@ -110,9 +112,9 @@ void Basic_Game_Info::SetMaxBid(unsigned int max_bid)
 {
     _max_bid = max_bid;
 }
-void Basic_Game_Info::SetScores(PLAYER_ID trick_winner,const IntIntPair& scores)
+void Basic_Game_Info::SetScores(const Player_ID& trick_winner,const IntIntPair& scores)
 {
-    switch(trick_winner)
+    switch(trick_winner.ID())
     {
     case PLAYER0 : case PLAYER2 :
         _running_scores[0] = scores.first;

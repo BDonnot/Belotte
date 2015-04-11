@@ -17,7 +17,7 @@ _infos()
     _textAfterBet0.SetPosition(pos);
     pos.Set(_infos.WindowsWidth()/2,4*_infos.WindowsHeight()/9,CENTER);
     _textAfterBet1.SetPosition(pos);
-    _bidder = _infos.Next(_infos.Giver());
+    _bidder = _infos.Giver().NextPlayer();
 }
 
 bool Bidding::Bid(GAME_PHASES currentPhase) //TO DO test, test test !
@@ -25,14 +25,14 @@ bool Bidding::Bid(GAME_PHASES currentPhase) //TO DO test, test test !
     if (currentPhase != BIDDING) return false;
     bool choose = true;
     bool biddingOver = false;
-    PLAYER_ID giver = _infos.Giver();
+    Player_ID giver = _infos.Giver();
 
-    Uint i_playerBid = _infos.PosPlayerToInt(_bidder);
+    Uint i_playerBid = _bidder.ToInt();
 
     const Player_Bid& bid = _players[i_playerBid]->Take(_bets);
     choose = bid.Color() != Card_Color(NOT_CHOSEN);
     if (!choose) return false;
-    printf("%d has chosen\n",_bidder);
+    printf("%d has chosen\n",_bidder.ID());
     printf("max bet : %d, current bet : %d\n",_infos.MaxBid(),bid.Bid());
     handleBet(bid,_bidder); //TO DO move to BetsMemory
 
@@ -40,25 +40,25 @@ bool Bidding::Bid(GAME_PHASES currentPhase) //TO DO test, test test !
 
     if(_bidder == giver)
     {
-        Uint firstBiddingPlayer = (giver+1)%4;
+        Uint firstBiddingPlayer = giver.NextPlayer().ToInt();
         for (Uint i = firstBiddingPlayer; i < firstBiddingPlayer+4; i++)
         {
             _players[i%4]->ResetBid(false);
         }
     }
-    biddingOver = _bets.IsBetsOver(_bidder);
-    _bidder = _infos.Next(_bidder);
+    biddingOver = _bets.IsBetsOver();
+    _bidder.Next();
     if(biddingOver) return true; //ajust this.
     return false;
 }
-void Bidding::handleBet(const Player_Bid& bid, PLAYER_ID ibet)
+void Bidding::handleBet(const Player_Bid& bid, const Player_ID& ibet)
 {
     if(bid.Color() != Card_Color(NO))
     {
         _infos.SetMaxBid(bid.Bid());
         _infos.SetTrumpColor(bid.Color());
         _infos.SetTaker(ibet);
-        printf("%d took at %d at color %d \n",ibet,bid.Bid(),bid.Color().Color());
+        printf("%d took at %d at color %d \n",ibet.ID(),bid.Bid(),bid.Color().Color());
     }
 }
 
@@ -85,7 +85,7 @@ bool Bidding::Click(bool Short)
 void Bidding::SummarizeBet()
 {
     //the first player to play is the player after the giver
-    _bidder = _infos.Next(_infos.Giver());
+    _bidder = _infos.Giver().NextPlayer();
 
     switch (_infos.TrumpColor().Color()) //setting the displayed objects
     {
@@ -110,7 +110,7 @@ GAME_PHASES Bidding::NextPhase()
         _players[i]->InitMemory(); //and sort the hand
     }
 
-    Uint i_start = ((_infos.Giver()+1)%4);
+    Uint i_start = ((_infos.Giver().ToInt()+1)%4);
     switch (_infos.TrumpColor().Color())
     {
     case NO : case NOT_CHOSEN:
@@ -127,8 +127,8 @@ GAME_PHASES Bidding::NextPhase()
 }
 void Bidding::handleText()
 {
-    string res = _players[_infos.Taker()]->Getname();
-    switch (_infos.Taker()%2)
+    string res = _players[_infos.Taker().ToInt()]->Getname();
+    switch (_infos.Taker().ToInt()%2)
     {
     case 0 :
         res += " (équipe 1)";
@@ -167,7 +167,7 @@ void Bidding::handleText()
 string Bidding::GetString()
 {
     string res = "<bet>";
-    Uint firstPlayer = (_infos.Giver()+1)%4;
+    Uint firstPlayer = (_infos.Giver().ToInt()+1)%4;
 
     Uint betsNum = _bets.GetSize();
     Uint counter = 1;

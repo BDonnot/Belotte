@@ -21,7 +21,7 @@ class Bidding
         Images_Text _textAfterBet1;
         Images_Button _ok;
         Cards_Deck* _pDeck;
-        PLAYER_ID _bidder;
+        Player_ID _bidder;
 
     public:
         Bidding(){}
@@ -39,7 +39,7 @@ class Bidding
 
         std::string GetString(); //not const because it erase the bets made in _bets.
     protected:
-        void handleBet(const Player_Bid& bid, PLAYER_ID ibet);
+        void handleBet(const Player_Bid& bid, const Player_ID& ibet);
         void handleText();
     private:
 };
