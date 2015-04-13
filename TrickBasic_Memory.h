@@ -45,6 +45,7 @@ class TrickBasic_Memory
         const Card_Height& HeightMaster() const {return _heightMaster;}
         const Cards* operator[](Uint i) const {return _currentTrick[i];}
 
+        bool IsFallen(const Card_Color& color, const Card_Height& height); //compute if the card is fallen in the trick or not
         void Reset(); //at the end of the game (8 trick)
     protected:
         virtual void trickFinished(){ _trickFinished = true; } //update _trickFinished

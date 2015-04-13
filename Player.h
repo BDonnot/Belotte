@@ -26,20 +26,23 @@
 class Player
 {
     protected:
-        Basic_Game_Info _basic_info;
-        PositionGraphic _pos;
+
 
         Player_Name _name; //his name
         std::list<Cards*> _hand; //the hand of the player
         std::list<std::list<Cards*>::iterator> _playable_cards; //the card a player can play in a trick
         const Player_ID _number; //the number
+        Basic_Game_Info _basic_info;
+        std::list<Cards*>::iterator _cardPlayed;
+        TrickStatus _currentTrickStatus;
+
+        PositionGraphic _pos;
         DisplayCardPlayer _DisplayCardPlayer;//to display the cards the proper way
         SDL_Surface* _screen;
         SDL_Event* _event;
         Player_Bid _currentBid;
         Player_Bid_Graphic _oldBid;
-        std::list<Cards*>::iterator _cardPlayed;
-        TrickStatus _currentTrickStatus;
+
 
     public:
         Player():_number(PLAYER0){}

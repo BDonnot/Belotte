@@ -107,7 +107,7 @@ std::list<Cards*>::iterator AIPlayScores<Memory>::Play(const TrickBasic_Memory& 
 
 //int AIPlayScores::playFirst(Carte* pcard, int color_trump,int player_take, int team_taken,bool play_trump,int pseudo_height_trump_max, int number_trick)
 template<class Memory>
-int AIPlayScores<Memory>::playFirst(const Cards*pcard,
+int AIPlayScores<Memory>::playFirst(const Cards* pcard,
                                     const TrickBasic_Memory& trick,
                                     const TrickStatus& trickStatus,
                                     Random& rand,

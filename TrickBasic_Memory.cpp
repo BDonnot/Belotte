@@ -133,3 +133,13 @@ void TrickBasic_Memory::playerPlayed()
     _to_play.Next();
     _cardsPlayed++;
 }
+bool TrickBasic_Memory::IsFallen(const Card_Color& color, const Card_Height& height)
+{
+    Cards* temp;
+    for(Uint i = 0; i < _cardsPlayed; ++i)
+    {
+        temp = _currentTrick[i];
+        if(temp->GetColour() == color && temp->GetHeight() == height) return true;
+    }
+    return false;
+}
