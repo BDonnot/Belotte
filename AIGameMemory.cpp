@@ -1,5 +1,5 @@
 #include "AIGameMemory.h"
-
+using namespace std;
 AIGameMemory::~AIGameMemory()
 {
     //dtor
@@ -87,7 +87,7 @@ void AIGameMemory::updateEverythingElse(const Player_ID& firstToPlay)
         _longe[i] = 0;
     }
 
-    std::list<const Cards*> _cardsPerColor[4];
+    array< list<const Cards*> , 4 > _cardsPerColor;
     Card_Color color(_infos.TrumpColor());
     Card_Height height(UNINTIALIZED);
     Uint iColor = color.ToInt();
@@ -99,38 +99,43 @@ void AIGameMemory::updateEverythingElse(const Player_ID& firstToPlay)
         height = pcard->GetHeight();
         iColor = color.ToInt();
         _nbRemaining[iColor] += 1;
+        _cardsPerColor[iColor].push_back(pcard);
         if(pcard->Win(_greatest[iColor])) _greatest[iColor] = height;
         if(!(pcard->Win(_smallest[iColor]))) _smallest[iColor] = height;
         if(height == (color == _infos.TrumpColor() ? Card_Height(NINE) : Card_Height(TEN))) _HaveTen[iColor] = true;
-        _cardsPerColor[iColor].push_back(pcard);
     }
-
     //COMPUTE THE OTHER THINGS COLOR PER COLOR
+    CARDS_COLOR colors[4] = {DIAMOND,HEART,SPADE,CLUB};
     for(Uint i = 0; i < 4; i++)
     {
-        color = Card_Color(i);
+        color = Card_Color( colors[i] );
+        Uint iCol = color.ToInt();
         Uint nbLeft = 8-_fallenCards.ComputeFallen(color);
-        if(_nbRemaining[i] == nbLeft)
+        if(_nbRemaining[iCol] == nbLeft)
         {
             Player_ID currentPlayer(firstToPlay);
-            for(i= 1; i < 4; i++)
+            for(Uint j= 1; j < 4; j++)
             {
                 currentPlayer.Next();
                 _playerCut.SetCut(currentPlayer,color );
             }
         }
-        if (_greatest[i] == _heightsMaster[i] )_IAmMaster[i] = true;
-        computeScoreLongeAndProtectPoint(_cardsPerColor[i],_longe[i],_protectPoints[i],_IAmMaster[i],_greatest[i]);
+        if (_greatest[iCol] == _heightsMaster[iCol] )_IAmMaster[iCol] = true;
+        computeScoreLongeAndProtectPoint(_cardsPerColor[iCol],_longe[iCol],_protectPoints[iCol],_IAmMaster[iCol],_greatest[iCol]);
     }
 
 }
-void AIGameMemory::computeScoreLongeAndProtectPoint(std::list<const Cards*>& cardsInTheColor,Uint& scoreLonge, bool& protectPoints,bool iAmMasterColor,const Card_Height& greatest)
+void AIGameMemory::computeScoreLongeAndProtectPoint(const std::list<const Cards*>& cardsInTheColor,Uint& scoreLonge, bool& protectPoints,bool iAmMasterColor,const Card_Height& greatest)
 {
+    //TO DO : we can perform some optimization here !
     bool isTrump = false;
+    scoreLonge = 0;
+    protectPoints = false;
     for(auto pcard : cardsInTheColor)
     {
         if((pcard->Value() >= 9) && (!iAmMasterColor)) protectPoints = true;
         if(!isTrump && (pcard->GetColour() == _infos.TrumpColor()) ) isTrump = true;
+        continue;
     }
     if(iAmMasterColor)
     {
@@ -141,6 +146,7 @@ void AIGameMemory::computeScoreLongeAndProtectPoint(std::list<const Cards*>& car
         bool loopAgain = true;
         while(loopAgain && currentLonge.ToInt() > 0)
         {
+            loopAgain = false;
             for(auto pcard : cardsInTheColor)
             {
                 tempHeight = pcard->GetHeight();
@@ -149,8 +155,8 @@ void AIGameMemory::computeScoreLongeAndProtectPoint(std::list<const Cards*>& car
                 {
                     counter++;
                     currentLonge = currentLonge.HeightUnder(isTrump);
+                    loopAgain = true;
                 }
-                else loopAgain = false;
             }
         }
         if(counter > 3) scoreLonge = 10;

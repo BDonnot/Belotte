@@ -1,5 +1,6 @@
 #ifndef AIGAMEMEMORY_H
 #define AIGAMEMEMORY_H
+
 #include <array>
 #include <list>
 #include "Definitions.h"
@@ -151,7 +152,7 @@ class AIGameMemory
         bool opponentsCallCut(const Card_Color& color,const MemorizeCutsCalls& StoreCallCut) const; //do my opponents call/cut at the 'color'
         bool teammateCallCut(const Card_Color& color,const MemorizeCutsCalls& StoreCallCut) const; //do my  teammate call/cut at the 'color'
         bool nextCallCut(const Card_Color& color,const MemorizeCutsCalls& StoreCallCut) const; //do the player who play after me call/cut at the 'color'
-        void computeScoreLongeAndProtectPoint(std::list<const Cards*>& cardsInTheColor,Uint& scoreLonge, bool& protectPoints,bool iAmMasterColor,const Card_Height& greatest); //always per color
+        void computeScoreLongeAndProtectPoint(const std::list<const Cards*>& cardsInTheColor,Uint& scoreLonge, bool& protectPoints,bool iAmMasterColor,const Card_Height& greatest); //always per color
     private:
 };
 

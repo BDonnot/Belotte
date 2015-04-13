@@ -365,7 +365,6 @@ int AIPlayScores<Memory>::playThird(const Cards* pcard,
     Position_Trick i_master = trick.CurrentWinner();
     Position_Trick First(FIRST);
     //Player_ID teammate = _player.Teammate();
-//TO DO : change i_master ! -> it is a positiong trick, not a player id...
 //If I can play trump
     if (play_trump)
     {
@@ -396,7 +395,8 @@ int AIPlayScores<Memory>::playThird(const Cards* pcard,
     {
         if (color==color_trump)
         {
-            if ((color_asked!=color_trump)&&playerMemory.ProtectPoints(color)&&(height == playerMemory.Greatest(color))) res += _play_3rd.value(12,0); //res=9
+            printf("je suis a 1\n");
+            if ((color_asked!=color_trump)&& playerMemory.ProtectPoints(color) && (height == playerMemory.Greatest(color))) res += _play_3rd.value(12,0); //res=9
         }
         else
         {
@@ -498,6 +498,7 @@ int AIPlayScores<Memory>::playFourth(const Cards*pcard,
     {
         if (playerMemory.AmIMaster(color)) //will we play a big or a small trump ?
         {
+            printf("je suis a 2\n");
             if (playerMemory.ProtectPoints(color))
             {
                 if (height == playerMemory.Greatest(color)) res += _play_4th.value(0,0);//res=-7
@@ -522,6 +523,7 @@ int AIPlayScores<Memory>::playFourth(const Cards*pcard,
             }
             if ((playerMemory.AllRemainingCards(color))&&(height == playerMemory.Greatest(color))) res += _play_4th.value(6,0); //res=35
         }
+        printf("je suis a 3\n");
         if (playerMemory.ProtectPoints(color))
         {
             if (height == playerMemory.Greatest(color)) res += _play_4th.value(7,0); //res=9
