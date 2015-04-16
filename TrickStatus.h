@@ -13,17 +13,19 @@ class TrickStatus
         Basic_Game_Info _infos;
         Card_Color _trumpColor;
         bool _has_col; //does the player have the color asked
-        bool _has_trump; //does the plaeyer have trump
+        bool _has_trump; //does the player have trump
         Position_Trick _myPosition; //Player's position in the trick
+        const Player_ID _myID;
     public:
-        TrickStatus(){}
+        TrickStatus(const Player_ID& myID):_myID(myID){}
         virtual ~TrickStatus(){}
         void Update(const TrickBasic_Memory&  trick
                     ,bool hasCol
                     ,bool hasTrump);
         bool HasCol() const { return _has_col; }
         bool HasTrump() const { return _has_trump; }
-        Position_Trick Position() const { return _myPosition; }
+        const Position_Trick& Position() const { return _myPosition; }
+        const Player_ID& ID() const { return _myID; }
         const Card_Color& TrumpColor() const {return _trumpColor; }
 
     private:

@@ -143,6 +143,8 @@ class AIGameMemory
         Card_Height Greatest(const Card_Color& color) const; //return the greatest cards I have in the color
         Card_Height Smallest(const Card_Color& color) const; //return the smallest cards I have in the color
 
+        bool CanReceiveCard(const Player_ID& id, const Card_Color& col, const Card_Height& height); //true if it is possible that the player have this card in the hand
+
     protected:
         //Card_Height heightUnder(const Card_Height& height,bool color);
         void computeNewHeightMaster(); //also update _playerCut

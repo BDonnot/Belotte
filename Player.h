@@ -45,7 +45,7 @@ class Player
 
 
     public:
-        Player():_number(PLAYER0){}
+        Player():_number(PLAYER0),_currentTrickStatus(_number){}
         Player(const Player_ID& number,Uint windows_width, Uint windows_height,SDL_Event* pevent,Basic_Images* fond,SDL_Surface* screen):
             _basic_info()
             ,_pos(setPosition(number,windows_width,windows_height))
@@ -58,6 +58,7 @@ class Player
                    ,_pos)
             ,_playable_cards()
             ,_number(number)
+            ,_currentTrickStatus(_number)
             ,_DisplayCardPlayer(screen,windows_width,windows_height,number)
             ,_currentBid()
             ,_oldBid(number,pevent,screen,windows_width,windows_height)

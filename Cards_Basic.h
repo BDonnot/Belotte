@@ -2,7 +2,7 @@
 #define CARDS_BASIC_H
 
 #include <array>
-#include<string>
+#include <string>
 
 #include "Definitions.h"
 #include "Basic_Game_Info.h"

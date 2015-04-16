@@ -277,3 +277,7 @@ Card_Height AIGameMemory::Smallest(const Card_Color& color) const //return the s
     Uint iColor = color.ToInt();
     return _smallest[iColor];
 }
+bool AIGameMemory::CanReceiveCard(const Player_ID& id, const Card_Color& col, const Card_Height& height)
+{
+    return _playerCut.Cut(id,col);
+}
