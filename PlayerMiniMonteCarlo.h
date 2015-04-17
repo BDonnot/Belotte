@@ -21,7 +21,7 @@ namespace std
     {
         size_t operator() (const Cards_Basic& card) const
         {
-            return( (hash<Uint>()(card.GetColour())) ^ (hash<Uint>()(card.GetHeight()) << 1) >> 1)
+            return( (hash<Uint>()(card.GetColour().ToInt())) ^ (hash<Uint>()(card.GetHeight().ToInt()) << 1) >> 1);
         }
     };
 }
@@ -47,8 +47,11 @@ class PlayerMiniMonteCarlo
         bool CanReceiveCard(const Cards_Basic& card);
         bool CanReceiveAnotherCard();
         const Player_ID& ID() const {return _number;}
-        Cards_Basic RetrieveCard(const Cards_Basic& card); //retrieve the card from the hand
+        void RetrieveCard(const Cards_Basic& card); //retrieve the card from the hand
         Cards_Basic Play();
+
+        void AddConstraint(const Cards_Basic& card);
+        void RemoveConstraint(const Cards_Basic& card);
 
 
     protected:
@@ -68,6 +71,19 @@ void PlayerMiniMonteCarlo<GameMemory,PlayAI>::ReceiveInitInfo(const GameMemory& 
     {
         _canReceiveCard.emplace(card,!initMemory.Cut(_number,card.GetColour()));
     }
+}
+
+template<class GameMemory,class PlayAI>
+void PlayerMiniMonteCarlo<GameMemory,PlayAI>::AddConstraint(const Cards_Basic& card)
+{
+    _canReceiveCard[card] = false;
+}
+
+template<class GameMemory,class PlayAI>
+void PlayerMiniMonteCarlo<GameMemory,PlayAI>::RemoveConstraint(const Cards_Basic& card)
+{
+    //TO DO : maybe remember the initial state : we don't want a constraint to be added illegally
+    _canReceiveCard[card] = true;
 }
 
 template<class GameMemory,class PlayAI>
@@ -98,20 +114,21 @@ bool PlayerMiniMonteCarlo<GameMemory,PlayAI>::CanReceiveAnotherCard() //true if 
 template<class GameMemory,class PlayAI>
 bool PlayerMiniMonteCarlo<GameMemory,PlayAI>::CanReceiveCard(const Cards_Basic& card) //true if the cards is put, false otherwise
 {
-    return _canReceiveCard[card];
+    return _canReceiveCard[card] && _nbCardToReceive > 0;
 }
 
 template<class GameMemory,class PlayAI>
-Cards_Basic PlayerMiniMonteCarlo<GameMemory,PlayAI>::RetrieveCard(const Cards_Basic& card) //retrieve a card from the hand, randomly
+void PlayerMiniMonteCarlo<GameMemory,PlayAI>::RetrieveCard(const Cards_Basic& card) //retrieve a card from the hand, randomly
 {
+    /*
     auto it = _hand.begin();
     for(it; it != _hand.end(); ++it)
     {
         if(it->GetColour() == card.GetColour() && it->GetHeight() == card.GetHeight() )
             break;
     }
+    */
     _nbCardToReceive++;
-    _hand.erase(it);
-    return card;
+    _hand.remove(card);
 }
 #endif // PLAYERMINIMONTECARLO_H

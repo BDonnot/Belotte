@@ -29,6 +29,7 @@ class Cards_Basic
         const Card_Color& GetColour() const;
         const Card_Height& GetHeight() const;
         const Uint& Value() const;
+        bool operator== (const Cards_Basic& other){return _color_card == other.GetColour() && _height_card == other.GetHeight();}
 
         bool Win(const Card_Height& height_other) const; //true if the card win | card1.Win(heightCard2) == true if card1 beats card 2.
         std::string GetString() const;
