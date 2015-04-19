@@ -34,7 +34,7 @@ void AIGameMemory::UpdateFullTrick(const TrickBasic_Memory& trick, const Positio
         currentColor = trick[i]->GetColour();
         if(currentColor != colorAsked)
         {
-            _playerCut.SetCut(currentPlayer,currentColor );
+            _playerCut.SetCut(currentPlayer,colorAsked );
             if(trick[i]->Value() <= 4) _playerCalls.SetCut(currentPlayer,currentColor ); //we don't call with TEN, NINE or ACE ...
             //maybe a smarter option here
         }

@@ -5,7 +5,8 @@ using namespace::std;
 
 void Player::ReceivedCard(Cards* pcard,unsigned int card_number)
 {
-    pcard->InitMouvement(_number==PLAYER0,_pos,1000,50*card_number);
+    pcard->InitMouvement(true,_pos,1000,50*card_number);
+    //pcard->InitMouvement(_number==PLAYER0,_pos,1000,50*card_number);
     _hand.push_back(pcard);
 }
 PositionGraphic Player::setPosition(const Player_ID& number,Uint16 windows_width, Uint16 windows_height)

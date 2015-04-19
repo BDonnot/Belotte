@@ -34,12 +34,12 @@ void TrickBasic_Memory::updateWinner()
         _colorMaster = _colorAsked;
         _heightMaster = _currentTrick[0]->GetHeight();
         _winner = Position_Trick(FIRST);
-        printf("color asked : %d, trump color : %d\n",_colorAsked.ToInt(),_infos.TrumpColor().ToInt());
+        //printf("color asked : %d, trump color : %d\n",_colorAsked.ToInt(),_infos.TrumpColor().ToInt());
         return ;
     }
     Card_Color colorTrump = _infos.TrumpColor();
     Card_Color color = _currentTrick[_cardsPlayed]->GetColour();
-    printf("color asked : %d, trump color : %d, color played : %d\n",_colorAsked.ToInt(),_infos.TrumpColor().ToInt(),color.ToInt());
+    //printf("color asked : %d, trump color : %d, color played : %d\n",_colorAsked.ToInt(),_infos.TrumpColor().ToInt(),color.ToInt());
     //Card_Height height = _currentTrick[_cardsPlayed]->GetHeight();
 
     bool needUpdate = false; //do the last cards played is master

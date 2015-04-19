@@ -23,7 +23,7 @@ class BoolStorage
         BoolStorage(){Reset();}
         void Reset()
         {
-            for(Uint i = 0; i < n ; i++)
+            for(Uint i = 0; i < n ; ++i)
             {
                 _information[i] = false;
             }
@@ -71,13 +71,13 @@ class MemorizeCutsCalls  : public BoolStorage<16> //efficient way to memorize wh
 {
     public :
         MemorizeCutsCalls(){}
-        const bool & Cut(const Player_ID& player, Card_Color color) const
+        const bool & Cut(const Player_ID& player,const Card_Color& color) const
         {
             Uint iPlayer = player.ToInt();
             Uint iColor = color.ToInt();
             return getInfo(iPlayer*4 + iColor);
         }
-        void SetCut(const Player_ID& player, Card_Color color)
+        void SetCut(const Player_ID& player,const Card_Color& color)
         {
             Uint iPlayer = player.ToInt();
             Uint iColor = color.ToInt();
@@ -89,7 +89,7 @@ class AIGameMemory
 {
     protected :
         Basic_Game_Info _infos;
-        Player_ID _posPlayer;
+        const Player_ID _posPlayer;
         std::list<Cards* >* _pHand;
         MemorizeCards _fallenCards; //
 
@@ -116,6 +116,7 @@ class AIGameMemory
                 InitEverything();
             }
         virtual ~AIGameMemory();
+        const Player_ID& ID() {return _posPlayer;}
         void UpdateFullTrick(const TrickBasic_Memory& trick,const Position_Trick& posTrick); //posTrick : the position of the player in the trick
         void InitEverything(); //call after the trump have been chosen, to set everything :-)
         Card_Height Master(const Card_Color& color) const;

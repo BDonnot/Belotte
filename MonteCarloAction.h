@@ -11,8 +11,9 @@ class MonteCarloAction
         BasicMonteCarloAction _action;
         std::list<BasicMonteCarloAction> _consequences;
     public :
-        MonteCarloAction(const BasicMonteCarloAction& action):_action(action){}
+        MonteCarloAction(const BasicMonteCarloAction& action):_action(action){_consequences.clear();printf("I just created a Montecarlo action with the player %d \n",action.ID().ToInt());}
         MonteCarloAction(){}
+        ~MonteCarloAction(){}
         BasicMonteCarloAction & Action() {return _action;}
         std::list<BasicMonteCarloAction>& Consequences() {return _consequences;}
 };

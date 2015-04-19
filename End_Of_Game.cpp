@@ -89,11 +89,11 @@ void End_Of_Game::Update()
 }
 GAME_PHASES End_Of_Game::Next()
 {
-//    bool again = _again.Click(true);
-//    bool quit = _quit.Click(true);
-//    _again.Reset_Click();
-//    _quit.Reset_Click();
+    /*
     if(_again.Click(true)) return GIVING;
     if(_quit.Click(true)) return EXIT;
     return SCORES;
+    */
+
+    return GIVING;
 }

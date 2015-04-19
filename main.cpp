@@ -51,8 +51,13 @@ int SIMON = 3; //un ami qui aime beaucoup la belote
 //TO DO : ne pas lancer son dernier atout
 //TO DO : ne pas défausser ses AS : essayer de garder ses cartes maitresses !
 //TO DO : cleaner "data.h"
+#include "AIPlayMonteCarlo.h"
+#include "AIGameMemory.h"
+#include "AIPlayRandom.h"
+
 int main( int argc, char* args[] )
 {
+
 //    ofstream output("datas/games.blt", ios::app);
     Basic_Game_Info _info;
     //srand((time(NULL)));

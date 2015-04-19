@@ -28,7 +28,6 @@ class Player
     protected:
 
 
-        Player_Name _name; //his name
         std::list<Cards*> _hand; //the hand of the player
         std::list<std::list<Cards*>::iterator> _playable_cards; //the card a player can play in a trick
         const Player_ID _number; //the number
@@ -37,6 +36,7 @@ class Player
         TrickStatus _currentTrickStatus;
 
         PositionGraphic _pos;
+        Player_Name _name; //his name
         DisplayCardPlayer _DisplayCardPlayer;//to display the cards the proper way
         SDL_Surface* _screen;
         SDL_Event* _event;
@@ -47,7 +47,10 @@ class Player
     public:
         Player():_number(PLAYER0),_currentTrickStatus(_number){}
         Player(const Player_ID& number,Uint windows_width, Uint windows_height,SDL_Event* pevent,Basic_Images* fond,SDL_Surface* screen):
-            _basic_info()
+            _playable_cards()
+            ,_number(number)
+            ,_cardPlayed(_hand.end())
+            ,_currentTrickStatus(_number)
             ,_pos(setPosition(number,windows_width,windows_height))
             ,_name(fond
                    ,setName(number)
@@ -56,13 +59,8 @@ class Player
                    ,windows_width
                    ,windows_height
                    ,_pos)
-            ,_playable_cards()
-            ,_number(number)
-            ,_currentTrickStatus(_number)
             ,_DisplayCardPlayer(screen,windows_width,windows_height,number)
-            ,_currentBid()
             ,_oldBid(number,pevent,screen,windows_width,windows_height)
-            ,_cardPlayed(_hand.end())
         {
             //_pos = setPosition(number,windows_width,windows_height);
             _screen = screen;

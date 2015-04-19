@@ -185,7 +185,8 @@ const bool Cards_Deck::Click(GAME_PHASES currentPhase)
             return true;
         }
     }
-    return false;
+    //return false;
+    return true;
 }
 void Cards_Deck::UpdateEvent(GAME_PHASES currentPhase)
 {

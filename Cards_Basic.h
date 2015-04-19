@@ -14,8 +14,8 @@ class Cards_Basic
 {
     protected :
         Basic_Game_Info _infos;
-        const Card_Height _height_card;
-        const Card_Color _color_card;
+        Card_Height _height_card;
+        Card_Color _color_card;
 
         std::array<std::array<bool,8>,8 > _matrix_win_trump;
         std::array<std::array<bool,8>,8 > _matrix_win_no_trump; //No_trump[height_1][height_2] : return true if height_2 wins over height_1
@@ -24,12 +24,13 @@ class Cards_Basic
     public:
         Cards_Basic():_height_card(UNINTIALIZED),_color_card(NOT_CHOSEN){}
         Cards_Basic(const Card_Height& height,const Card_Color& color);
+
         virtual ~Cards_Basic(){}
 
         const Card_Color& GetColour() const;
         const Card_Height& GetHeight() const;
         const Uint& Value() const;
-        bool operator== (const Cards_Basic& other){return _color_card == other.GetColour() && _height_card == other.GetHeight();}
+        bool operator== (const Cards_Basic& other) const {return _color_card == other.GetColour() && _height_card == other.GetHeight();}
 
         bool Win(const Card_Height& height_other) const; //true if the card win | card1.Win(heightCard2) == true if card1 beats card 2.
         std::string GetString() const;
@@ -38,4 +39,16 @@ class Cards_Basic
     private:
 };
 
+//if we want to store them as hash-map key
+namespace std
+{
+    template<>
+    struct hash<Cards_Basic>
+    {
+        size_t operator() (const Cards_Basic& card) const
+        {
+            return hash<Uint>()(card.GetColour().ToInt()*8+card.GetHeight().ToInt());
+        }
+    };
+}
 #endif // CARDS_BASIC_H

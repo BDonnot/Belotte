@@ -15,7 +15,7 @@ class TrickStatus
         bool _has_col; //does the player have the color asked
         bool _has_trump; //does the player have trump
         Position_Trick _myPosition; //Player's position in the trick
-        const Player_ID _myID;
+        Player_ID _myID;
     public:
         TrickStatus(const Player_ID& myID):_myID(myID){}
         virtual ~TrickStatus(){}

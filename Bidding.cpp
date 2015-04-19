@@ -32,8 +32,8 @@ bool Bidding::Bid(GAME_PHASES currentPhase) //TO DO test, test test !
     const Player_Bid& bid = _players[i_playerBid]->Take(_bets);
     choose = bid.Color() != Card_Color(NOT_CHOSEN);
     if (!choose) return false;
-    printf("%d has chosen\n",_bidder.ID());
-    printf("max bet : %d, current bet : %d\n",_infos.MaxBid(),bid.Bid());
+    //printf("%d has chosen\n",_bidder.ID());
+    //printf("max bet : %d, current bet : %d\n",_infos.MaxBid(),bid.Bid());
     handleBet(bid,_bidder); //TO DO move to BetsMemory
 
     _bets.TellBet(bid);
@@ -58,7 +58,7 @@ void Bidding::handleBet(const Player_Bid& bid, const Player_ID& ibet)
         _infos.SetMaxBid(bid.Bid());
         _infos.SetTrumpColor(bid.Color());
         _infos.SetTaker(ibet);
-        printf("%d took at %d at color %d \n",ibet.ID(),bid.Bid(),bid.Color().Color());
+        //printf("%d took at %d at color %d \n",ibet.ID(),bid.Bid(),bid.Color().Color());
     }
 }
 
