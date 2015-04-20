@@ -32,7 +32,8 @@ Game_Coinche::Game_Coinche(SDL_Surface* screen,Uint16 screenWidth, Uint16 screen
         //<AIGameMemory,AITakeBasic,AIPlayRandom<AIGameMemory> >
         //<AIGameMemory,AITakeBasic,AIPlayScores<AIGameMemory> >
         //<AIGameMemory,AITakeBasic,AIPlayMonteCarlo<AIGameMemory> >
-        _players[i] =  static_cast<Player*>(new Player_AI<AIGameMemory,AITakeBasic,AIPlayMonteCarlo<AIGameMemory> >(Player_ID(posPlayer[i]),screenWidth,screenHeight,_event,&_backSide,_pScreen));
+        //<AIGameMemory,AITakeBasic,AIPlayMonteCarlo<AIGameMemory> >
+        _players[i] =  static_cast<Player*>(new Player_AI<AIGameMemoryImproved,AITakeBasic,AIPlayMonteCarlo<AIGameMemoryImproved> >(Player_ID(posPlayer[i]),screenWidth,screenHeight,_event,&_backSide,_pScreen));
     }
     _bid.SetPlayers(_players);
     _trick.SetPlayers(_players);
@@ -115,24 +116,9 @@ void Game_Coinche::playGame(bool& keep_playing)
         if(_deck.Click(_currentPhase))
         {
             _deck.Reset();
-//            _deck.GiveCards(_players);
-//            _saveGame.SaveHands(_players);
-//            _timeNextAction = _infos.Time() + 2000;
             _currentPhase = PREBET;
         }
         return;
-        /*
-    case GIVING :
-        if(_deck.Click(_currentPhase))
-        {
-            _deck.Reset();
-//            _deck.GiveCards(_players);
-//            _saveGame.SaveHands(_players);
-//            _timeNextAction = _infos.Time() + 2000;
-            _currentPhase = PREBET;
-        }
-        return;
-        */
     case PREBET :
         _deck.GiveCards(_players);
         _saveGame.SaveHands(_players);
@@ -150,8 +136,8 @@ void Game_Coinche::playGame(bool& keep_playing)
         }
         return;
     case AFTER_BET :
-        //if (_bid.Click(true))
-        if (true) //here
+        //if (_bid.Click(true)) //HERE
+        if (true) //HERE
         {
             _currentPhase = _bid.NextPhase();
             if(_currentPhase == PLAYING)
@@ -192,7 +178,7 @@ void Game_Coinche::playGame(bool& keep_playing)
         return;
     case SCORES :
         //printf("Should be displaying scores\n");
-        _currentPhase = _endGame.Next(); //here
+        _currentPhase = _endGame.Next(); //HERE (inside function)
         if(_currentPhase!=SCORES)
         {
             _saveGame.EndGame();

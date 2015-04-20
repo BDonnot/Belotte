@@ -16,7 +16,9 @@
 #include "AIPlayRandom.h"
 #include "AIPlayScores.h"
 #include "AIPlayMonteCarlo.h"
+
 #include "AIGameMemory.h"
+#include "AIGameMemoryImproved.h"
 //#include "AIBetsMemory.h"
 //#include "AIGameMemory.h"
 //#include "AIPlayRandom.h"

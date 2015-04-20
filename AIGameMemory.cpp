@@ -1,5 +1,6 @@
 #include "AIGameMemory.h"
 using namespace std;
+
 AIGameMemory::~AIGameMemory()
 {
     //dtor
@@ -39,6 +40,8 @@ void AIGameMemory::UpdateFullTrick(const TrickBasic_Memory& trick, const Positio
             //maybe a smarter option here
         }
     }
+    //update smarter memory (for derived class)
+    updateSmarter(trick,posTrick);
     //update everything else
     updateEverythingElse(_infos.FirstToPlay(posTrick,_posPlayer));
 
@@ -279,5 +282,11 @@ Card_Height AIGameMemory::Smallest(const Card_Color& color) const //return the s
 }
 bool AIGameMemory::CanReceiveCard(const Player_ID& id, const Card_Color& col, const Card_Height& height)
 {
-    return _playerCut.Cut(id,col);
+    return !_playerCut.Cut(id,col) && canHave(id,col,height);
 }
+/*
+bool AIGameMemory::CanHaveCard(const Player_ID& player,const Card_Color& color, const Card_Height& height) const
+{
+    return !_playerCut.Cut(player,color) && canHave(player,color,height);
+}
+*/

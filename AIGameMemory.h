@@ -3,9 +3,11 @@
 
 #include <array>
 #include <list>
+
 #include "Definitions.h"
 #include "Basic_Game_Info.h"
 
+#include "Cards_Basic.h"
 #include "Cards.h"
 #include "TrickBasic_Memory.h"
 /**
@@ -21,6 +23,7 @@ class BoolStorage
         bool _information[n];
     public :
         BoolStorage(){Reset();}
+        virtual ~BoolStorage(){}
         void Reset()
         {
             for(Uint i = 0; i < n ; ++i)
@@ -43,6 +46,7 @@ class MemorizeCards : public BoolStorage<32> //just an efficient way to store al
 {
     public :
         MemorizeCards(){}
+        ~MemorizeCards(){}
         const bool & IsFallen(Card_Color color, Card_Height height) const
         {
             Uint iColor = color.ToInt();
@@ -71,6 +75,7 @@ class MemorizeCutsCalls  : public BoolStorage<16> //efficient way to memorize wh
 {
     public :
         MemorizeCutsCalls(){}
+        ~MemorizeCutsCalls(){}
         const bool & Cut(const Player_ID& player,const Card_Color& color) const
         {
             Uint iPlayer = player.ToInt();
@@ -121,7 +126,8 @@ class AIGameMemory
         void InitEverything(); //call after the trump have been chosen, to set everything :-)
         Card_Height Master(const Card_Color& color) const;
 
-        bool Cut(const Player_ID& player,const Card_Color& color) const; //see *CallCut for more information
+        //bool CanHaveCard(const Player_ID& player,const Card_Color& color, const Card_Height& height) const;
+        virtual bool Cut(const Player_ID& player,const Card_Color& color) const; //see *CallCut for more information
         bool OpponentsCut(const Card_Color& color) const;
         bool TeammateCut(const Card_Color& color) const;
         bool NextCut(const Card_Color& color) const; //see *CallCut for more information
@@ -146,6 +152,7 @@ class AIGameMemory
 
         bool CanReceiveCard(const Player_ID& id, const Card_Color& col, const Card_Height& height); //true if it is possible that the player have this card in the hand
 
+        virtual bool SetCanHaveCard(const Player_ID& player,const Card_Color& col, const Card_Height& height) {return false;}
     protected:
         //Card_Height heightUnder(const Card_Height& height,bool color);
         void computeNewHeightMaster(); //also update _playerCut
@@ -156,6 +163,9 @@ class AIGameMemory
         bool teammateCallCut(const Card_Color& color,const MemorizeCutsCalls& StoreCallCut) const; //do my  teammate call/cut at the 'color'
         bool nextCallCut(const Card_Color& color,const MemorizeCutsCalls& StoreCallCut) const; //do the player who play after me call/cut at the 'color'
         void computeScoreLongeAndProtectPoint(const std::list<const Cards*>& cardsInTheColor,Uint& scoreLonge, bool& protectPoints,bool iAmMasterColor,const Card_Height& greatest); //always per color
+
+        virtual void updateSmarter(const TrickBasic_Memory& trick, const Position_Trick& posTrick){}
+        virtual bool canHave(const Player_ID& player,const Card_Color& col, const Card_Height& height) const {return true;}
     private:
 };
 

@@ -30,7 +30,8 @@ class PlayerMiniMonteCarlo
         PlayerMiniMonteCarlo():_number(GHOST),_status(_number){}
         PlayerMiniMonteCarlo(const Player_ID& number):_number(number),_status(_number){}
         virtual ~PlayerMiniMonteCarlo(){}
-        void ReceiveInitInfo(const GameMemory& initMemory,Random& initRandomState,const std::list<Cards_Basic>& cardsToGive,Uint nbCardToReceive);
+        void ReceiveInitInfo(Random& initRandomState);
+        void ReceiveCardsInfo(Uint nbCardToReceive,const std::list<Cards_Basic>& cardsToBeGiven,const GameMemory& initMemory);
         void ReceiveHand(const std::list<Cards*>& initHand);
         void ReceiveCard(const Cards_Basic& card); //true if the cards is put, false otherwise
         bool CanReceiveCard(const Cards_Basic& card) const;
@@ -44,22 +45,29 @@ class PlayerMiniMonteCarlo
         void RemoveConstraint(const Cards_Basic& card);
 
         void PrintHand() const;
+
     protected:
 
     private:
 };
 
 template<class GameMemory>
-void PlayerMiniMonteCarlo<GameMemory>::ReceiveInitInfo(const GameMemory& initMemory,
-                                                              Random& initRandomState,
-                                                              const std::list<Cards_Basic>& cardsToGive,
-                                                              Uint nbCardToReceive)
+void PlayerMiniMonteCarlo<GameMemory>::ReceiveInitInfo(Random& initRandomState)
 {
-    _nbCardToReceive = nbCardToReceive;
     _rand = &initRandomState;
-    for(const auto card : cardsToGive)
+}
+
+template<class GameMemory>
+void PlayerMiniMonteCarlo<GameMemory>::ReceiveCardsInfo(Uint nbCardToReceive,
+                                                       const std::list<Cards_Basic>& cardsToBeGiven,
+                                                       const GameMemory& initMemory)
+
+{
+    _hand.clear();
+    _nbCardToReceive = nbCardToReceive;
+    for(const auto card : cardsToBeGiven)
     {
-        _canReceiveCard.emplace(card,!initMemory.Cut(_number,card.GetColour()));
+        _canReceiveCard[card] = !initMemory.Cut(_number,card.GetColour());
     }
 }
 
