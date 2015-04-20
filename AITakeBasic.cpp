@@ -77,6 +77,6 @@ void AITakeBasic::iFollow(Player_Bid& bid,const std::list<Cards*>& hand,const Pl
         if((pcard->GetHeight() == ACE)&&(pcard->GetColour()!=teammateColor)) myBet+=7;
         else if((pcard->GetHeight() == NINE)&&(pcard->GetColour() == teammateColor)) myBet+=10;
     }
-    if(myBet > maxBet) bid.Bid(teammateColor,myBet);
+    if(myBet > maxBet) bid.Bid(teammateColor,(myBet-myBet%10) );
     else bid.Bid(NO,maxBet+10);
 }

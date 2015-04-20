@@ -137,7 +137,7 @@ void Game_Coinche::playGame(bool& keep_playing)
         _deck.GiveCards(_players);
         _saveGame.SaveHands(_players);
         _trick.Reset();
-        _timeNextAction = _infos.Time() + 2000;
+        //_timeNextAction = _infos.Time() + 2000; //HERE
         _currentPhase = BIDDING;
         _bid.Reset();
         return;
@@ -174,7 +174,7 @@ void Game_Coinche::playGame(bool& keep_playing)
         //printf("AFTER_TRICK0 %d \n",_trick.TrickNumber());
         _saveGame.SaveTrick(_trick);
         _trick.GatherCards();
-        _timeNextAction = _infos.Time() + 600; //TO DO : improve here ...
+        //_timeNextAction = _infos.Time() + 600;//HERE //TO DO : improve here ...
         _currentPhase = AFTER_TRICK1;
         return;
     case AFTER_TRICK1 :

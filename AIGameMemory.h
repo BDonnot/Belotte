@@ -89,7 +89,7 @@ class AIGameMemory
 {
     protected :
         Basic_Game_Info _infos;
-        const Player_ID _posPlayer;
+        Player_ID _posPlayer;
         std::list<Cards* >* _pHand;
         MemorizeCards _fallenCards; //
 
