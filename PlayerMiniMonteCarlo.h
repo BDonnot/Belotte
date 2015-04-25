@@ -6,6 +6,9 @@
 #include<unordered_map>
 
 #include "Definitions.h"
+
+#include "Foncteurs_Players.h"
+
 #include "Cards_Basic.h"
 #include "Random.h"
 #include "TrickStatus.h"
@@ -20,11 +23,14 @@ class PlayerMiniMonteCarlo
 {
     protected:
         Player_ID _number;
+        Basic_Game_Info _basic_info;
         std::list<Cards_Basic> _hand;
         Uint _nbCardToReceive;
         std::unordered_map<Cards_Basic,bool> _canReceiveCard;
         Random *_rand;
         TrickStatus _status;
+        std::list<Cards_Basic> _playableCards;
+        CanPlayCardsBasic _fCanPlayCard;
 
     public:
         PlayerMiniMonteCarlo():_number(GHOST),_status(_number){}
@@ -38,6 +44,13 @@ class PlayerMiniMonteCarlo
         bool CanReceiveAnotherCard() const;
         const Player_ID& ID() const {return _number;}
         const Uint NumberCardToReceive() const {return _nbCardToReceive;}
+        const Uint CardInHand() const {return _hand.size();}
+        std::list<Cards_Basic>& GetPlayableCard(const TrickBasic_Memory& trick)
+        {
+            updatePlaybleCard(trick);
+            return _playableCards;
+        }
+
         void RetrieveCard(const Cards_Basic& card); //retrieve the card from the hand
         Cards_Basic Play();
 
@@ -47,6 +60,8 @@ class PlayerMiniMonteCarlo
         void PrintHand() const;
 
     protected:
+        void updatePlaybleCard(const TrickBasic_Memory& trick); //TO DO : find another way, this is a copy/paste from Player...
+        bool has_colour(const Card_Color& colour); //TO DO : find another way, this is a copy/paste from Player...
 
     private:
 };
@@ -75,7 +90,7 @@ template<class GameMemory>
 void PlayerMiniMonteCarlo<GameMemory>::AddConstraint(const Cards_Basic& card)
 {
     _canReceiveCard[card] = false;
-    printf("I have added the constraint in player\n");
+    //printf("I have added the constraint in player\n");
 }
 
 template<class GameMemory>
@@ -120,16 +135,23 @@ bool PlayerMiniMonteCarlo<GameMemory>::CanReceiveCard(const Cards_Basic& card) c
 template<class GameMemory>
 void PlayerMiniMonteCarlo<GameMemory>::RetrieveCard(const Cards_Basic& card)
 {
-    /*
     auto it = _hand.begin();
-    for(it; it != _hand.end(); ++it)
+    const Card_Height height= card.GetHeight();
+    const Card_Color color= card.GetColour();
+    //printf("I mus retrieve [c:%d,h:%d]\n",color.ToInt(),height.ToInt());
+    //printf("I have in Hand :");
+    for(auto itC = _hand.begin(); itC != _hand.end(); ++itC)
     {
-        if(it->GetColour() == card.GetColour() && it->GetHeight() == card.GetHeight() )
-            break;
+        //printf("[c:%d,h:%d];",itC->GetColour().ToInt(),itC->GetHeight().ToInt());
+        if(itC->GetColour() == color && itC->GetHeight() ==  height)
+        {
+            it = itC;
+        }
     }
-    */
+    //printf("\n");
     _nbCardToReceive++;
-    _hand.remove(card);
+    _hand.erase(it);
+    //_hand.remove(card);
 }
 
 template<class GameMemory>
@@ -141,5 +163,40 @@ void PlayerMiniMonteCarlo<GameMemory>::PrintHand() const
         printf("[c:%d,h:%d] ,",card.GetColour().ToInt(),card.GetHeight().ToInt());
     }
     printf("\n");
+}
+
+template<class GameMemory> //TO DO : this is a copy/paste from player, there may be another option...
+void PlayerMiniMonteCarlo<GameMemory>::updatePlaybleCard(const TrickBasic_Memory& trick)
+{
+    //auto itEnd = _hand.end();
+    _playableCards.clear();
+    if (trick.NumberCardsPlayed() == 0) //if we are the first to play, we can play everything
+    {
+        for(const Cards_Basic& card : _hand)
+        {
+            _playableCards.push_back(card);
+        }
+        return;
+    }
+
+    _status.Update(trick
+                   ,has_colour(trick.ColorAsked())
+                   ,has_colour(_basic_info.TrumpColor()));
+    _fCanPlayCard.Init(trick,_status,_hand);
+    for(const Cards_Basic& card : _hand)
+    {
+        if( _fCanPlayCard(card) ) _playableCards.push_back(card);
+    }
+}
+
+template<class GameMemory> //TO DO : this is a copy/paste from player, there may be another option...
+bool PlayerMiniMonteCarlo<GameMemory>::has_colour(const Card_Color& colour) //do I have the color
+{
+    for (auto pcard : _hand)
+    {
+        if (pcard.GetColour() == colour)
+            return true;
+    }
+    return false;
 }
 #endif // PLAYERMINIMONTECARLO_H

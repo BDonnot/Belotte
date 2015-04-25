@@ -12,6 +12,8 @@ class Cards : public Cards_Basic, public Cards_SDL
 {
     public:
         Cards(){}
+        Cards(const Card_Height& height,const Card_Color& color):
+             Cards_Basic(height,color){}
         Cards(const Card_Height& height,const Card_Color& color,SDL_Event* event,SDL_Surface * pScreen):
             Cards_Basic(height,color),
             Cards_SDL(height.ToInt(),color.ToInt(),event,pScreen){}
@@ -23,8 +25,8 @@ class Cards : public Cards_Basic, public Cards_SDL
     protected:
 
     private:
-        Cards(const Cards& other);
-        Cards& operator=(const Cards& other);
+        //Cards(const Cards& other);
+        //Cards& operator=(const Cards& other);
 
 };
 #endif // CARDS_H

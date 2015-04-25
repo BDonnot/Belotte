@@ -47,6 +47,11 @@ class TrickBasic_Memory
 
         bool IsFallen(const Card_Color& color, const Card_Height& height) const; //compute if the card is fallen in the trick or not
         void Reset(); //at the end of the game (8 trick)
+
+        void PutCard(Cards* card);
+        //void PutCard(const Cards_Basic& card);
+        void NextToPlay();
+
     protected:
         virtual void trickFinished(){ _trickFinished = true; } //update _trickFinished
         void playerPlayed(); //to do after each player played
@@ -55,6 +60,7 @@ class TrickBasic_Memory
         void updateToPlay(); //at the end of the trick, and store the scores
         void updateScores(Uint pointsInTheTrick);
         void trickOver(); //do whatever you have to when a the trick is over
+
     private:
 };
 

@@ -16,6 +16,7 @@
 #include "AIPlayRandom.h"
 #include "AIPlayScores.h"
 #include "AIPlayMonteCarlo.h"
+#include "McPlayRandom.h"
 
 #include "AIGameMemory.h"
 #include "AIGameMemoryImproved.h"
@@ -49,6 +50,7 @@ class Game_Coinche : public Quit
         Trick _trick;
         End_Of_Game _endGame;
         Save_Game _saveGame; //to save the game
+        Uint _nbGame;
 
 
     public:

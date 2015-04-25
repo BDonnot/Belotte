@@ -97,6 +97,7 @@ int Player::how_many_colour(const Card_Color& colour) //how many cards I have in
     }
     return res;
 }
+/*
 bool Player::has_higher(const Card_Color& color_asked,const Card_Height& max_height) //true if the player has a higher card in his game
 {
     for (auto pcard : _hand)
@@ -106,6 +107,7 @@ bool Player::has_higher(const Card_Color& color_asked,const Card_Height& max_hei
     }
     return false;
 }
+*/
 Cards* Player::PlayCard(const TrickBasic_Memory& trick)
 {
     if(_hand.size() + trick.TrickNumber()  != 8 ) return nullptr;
@@ -130,29 +132,8 @@ void Player::UpdateEndTrick(const TrickBasic_Memory& trick,const Position_Trick&
 {
     updateMemoryTrick(trick,myPos);
 }
-void Player::updatePlayebleCards(const TrickBasic_Memory& trick_in_progress)
-{
-    //_memory.TellTrick(trick_in_progress,_basic_info.FirstPlayer());
-    auto itEnd = _hand.end();
-    if (trick_in_progress.NumberCardsPlayed() == 0) //if we are the first to play, we can play everything
-    {
-        for(auto it = _hand.begin(); it != itEnd;++it)
-        {
-            _playable_cards.push_back(it);
-        }
-        return;
-    }
 
-    _currentTrickStatus.Update(trick_in_progress
-                               ,has_colour(trick_in_progress.ColorAsked())
-                               ,has_colour(_basic_info.TrumpColor()));
-
-    for(auto it = _hand.begin(); it != itEnd;++it)
-    {
-        if (can_play_card(*it,trick_in_progress)) _playable_cards.push_back(it);
-    }
-}
-
+/*
 bool Player::can_play_card(Cards* PmyCard,const TrickBasic_Memory& trick)
 {
     if (PmyCard==nullptr)
@@ -176,6 +157,31 @@ bool Player::can_play_card(Cards* PmyCard,const TrickBasic_Memory& trick)
                                                          ||(!has_higher(_currentTrickStatus.TrumpColor(),maxHeight)));
     return my_colour == _currentTrickStatus.TrumpColor();
 }
+*/
+void Player::updatePlayebleCards(const TrickBasic_Memory& trick_in_progress)
+{
+    //_memory.TellTrick(trick_in_progress,_basic_info.FirstPlayer());
+    auto itEnd = _hand.end();
+    if (trick_in_progress.NumberCardsPlayed() == 0) //if we are the first to play, we can play everything
+    {
+        for(auto it = _hand.begin(); it != itEnd;++it)
+        {
+            _playable_cards.push_back(it);
+        }
+        return;
+    }
+
+    _currentTrickStatus.Update(trick_in_progress
+                               ,has_colour(trick_in_progress.ColorAsked())
+                               ,has_colour(_basic_info.TrumpColor()));
+    _fCanPlayCard.Init(trick_in_progress,_currentTrickStatus,_hand);
+    for(auto it = _hand.begin(); it != itEnd;++it)
+    {
+        //if (can_play_card(*it,trick_in_progress)) _playable_cards.push_back(it);
+        if( _fCanPlayCard(*it) ) _playable_cards.push_back(it);
+    }
+}
+
 
 bool Player::has_colour(const Card_Color& colour) //do I have the color
 {
@@ -186,6 +192,7 @@ bool Player::has_colour(const Card_Color& colour) //do I have the color
     }
     return false;
 }
+
 Card_Color Player::do_i_take(bool first_round,const Card_Color& color_proposed,const Card_Height& height_proposed)
 {
     return Card_Color(NO);
@@ -268,6 +275,8 @@ void Player::initMemoryTrick()
 {
     //NOTHING TO DO
 }
+
+
 
 string Player::GetString(const std::string& embraced) const
 {

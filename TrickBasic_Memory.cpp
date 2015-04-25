@@ -143,3 +143,19 @@ bool TrickBasic_Memory::IsFallen(const Card_Color& color, const Card_Height& hei
     }
     return false;
 }
+
+void TrickBasic_Memory::PutCard(Cards* card)
+{
+    _currentTrick[_cardsPlayed] = card;
+    playerPlayed();
+}
+void TrickBasic_Memory::NextToPlay()
+{
+    trickFinished();
+    if (_cardsPlayed == 4 && _trickFinished) //the trick is over
+    {
+        trickOver();
+        //terminatecurrentTrick(i);
+    }
+
+}

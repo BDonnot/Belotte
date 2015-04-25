@@ -22,18 +22,20 @@ Game_Coinche::Game_Coinche(SDL_Surface* screen,Uint16 screenWidth, Uint16 screen
     ,_endGame(_event,_pScreen,screenWidth,screenHeight)
     ,_saveGame()
 {
+    _nbGame = 0;
     PositionGraphic pos(0,0,TOP_LEFT);
     _backSide.SetPosition(pos);
     PLAYER_ID posPlayer[4] = {PLAYER0,PLAYER1,PLAYER2,PLAYER3};
     //_players[0] = static_cast<Player*>(new Player_Human(Player_ID(posPlayer[0]),screenWidth,screenHeight,_event,&_backSide,_pScreen));
-//    _players[0] = static_cast<Player*>(new Player_AI(posPlayer[0],screenWidth,screenHeight,_event,&_backSide,_pScreen));
     for (Uint i = 0; i < 4; i++)
     {
         //<AIGameMemory,AITakeBasic,AIPlayRandom<AIGameMemory> >
         //<AIGameMemory,AITakeBasic,AIPlayScores<AIGameMemory> >
         //<AIGameMemory,AITakeBasic,AIPlayMonteCarlo<AIGameMemory> >
         //<AIGameMemory,AITakeBasic,AIPlayMonteCarlo<AIGameMemory> >
-        _players[i] =  static_cast<Player*>(new Player_AI<AIGameMemoryImproved,AITakeBasic,AIPlayMonteCarlo<AIGameMemoryImproved> >(Player_ID(posPlayer[i]),screenWidth,screenHeight,_event,&_backSide,_pScreen));
+        //<AIGameMemoryImproved,AITakeBasic,AIPlayMonteCarlo<AIGameMemoryImproved,McPlayRandom<AIGameMemoryImproved,30> > >
+        if(i%2 ==0) _players[i] =  static_cast<Player*>(new Player_AI<AIGameMemoryImproved,AITakeBasic,AIPlayMonteCarlo<AIGameMemoryImproved,McPlayRandom<AIGameMemoryImproved,30> > >(Player_ID(posPlayer[i]),screenWidth,screenHeight,_event,&_backSide,_pScreen));
+        else _players[i] =  static_cast<Player*>(new Player_AI<AIGameMemory,AITakeBasic,AIPlayScores<AIGameMemory> >(Player_ID(posPlayer[i]),screenWidth,screenHeight,_event,&_backSide,_pScreen));
     }
     _bid.SetPlayers(_players);
     _trick.SetPlayers(_players);
@@ -173,6 +175,8 @@ void Game_Coinche::playGame(bool& keep_playing)
             _endGame.Update();
             const array<Uint,2>& scores = _infos.FinalScores();
             _saveGame.SaveScores(scores[0],scores[1]);
+            printf("game %d : Score 0 : %d, score 1 : %d\n",_nbGame,scores[0],scores[1]);
+            _nbGame++;
             _currentPhase = SCORES;
         }
         return;

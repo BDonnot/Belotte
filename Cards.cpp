@@ -1,6 +1,6 @@
 #include "Cards.h"
 using namespace::std;
-
+/*
 Cards::Cards(const Cards& other)
 {
     //copy ctor
@@ -12,3 +12,4 @@ Cards& Cards::operator=(const Cards& rhs)
     //assignment operator
     return *this;
 }
+*/
