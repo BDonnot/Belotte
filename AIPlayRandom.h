@@ -10,38 +10,42 @@
 #include "TrickStatus.h"
 
 /** A wrapper : implement the way of playing randomly **/
-template<class Memory>
+template<class Memory,class TypeOfCard>
 class AIPlayRandom
 {
     protected :
-        const Player_ID _player;
+        Player_ID _player;
     public:
         AIPlayRandom(const Player_ID& player):_player(player){}
         virtual ~AIPlayRandom(){}
-        std::list<Cards*>::iterator Play(const std::array<Cards*,4>& trick
-                                         ,std::list<std::list<Cards*>::iterator>& plyableCards
+        typename std::list<TypeOfCard>::iterator Play(const TrickBasic_Memory& trick
+                                         ,typename std::list<typename std::list<TypeOfCard>::iterator >& plyableCards
                                          ,const std::list<Cards*>& hand
                                          ,Random& rand
                                          ,const TrickStatus& trickStatus
                                          ,const Memory& playerMemory);
+        void SetNumber(const Player_ID& number)
+        {
+            _player = number;
+        }
 
     protected:
     private:
 };
 
-template<class Memory>
-std::list<Cards*>::iterator AIPlayRandom<Memory>::Play(const std::array<Cards*,4>& trick
-                                       ,std::list<std::list<Cards*>::iterator>& playbleCards
-                                       ,const std::list<Cards*>& hand
-                                       ,Random& rand
-                                       ,const TrickStatus& trickStatus
-                                       ,const Memory& playerMemory)
+template<class Memory,class TypeOfCard>
+typename std::list<TypeOfCard>::iterator AIPlayRandom<Memory,TypeOfCard>::Play(const TrickBasic_Memory& trick
+                                                                               ,typename std::list<typename std::list<TypeOfCard>::iterator>& playbleCards
+                                                                               ,const std::list<Cards*>& hand
+                                                                               ,Random& rand
+                                                                               ,const TrickStatus& trickStatus
+                                                                               ,const Memory& playerMemory)
 {
     Uint n = playbleCards.size();
     switch(n)
     {
     case 0 :
-        return playbleCards.front(); //throw an exception here !
+        return playbleCards.front(); //TO DO exception here !
     case 1:
         return playbleCards.front();
     default :

@@ -48,7 +48,7 @@ class AIPlayMonteCarlo
         virtual ~AIPlayMonteCarlo(){}
         std::list<Cards*>::iterator Play(const TrickBasic_Memory& trick
                                      ,std::list<std::list<Cards*>::iterator>& plyableCards
-                                     ,const std::list<Cards*>& hand
+                                     ,std::list<Cards*>& hand
                                      ,Random& rand
                                      ,const TrickStatus& trickStatus
                                      ,const Memory& playerMemory);
@@ -57,7 +57,9 @@ class AIPlayMonteCarlo
         void updateUnfallenCardsupdateUnfallenCards(const TrickBasic_Memory& trick,const Memory& playerMemory,const std::list<Cards*>& hand);
         Uint scoreCards(const std::array<PlayerMiniMonteCarlo<Memory> , 4>& currentPlayers,
                           const Cards* pcard,
-                          TrickBasic_Memory& currentTrick);
+                          TrickBasic_Memory& currentTrick,
+                          const std::list<Cards*> hand,
+                          const TrickStatus& trickStatus);
         void simulGame(const TrickBasic_Memory& trick,
                          const Memory& playerMemory,
                          const std::list<Cards*>& hand,
@@ -120,7 +122,7 @@ class AIPlayMonteCarlo
 template<class Memory,class PlayMC>
 std::list<Cards*>::iterator AIPlayMonteCarlo<Memory,PlayMC>::Play(const TrickBasic_Memory& trick
                                                                    ,std::list<std::list<Cards*>::iterator>& playbleCards
-                                                                   ,const std::list<Cards*>& hand
+                                                                   ,std::list<Cards*>& hand
                                                                    ,Random& rand
                                                                    ,const TrickStatus& trickStatus
                                                                    ,const Memory& playerMemory)
@@ -194,7 +196,8 @@ std::list<Cards*>::iterator AIPlayMonteCarlo<Memory,PlayMC>::Play(const TrickBas
             currentTrick = trick ;
             //play the game knowing everything and compute the score of the player (in a minimax / alpha-beta situation)
             //printf("I compute the score for it\n");
-            tempScore = scoreCards(currentPlayers,*itPCard,currentTrick);
+            tempScore = scoreCards(currentPlayers,*itPCard,currentTrick,hand,trickStatus);
+
             //store the result in the proper structure
             //printf("I put in the result\n");
             resMonteCarlo.Put(nbSimul,**itPCard,tempScore);
@@ -210,11 +213,13 @@ std::list<Cards*>::iterator AIPlayMonteCarlo<Memory,PlayMC>::Play(const TrickBas
 template<class Memory,class PlayMC>
 Uint AIPlayMonteCarlo<Memory,PlayMC>::scoreCards(const std::array<PlayerMiniMonteCarlo<Memory> , 4>& currentPlayers,
                                                   const Cards* pcard,
-                                                  TrickBasic_Memory& currentTrick)
+                                                  TrickBasic_Memory& currentTrick,
+                                                  const std::list<Cards*> hand,
+                                                  const TrickStatus& trickStatus)
 {
 
     _play.Init(_cardsToPlay,_number,_rand);
-    return _play.Play(currentPlayers,pcard,currentTrick);
+    return _play.Play(currentPlayers,pcard,currentTrick,hand,trickStatus);
     return 0;
 
 

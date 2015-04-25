@@ -44,7 +44,7 @@ class Player
         Player_Bid _currentBid;
         Player_Bid_Graphic _oldBid;
 
-        CanPlayCards _fCanPlayCard;
+        CanPlayCards<Cards*> _fCanPlayCard;
 
 
     public:

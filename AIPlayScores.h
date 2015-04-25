@@ -1,33 +1,40 @@
 #ifndef AIPLAYSCORES_H
 #define AIPLAYSCORES_H
 
-#include<list>
-#include<array>
+#include <list>
+#include <array>
+#include <type_traits>
 
 #include "Definitions.h"
-#include "Cards.h"
+//#include "Cards.h"
+//#include "AIGameMemoryImproved.h"
 #include "Random.h"
 #include "TrickStatus.h"
 #include "Datas.h"
 #include "TrickBasic_Memory.h"
+#include "CardsGetMethod.h"
 //#include "AIGameMemory.h"
 /** The AI player will play according to a score. These one are defined in some csv files**/
 
 //TO DO : implement the possibility to have another memory
 //TO DO : resoudre les histoires avec les pseudo height, la moins bonne idée du monde..
 //TO : hash table instead of indices in the current file "datas.h"
-template<class Memory>
+
+
+template<class Memory,class TypeOfCard>
 class AIPlayScores
 {
     protected:
         Basic_Game_Info _infos;
         const Uint _type;
-        const Player_ID _player;
+        Player_ID _player;
 
         Datas _play_1st;
         Datas _play_2nd;
         Datas _play_3rd;
         Datas _play_4th;
+
+        WrapperMethod<TypeOfCard,std::is_pointer<TypeOfCard>::value>_wrapperCallMethod;
     public:
         AIPlayScores(const Player_ID& player):
             _type(1),
@@ -40,30 +47,36 @@ class AIPlayScores
             }
 
         virtual ~AIPlayScores(){}
-        std::list<Cards*>::iterator Play(const TrickBasic_Memory& trick
-                                         ,std::list<std::list<Cards*>::iterator>& plyableCards
-                                         ,const std::list<Cards*>& hand
-                                         ,Random& rand
-                                         ,const TrickStatus& trickStatus
-                                         ,const Memory& playerMemory);
+        typename std::list<TypeOfCard>::iterator Play(const TrickBasic_Memory& trick
+                                             ,typename std::list< typename std::list<TypeOfCard>::iterator > & plyableCards
+                                             ,const std::list<Cards*>& hand
+                                             ,Random& rand
+                                             ,const TrickStatus& trickStatus
+                                             ,const Memory& playerMemory);
+
+        void SetNumber(const Player_ID& number)
+        {
+            _player = number;
+        }
     protected:
-        int playFirst(const Cards* pcard,const TrickBasic_Memory& trick,const TrickStatus& trickStatus,Random& rand,bool pisse, bool play_trump,const Memory& playerMemory);
-        int playSecond(const Cards* pcard,const TrickBasic_Memory& trick,const TrickStatus& trickStatus,Random& rand,bool pisse, bool play_trump,const Memory& playerMemory);
-        int playThird(const Cards* pcard,const TrickBasic_Memory& trick,const TrickStatus& trickStatus,Random& rand,bool pisse, bool play_trump,const Memory& playerMemory);
-        int playFourth(const Cards* pcard,const TrickBasic_Memory& trick,const TrickStatus& trickStatus,Random& rand,bool pisse, bool play_trump,const Memory& playerMemory);
+        int playFirst(const TypeOfCard& pcard,const TrickBasic_Memory& trick,const TrickStatus& trickStatus,Random& rand,bool pisse, bool play_trump,const Memory& playerMemory);
+        int playSecond(const TypeOfCard& pcard,const TrickBasic_Memory& trick,const TrickStatus& trickStatus,Random& rand,bool pisse, bool play_trump,const Memory& playerMemory);
+        int playThird(const TypeOfCard& pcard,const TrickBasic_Memory& trick,const TrickStatus& trickStatus,Random& rand,bool pisse, bool play_trump,const Memory& playerMemory);
+        int playFourth(const TypeOfCard& pcard,const TrickBasic_Memory& trick,const TrickStatus& trickStatus,Random& rand,bool pisse, bool play_trump,const Memory& playerMemory);
     private:
 };
 
-template<class Memory>
-std::list<Cards*>::iterator AIPlayScores<Memory>::Play(const TrickBasic_Memory& trick
-                                       ,std::list<std::list<Cards*>::iterator>& playbleCards
+
+template<class Memory,typename TypeOfCard>
+typename std::list<TypeOfCard>::iterator AIPlayScores<Memory,TypeOfCard>::Play(const TrickBasic_Memory& trick
+                                       ,typename std::list<typename std::list<TypeOfCard>::iterator>& playbleCards
                                        ,const std::list<Cards*>& hand
                                        ,Random& rand
                                        ,const TrickStatus& trickStatus
                                        ,const Memory& playerMemory)
 {
-    std::list<Cards*>::iterator res = *playbleCards.begin();
-    Cards* pcard= nullptr;
+    typename std::list<TypeOfCard>::iterator res = *playbleCards.begin();
+    TypeOfCard pcard;
     int MaxScore = -10000,currentScore;
     const Card_Color& color_asked = trick.ColorAsked();
     const Card_Color& color_trump = trickStatus.TrumpColor();
@@ -72,8 +85,8 @@ std::list<Cards*>::iterator AIPlayScores<Memory>::Play(const TrickBasic_Memory& 
     for (auto it : playbleCards)
     {
         pcard = *it;
-        if (( pcard->GetColour() != color_asked)&&( pcard->GetColour() != color_trump)) pisse = true;
-        if ( pcard->GetColour() == color_trump) play_trump = true;
+        if (( _wrapperCallMethod.callGetColour(pcard) != color_asked)&&( _wrapperCallMethod.callGetColour(pcard) != color_trump)) pisse = true;
+        if ( _wrapperCallMethod.callGetColour(pcard) == color_trump) play_trump = true;
     }
     for(auto itCard : playbleCards)
     {
@@ -106,8 +119,8 @@ std::list<Cards*>::iterator AIPlayScores<Memory>::Play(const TrickBasic_Memory& 
 }
 
 //int AIPlayScores::playFirst(Carte* pcard, int color_trump,int player_take, int team_taken,bool play_trump,int pseudo_height_trump_max, int number_trick)
-template<class Memory>
-int AIPlayScores<Memory>::playFirst(const Cards* pcard,
+template<class Memory,typename TypeOfCard>
+int AIPlayScores<Memory,TypeOfCard>::playFirst(const TypeOfCard& pcard,
                                     const TrickBasic_Memory& trick,
                                     const TrickStatus& trickStatus,
                                     Random& rand,
@@ -116,11 +129,11 @@ int AIPlayScores<Memory>::playFirst(const Cards* pcard,
                                     const Memory& playerMemory)
 {
     int res=0;
-    const Card_Color& color = pcard->GetColour();
-    const Card_Height& height = pcard->GetHeight();
+    const Card_Color& color = _wrapperCallMethod.callGetColour(pcard);
+    const Card_Height& height = _wrapperCallMethod.callGetHeight(pcard);
     const Card_Color& color_trump = trickStatus.TrumpColor();
 
-    CARDS_HEIGHT height_ = pcard->GetHeight().Height();
+    CARDS_HEIGHT height_ = _wrapperCallMethod.callGetHeight(pcard).Height();
 
     Player_ID player_take = _infos.Taker();
     int team_taken = (player_take.ToInt()%2);
@@ -138,7 +151,8 @@ int AIPlayScores<Memory>::playFirst(const Cards* pcard,
     }
     Player_ID teammate = _player.Teammate();
 
-    if (pcard == nullptr) return -10000; //TO DO : exception here
+    //if (pcard == nullptr) return -10000; //TO DO : exception here
+
     //if I or my teammate took, I try to play trump
     if (team_taken == (_player.ToInt()%2) && playerMemory.NbColorPlayed(color_trump) == 0)
     {
@@ -230,8 +244,8 @@ int AIPlayScores<Memory>::playFirst(const Cards* pcard,
     return res;
 }
 
-template<class Memory>
-int AIPlayScores<Memory>::playSecond(const Cards* pcard,
+template<class Memory,typename TypeOfCard>
+int AIPlayScores<Memory,TypeOfCard>::playSecond(const TypeOfCard& pcard,
                                      const TrickBasic_Memory& trick,
                                      const TrickStatus& trickStatus,
                                      Random& rand,
@@ -240,12 +254,12 @@ int AIPlayScores<Memory>::playSecond(const Cards* pcard,
                                      const Memory& playerMemory)
 {
     int res = 0;
-    const Card_Color& color = pcard->GetColour();
-    const Card_Height& height = pcard->GetHeight();
+    const Card_Color& color = _wrapperCallMethod.callGetColour(pcard);
+    const Card_Height& height = _wrapperCallMethod.callGetHeight(pcard);
     const Card_Color& color_trump = trickStatus.TrumpColor();
     const Card_Color& color_asked = trick.ColorAsked();
 
-    CARDS_HEIGHT height_ = pcard->GetHeight().Height();
+    CARDS_HEIGHT height_ = _wrapperCallMethod.callGetHeight(pcard).Height();
 
     bool oponentCut = playerMemory.OpponentsCut(color);
     Uint number_trick = trick.TrickNumber();
@@ -333,8 +347,8 @@ int AIPlayScores<Memory>::playSecond(const Cards* pcard,
     return res;
 }
 
-template<class Memory>
-int AIPlayScores<Memory>::playThird(const Cards* pcard,
+template<class Memory,typename TypeOfCard>
+int AIPlayScores<Memory,TypeOfCard>::playThird(const TypeOfCard& pcard,
                                     const TrickBasic_Memory& trick,
                                     const TrickStatus& trickStatus,
                                     Random& rand,
@@ -343,12 +357,12 @@ int AIPlayScores<Memory>::playThird(const Cards* pcard,
                                     const Memory& playerMemory)
 {
     int res = 0;
-    const Card_Color& color = pcard->GetColour();
-    const Card_Height& height = pcard->GetHeight();
+    const Card_Color& color = _wrapperCallMethod.callGetColour(pcard);
+    const Card_Height& height = _wrapperCallMethod.callGetHeight(pcard);
     const Card_Color& color_trump = trickStatus.TrumpColor();
     const Card_Color& color_asked = trick.ColorAsked();
 
-    CARDS_HEIGHT height_ = pcard->GetHeight().Height();
+    CARDS_HEIGHT height_ = _wrapperCallMethod.callGetHeight(pcard).Height();
 
     bool oponentCut = playerMemory.OpponentsCut(color);
 
@@ -408,7 +422,7 @@ int AIPlayScores<Memory>::playThird(const Cards* pcard,
             }
             else
             {
-                if (!(pcard->Win(Card_Height(heightsOrder[2])))) res += _play_3rd.value(16,0); //res=-5
+                if (!(_wrapperCallMethod.callWin(pcard,Card_Height(heightsOrder[2])))) res += _play_3rd.value(16,0); //res=-5
                 else res += _play_3rd.value(17,0); //res=3
             }
         }
@@ -435,7 +449,7 @@ int AIPlayScores<Memory>::playThird(const Cards* pcard,
 //If I am major in the color
     if (playerMemory.AmIMaster(color))
     {
-        if (pcard->Value() < 4) res += _play_3rd.value(26,0); //res=13
+        if (_wrapperCallMethod.callValue(pcard) < 4) res += _play_3rd.value(26,0); //res=13
         else
         {
             if (oponentCut)
@@ -473,8 +487,8 @@ int AIPlayScores<Memory>::playThird(const Cards* pcard,
     return res;
 }
 
-template<class Memory>
-int AIPlayScores<Memory>::playFourth(const Cards*pcard,
+template<class Memory,typename TypeOfCard>
+int AIPlayScores<Memory,TypeOfCard>::playFourth(const TypeOfCard& pcard,
                                      const TrickBasic_Memory& trick,
                                      const TrickStatus& trickStatus,
                                      Random& rand,
@@ -483,12 +497,12 @@ int AIPlayScores<Memory>::playFourth(const Cards*pcard,
                                      const Memory& playerMemory)
 {
     int res = 0;
-    const Card_Color& color = pcard->GetColour();
-    const Card_Height& height = pcard->GetHeight();
+    const Card_Color& color = _wrapperCallMethod.callGetColour(pcard);
+    const Card_Height& height = _wrapperCallMethod.callGetHeight(pcard);
     const Card_Color& color_trump = trickStatus.TrumpColor();
     const Card_Color& color_asked = trick.ColorAsked();
 
-    CARDS_HEIGHT height_ = pcard->GetHeight().Height();
+    CARDS_HEIGHT height_ = _wrapperCallMethod.callGetHeight(pcard).Height();
     //TO DO vraimet bizarre que ca de ne depende pas de qui gagne le pli ...
 
     Uint number_trick = trick.TrickNumber();
@@ -535,7 +549,7 @@ int AIPlayScores<Memory>::playFourth(const Cards*pcard,
     }
     else
     {
-        switch (pcard->Value())
+        switch (_wrapperCallMethod.callValue(pcard))
         {
             case 0 : res += _play_4th.value(9,0); //res=13
                 break;

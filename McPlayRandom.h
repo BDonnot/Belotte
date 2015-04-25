@@ -14,7 +14,7 @@
 /**
 **Force the MonteCarlo Players to play randomly
 **/
-template<class Memory,Uint nbCardToPlay>
+template<class Memory,Uint nbCardToPlay,class PlayAI>
 class McPlayRandom
 {
     protected :
@@ -23,8 +23,9 @@ class McPlayRandom
         Player_ID _number;
         Random * _rand;
         std::array<Cards,32> _allCards ;
+        PlayAI _play;
     public:
-        McPlayRandom():_nbGamePlayed(nbCardToPlay){}
+        McPlayRandom():_nbGamePlayed(nbCardToPlay),_play(_number){}
         virtual ~McPlayRandom(){}
         void Init(Uint cardsToPlay,
                   const Player_ID& number,
@@ -32,6 +33,7 @@ class McPlayRandom
         {
             _cardsToPlay = cardsToPlay;
             _number = number;
+            _play.SetNumber(_number); //TO DO : code cette foontion
             _rand = rand;
             for(Uint iCol = 0; iCol < 4; ++iCol)
             {
@@ -43,24 +45,32 @@ class McPlayRandom
         }
         Uint Play(const std::array<PlayerMiniMonteCarlo<Memory> , 4>& players,
                     const Cards* pcard,
-                    const TrickBasic_Memory& trick);
+                    const TrickBasic_Memory& trick,
+                    std::list<Cards*> hand,
+                    const TrickStatus& trickStatus);
     protected:
         void putCardInTrick(TrickBasic_Memory& currentTrick, const Cards_Basic& card);
-        void chooseCard(std::list<Cards_Basic> & playableCard,Cards_Basic& res);
+        void chooseCard(std::list<std::list<Cards_Basic>::iterator > & playableCard,
+                        std::list<Cards_Basic>::iterator& res);
     private:
 };
 
-template<class Memory,Uint nbCardToPlay>
-Uint McPlayRandom<Memory,nbCardToPlay>::Play(const std::array<PlayerMiniMonteCarlo<Memory> , 4>& players,
+template<class Memory,Uint nbCardToPlay,class PlayAI>
+Uint McPlayRandom<Memory,nbCardToPlay,PlayAI>::Play(const std::array<PlayerMiniMonteCarlo<Memory> , 4>& players,
                                             const Cards* pcard,
-                                            const TrickBasic_Memory& trick)
+                                            const TrickBasic_Memory& trick,
+                                            std::list<Cards*> hand,
+                                            const TrickStatus& trickStatus)
 {
     Uint res = 0;
     for(Uint nbSimul = 0; nbSimul < _nbGamePlayed; ++nbSimul)
     {
         TrickBasic_Memory currentTrick = trick;
+        Memory gameMemory(_number,&hand);
+        //TrickStatus trickStatus;
         std::array<PlayerMiniMonteCarlo<Memory> , 4> currentPlayers(players);
         Cards_Basic tempCard = static_cast<const Cards_Basic&>(*pcard);
+        std::list<Cards_Basic>::iterator tempItCard;
         PlayerMiniMonteCarlo<Memory> * tempPlayer;
 
         currentPlayers[_number.ToInt()].RetrieveCard(tempCard);
@@ -74,12 +84,13 @@ Uint McPlayRandom<Memory,nbCardToPlay>::Play(const std::array<PlayerMiniMonteCar
             //printf("I play trick %d\n",currentTrick.TrickNumber());
             if(currentTrick.TrickNumber() ==8 ) break;
             tempPlayer = & currentPlayers[currentTrick.NextPlaying().ToInt()];
-            std::list<Cards_Basic> &playableCards = tempPlayer->GetPlayableCard(currentTrick);
+            std::list<std::list<Cards_Basic>::iterator > &playableCards = tempPlayer->GetPlayableCard(currentTrick);
 
-            chooseCard(playableCards,tempCard);
+            //chooseCard(playableCards,tempItCard);
+            tempItCard = _play.Play(currentTrick,playableCards,hand,*_rand,trickStatus,gameMemory);
 
-            tempPlayer->RetrieveCard(tempCard);
-            putCardInTrick(currentTrick,tempCard);
+            putCardInTrick(currentTrick,*tempItCard);
+            tempPlayer->RetrieveCard(tempItCard);
             /*
             printf("%d has played [c:%d,h:%d], he has still %d cards \n",
                    tempPlayer->ID().ToInt(),
@@ -95,14 +106,16 @@ Uint McPlayRandom<Memory,nbCardToPlay>::Play(const std::array<PlayerMiniMonteCar
     return res;
 }
 
-template<class Memory,Uint nbCardToPlay>
-void McPlayRandom<Memory,nbCardToPlay>::putCardInTrick(TrickBasic_Memory& currentTrick, const Cards_Basic& card)
+template<class Memory,Uint nbCardToPlay,class PlayAI>
+void McPlayRandom<Memory,nbCardToPlay,PlayAI>::putCardInTrick(TrickBasic_Memory& currentTrick, const Cards_Basic& card)
 {
     currentTrick.PutCard( &(_allCards[card.GetColour().ToInt()*8 + card.GetHeight().ToInt()]) );
 }
 
+/*
 template<class Memory,Uint nbCardToPlay>
-void McPlayRandom<Memory,nbCardToPlay>::chooseCard(std::list<Cards_Basic> & playableCards,Cards_Basic& res)
+void McPlayRandom<Memory,nbCardToPlay>::chooseCard(std::list<std::list<Cards_Basic>::iterator > & playableCards,
+                                                   std::list<Cards_Basic>::iterator& res)
 {
     //printf("%d\n",playableCards.size());
     if(playableCards.size() == 1)
@@ -111,10 +124,10 @@ void McPlayRandom<Memory,nbCardToPlay>::chooseCard(std::list<Cards_Basic> & play
     }
     else
     {
-        std::list<Cards_Basic>::iterator itTempCard = playableCards.begin();
+        std::list<std::list<Cards_Basic>::iterator >::iterator itTempCard = playableCards.begin();
         std::advance(itTempCard,_rand->generate_number() %(playableCards.size()-1) );
         res = *itTempCard;
     }
 }
-
+*/
 #endif // MCPLAYRANDOM_H
