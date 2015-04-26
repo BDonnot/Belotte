@@ -198,7 +198,7 @@
 \end{flushright}
 \vspace{1cm}
 \begin{center}
-\includegraphics[width=13cm]{belote.jpg}
+\includegraphics[width=13cm]{img/Coinche.png}
 \end{center}
 
 \vfill
@@ -217,10 +217,8 @@
 \title{}
 \location{}\blurb{}
 \makeatother
-\title{Projet de C++ débutant : la Belote}
-\author{Morgane AUSTERN \\
-Benjamin DONNOT\\
-Loïc MICHEL}
+\title{Projet Informatique : Jeu de Coinche}
+\author{Benjamin DONNOT}
 \location{}
 \blurb{}
 
@@ -233,9 +231,9 @@ Loïc MICHEL}
 \usepackage{lastpage}
 \renewcommand\headrulewidth{1pt}
 \renewcommand\footrulewidth{1pt}
-\fancyfoot[C]{Benjamin DONNOT \\ \textbf{Page \thepage/\pageref{LastPage}}}
-\fancyfoot[R]{ Loïc MICHEL}
-\fancyfoot[L]{Morgane AUSTERN}
+\fancyfoot[C]{Projet informatique\\ \textbf{Page \thepage/\pageref{LastPage}}}
+\fancyfoot[R]{ENSAE 3\ieme{} année \\ Data Science}
+\fancyfoot[L]{Benjamin DONNOT }
 
 \begin{document}
 \maketitle
@@ -243,76 +241,42 @@ Loïc MICHEL}
 \clearpage
 \section*{Introduction}
 \addcontentsline{toc}{section}{Introduction} 
-%Taper l'introduction ici : %
-L'année dernière certains d'entre nous avons fait notre projet de python sur un autre jeu de carte, le jeu de Tarot. Il restait de nombreuses pistes d'améliorations que nous avons essayé de mettre en \oe{}uvre dans ce projet de C++. Nous avons donc décidé de coder un jeu différent du tarot mais tout de même relativement proche : le jeu de belote. \\
 
-Nous avons entre autre tenté d'améliorer l'intelligence artificielle, et l'interface graphique. Pour l'amélioration de l'intelligence artificielle, nous avons tenté de mettre en place des méthodes de "machine learning". Mais ceci n'a pas été évident car nous avons rencontré de nombreux problèmes quant à la lecture et écriture de données dans des fichiers avec c++.
+\section{Limitations}
+pas de tout atout sans atout \\
+
+Belotte non prise en compte \\
+
+prise rudimentaire \\
+
+encore beaucoup de "TO DO" dans le code, parce que ce projet n'a pas vocation a être arrêté pour la validation de ce cours.
 \clearpage
-\section{Le jeu}
-Le jeu de Belote comporte de nombreuses variantes. Nous n'avons retenu ici que la belote "classique". C'est à dire qu'on ne joue pas à la Belote "coinchée". Nous ne prenons pas non plus en compte les annonces.\\
+\section{Interface graphique}
+multi-threading :-)
 
-La difficulté du jeu de Belote est multiple : la hauteur de deux cartes ne suffit pas à déterminer laquelle est "plus forte" que l'autre. En effet, à la belote l'atout est choisi en début de partie et est déterminé pour toute la manche. L'ordre des cartes n'est pas le même si une carte est une carte "simple" ou un atout. Pour contourner ce problème, nous avons rajouté un attribut "atout"\footnote{"trump" en anglais} dans la classe jeu (classe qui structure le programme). Cet attribut est renvoyé dans quasiment toutes les méthodes des autres classes appelées par cette classe. \\
-
-Une autre difficulté du jeu de Belote est la complexité des règles qui autorise à jouer une carte donnée dans une situation donnée. Il faut jouer dans le couleur demandée (hauteur de la première carte jouée dans le pli) si on en possède, sinon on doit couper. Il est cependant possible de ne pas couper si le partenaire est maitre ou si on n'a plus d'atouts en notre possession. Ceci a été assez complexe à faire interpréter à l'ordinateur, car les enchainements de conditions ne sont pas forcément triviaux. \\
-
-L'aspect jeu comporte également un enchainement d'actions à faire réaliser par un joueur spécifique (jouer une carte, remporter le pli, dire s'il veut prendre etc.) Cet enchainement précis a également posé, au début, quelques petites difficultés. Ces difficultés ont été encore une fois surmontées grâce à la "programmation orientée objet" et à la possibilité de rajouter un attribut à la classe Jeu : un attribut pour savoir quel joueur devra donner au prochain tour et un autre pour déterminer quel joueur devra effectuer l'action en cours (jouer une carte ou décider s'il doit prendre par exemple). Ces deux attributs sont incrémentés et décrémentés au fur et à mesure du déroulement d'une partie.\\
-
-La classe jeu est donc l'ossature du programme. Elle gère l'enchainement des toutes les actions et fait évoluer le jeu en fonction des informations reçues par les autres classes.
 \clearpage
-\section{Joueurs}
-Si la classe jeu est chargée de procéder au bon déroulement des différentes actions, c'est bien la classe joueur qui est chargé de prendre les décisions. Et très vite nous nous sommes rendu compte que les décisions pouvaient être de deux types : soit l'ordinateur les prends tout seul (c'est le cas des joueurs IA) soit un humain doit les prendre.\\
+\section{Intelligence Artificielle "basique"}
+\subsection{Aléatoirement}
+\subsection{Avec des scores}
 
-Afin de régler une fois pour toute ce problème nous avons décidé de faire hériter de la classe 'joueur' deux classes : une pour les joueurs qui seront gérés par l'ordinateur (Joueur$\_$IA), et l'autre pour les joueurs humains (Joueur$\_$Humain). \\
-
-Avec le raisonnement ci-dessus, il est clair qu'un "joueur simple" n'existe pas. Donc pour éviter de faire jouer un joueur simple, nous avons choisi de faire de la classe 'Joueur' une classe virtuelle pure. Là encore la programmation orientée objet permet de sous-traiter la prise de décision aux deux "sous-classes", en appelant les méthodes adaptées via un pointeur sur Jouer, qui pointera soit sur une instance de Joueur$\_$Humain soit sur une instance de Joueur$\_$IA.\\
-
-\'A l'instart de la classe 'Jeu' la classe 'Joueur' sert donc uniquement à structurer les données et à renvoyer ce qu'il faut à la classe jeu pour qu'une partie puisse se dérouler sans accrocs majeurs. Ce n'est qu'une interface entre le jeu et les différents types de joueurs présents.
-\subsection{Les joueurs gérés par l'ordinateur}
-Dans cette classe, toutes les décisions sont prises par l'ordinateur. Il a donc fallu lui apprendre à jouer de façon non complètement triviale. En effet, une IA\footnote{Intelligence Artificielle} qui choisit une carte aléatoirement ou encore décide au hasard de prendre ou de ne pas prendre n'est pas très performante et se fera battre à coup sûr par un joueur humain, même débutant. Un tel jeu ne présenterait pas énormément d'intérêt.\\
-
-Une fois encore, les décisions prises par l'ordinateur peuvent être de types. Soit l'ordinateur doit choisir s'il prend ou pas, soit il doit choisir une carte à jouer. 
-\subsubsection{Prendre ou ne pas prendre, telle est la question}
-La première étape la prise décisionnelle, le choix de la prise, est assez "simple". Il suffit de renvoyer un booléen : je prends/je ne prends pas ou éventuellement une couleur à laquelle l'IA veut prendre.\\
-
-Pour se faire nous avons choisi d'évaluer le score moyen que l'ordinateur peut espérer obtenir en fin de partie s'il a choisi l'atout et de lui faire prendre à cette couleur si ce score est "raisonnable". Pour évaluer le score moyen espéré plusieurs solutions s'offraient à nous. Nous avons décidé d'attribuer des scores à chaque particularité du jeu (nombre d'atouts, nombre d'as, nombre de 10, existence d'une longe etc.) Toutes ces particularités sont passées en revues par l'ordinateur qui va ensuite évaluer le nombre de points espérés. Si ce score est supérieur à un seuil minimal, le joueur prend, sinon il ne prend pas. \\
-
-Pour améliorer ce processus, nous avons décidé d'implémenter une stratégie de "machine learning" .Ceci consiste globalement à récupérer les données qui affectent le score à la création du joueur IA (intensité de modification du score). Et, en fonction de l'issue (gain ou perte) de la partie, les données seront modifiées : plus la différence entre le score de l'équipe du joueur concernée et celle de l'équipe adverse est grande, plus les scores en question se verront augmenter. Ces scores se verront également diminuer d'une manière similaire en cas de perte. Ceci permet à tous les joueurs IA de profiter de l'expérience acquise par le joueur qui a pris. Hélas au moment où le code a été envoyé cette fonctionnalité n'était pas encore tout a fait opérationnelle. Elle le sera pour la présentation.\\
-
-Une piste d'amélioration de cette méthode serait de définir différents types de joueurs IA en rajoutant un attribut "type" et qui permettrait de charger au départ des données différentes. Ceci aurait présenté l'avantage de pouvoir faire des joueurs plus ou moins agressifs (ou ayant des comportements plus ou moins rationnels) et ensuite de les faire se "battre" entre eux sur de nombreuses manches pour savoir quelle stratégie l'emporte. Une autre application aurait été de pouvoir voir comment les données d'un joueur évoluent au cours des parties jouées et s'il y a "convergence" des-dites données.\\
-
-Les gros inconvénients de ces méthodes résident dans le fait que la structure des cas envisagés est rigide : il n'est pas possible à l'ordinateur d'en rajouter un, même si ce cas a été oublié dans la programmation alors qu'il s'avère important. Un autre inconvénient réside dans la possibilité que le comportement des joueurs peut 'diverger'. Il est en effet tout à fait possible qu'il n'y ait pas de "force de rappel" suffisamment importante pour qu'un score ne croisse pas de façon incontrôlée.
-\subsubsection{Quelle carte jouer ?}
-Concernant le choix de la carte une méthode similaire mais néanmoins plus compliquée a été implémentée. En effet, le choix de la prise se résume globalement à renvoyer un booléen. Pour jouer c'est un peu plus compliqué. Il faut renvoyer une carte parmi tout un choix possible de cartes jouables\footnote{une méthode spécifique est chargée de déterminer si une carte peut ou non être jouée}. \\
-
-Pour se faire nous avons implémenté une méthode qui permet d'attribuer un score à chacune des cartes jouables et de retenir la carte avec le score le plus important. Le score se voit modifier selon différents paramètres qui l'affecte positivement ou négativement.\\
-
-Là encore c'est notre expérience personnelle qui nous a permis d'isoler les quelques cas possibles qui vont affecter le score. Et, cette approche ne nous permet pas d'en changer. Nous pourrons toujours rajouter des cas manuellement, mais l'ordinateur n'en ajoutera pas seul.\\
-
-L'intensité des modifications du score est ici aussi chargée dans un tableau à la création du joueur IA. Et il serait possible de l'affecter de la même façon que le choix de prendre ou de ne pas prendre. Ce qui diffère cependant c'est la difficulté d'évaluation d'un coup donné.\\
-
-Si le fait de prendre ou pas se révèle judicieux ou non est facile à savoir : si on gagne, le choix était le bon, si on perd il ne l'était pas. \'Evaluer la pertinence du choix d'une carte peut se révéler beaucoup plus complexe et faire appel à nettement plus d'informations. La belote se joue en équipe, il faut donc à la fois tenir compte du signal envoyé à notre partenaire en maximisant l'information qu'on lui transmet, tout en minimisant l'information transmise à nos adversaires. C'est ainsi que nous ne pouvons savoir s'il était judicieux d'avoir joué une telle carte à un pli donné que deux ou trois plis plus tard. Compte tenu de cette difficulté supplémentaire et du peu de temps qu'il nous restait, nous avons donc choisi de ne pas modifier l'intensité des modifications du score attribué aux cartes lorsqu'on doit en jouer une.
 \clearpage
-\subsection{Les Joueurs Humains}
-Les problèmes rencontrés pour la conception de la classe 'Joueur$\_$Humain' sont de natures totalement différentes. En effet, il ne s'agit plus de faire choisir l'ordinateur, mais de lui faire comprendre que le joueur derrière son écran veut effectuer telle ou telle action. L'essentiel de cette classe est donc de renvoyer des informations à la classe 'Joueur' sur ce que le joueur humain a décidé de faire.\\
+\section{Intelligence Artificielle par évaluation Monte Carlo}
+\subsection{Donner les cartes}
+\subsection{Jouer les jeux}
+\subsection{Piste d'améliorations}
+Importance Sampling : regarder en détail les actions de chaque pour 'sampler' de façon plus convenable. Ceci permettrait de tirer parti d'informations telles que 'si un joueur a joué ça, c'est qu'il probablement avoir ça' [cas des appels]. Alors que la on ne tire parti que des infos du genre "un joueur a joué ça, il ne peut pas avoir ça".  \\
 
-Les problèmes rencontrés ici sont donc surtout des problèmes liés à la librairie SDL. Il a fallu faire plusieurs classes de d'images avec lesquelles le joueur humain pouvait interagir (boutons ou carte sur lesquels cliquer par exemple).\\
+Prime à la découverte / communication avec le partenaire : pour l'instant l'IA ce sont deux autistes qui prennent des décisions. On pourrait imaginer mettre en place une réelle communication par les cartes (appels). \\
 
-Tout d'abord la classe 'Images' représente une image au sens générique, c'est à dire tout élément susceptible d'être affiché à l'écran. De cette classe hérite deux autres classes : 'Text' dont la principale fonction est d'afficher du texte et 'Button' dont la principale fonction est de changer de couleur lorsque la souris est dessus\footnote{La possibilité de cliquer sur n'importe quelle image est en effet offerte par la classe 'Images'.}.
+optimisation / profiling : trouver un outil pour rendre l'évaluation plus rapide ce qui permettrait de faire plus d'évaluations, donc d'être plus performant :-)
+\subsection{Performance}
+Méthodologie : l'IA qui s'affronte elle même. \\
+Deux équipes IA de types différents. \\
+cas 1 : random vs score
+cas 2 : Monte Carlo random vs score
+cas 3 : Monte Carlo score vs Monte Carlo random
 
-Les principaux problèmes rencontrés avec SDL sont liés à son intégration plutôt mauvaise dans des classes. En effet, toute 'surface' est en réalité un pointeur sur surface. Pour intégrer ces pointeurs à des classes il faut donc modifier le destructeur pour ne pas que notre programme ait des fuites mémoires. Et, il faut alors également modifier le constructeur copie et l'opérateur 'asignment' pour ne pas avoir de problèmes. Mais pour se faire il faut également garder en mémoire, entre autre, le chemin d'accès à l'image car à notre connaissance, la librairie SDL ne possède pas de méthode permettant de dupliquer une surface sans avoir à la recharger depuis le fichier de base.
 \clearpage
-\section{TortoiseSVN}
-Pour faire ce projet nous avons utilisé un logiciel qui gère les versions. Il s'agit de RapidSVN qui est intégré à Windows via TortoiseSVN.\\
-
-Ceci nous a été très utile pour se transmettre le code que nous pouvions ainsi modifié à notre guise sans pour autant harceler les autres pour avoir la dernière version qu'il venait de coder. De plus, le code étant hébergé sur internet\footnote{ sur le site \href{https://www.assembla.com/start}{Assembla.com}}. Ceci a permis de coder sur plusieurs ordinateurs simultanément et sans se préoccuper des autres. A chaque fois que nous voulions programmer il suffisait de 'updater' pour obtenir la dernière version du code, de la modifier à notre guise puis, avant de 'commit' de remettre à jour notre version du code pour que tout se passe bien. Ceci a nécessité un petit coût d'entrée mais s'est révélé payant sur le 'long terme'.\\
-
-Outre cet avantage nous pouvons également citer le fait de pouvoir revenir aux versions antérieures. Ceci c'est avéré utile quand nous partions sur de fausses pistes ou lorsque le code se mettait à bugguer 'mystérieusement'\footnote{bugs souvent dus à une mauvaise manipulation d'un des codeurs}. Nous pouvions ainsi comparer la version actuelle à la version précédente et avoir une idée d'où les bugs pouvaient venir. Les corriger s'est donc avérer moins 'douloureux' que si un tel outil n'avait pas été employé.
-\clearpage
-\section{CodeBlocks, Conclusion}
-Comme nous trouvions plus agréable de coder avec CodeBlocks (auto complétion -entre autre) et pour des raisons d'affinité d'au moins un de nous avec le monde des licences libres et de la communauté Linux en général nous avons décidé de codé avec CodeBlocks. \\
-
-Nous ne pensions pas avoir de problèmes de compatibilité avec Visual Studio. Ceci était sans compter sur SDL... En effet, il semble que les en-têtes pour inclure SDL ne sont pas les mêmes avec les deux logiciels. Ceci explique donc que nous n'ayons pas pu tester que le projet Visual Studio que nous avons joint aux fichiers que nous vous avons envoyé. Car celui-ci n'a pas réussi à compiler normalement.\\
-Nous espérons que cela ne vous posera pas trop de problèmes et nous nous excusons pour la gêne occasionnée.\\
-
-En conclusion, les problèmes que nous avons rencontrés ont été de natures assez différentes. Mais, grâce à la programmation orientée objet et de nombreuses recherches sur internet nous avons réussi à en franchir une bonne partie. \\
+\section*{Conclusion}
+\addcontentsline{toc}{section}{Conclusion} 
 \end{document}
