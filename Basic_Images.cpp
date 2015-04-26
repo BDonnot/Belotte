@@ -1,5 +1,5 @@
 #include "Basic_Images.h"
-#include "SDL/SDL_image.h"
+
 using namespace::std;
 Basic_Images::Basic_Images():
 _info()

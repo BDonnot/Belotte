@@ -1,9 +1,18 @@
 #ifndef DISPLAY_TRUNK_H
 #define DISPLAY_TRUNK_H
-#include "SDL/SDL.h"
-#include "SDL/SDL_ttf.h"
+
 #include <string>
 #include <array>
+
+#ifndef _MSC_VER
+	#include "SDL/SDL.h"
+	#include "SDL/SDL_ttf.h"
+#endif //ndef _MSC_VER
+#ifdef _MSC_VER
+	#include <SDL.h>
+	#include <SDL_ttf.h>
+#endif //def _MSC_VER
+
 
 class Display_trump
 {

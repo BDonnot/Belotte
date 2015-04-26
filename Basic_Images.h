@@ -5,7 +5,14 @@
 #include <array>
 #include <memory>
 
-#include "SDL/SDL.h"
+#ifndef _MSC_VER
+	#include "SDL/SDL.h"
+	#include "SDL/SDL_image.h"
+#endif //ndef _MSC_VER
+#ifdef _MSC_VER
+	#include <SDL.h>
+	#include <SDL_image.h>
+#endif //def _MSC_VER
 
 #include "Basic_Game_Info.h"
 #include "PositionGraphic.h"

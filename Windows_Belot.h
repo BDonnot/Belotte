@@ -1,6 +1,13 @@
 #ifndef WINDOWS_BELOT_H
 #define WINDOWS_BELOT_H
-#include "SDL/SDL.h"
+
+#ifndef _MSC_VER
+	#include "SDL/SDL.h"
+#endif //ndef _MSC_VER
+#ifdef _MSC_VER
+	#include <SDL.h>
+#endif //def _MSC_VER
+
 #include "Quit.h"
 #include "Basic_Images.h"
 #include "Screen_end.h"

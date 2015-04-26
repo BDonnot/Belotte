@@ -1,7 +1,12 @@
 #ifndef BASIC_TRANSPARENCY_H
 #define BASIC_TRANSPARENCY_H
 
+#ifndef _MSC_VER
 #include "SDL/SDL.h"
+#endif //ndef _MSC_VER
+#ifdef _MSC_VER
+#include <SDL.h>
+#endif //def _MSC_VER
 
 class Basic_Transparency
 {

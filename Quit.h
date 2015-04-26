@@ -1,6 +1,12 @@
 #ifndef QUIT_H
 #define QUIT_H
-#include "SDL/SDL.h"
+
+#ifndef _MSC_VER
+	#include "SDL/SDL.h"
+#endif //ndef _MSC_VER
+#ifdef _MSC_VER
+	#include <SDL.h>
+#endif //def _MSC_VER
 
 class Quit //Just contain the method Quit()
 {
