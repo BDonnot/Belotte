@@ -1,8 +1,12 @@
 #ifndef PLAYER_AI_H
 #define PLAYER_AI_H
 
-//#include "Definitions.h"
-//#include "Basic_Game_Info.h"
+#include <thread>
+#include <future>
+#include <chrono>
+
+#include "Definitions.h"
+#include "Basic_Game_Info.h"
 #include "Player.h"
 #include "Random.h"
 
@@ -25,6 +29,10 @@ class Player_AI : public Player
         GameMemory _gameMemory;
         TakeAI _take;
         PlayAI _play;
+
+        std::future< std::list<Cards*>::iterator > _threadChooseCard;
+        bool _threadLaunched;
+        //std::future_status::timeout _threadChooseCardStatus;
     public:
         Player_AI(){}
         Player_AI(const Player_ID& number,Uint16 windows_width, Uint16 windows_height,SDL_Event* pevent,Basic_Images* fond,SDL_Surface* screen):
@@ -33,7 +41,8 @@ class Player_AI : public Player
             ,_betsMemory()
             ,_gameMemory(number,&_hand)
             ,_take()
-            ,_play(_number){}
+            ,_play(_number)
+            ,_threadLaunched(false){}
         virtual ~Player_AI(){}
         //Cards* Choose_Card(const std::array<Cards*,4>& trick,int i_master); //choose what card the player play
         //int Take(bool first_round,int color_proposed,int height_proposed); //choose if the player take or not. 127 : no, 255 : not choosen, 0-3 : color at which the player wants to take
@@ -46,7 +55,13 @@ class Player_AI : public Player
         virtual std::list<Cards*>::iterator what_card_do_i_play(const TrickBasic_Memory& trick);
 
         virtual void resetTake(){ _take.Reset(); } //merge with ResetBid() when the template of Player_AI will be upped to Player, thus removing Player_Human and Player_AI
-
+        std::list<Cards*>::iterator callPlay(PlayAI* play,
+                                              const TrickBasic_Memory* trick,
+                                              std::list<std::list<Cards*>::iterator >* playableCard,
+                                              std::list<Cards*>* hand,
+                                              Random* rand,
+                                              TrickStatus* currentTrickStatus,
+                                              GameMemory* memory);
     private:
         Player_AI(const Player_AI& other){}
         Player_AI& operator=(const Player_AI& other)
@@ -79,8 +94,53 @@ Card_Color Player_AI<GameMemory,TakeAI,PlayAI>::do_i_take(bool first_round,const
 template<class GameMemory,class TakeAI, class PlayAI>
 std::list<Cards*>::iterator Player_AI<GameMemory,TakeAI,PlayAI>::what_card_do_i_play(const TrickBasic_Memory& trick) //by default, play a random card
 {
-    return _play.Play(trick,_playable_cards,_hand,_rand,_currentTrickStatus,_gameMemory);
+    std::list<Cards*>::iterator res = _hand.end();
+    //printf("I enter the function for player %d\n",_number.ToInt());
+    //res = callPlay(&_play,&trick,&_playable_cards,&_hand,&_rand,&_currentTrickStatus,&_gameMemory);
+    if(_threadLaunched) //the thread has been launch
+    {
+        //printf("Thread launch but not finished\n");
+
+        auto status = _threadChooseCard.wait_for(std::chrono::milliseconds(0));
+
+        if(status == std::future_status::ready) //the card has been choosen
+        {
+            //printf("Thread over\n");
+            res = _threadChooseCard.get();
+            _threadLaunched = false;
+        }
+    }
+    else //launching the thread
+    {
+        //printf("Init thread\n");
+        _threadLaunched = true;
+        _threadChooseCard = std::async(std::launch::async,
+                                       &Player_AI<GameMemory,TakeAI,PlayAI>::callPlay,
+                                       this,
+                                       &_play,
+                                       &trick,
+                                       &_playable_cards,
+                                       &_hand,
+                                       &_rand,
+                                       &_currentTrickStatus,
+                                       &_gameMemory);
+
+    }
+    return res;
 }
+
+template<class GameMemory,class TakeAI, class PlayAI>
+std::list<Cards*>::iterator Player_AI<GameMemory,TakeAI,PlayAI>::callPlay(PlayAI* play,
+                                                                          const TrickBasic_Memory* trick,
+                                                                          std::list<std::list<Cards*>::iterator >* playableCard,
+                                                                          std::list<Cards*>* hand,
+                                                                          Random* rand,
+                                                                          TrickStatus* currentTrickStatus,
+                                                                          GameMemory* memory)
+{
+    return play->Play(*trick,*playableCard,*hand,*rand,*currentTrickStatus,*memory);
+}
+//no matching function for call to ‘async(std::launch, <unresolved overloaded function type>,
 
 
 template<class GameMemory,class TakeAI, class PlayAI>

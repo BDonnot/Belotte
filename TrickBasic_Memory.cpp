@@ -104,6 +104,7 @@ void TrickBasic_Memory::updateToPlay()
 
 void TrickBasic_Memory::updateScores(Uint pointsInTheTrick)
 {
+
     switch(_to_play.ID())
     {
     case PLAYER0 : case PLAYER2 :
@@ -115,7 +116,7 @@ void TrickBasic_Memory::updateScores(Uint pointsInTheTrick)
     default : //TO DO exception here
         break;
     }
-    _infos.SetScores(_to_play,_scores);
+    updateBasicGameInfo(); //this class does not update it
 }
 
 void TrickBasic_Memory::trickOver()

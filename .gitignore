@@ -5,3 +5,5 @@
 *.depend
 **/*.*~$
 obj/*
+report/*
+!/report/*.tex

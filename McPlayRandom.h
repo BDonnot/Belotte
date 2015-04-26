@@ -66,7 +66,7 @@ Uint McPlayRandom<Memory,nbCardToPlay,PlayAI>::Play(const std::array<PlayerMiniM
     for(Uint nbSimul = 0; nbSimul < _nbGamePlayed; ++nbSimul)
     {
         TrickBasic_Memory currentTrick = trick;
-        Memory gameMemory(_number,&hand);
+        Memory gameMemory(_number,&hand); //TO DO : update the memory in a proper way :-)
         //TrickStatus trickStatus;
         std::array<PlayerMiniMonteCarlo<Memory> , 4> currentPlayers(players);
         Cards_Basic tempCard = static_cast<const Cards_Basic&>(*pcard);

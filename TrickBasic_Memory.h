@@ -11,13 +11,14 @@
 -the last player who have played
 -the number of trick played
 -etc.
+Copy safe, and does not influence _infos
 **/
 
 class TrickBasic_Memory
 {
     protected:
         Basic_Game_Info _infos;
-        Uint _trickNumber; //the current trick number : 1 to 8
+        Uint _trickNumber; //the current trick number : 0 to 7
         Uint _cardsPlayed; //the number of cards played : 0 to 4
         Player_ID _to_play;
         Player_ID _oldFirstPlayer;
@@ -60,6 +61,7 @@ class TrickBasic_Memory
         void updateToPlay(); //at the end of the trick, and store the scores
         void updateScores(Uint pointsInTheTrick);
         void trickOver(); //do whatever you have to when a the trick is over
+        virtual void updateBasicGameInfo(){} //this class does not update it
 
     private:
 };

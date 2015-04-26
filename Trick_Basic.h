@@ -41,6 +41,7 @@ class Trick_Basic : public TrickBasic_Memory
         //virtual bool trickFinished(){ return false;}
         //virtual void animateIfGraphic(Cards_Basic* pcard, Uint i){}
         virtual void animateIfGraphic(Cards* pcard, Uint i){}
+        virtual void updateBasicGameInfo(){_infos.SetScores(_to_play,_scores);}
     private:
 };
 

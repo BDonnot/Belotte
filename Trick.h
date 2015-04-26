@@ -42,8 +42,8 @@ class Trick :public Trick_Basic
         virtual void trickFinished()
         {
             //printf("ok ; %d\n",_trickFinished);
-            //_trickFinished = _trickFinished || _ok.Click(true);
-            _trickFinished = true; //HERE
+            _trickFinished = _trickFinished || _ok.Click(true);
+            //_trickFinished = true; //HERE
         }
         virtual void animateIfGraphic(Cards* pcard, Uint i)
         {
