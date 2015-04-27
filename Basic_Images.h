@@ -52,7 +52,7 @@ class Basic_Images
         std::array<Uint,2> GetSize();
     protected:
 
-        SDL_Surface* load_image( std::string filename ); //to load a surface from an image
+        SDL_Surface* load_image(const std::string& filename ); //to load a surface from an image
         Basic_Images(const Basic_Images& other); //to prevent copy
         Basic_Images& operator=(const Basic_Images& other); //to prevent assignment
         void apply_surface(const Uint& x,const Uint& y,const SMARTSurface& source, SDL_Surface* destination ); //to apply a surface on the screen

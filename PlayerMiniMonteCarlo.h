@@ -29,7 +29,7 @@ class PlayerMiniMonteCarlo
         std::unordered_map<Cards_Basic,bool> _canReceiveCard;
         Random *_rand;
         TrickStatus _status;
-        std::list< std::list<Cards_Basic>::iterator > _playableCards;
+        std::list< Cards_Basic > _playableCards;
         CanPlayCards<Cards_Basic> _fCanPlayCard;
 
     public:
@@ -45,9 +45,9 @@ class PlayerMiniMonteCarlo
         const Player_ID& ID() const {return _number;}
         const Uint NumberCardToReceive() const {return _nbCardToReceive;}
         const Uint CardInHand() const {return _hand.size();}
-        std::list< std::list<Cards_Basic>::iterator >& GetPlayableCard(const TrickBasic_Memory& trick)
+        std::list< Cards_Basic>& GetPlayableCard(const TrickBasic_Memory& trick)
         {
-            updatePlaybleCard(trick);
+			updatePlayableCard(trick);
             return _playableCards;
         }
 
@@ -61,7 +61,7 @@ class PlayerMiniMonteCarlo
         void PrintHand() const;
 
     protected:
-        void updatePlaybleCard(const TrickBasic_Memory& trick); //TO DO : find another way, this is a copy/paste from Player...
+		void updatePlayableCard(const TrickBasic_Memory& trick); //TO DO : find another way, this is a copy/paste from Player...
         bool has_colour(const Card_Color& colour); //TO DO : find another way, this is a copy/paste from Player...
 
     private:
@@ -151,13 +151,13 @@ void PlayerMiniMonteCarlo<GameMemory>::RetrieveCard(const Cards_Basic& card)
     }
     //printf("\n");
     _nbCardToReceive++;
-    _hand.erase(it);
+	it = _hand.erase(it);
     //_hand.remove(card);
 }
 template<class GameMemory>
 void PlayerMiniMonteCarlo<GameMemory>::RetrieveCard(std::list<Cards_Basic>::iterator& itCard) //retrieve the card from the hand
 {
-    _hand.erase(itCard);
+	itCard = _hand.erase(itCard);
 }
 
 template<class GameMemory>
@@ -172,15 +172,15 @@ void PlayerMiniMonteCarlo<GameMemory>::PrintHand() const
 }
 
 template<class GameMemory> //TO DO : this is a copy/paste from player, there may be another option...
-void PlayerMiniMonteCarlo<GameMemory>::updatePlaybleCard(const TrickBasic_Memory& trick)
+void PlayerMiniMonteCarlo<GameMemory>::updatePlayableCard(const TrickBasic_Memory& trick)
 {
     //auto itEnd = _hand.end();
     _playableCards.clear();
     if (trick.NumberCardsPlayed() == 0) //if we are the first to play, we can play everything
     {
-        for(auto it = _hand.begin(); it != _hand.end(); ++it)
+        for(auto pcard : _hand)
         {
-            _playableCards.push_back(it);
+			_playableCards.push_back(pcard);
         }
         return;
     }
@@ -189,9 +189,9 @@ void PlayerMiniMonteCarlo<GameMemory>::updatePlaybleCard(const TrickBasic_Memory
                    ,has_colour(trick.ColorAsked())
                    ,has_colour(_basic_info.TrumpColor()));
     _fCanPlayCard.Init(trick,_status,_hand);
-    for(auto it = _hand.begin(); it != _hand.end(); ++it)
+	for (auto pcard : _hand)
     {
-        if( _fCanPlayCard(*it) ) _playableCards.push_back(it);
+        if( _fCanPlayCard(pcard) ) _playableCards.push_back(pcard);
     }
 }
 

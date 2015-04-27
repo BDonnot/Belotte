@@ -10,7 +10,7 @@ void Player_Human::Update_Mouse(GAME_PHASES currentPhase)
         _UpdateCardMouse.Reset();
         for (auto it = _playable_cards.rbegin(); it !=_playable_cards.rend(); ++it) //run through the list backward, because the last card displayed is in front of the other
         {
-            _UpdateCardMouse(**it);
+            _UpdateCardMouse(*it);
         }
     }
     if (currentPhase == BIDDING)
@@ -32,13 +32,13 @@ void Player_Human::Display(GAME_PHASES currentPhase)
 }
 
 //Play
-std::list<Cards*>::iterator Player_Human::what_card_do_i_play(const TrickBasic_Memory& trick)
+Cards* Player_Human::what_card_do_i_play(const TrickBasic_Memory& trick)
 {
    //_playable_cards = _hand;
-   std::list<Cards*>::iterator pcard = _hand.end();
+   Cards *pcard = nullptr;
     if (_UpdateCardMouse.Click() != 255)
     {
-        auto it = _playable_cards.rbegin();
+        std::list<Cards*>::reverse_iterator it = _playable_cards.rbegin();
         for (Uint8 i = 0; i < _UpdateCardMouse.Click() ; i++)
         {
             ++it;

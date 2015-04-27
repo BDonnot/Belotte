@@ -54,7 +54,7 @@ Basic_Images& Basic_Images::operator=(const Basic_Images& rhs)
     //assignment operator
     return *this;
 }
-SDL_Surface* Basic_Images::load_image( std::string filename )
+SDL_Surface* Basic_Images::load_image(const std::string& filename )
 {
     SDL_Surface* loadedImage = NULL;
     SDL_Surface* optimizedImage = NULL;

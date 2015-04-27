@@ -18,12 +18,12 @@ class AIPlayRandom
     public:
         AIPlayRandom(const Player_ID& player):_player(player){}
         virtual ~AIPlayRandom(){}
-        typename std::list<TypeOfCard>::iterator Play(const TrickBasic_Memory& trick
-                                         ,typename std::list<typename std::list<TypeOfCard>::iterator >& plyableCards
-                                         ,const std::list<Cards*>& hand
-                                         ,Random& rand
-                                         ,const TrickStatus& trickStatus
-                                         ,const Memory& playerMemory);
+        typename TypeOfCard Play(const TrickBasic_Memory& trick
+                                ,typename std::list<TypeOfCard >& plyableCards
+                                ,const std::list<Cards*>& hand
+                                ,Random& rand
+                                ,const TrickStatus& trickStatus
+                                ,const Memory& playerMemory);
         void SetNumber(const Player_ID& number)
         {
             _player = number;
@@ -34,12 +34,12 @@ class AIPlayRandom
 };
 
 template<class Memory,class TypeOfCard>
-typename std::list<TypeOfCard>::iterator AIPlayRandom<Memory,TypeOfCard>::Play(const TrickBasic_Memory& trick
-                                                                               ,typename std::list<typename std::list<TypeOfCard>::iterator>& playbleCards
-                                                                               ,const std::list<Cards*>& hand
-                                                                               ,Random& rand
-                                                                               ,const TrickStatus& trickStatus
-                                                                               ,const Memory& playerMemory)
+TypeOfCard AIPlayRandom<Memory,TypeOfCard>::Play(const TrickBasic_Memory& trick
+													,typename std::list<TypeOfCard >& playbleCards
+													,const std::list<Cards*>& hand
+													,Random& rand
+													,const TrickStatus& trickStatus
+													,const Memory& playerMemory)
 {
     Uint n = playbleCards.size();
     switch(n)

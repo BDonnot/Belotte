@@ -70,7 +70,7 @@ Uint McPlayRandom<Memory,nbCardToPlay,PlayAI>::Play(const std::array<PlayerMiniM
         //TrickStatus trickStatus;
         std::array<PlayerMiniMonteCarlo<Memory> , 4> currentPlayers(players);
         Cards_Basic tempCard = static_cast<const Cards_Basic&>(*pcard);
-        std::list<Cards_Basic>::iterator tempItCard;
+        //Cards_Basic tempItCard;
         PlayerMiniMonteCarlo<Memory> * tempPlayer;
 
         currentPlayers[_number.ToInt()].RetrieveCard(tempCard);
@@ -84,13 +84,13 @@ Uint McPlayRandom<Memory,nbCardToPlay,PlayAI>::Play(const std::array<PlayerMiniM
             //printf("I play trick %d\n",currentTrick.TrickNumber());
             if(currentTrick.TrickNumber() ==8 ) break;
             tempPlayer = & currentPlayers[currentTrick.NextPlaying().ToInt()];
-            std::list<std::list<Cards_Basic>::iterator > &playableCards = tempPlayer->GetPlayableCard(currentTrick);
+            std::list<Cards_Basic > & playableCards = tempPlayer->GetPlayableCard(currentTrick);
 
             //chooseCard(playableCards,tempItCard);
-            tempItCard = _play.Play(currentTrick,playableCards,hand,*_rand,trickStatus,gameMemory);
+			tempCard = _play.Play(currentTrick, playableCards, hand, *_rand, trickStatus, gameMemory);
 
-            putCardInTrick(currentTrick,*tempItCard);
-            tempPlayer->RetrieveCard(tempItCard);
+			putCardInTrick(currentTrick, tempCard);
+			tempPlayer->RetrieveCard(tempCard);
             /*
             printf("%d has played [c:%d,h:%d], he has still %d cards \n",
                    tempPlayer->ID().ToInt(),

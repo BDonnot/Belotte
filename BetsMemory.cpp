@@ -4,7 +4,7 @@ void BetsMemory::TellBet(const Player_Bid& bid)
     _bets.push_back(bid); //here
     if(_bets.size() == 1)
     {
-        ++_itSaved; //for this iterator to point to the first element.
+		_itSaved = _bets.begin(); //for this iterator to point to the first element.
     }
 }
 

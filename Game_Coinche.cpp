@@ -10,7 +10,7 @@ Game_Coinche::Game_Coinche(SDL_Surface* screen,Uint16 screenWidth, Uint16 screen
     Quit()
     ,_infos()
     ,_pScreen(screen)
-    ,_backSide("images/tapis_moyen_2.jpg")
+	,_backSide("images/tapis_moyen_2.jpg")
     ,_begin(&_backSide,_event,screenWidth,screenHeight)
     ,_end(&_backSide,_event,screenWidth,screenHeight,"Merci d'avoir joué !")
     ,_error(&_backSide,_event,screenWidth,screenHeight,"An unexpected error occurred :-(")
@@ -26,24 +26,28 @@ Game_Coinche::Game_Coinche(SDL_Surface* screen,Uint16 screenWidth, Uint16 screen
     PositionGraphic pos(0,0,TOP_LEFT);
     _backSide.SetPosition(pos);
     PLAYER_ID posPlayer[4] = {PLAYER0,PLAYER1,PLAYER2,PLAYER3};
-    //_players[0] = static_cast<Player*>(new Player_Human(Player_ID(posPlayer[0]),screenWidth,screenHeight,_event,&_backSide,_pScreen));
-    //for (Uint i = 1; i < 4; i++)
-	for (Uint i = 0; i < 4; i++) //HERE
+#if PLAY_HUMAN > 0
+    _players[0] = static_cast<Player*>(new Player_Human(Player_ID(posPlayer[0]),screenWidth,screenHeight,_event,&_backSide,_pScreen));
+    for (Uint i = 1; i < 4; i++)
+#else
+	for (Uint i = 0; i < 4; i++)
+#endif
     {
         //<AIGameMemory,AITakeBasic,AIPlayRandom<AIGameMemory> >
         //<AIGameMemory,AITakeBasic,AIPlayScores<AIGameMemory> >
         //<AIGameMemory,AITakeBasic,AIPlayMonteCarlo<AIGameMemory> >
         //<AIGameMemory,AITakeBasic,AIPlayMonteCarlo<AIGameMemory> >
         //<AIGameMemoryImproved,AITakeBasic,AIPlayMonteCarlo<AIGameMemoryImproved,McPlayRandom<AIGameMemoryImproved,30> > >
-
-        //_players[i] = static_cast<Player*>(new Player_AI<AIGameMemoryImproved,AITakeBasic,AIPlayMonteCarlo<AIGameMemoryImproved,McPlayRandom<AIGameMemoryImproved,30,AIPlayRandom<AIGameMemory,Cards_Basic> > > >(Player_ID(posPlayer[i]),screenWidth,screenHeight,_event,&_backSide,_pScreen));
-
+#if PLAY_HUMAN > 0
+        _players[i] = static_cast<Player*>(new Player_AI<AIGameMemoryImproved,AITakeBasic,AIPlayMonteCarlo<AIGameMemoryImproved,McPlayRandom<AIGameMemoryImproved,30,AIPlayRandom<AIGameMemory,Cards_Basic> > > >(Player_ID(posPlayer[i]),screenWidth,screenHeight,_event,&_backSide,_pScreen));
+#else
+		if (i % 2 == 0) _players[i] = static_cast<Player*>(new Player_AI<AIGameMemoryImproved, AITakeBasic, AIPlayMonteCarlo<AIGameMemoryImproved, McPlayRandom<AIGameMemoryImproved, 30, AIPlayRandom<AIGameMemory, Cards_Basic> > > >(Player_ID(posPlayer[i]), screenWidth, screenHeight, _event, &_backSide, _pScreen));
+		else _players[i] = static_cast<Player*>(new Player_AI<AIGameMemoryImproved, AITakeBasic, AIPlayScores<AIGameMemoryImproved, Cards*> >(Player_ID(posPlayer[i]), screenWidth, screenHeight, _event, &_backSide, _pScreen));
+#endif
         //if(i%2 ==0) _players[i] =  static_cast<Player*>(new Player_AI<AIGameMemoryImproved,AITakeBasic,AIPlayMonteCarlo<AIGameMemoryImproved,McPlayRandom<AIGameMemoryImproved,1,AIPlayScores<AIGameMemory,Cards_Basic> > > >(Player_ID(posPlayer[i]),screenWidth,screenHeight,_event,&_backSide,_pScreen));
         //else _players[i] =  static_cast<Player*>(new Player_AI<AIGameMemoryImproved,AITakeBasic,AIPlayMonteCarlo<AIGameMemoryImproved,McPlayRandom<AIGameMemoryImproved,30,AIPlayRandom<AIGameMemory,Cards_Basic> > > >(Player_ID(posPlayer[i]),screenWidth,screenHeight,_event,&_backSide,_pScreen));
 
-        if(i%2 ==0) _players[i] =  static_cast<Player*>(new Player_AI<AIGameMemoryImproved,AITakeBasic,AIPlayMonteCarlo<AIGameMemoryImproved,McPlayRandom<AIGameMemoryImproved,30,AIPlayRandom<AIGameMemory,Cards_Basic> > > >(Player_ID(posPlayer[i]),screenWidth,screenHeight,_event,&_backSide,_pScreen));
-		else _players[i] = static_cast<Player*>(new Player_AI<AIGameMemoryImproved, AITakeBasic, AIPlayScores<AIGameMemoryImproved, Cards*> >(Player_ID(posPlayer[i]), screenWidth, screenHeight, _event, &_backSide, _pScreen));
-        
+               
 		//if(i%2 ==0) _players[i] =  static_cast<Player*>(new Player_AI<AIGameMemory,AITakeBasic,AIPlayScores<AIGameMemory,Cards*> >(Player_ID(posPlayer[i]),screenWidth,screenHeight,_event,&_backSide,_pScreen));
         //else _players[i] =  static_cast<Player*>(new Player_AI<AIGameMemory,AITakeBasic,AIPlayRandom<AIGameMemory> >(Player_ID(posPlayer[i]),screenWidth,screenHeight,_event,&_backSide,_pScreen));
     }
@@ -135,7 +139,9 @@ void Game_Coinche::playGame(bool& keep_playing)
         _deck.GiveCards(_players);
         _saveGame.SaveHands(_players);
         _trick.Reset();
-        //_timeNextAction = _infos.Time() + 2000; //HERE
+#if PLAY_HUMAN > 0
+        _timeNextAction = _infos.Time() + 2000; //HERE
+#endif
         _currentPhase = BIDDING;
         _bid.Reset();
         return;
@@ -148,8 +154,11 @@ void Game_Coinche::playGame(bool& keep_playing)
         }
         return;
     case AFTER_BET :
-        //if (_bid.Click(true)) //HERE
+#if PLAY_HUMAN > 0
+        if (_bid.Click(true)) //HERE
+#else
         if (true) //HERE
+#endif
         {
             _currentPhase = _bid.NextPhase();
             if(_currentPhase == PLAYING)
@@ -172,7 +181,9 @@ void Game_Coinche::playGame(bool& keep_playing)
         //printf("AFTER_TRICK0 %d \n",_trick.TrickNumber());
         _saveGame.SaveTrick(_trick);
         _trick.GatherCards();
-        //_timeNextAction = _infos.Time() + 600;//HERE //TO DO : improve here ...
+#if PLAY_HUMAN > 0
+        _timeNextAction = _infos.Time() + 600;//HERE //TO DO : improve here ...
+#endif
         _currentPhase = AFTER_TRICK1;
         return;
     case AFTER_TRICK1 :
@@ -233,7 +244,9 @@ void Game_Coinche::Play()
             else _end.Display(_pScreen);
         }
         endLoop = SDL_GetTicks();
+#if PLAY_HUMAN > 0
         if (endLoop < min_time_loop + startLoop) SDL_Delay( (min_time_loop+ startLoop) - endLoop  );
+#endif
         SDL_Flip(_pScreen);
         endLoop = SDL_GetTicks();
     }

@@ -44,27 +44,26 @@ void Cards_Deck::BeginGame()
 }
 void Cards_Deck::Cut() //cut the pack
 {
-//    Random random(3,28);
     int nb_rand = _rand.generate_number();
     list<Cards*>::iterator it = _pile.begin();
     advance(it,nb_rand);
     list<Cards*> aux;
-    aux.splice(aux.begin(),aux,_pile.begin(),it);
+    aux.splice(aux.begin(),_pile,_pile.begin(),it);
     _pile.splice(_pile.end(),aux);
 }
 void Cards_Deck::Shuffle()
 {
-//    Random_Decreasing rand(31);
     list<Cards*> aux;
     int nb_rand = 0;
     list<Cards*>::iterator it=_pile.begin();
-    for (int i = 0; i < 32; i++)
+    for (int i = 0; i < 31; i++)
     {
         it = _pile.begin();
         nb_rand = _randDecreasing();
         advance(it,nb_rand); //linear
-        aux.splice(aux.begin(),aux,it); //constant
+		aux.splice(aux.begin(), _pile, it); //constant
     }
+	aux.splice(aux.begin(), _pile, _pile.begin()); //constant
     _pile.swap(aux); //constant
 }
 void Cards_Deck::GiveCards(const list<Player*>& li_players,bool first_round,unsigned int i_taker)

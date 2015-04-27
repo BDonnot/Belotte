@@ -28,10 +28,7 @@ class Datas
         std::vector<int> _datas_selected_2;
         std::vector<int> _datas_selected_3;
         int* _selected;
-        /*int* _datas_selected_0[];
-        int* _datas_selected_1[];
-        int* _datas_selected_2[];
-        int* _datas_selected_3[];*/
+
         std::string _path;
         int _number_of_datas;
         int _number_line_concerned;

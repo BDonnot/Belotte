@@ -25,4 +25,4 @@ files = glob.glob(currentDir+'/*.cpp')
 numberLines = count(files)
 files = glob.glob(currentDir+'/*.h')
 numberLines += count(files)
-print numberLines
+print(numberLines)

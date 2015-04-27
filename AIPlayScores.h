@@ -47,8 +47,8 @@ class AIPlayScores
             }
 
         virtual ~AIPlayScores(){}
-        typename std::list<TypeOfCard>::iterator Play(const TrickBasic_Memory& trick
-                                             ,typename std::list< typename std::list<TypeOfCard>::iterator > & plyableCards
+        typename TypeOfCard Play(const TrickBasic_Memory& trick
+                                             ,typename std::list<TypeOfCard > & plyableCards
                                              ,const std::list<Cards*>& hand
                                              ,Random& rand
                                              ,const TrickStatus& trickStatus
@@ -68,41 +68,39 @@ class AIPlayScores
 
 
 template<class Memory,typename TypeOfCard>
-typename std::list<TypeOfCard>::iterator AIPlayScores<Memory,TypeOfCard>::Play(const TrickBasic_Memory& trick
-                                       ,typename std::list<typename std::list<TypeOfCard>::iterator>& playbleCards
-                                       ,const std::list<Cards*>& hand
-                                       ,Random& rand
-                                       ,const TrickStatus& trickStatus
-                                       ,const Memory& playerMemory)
+typename TypeOfCard AIPlayScores<Memory,TypeOfCard>::Play(const TrickBasic_Memory& trick
+														   ,typename std::list<TypeOfCard >& playbleCards
+														   ,const std::list<Cards*>& hand
+														   ,Random& rand
+														   ,const TrickStatus& trickStatus
+														   ,const Memory& playerMemory)
 {
-    typename std::list<TypeOfCard>::iterator res = *playbleCards.begin();
-    TypeOfCard pcard;
+    auto res = playbleCards.front();
     int MaxScore = -10000,currentScore;
     const Card_Color& color_asked = trick.ColorAsked();
     const Card_Color& color_trump = trickStatus.TrumpColor();
-    bool pisse; //I can play another colour than the one asked, or trump
-    bool play_trump; //I can play at least one trump
-    for (auto it : playbleCards)
+    bool pisse = false; //I can play another colour than the one asked, or trump
+    bool play_trump = false; //I can play at least one trump
+	for (auto pcard : playbleCards)
     {
-        pcard = *it;
         if (( _wrapperCallMethod.callGetColour(pcard) != color_asked)&&( _wrapperCallMethod.callGetColour(pcard) != color_trump)) pisse = true;
         if ( _wrapperCallMethod.callGetColour(pcard) == color_trump) play_trump = true;
     }
-    for(auto itCard : playbleCards)
+	for (auto pcard : playbleCards)
     {
         switch(trickStatus.Position().Position()) //TO DO : find a more elegant way
         {
         case FIRST :
-            currentScore =  playFirst(*itCard,trick,trickStatus,rand,pisse,play_trump,playerMemory);
+			currentScore = playFirst(pcard, trick, trickStatus, rand, pisse, play_trump, playerMemory);
             break;
         case SECOND :
-            currentScore =  playSecond(*itCard,trick,trickStatus,rand,pisse,play_trump,playerMemory);
+			currentScore = playSecond(pcard, trick, trickStatus, rand, pisse, play_trump, playerMemory);
             break;
         case THIRD :
-            currentScore =  playThird(*itCard,trick,trickStatus,rand,pisse,play_trump,playerMemory);
+			currentScore = playThird(pcard, trick, trickStatus, rand, pisse, play_trump, playerMemory);
             break;
         case FOURTH :
-            currentScore =  playFourth(*itCard,trick,trickStatus,rand,pisse,play_trump,playerMemory);
+			currentScore = playFourth(pcard, trick, trickStatus, rand, pisse, play_trump, playerMemory);
             break;
         default : //TO DO : exception here
             currentScore = -10000;
@@ -111,7 +109,7 @@ typename std::list<TypeOfCard>::iterator AIPlayScores<Memory,TypeOfCard>::Play(c
 
         if(currentScore > MaxScore)
         {
-            res = itCard;
+			res = pcard;
             MaxScore = currentScore;
         }
     }

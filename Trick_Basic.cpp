@@ -71,7 +71,7 @@ bool Trick_Basic::Play() // TO DO code the same way as Bidding.cpp
     }
 
 
-    Cards * pcard = _players[i]->PlayCard(static_cast<TrickBasic_Memory&>(*this));
+    Cards * pcard = _players[i]->PlayCard(static_cast<const TrickBasic_Memory&>(*this));
     if(pcard == nullptr) { return false; }
     _currentTrick[_cardsPlayed] = pcard;
     playerPlayed();

@@ -46,12 +46,12 @@ class AIPlayMonteCarlo
         AIPlayMonteCarlo():_number(GHOST){}
         AIPlayMonteCarlo(const Player_ID & number):_number(number){}
         virtual ~AIPlayMonteCarlo(){}
-        std::list<Cards*>::iterator Play(const TrickBasic_Memory& trick
-                                     ,std::list<std::list<Cards*>::iterator>& plyableCards
-                                     ,std::list<Cards*>& hand
-                                     ,Random& rand
-                                     ,const TrickStatus& trickStatus
-                                     ,const Memory& playerMemory);
+        Cards* Play(const TrickBasic_Memory& trick
+                    ,std::list<Cards* >& plyableCards
+                    ,std::list<Cards* >& hand
+                    ,Random& rand
+                    ,const TrickStatus& trickStatus
+                    ,const Memory& playerMemory);
     protected :
         void initStates(const TrickBasic_Memory& trick,const Memory& playerMemory,Random& rand,const std::list<Cards*>& hand);
         void updateUnfallenCardsupdateUnfallenCards(const TrickBasic_Memory& trick,const Memory& playerMemory,const std::list<Cards*>& hand);
@@ -70,7 +70,7 @@ class AIPlayMonteCarlo
                          std::list<PlayerMiniMonteCarlo<Memory> * >& playerStillCardsToReceive);
 
         bool cardsInHand(const std::list<Cards*>& hand,const Card_Color& col,const Card_Height& height);
-        std::list<Cards*>::iterator whichBetter(ResultMonteCarlo& resSimulations,const std::list<std::list<Cards*>::iterator>& playbleCards);
+        Cards* whichBetter(ResultMonteCarlo& resSimulations,const std::list<Cards* >& playbleCards);
         Uint computeNbPlayerAbleToReceive(const Memory& playerMemory,const Cards_Basic& card,const TrickStatus& trickStatus);
 
         void updateUnfallenCards(const TrickBasic_Memory& trick,const Memory& playerMemory,const std::list<Cards*>& hand);
@@ -120,12 +120,12 @@ class AIPlayMonteCarlo
 };
 
 template<class Memory,class PlayMC>
-std::list<Cards*>::iterator AIPlayMonteCarlo<Memory,PlayMC>::Play(const TrickBasic_Memory& trick
-                                                                   ,std::list<std::list<Cards*>::iterator>& playbleCards
-                                                                   ,std::list<Cards*>& hand
-                                                                   ,Random& rand
-                                                                   ,const TrickStatus& trickStatus
-                                                                   ,const Memory& playerMemory)
+Cards* AIPlayMonteCarlo<Memory,PlayMC>::Play(const TrickBasic_Memory& trick
+												,std::list<Cards*> & playbleCards
+												,std::list<Cards*>& hand
+												,Random& rand
+												,const TrickStatus& trickStatus
+												,const Memory& playerMemory)
 {
     if(playbleCards.size() == 1) //we have no choice... we play this card
     {
@@ -134,13 +134,13 @@ std::list<Cards*>::iterator AIPlayMonteCarlo<Memory,PlayMC>::Play(const TrickBas
     }
 
     //printf("I know what happened before\n");
-    std::list<Cards*>::iterator res = *playbleCards.begin();
+    Cards* res = playbleCards.front();
 
     //initiate the result structure
     std::list<Cards_Basic> playbleBasic;
-    for(const auto & itpcard : playbleCards)
+    for(const auto & pcard : playbleCards)
     {
-        playbleBasic.push_back(static_cast<Cards_Basic>(**itpcard));
+		playbleBasic.push_back(static_cast<const Cards_Basic&>(*pcard));
     }
     ResultMonteCarlo resMonteCarlo(NB_MAX_SIMUL_MONTECARLO,playbleBasic);
 
@@ -190,17 +190,17 @@ std::list<Cards*>::iterator AIPlayMonteCarlo<Memory,PlayMC>::Play(const TrickBas
         //printf("I look at the %d cards\n",playbleCards.size());
         TrickBasic_Memory currentTrick;
         //solve the problem knowing the hand of each player for each card
-        for(auto itPCard : playbleCards)
+        for(auto pCard : playbleCards)
         {
             //printf("I look at [c:%d,h:%d]\n",(*itPCard)->GetColour().ToInt(),(*itPCard)->GetHeight().ToInt());
             currentTrick = trick ;
             //play the game knowing everything and compute the score of the player (in a minimax / alpha-beta situation)
             //printf("I compute the score for it\n");
-            tempScore = scoreCards(currentPlayers,*itPCard,currentTrick,hand,trickStatus);
+			tempScore = scoreCards(currentPlayers, pCard, currentTrick, hand, trickStatus);
 
             //store the result in the proper structure
             //printf("I put in the result\n");
-            resMonteCarlo.Put(nbSimul,**itPCard,tempScore);
+			resMonteCarlo.Put(nbSimul, *pCard, tempScore);
             currentTrick.Reset();
         }
         //printf("I am done looking at the cards.\n");
@@ -282,19 +282,19 @@ Uint AIPlayMonteCarlo<Memory,PlayMC>::scoreCards(const std::array<PlayerMiniMont
 }
 
 template<class Memory,class PlayMC>
-std::list<Cards*>::iterator AIPlayMonteCarlo<Memory,PlayMC>::whichBetter(ResultMonteCarlo& resSimulations,
-                                                                         const std::list<std::list<Cards*>::iterator>& playbleCards)
+Cards* AIPlayMonteCarlo<Memory,PlayMC>::whichBetter(ResultMonteCarlo& resSimulations,
+														const std::list<Cards*>& playableCards)
 {
-    std::list<Cards*>::iterator res = playbleCards.front();
-    double maxScore = 0;
+	Cards* res = playableCards.front();
+    double maxScore = 0.0;
     double temp;
-    for(auto it = playbleCards.begin(); it != playbleCards.end(); ++it)
+	for (Cards* pcard : playableCards)
     {
-        temp = resSimulations.ScoreAggr(static_cast<const Cards_Basic&>(***it));
+		temp = resSimulations.ScoreAggr(static_cast<const Cards_Basic&>(*pcard));
         if(temp > maxScore)
         {
             maxScore = temp;
-            res = *it;
+            res = pcard;
         }
     }
     return res;
@@ -668,7 +668,7 @@ void AIPlayMonteCarlo<Memory,PlayMC>::updatePlayer(PlayerMiniMonteCarlo<Memory> 
         {
             if((*pp)->ID() == pPlayer->ID())
             {
-                    players.erase(pp);
+                    pp = players.erase(pp);
                     break;
             }
         }

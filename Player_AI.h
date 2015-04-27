@@ -52,16 +52,16 @@ class Player_AI : public Player
         virtual void updateBid(const BetsMemory& bets);
 
         virtual Card_Color do_i_take(bool first_round,const Card_Color& color_proposed,const Card_Height& height_proposed);
-        virtual std::list<Cards*>::iterator what_card_do_i_play(const TrickBasic_Memory& trick);
+        virtual Cards* what_card_do_i_play(const TrickBasic_Memory& trick);
 
         virtual void resetTake(){ _take.Reset(); } //merge with ResetBid() when the template of Player_AI will be upped to Player, thus removing Player_Human and Player_AI
-        std::list<Cards*>::iterator callPlay(PlayAI* play,
-                                              const TrickBasic_Memory* trick,
-                                              std::list<std::list<Cards*>::iterator >* playableCard,
-                                              std::list<Cards*>* hand,
-                                              Random* rand,
-                                              TrickStatus* currentTrickStatus,
-                                              GameMemory* memory);
+        Cards* callPlay(PlayAI* play,
+                        const TrickBasic_Memory* trick,
+                        std::list<Cards* >* playableCard,
+                        std::list<Cards*>* hand,
+                        Random* rand,
+                        TrickStatus* currentTrickStatus,
+                        GameMemory* memory);
     private:
         Player_AI(const Player_AI& other){}
         Player_AI& operator=(const Player_AI& other)
@@ -92,8 +92,9 @@ Card_Color Player_AI<GameMemory,TakeAI,PlayAI>::do_i_take(bool first_round,const
 }
 
 template<class GameMemory,class TakeAI, class PlayAI>
-std::list<Cards*>::iterator Player_AI<GameMemory,TakeAI,PlayAI>::what_card_do_i_play(const TrickBasic_Memory& trick) //by default, play a random card
+Cards* Player_AI<GameMemory,TakeAI,PlayAI>::what_card_do_i_play(const TrickBasic_Memory& trick) //by default, play a random card
 {
+#if MULTITHREAD_GRAPHIC > 0
     std::list<Cards*>::iterator res = _hand.end();
     //printf("I enter the function for player %d\n",_number.ToInt());
     //res = callPlay(&_play,&trick,&_playable_cards,&_hand,&_rand,&_currentTrickStatus,&_gameMemory);
@@ -127,16 +128,19 @@ std::list<Cards*>::iterator Player_AI<GameMemory,TakeAI,PlayAI>::what_card_do_i_
 
     }
     return res;
+#else 
+	return _play.Play(trick,_playable_cards,_hand,_rand,_currentTrickStatus,_gameMemory);
+#endif
 }
 
 template<class GameMemory,class TakeAI, class PlayAI>
-std::list<Cards*>::iterator Player_AI<GameMemory,TakeAI,PlayAI>::callPlay(PlayAI* play,
-                                                                          const TrickBasic_Memory* trick,
-                                                                          std::list<std::list<Cards*>::iterator >* playableCard,
-                                                                          std::list<Cards*>* hand,
-                                                                          Random* rand,
-                                                                          TrickStatus* currentTrickStatus,
-                                                                          GameMemory* memory)
+Cards* Player_AI<GameMemory,TakeAI,PlayAI>::callPlay(PlayAI* play,
+														const TrickBasic_Memory* trick,
+														std::list<Cards* >* playableCard,
+														std::list<Cards* >* hand,
+														Random* rand,
+														TrickStatus* currentTrickStatus,
+														GameMemory* memory)
 {
     return play->Play(*trick,*playableCard,*hand,*rand,*currentTrickStatus,*memory);
 }

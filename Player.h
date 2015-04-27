@@ -30,10 +30,10 @@ class Player
 
 
         std::list<Cards*> _hand; //the hand of the player
-        std::list<std::list<Cards*>::iterator> _playable_cards; //the card a player can play in a trick
+        std::list<Cards* > _playable_cards; //the card a player can play in a trick
         const Player_ID _number; //the number
         Basic_Game_Info _basic_info;
-        std::list<Cards*>::iterator _cardPlayed;
+        Cards* _cardPlayed;
         TrickStatus _currentTrickStatus;
 
         PositionGraphic _pos;
@@ -52,7 +52,7 @@ class Player
         Player(const Player_ID& number,Uint windows_width, Uint windows_height,SDL_Event* pevent,Basic_Images* fond,SDL_Surface* screen):
             _playable_cards()
             ,_number(number)
-            ,_cardPlayed(_hand.end())
+            ,_cardPlayed(nullptr)
             ,_currentTrickStatus(_number)
             ,_pos(setPosition(number,windows_width,windows_height))
             ,_name(fond
@@ -112,7 +112,7 @@ class Player
         virtual bool do_I_coinche();
 
         virtual Card_Color do_i_take(bool first_round,const Card_Color& color_proposed,const Card_Height& height_proposed);
-        virtual std::list<Cards*>::iterator what_card_do_i_play(const TrickBasic_Memory& trick) {return _hand.end();}
+        virtual Cards* what_card_do_i_play(const TrickBasic_Memory& trick) {return _hand.front();}
 
         int how_many_colour(const Card_Color& colour);
 

@@ -27,7 +27,7 @@ class Player_Human : public Player
     protected:
         virtual void updateBid(const BetsMemory& bets);
 
-        virtual std::list<Cards*>::iterator what_card_do_i_play(const TrickBasic_Memory& trick);
+        virtual Cards* what_card_do_i_play(const TrickBasic_Memory& trick);
 
     private:
         Player_Human(const Player_Human& other){}

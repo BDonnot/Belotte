@@ -23,105 +23,113 @@ PositionGraphic Player::setPosition(const Player_ID& number,Uint16 windows_width
         case PLAYER2 : //the top player (nord)
             res.Set(windows_width/2,0,TOP_CENTER);
             return res;
-        case PLAYER3 : //the left player (ouest)
-            res.Set(0,windows_height/2,CENTER_LEFT);
-            return res;
-        default : //TO DO exception here
-            res.Set(windows_width/2,windows_height/2,CENTER);
-            return res;
-    }
+        case PLAYER3: //the left player (ouest)
+			res.Set(0, windows_height / 2, CENTER_LEFT);
+			return res;
+		default: //TO DO exception here
+			res.Set(windows_width / 2, windows_height / 2, CENTER);
+			return res;
+	}
 }
 string Player::setName(const Player_ID&  number)
 {
-    string res;
-    switch(number.ID())
-    {
-        case PLAYER0 : //you : the bottom player (sud)
-            res = "Sud";
-            return res;
-        case PLAYER1 : //the left player (ouest)
-            res = "Ouest";
-            return res;
-        case PLAYER2 : //the top player (nord)
-            res = "Nord";
-            return res;
-        case PLAYER3 : //the left player (ouest)
-            res = "Est";
-            return res;
-        default: //TO DO exception here
-            return "";
-    }
-    return "";
+	string res;
+	switch (number.ID())
+	{
+	case PLAYER0: //you : the bottom player (sud)
+		res = "Sud";
+		return res;
+	case PLAYER1: //the left player (ouest)
+		res = "Ouest";
+		return res;
+	case PLAYER2: //the top player (nord)
+		res = "Nord";
+		return res;
+	case PLAYER3: //the left player (ouest)
+		res = "Est";
+		return res;
+	default: //TO DO exception here
+		return "";
+	}
+	return "";
 }
 string Player::setPathImage(const Player_ID&  number)
 {
-    string res;
-    switch(number.ID())
-    {
-        case PLAYER0 : //you : the bottom player (sud)
-            res = "images/you.jpg";
-            return res;
-        case PLAYER1 : //the left player (ouest)
-            res = "images/maul.jpg";
-            return res;
-        case PLAYER2 : //the top player (nord)
-            res = "images/yoda.jpg";
-            return res;
-        case PLAYER3 : //the left player (ouest)
-            res = "images/vador.jpg";
-            return res;
-        default: // TO DO exception here
-            return "";
-    }
-    return "";
+	string res;
+	switch (number.ID())
+	{
+	case PLAYER0: //you : the bottom player (sud)
+		res = "images/you.jpg";
+		return res;
+	case PLAYER1: //the left player (ouest)
+		res = "images/maul.jpg";
+		return res;
+	case PLAYER2: //the top player (nord)
+		res = "images/yoda.jpg";
+		return res;
+	case PLAYER3: //the left player (ouest)
+		res = "images/vador.jpg";
+		return res;
+	default: // TO DO exception here
+		return "";
+	}
+	return "";
 }
 void Player::Display(GAME_PHASES currentPhase)
 {
-    _name.Display(_screen,currentPhase==SELECT_NAMES);
-    _oldBid.Display(_screen,currentPhase);
-    _DisplayCardPlayer.Reset(_hand.size());
-    for_each(_hand.begin(),_hand.end(),_DisplayCardPlayer);
+	_name.Display(_screen, currentPhase == SELECT_NAMES);
+	_oldBid.Display(_screen, currentPhase);
+	_DisplayCardPlayer.Reset(_hand.size());
+	for_each(_hand.begin(), _hand.end(), _DisplayCardPlayer);
 }
 void Player::Update_Mouse(GAME_PHASES currentPhase)
 {
-    _name.Update(currentPhase);
-    if ((currentPhase == BIDDING)||(currentPhase == AFTER_BET))
-        _oldBid.UpdateEvent();
+	_name.Update(currentPhase);
+	if ((currentPhase == BIDDING) || (currentPhase == AFTER_BET))
+		_oldBid.UpdateEvent();
 }
 int Player::how_many_colour(const Card_Color& colour) //how many cards I have in the color
 {
-    int res = 0;
-    for (list<Cards*>::iterator it = _hand.begin(); it != _hand.end(); ++it)
-    {
-        if ((*it)->GetColour() == colour) res++;
-    }
-    return res;
+	int res = 0;
+	for (list<Cards*>::iterator it = _hand.begin(); it != _hand.end(); ++it)
+	{
+		if ((*it)->GetColour() == colour) res++;
+	}
+	return res;
 }
 /*
 bool Player::has_higher(const Card_Color& color_asked,const Card_Height& max_height) //true if the player has a higher card in his game
 {
-    for (auto pcard : _hand)
-    {
-        if ((pcard->GetColour()==color_asked)&&(pcard->Win(max_height)))
-            return true;
-    }
-    return false;
+for (auto pcard : _hand)
+{
+if ((pcard->GetColour()==color_asked)&&(pcard->Win(max_height)))
+return true;
+}
+return false;
 }
 */
 Cards* Player::PlayCard(const TrickBasic_Memory& trick)
 {
-    if(_hand.size() + trick.TrickNumber()  != 8 ) return nullptr;
-    //if(_number != PLAYER0) printf("%d va jouer \n",_basic_info.PosPlayerToInt(_number));
-    if(_playable_cards.size()==0)
-    {
-        updatePlayebleCards(trick); //TO DO this is called multiple times
-    }
-    _cardPlayed = what_card_do_i_play(trick);
-    if (!(_cardPlayed != _hand.end())) return nullptr;
-    Cards* res = *_cardPlayed;
-    _hand.erase(_cardPlayed);
+	if (_hand.size() + trick.TrickNumber() != 8) return nullptr;
+	//if(_number != PLAYER0) printf("%d va jouer \n",_basic_info.PosPlayerToInt(_number));
+	if (_playable_cards.size() == 0)
+	{
+		updatePlayebleCards(trick); //TO DO this is called multiple times
+	}
+	_cardPlayed = what_card_do_i_play(trick);
+	if (!(_cardPlayed != nullptr)) return nullptr;
+	Card_Color colPlayed = _cardPlayed->GetColour();
+	Card_Height heightPlayed = _cardPlayed->GetHeight();
+	for (auto it = _hand.begin(); it != _hand.end(); ++it)
+	{
+		if (((*it)->GetColour() == colPlayed) && ((*it)->GetHeight() == heightPlayed))
+		{
+			it = _hand.erase(it);
+			break;
+		}
+	}
     _playable_cards.clear();
-    return res;
+	return _cardPlayed;
 }
 Card_Color Player::Take(bool first_round,const Card_Color& color_proposed,const Card_Height& height_proposed)
 {
@@ -133,40 +141,15 @@ void Player::UpdateEndTrick(const TrickBasic_Memory& trick,const Position_Trick&
     updateMemoryTrick(trick,myPos);
 }
 
-/*
-bool Player::can_play_card(Cards* PmyCard,const TrickBasic_Memory& trick)
-{
-    if (PmyCard==nullptr)
-        return false;
-    Card_Color my_colour = PmyCard->GetColour();
-    Card_Height maxHeight = trick.HeightMaster();
-    Card_Color maxColor = trick.ColorMaster();
-    if (_currentTrickStatus.HasCol()) //If we have the color asked we have to played it
-    {
-        if(trick.ColorAsked() != _currentTrickStatus.TrumpColor()) //we must play in the color if we can
-            return (my_colour == trick.ColorAsked());
-        return (my_colour == _currentTrickStatus.TrumpColor())&&((PmyCard->Win(maxHeight))
-                                                         ||(!has_higher(_currentTrickStatus.TrumpColor(),maxHeight)));
-    }
-    //So I do not have the color
-    if ((!_currentTrickStatus.HasTrump())||(static_cast<Uint>(trick.CurrentWinner().ToInt()%2) == static_cast<Uint>(trick.NumberCardsPlayed()%2))) return true; //I can play what I want if I dont have the color asked and : I dont have trump or my partner is the master
-    //So I do have trump, my partner is no master, and I do not have the color asked.
-    bool trumpPlayed = maxColor == _currentTrickStatus.TrumpColor();
-    if(trumpPlayed)
-        return (my_colour == _currentTrickStatus.TrumpColor())&&((PmyCard->Win(maxHeight))
-                                                         ||(!has_higher(_currentTrickStatus.TrumpColor(),maxHeight)));
-    return my_colour == _currentTrickStatus.TrumpColor();
-}
-*/
 void Player::updatePlayebleCards(const TrickBasic_Memory& trick_in_progress)
 {
     //_memory.TellTrick(trick_in_progress,_basic_info.FirstPlayer());
     auto itEnd = _hand.end();
     if (trick_in_progress.NumberCardsPlayed() == 0) //if we are the first to play, we can play everything
     {
-        for(auto it = _hand.begin(); it != itEnd;++it)
+        for(Cards* pcard : _hand)
         {
-            _playable_cards.push_back(it);
+            _playable_cards.push_back(pcard);
         }
         return;
     }
@@ -175,10 +158,10 @@ void Player::updatePlayebleCards(const TrickBasic_Memory& trick_in_progress)
                                ,has_colour(trick_in_progress.ColorAsked())
                                ,has_colour(_basic_info.TrumpColor()));
     _fCanPlayCard.Init(trick_in_progress,_currentTrickStatus,_hand);
-    for(auto it = _hand.begin(); it != itEnd;++it)
+	for (Cards* pcard : _hand)
     {
         //if (can_play_card(*it,trick_in_progress)) _playable_cards.push_back(it);
-        if( _fCanPlayCard(*it) ) _playable_cards.push_back(it);
+        if( _fCanPlayCard(pcard) ) _playable_cards.push_back(pcard);
     }
 }
 

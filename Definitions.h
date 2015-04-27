@@ -1,10 +1,16 @@
 #ifndef DEFINITIONS_H_INCLUDED
 #define DEFINITIONS_H_INCLUDED
 
+//we define some property for the project :
+#define PLAY_HUMAN 0
+#define MULTITHREAD_GRAPHIC 0
+
+//definitino of some constants of the game
 #define LAG_MIN 100 //lag min between two bets (for human)
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 768
 #define MINBET 79 //we force the bid to be strictly above 79
+
 
 #include<string>
 #include<ostream>
