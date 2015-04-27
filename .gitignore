@@ -8,4 +8,6 @@ obj/*
 report/*
 !/report/*.tex
 !/report/*.pdf
+!/report/img/
+!/report/img/*
 Coinche/*
