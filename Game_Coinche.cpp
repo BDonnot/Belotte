@@ -26,8 +26,9 @@ Game_Coinche::Game_Coinche(SDL_Surface* screen,Uint16 screenWidth, Uint16 screen
     PositionGraphic pos(0,0,TOP_LEFT);
     _backSide.SetPosition(pos);
     PLAYER_ID posPlayer[4] = {PLAYER0,PLAYER1,PLAYER2,PLAYER3};
-    _players[0] = static_cast<Player*>(new Player_Human(Player_ID(posPlayer[0]),screenWidth,screenHeight,_event,&_backSide,_pScreen));
-    for (Uint i = 1; i < 4; i++)
+    //_players[0] = static_cast<Player*>(new Player_Human(Player_ID(posPlayer[0]),screenWidth,screenHeight,_event,&_backSide,_pScreen));
+    //for (Uint i = 1; i < 4; i++)
+	for (Uint i = 0; i < 4; i++) //HERE
     {
         //<AIGameMemory,AITakeBasic,AIPlayRandom<AIGameMemory> >
         //<AIGameMemory,AITakeBasic,AIPlayScores<AIGameMemory> >
@@ -35,14 +36,15 @@ Game_Coinche::Game_Coinche(SDL_Surface* screen,Uint16 screenWidth, Uint16 screen
         //<AIGameMemory,AITakeBasic,AIPlayMonteCarlo<AIGameMemory> >
         //<AIGameMemoryImproved,AITakeBasic,AIPlayMonteCarlo<AIGameMemoryImproved,McPlayRandom<AIGameMemoryImproved,30> > >
 
-        _players[i] = static_cast<Player*>(new Player_AI<AIGameMemoryImproved,AITakeBasic,AIPlayMonteCarlo<AIGameMemoryImproved,McPlayRandom<AIGameMemoryImproved,30,AIPlayRandom<AIGameMemory,Cards_Basic> > > >(Player_ID(posPlayer[i]),screenWidth,screenHeight,_event,&_backSide,_pScreen));
+        //_players[i] = static_cast<Player*>(new Player_AI<AIGameMemoryImproved,AITakeBasic,AIPlayMonteCarlo<AIGameMemoryImproved,McPlayRandom<AIGameMemoryImproved,30,AIPlayRandom<AIGameMemory,Cards_Basic> > > >(Player_ID(posPlayer[i]),screenWidth,screenHeight,_event,&_backSide,_pScreen));
 
         //if(i%2 ==0) _players[i] =  static_cast<Player*>(new Player_AI<AIGameMemoryImproved,AITakeBasic,AIPlayMonteCarlo<AIGameMemoryImproved,McPlayRandom<AIGameMemoryImproved,1,AIPlayScores<AIGameMemory,Cards_Basic> > > >(Player_ID(posPlayer[i]),screenWidth,screenHeight,_event,&_backSide,_pScreen));
         //else _players[i] =  static_cast<Player*>(new Player_AI<AIGameMemoryImproved,AITakeBasic,AIPlayMonteCarlo<AIGameMemoryImproved,McPlayRandom<AIGameMemoryImproved,30,AIPlayRandom<AIGameMemory,Cards_Basic> > > >(Player_ID(posPlayer[i]),screenWidth,screenHeight,_event,&_backSide,_pScreen));
 
-        //if(i%2 ==0) _players[i] =  static_cast<Player*>(new Player_AI<AIGameMemoryImproved,AITakeBasic,AIPlayMonteCarlo<AIGameMemoryImproved,McPlayRandom<AIGameMemoryImproved,30,AIPlayRandom<AIGameMemory,Cards_Basic> > > >(Player_ID(posPlayer[i]),screenWidth,screenHeight,_event,&_backSide,_pScreen));
-        //else _players[i] =  static_cast<Player*>(new Player_AI<AIGameMemory,AITakeBasic,AIPlayScores<AIGameMemory,Cards*> >(Player_ID(posPlayer[i]),screenWidth,screenHeight,_event,&_backSide,_pScreen));
-        //if(i%2 ==0) _players[i] =  static_cast<Player*>(new Player_AI<AIGameMemory,AITakeBasic,AIPlayScores<AIGameMemory,Cards*> >(Player_ID(posPlayer[i]),screenWidth,screenHeight,_event,&_backSide,_pScreen));
+        if(i%2 ==0) _players[i] =  static_cast<Player*>(new Player_AI<AIGameMemoryImproved,AITakeBasic,AIPlayMonteCarlo<AIGameMemoryImproved,McPlayRandom<AIGameMemoryImproved,30,AIPlayRandom<AIGameMemory,Cards_Basic> > > >(Player_ID(posPlayer[i]),screenWidth,screenHeight,_event,&_backSide,_pScreen));
+		else _players[i] = static_cast<Player*>(new Player_AI<AIGameMemoryImproved, AITakeBasic, AIPlayScores<AIGameMemoryImproved, Cards*> >(Player_ID(posPlayer[i]), screenWidth, screenHeight, _event, &_backSide, _pScreen));
+        
+		//if(i%2 ==0) _players[i] =  static_cast<Player*>(new Player_AI<AIGameMemory,AITakeBasic,AIPlayScores<AIGameMemory,Cards*> >(Player_ID(posPlayer[i]),screenWidth,screenHeight,_event,&_backSide,_pScreen));
         //else _players[i] =  static_cast<Player*>(new Player_AI<AIGameMemory,AITakeBasic,AIPlayRandom<AIGameMemory> >(Player_ID(posPlayer[i]),screenWidth,screenHeight,_event,&_backSide,_pScreen));
     }
     _bid.SetPlayers(_players);
@@ -133,7 +135,7 @@ void Game_Coinche::playGame(bool& keep_playing)
         _deck.GiveCards(_players);
         _saveGame.SaveHands(_players);
         _trick.Reset();
-        _timeNextAction = _infos.Time() + 2000; //HERE
+        //_timeNextAction = _infos.Time() + 2000; //HERE
         _currentPhase = BIDDING;
         _bid.Reset();
         return;
@@ -146,8 +148,8 @@ void Game_Coinche::playGame(bool& keep_playing)
         }
         return;
     case AFTER_BET :
-        if (_bid.Click(true)) //HERE
-        //if (true) //HERE
+        //if (_bid.Click(true)) //HERE
+        if (true) //HERE
         {
             _currentPhase = _bid.NextPhase();
             if(_currentPhase == PLAYING)
@@ -170,7 +172,7 @@ void Game_Coinche::playGame(bool& keep_playing)
         //printf("AFTER_TRICK0 %d \n",_trick.TrickNumber());
         _saveGame.SaveTrick(_trick);
         _trick.GatherCards();
-        _timeNextAction = _infos.Time() + 600;//HERE //TO DO : improve here ...
+        //_timeNextAction = _infos.Time() + 600;//HERE //TO DO : improve here ...
         _currentPhase = AFTER_TRICK1;
         return;
     case AFTER_TRICK1 :

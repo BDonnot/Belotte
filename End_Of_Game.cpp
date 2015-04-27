@@ -90,9 +90,9 @@ void End_Of_Game::Update()
 GAME_PHASES End_Of_Game::Next()
 {
 
-    if(_again.Click(true)) return GIVING;
+    /*if(_again.Click(true)) return GIVING;
     if(_quit.Click(true)) return EXIT;
-    return SCORES;
+    return SCORES;*/
 
 
     return GIVING;
