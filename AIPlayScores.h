@@ -47,7 +47,7 @@ class AIPlayScores
             }
 
         virtual ~AIPlayScores(){}
-        typename TypeOfCard Play(const TrickBasic_Memory& trick
+        TypeOfCard Play(const TrickBasic_Memory& trick
                                              ,typename std::list<TypeOfCard > & plyableCards
                                              ,const std::list<Cards*>& hand
                                              ,Random& rand
@@ -68,7 +68,7 @@ class AIPlayScores
 
 
 template<class Memory,typename TypeOfCard>
-typename TypeOfCard AIPlayScores<Memory,TypeOfCard>::Play(const TrickBasic_Memory& trick
+TypeOfCard AIPlayScores<Memory,TypeOfCard>::Play(const TrickBasic_Memory& trick
 														   ,typename std::list<TypeOfCard >& playbleCards
 														   ,const std::list<Cards*>& hand
 														   ,Random& rand
