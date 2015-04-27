@@ -159,7 +159,7 @@ void Bidding::handleText()
     }
     _textAfterBet0.ChangeText(res);
     res = "Le contrat est de ";
-    res += Player_Bid_Graphic::IntToString(_infos.TrumpColor().Color(),_infos.MaxBid());
+    res += DisplayOldBets::IntToString(_infos.TrumpColor().Color(),_infos.MaxBid());
     res += " points.";
     _textAfterBet1.ChangeText(res);
 }
