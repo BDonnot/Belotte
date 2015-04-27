@@ -196,7 +196,8 @@ void Game_Coinche::playGame(bool& keep_playing)
             _endGame.Update();
             const array<Uint,2>& scores = _infos.FinalScores();
             _saveGame.SaveScores(scores[0],scores[1]);
-            printf("game %d : Score 0 : %d, score 1 : %d\n",_nbGame,scores[0],scores[1]);
+			IntIntPair score = _trick.CurrentScores();
+			printf("game %d, score 0 : %d, score 1 : %d\n", _nbGame, score.first, score.second);
             _nbGame++;
             _currentPhase = SCORES;
         }
