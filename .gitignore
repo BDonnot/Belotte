@@ -7,3 +7,5 @@
 obj/*
 report/*
 !/report/*.tex
+!/report/*.pdf
+Coinche/*

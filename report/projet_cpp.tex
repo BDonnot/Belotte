@@ -252,16 +252,25 @@ prise rudimentaire \\
 encore beaucoup de "TO DO" dans le code, parce que ce projet n'a pas vocation a être arrêté pour la validation de ce cours.
 \clearpage
 \section{Interface graphique}
-multi-threading :-)
+multi-threading :-) \\
+
+upgrade to SDL 2.0, voire SFML :-)
 
 \clearpage
 \section{Intelligence Artificielle "basique"}
 \subsection{Aléatoirement}
+On joue une carte aléatoire parmi celles qu'on a le droit de jouer :-)\\
 \subsection{Avec des scores}
+score de chaque carte jouable en fonction de conditions, on joue la carte avec le plus gros score. \\
+
+prise en compte des appels, via la classe "Memory" (template)
 
 \clearpage
 \section{Intelligence Artificielle par évaluation Monte Carlo}
 \subsection{Donner les cartes}
+problème : respect de l'aléa final : il faut une certaine uniformité dans quand on donne les cartes (cf. pistes d'améliorations) \\
+
+autre difficulté : respecter les contraintes stockées dans la mémoire.
 \subsection{Jouer les jeux}
 \subsection{Piste d'améliorations}
 Importance Sampling : regarder en détail les actions de chaque pour 'sampler' de façon plus convenable. Ceci permettrait de tirer parti d'informations telles que 'si un joueur a joué ça, c'est qu'il probablement avoir ça' [cas des appels]. Alors que la on ne tire parti que des infos du genre "un joueur a joué ça, il ne peut pas avoir ça".  \\
