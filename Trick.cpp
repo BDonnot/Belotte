@@ -87,9 +87,9 @@ void Trick::Update()
         _logo.ChangeSprite(0);
         break;
     }
-    _contract.ChangeText(Player_Bid_Graphic::IntToString(_infos.TrumpColor(),_infos.MaxBid()));
+    _contract.ChangeText(DisplayOldBets::IntToString(_infos.TrumpColor(),_infos.MaxBid()));
     string text = "Equipe ";
-    text +=Player_Bid_Graphic::IntToString(_infos.TrumpColor(),_infos.Taker().ToInt()%2+1);
+	text += DisplayOldBets::IntToString(_infos.TrumpColor(), _infos.Taker().ToInt() % 2 + 1);
     _teamName.ChangeText(text);
     Reset();
     //_scoreTeam.Update();
