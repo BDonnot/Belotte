@@ -7,9 +7,18 @@
 #include<ostream>
 #include<sstream>
 
+#if defined(__GNUC__)
+	#include "SDL/SDL.h"
+	#include "SDL/SDL_image.h"
+#elif defined(_MSC_VER)
+	#include <SDL.h>
+	#include <SDL_image.h>
+#endif //SDL include
+
 #include"Definitions.h"
 
 #include "Player_Bid.h"
+
 #include "Images_SpriteEvent.h"
 #include "Images_Sprite.h"
 #include "Images_Text.h"
@@ -27,7 +36,7 @@ class DisplayOldBets //handle the positioning of the card in the hand
         std::array<Uint,2> _shift; //the shift of the card (all the card must be visible)
         Uint colorToInt(CARDS_COLOR color);
     public :
-        DisplayOldBets():_pText(nullptr),_pLogo(nullptr){};
+        DisplayOldBets():_pText(nullptr),_pLogo(nullptr){}
         DisplayOldBets(SDL_Surface* screen
                        ,Uint windows_width
                        ,Uint windows_height

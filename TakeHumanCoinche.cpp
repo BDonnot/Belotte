@@ -16,7 +16,7 @@ TakeHumanCoinche::TakeHumanCoinche(SDL_Event* event,SDL_Surface* screen,Uint16 w
         ,_ok(event,"OK",PositionGraphic())
         ,_plus(event,"+10",PositionGraphic())
         ,_minus(event,"-10",PositionGraphic())
-        ,_score("fonts/MLSGY.ttf",30,{255,255,255},"80")
+        ,_score("fonts/MLSGY.ttf",30,255,255,255,"80")
         ,_unconfirmedBid()
         ,_confirmedBid()
         ,_displayed(true)

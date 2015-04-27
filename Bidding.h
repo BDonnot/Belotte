@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "Cards_Deck.h"
 #include "BetsMemory.h"
+
 class Bidding
 {
     protected :

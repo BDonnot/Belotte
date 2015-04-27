@@ -8,8 +8,8 @@ Score_Team::Score_Team()
 Score_Team::Score_Team(SDL_Surface* pScreen):
 _info()
 ,_pScreen(pScreen)
-,_scoreFirstTeam("fonts/MLSGY.ttf",30,{255,255,255} ,"Equipe 1 : 0")
-,_scoreSecondTeam("fonts/MLSGY.ttf",30,{255,255,255},"Equipe 2 : 0")
+,_scoreFirstTeam("fonts/MLSGY.ttf",30,255,255,255 ,"Equipe 1 : 0")
+,_scoreSecondTeam("fonts/MLSGY.ttf",30,255,255,255,"Equipe 2 : 0")
 {
     PositionGraphic pos;
     pos.Set(_info.WindowsWidth()-30,15,TOP_RIGHT);

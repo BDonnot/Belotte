@@ -5,14 +5,18 @@ Text_Typing::Text_Typing()
 {
     //ctor
 }
-Text_Typing::Text_Typing(string path_font,int size,SDL_Color color,SDL_Event* event):Images_Click("",event),Basic_Text(path_font,size,color," ")
+Text_Typing::Text_Typing(string path_font, int size, char colR, char colG, char colB, SDL_Event* event) :
+Images_Click("", event),
+Basic_Text(path_font, size, colR, colG, colB, " ")
 {
     _surface = move(SMARTSurface(TTF_RenderText_Solid( _font, _current_text.c_str(), _color)));
     _height = _surface->h;
     _width = _surface->w;
     _text_old = " ";
 }
-Text_Typing::Text_Typing(string path_font,int size,SDL_Color color,SDL_Event* event,string text):Images_Click("",event),Basic_Text(path_font,size,color,text)
+Text_Typing::Text_Typing(string path_font, int size, char colR, char colG, char colB, SDL_Event* event, string text) :
+Images_Click("", event),
+Basic_Text(path_font, size, colR, colG, colB, text)
 {
     _surface = move(SMARTSurface(TTF_RenderText_Solid( _font, _current_text.c_str(), _color)));
     _height = _surface->h;

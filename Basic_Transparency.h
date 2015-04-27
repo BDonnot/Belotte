@@ -1,12 +1,11 @@
 #ifndef BASIC_TRANSPARENCY_H
 #define BASIC_TRANSPARENCY_H
 
-#ifndef _MSC_VER
-#include "SDL/SDL.h"
-#endif //ndef _MSC_VER
-#ifdef _MSC_VER
-#include <SDL.h>
-#endif //def _MSC_VER
+#if defined (__GNUC__)
+	#include "SDL/SDL.h"
+#elif defined(_MSC_VER)
+	#include <SDL.h>
+#endif  //SDL include
 
 class Basic_Transparency
 {

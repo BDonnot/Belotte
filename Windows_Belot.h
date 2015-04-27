@@ -1,12 +1,11 @@
 #ifndef WINDOWS_BELOT_H
 #define WINDOWS_BELOT_H
 
-#ifndef _MSC_VER
+#if defined (__GNUC__)
 	#include "SDL/SDL.h"
-#endif //ndef _MSC_VER
-#ifdef _MSC_VER
+#elif defined(_MSC_VER)
 	#include <SDL.h>
-#endif //def _MSC_VER
+#endif  //SDL include
 
 #include "Quit.h"
 #include "Basic_Images.h"

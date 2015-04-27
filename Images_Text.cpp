@@ -5,9 +5,9 @@ Images_Text::Images_Text()
     SDL_EnableUNICODE( SDL_ENABLE );
     _keystates = SDL_GetKeyState( NULL );
 }
-Images_Text::Images_Text(string path_font,int size,SDL_Color color,string text):
+Images_Text::Images_Text(string path_font, int size, char colR, char colG, char colB, string text) :
 Basic_Images("")
-,Basic_Text(path_font,size,color,text)
+, Basic_Text(path_font, size, colR, colG, colB, text)
 {
     _surface = move(SMARTSurface(TTF_RenderText_Solid( _font, _current_text.c_str(), _color)));
     _height = _surface->h;

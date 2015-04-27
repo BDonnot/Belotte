@@ -4,12 +4,16 @@ Basic_Text::Basic_Text()
 {
     //ctor
 }
-Basic_Text::Basic_Text(std::string path_font,int size,SDL_Color color,std::string text):_size(size),_color(color)
+Basic_Text::Basic_Text(std::string path_font, int size, char colR, char colG, char colB, std::string text) :
+_size(size)
 {
     _keystates = SDL_GetKeyState( NULL );
     _font = TTF_OpenFont( path_font.c_str(), _size );
     _current_text = text;
     _change = false;
+	_color.r = colR;
+	_color.g = colG;
+	_color.b = colB;
 }
 Basic_Text::~Basic_Text()
 {

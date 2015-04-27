@@ -15,7 +15,7 @@ Take_Human::Take_Human(SDL_Event* event,SDL_Surface* screen,Uint16 windows_width
     ,_pass(event,"Aucune",PositionGraphic())
     ,_yes(event,"Oui",PositionGraphic())
     ,_no(event,"Non",PositionGraphic())
-    ,_question("fonts/MLSGY.ttf",40,(SDL_Color) {255,255,255},"A quelle couleur voulez-vous prendre ?")
+    ,_question("fonts/MLSGY.ttf",40,255,255,255,"A quelle couleur voulez-vous prendre ?")
     ,_question_which_color("A quelle couleur voulez-vous prendre ?")
     ,_screen(screen)
 {

@@ -6,9 +6,9 @@ Trick::Trick(Cards_Deck* pDeck,const std::array<Player*,4>& players,Uint windows
 Trick_Basic(pDeck,players),
 _pScreen(pScreen),
 _logo("images/sprite_trunk.png",pevent),
-_teamName("fonts/MLSGY.ttf",20,{255,255,255},"???"),
-_contract("fonts/MLSGY.ttf",20,{255,255,255},"???"),
-_infoPreviousTrick("fonts/MLSGY.ttf",25,{255,255,255},"???"),
+_teamName("fonts/MLSGY.ttf",20,255,255,255,"???"),
+_contract("fonts/MLSGY.ttf",20,255,255,255,"???"),
+_infoPreviousTrick("fonts/MLSGY.ttf",25,255,255,255,"???"),
 _ok(pevent,"OK",PositionGraphic(windowsWidth/2,windowsHeight - 225,CENTER)),
 _posCard(),
 _scoreTeam(pScreen)

@@ -5,14 +5,13 @@
 #include <array>
 #include <memory>
 
-#ifndef _MSC_VER
+#if defined(__GNUC__)
 	#include "SDL/SDL.h"
 	#include "SDL/SDL_image.h"
-#endif //ndef _MSC_VER
-#ifdef _MSC_VER
+#elif defined(_MSC_VER)
 	#include <SDL.h>
 	#include <SDL_image.h>
-#endif //def _MSC_VER
+#endif //SDL include
 
 #include "Basic_Game_Info.h"
 #include "PositionGraphic.h"

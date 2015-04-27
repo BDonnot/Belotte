@@ -1,12 +1,11 @@
 #ifndef BASIC_CLICK_H
 #define BASIC_CLICK_H
 
-#ifndef _MSC_VER
+#if defined (__GNUC__)
 	#include "SDL/SDL.h"
-#endif //ndef _MSC_VER
-#ifdef _MSC_VER
+#elif defined (_MSC_VER)
 	#include <SDL.h>
-#endif //def _MSC_VER
+#endif //SDL include
 
 
 class Basic_Click

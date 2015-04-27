@@ -95,11 +95,11 @@ Player_Bid_Graphic::~Player_Bid_Graphic()
 Player_Bid_Graphic::Player_Bid_Graphic(const Player_ID& player_number,SDL_Event* pevent,SDL_Surface* screen,Uint windows_width,Uint windows_height):
 Player_Bid()
 ,_bubble("images/sprite_bulles.png",pevent)
-,_text("fonts/MLSGY.ttf",20,{255,255,255},"Passe")
+,_text("fonts/MLSGY.ttf",20,255,255,255,"Passe")
 ,_color("images/sprite_take_color.png")
 ,_displayed_logo_color(true)
 ,_oldColor("images/sprite_take_color.png")
-,_oldText("fonts/MLSGY.ttf",20,{255,255,255},"Passe")
+,_oldText("fonts/MLSGY.ttf",20,255,255,255,"Passe")
 ,_dsplOldBets(screen,windows_width,windows_height,player_number,&_oldText,&_oldColor)
 {
     Uint position[4][2] = {{windows_width/2+230,windows_height-150}

@@ -1,6 +1,14 @@
 #ifndef IMAGES_SPRITEEVENT_H
 #define IMAGES_SPRITEEVENT_H
 
+#if defined(__GNUC__)
+	#include "SDL/SDL.h"
+	#include "SDL/SDL_image.h"
+#elif defined(_MSC_VER)
+	#include <SDL.h>
+	#include <SDL_image.h>
+#endif //SDL include
+
 #include "Images_Sprite.h"
 #include "Basic_Click.h"
 

@@ -34,11 +34,11 @@ Player_Name::Player_Name(Basic_Images* fond,string name,string path_image,SDL_Ev
 Quit(pevent)
 ,_name("fonts/MLSGY.ttf"
       ,40
-      ,(SDL_Color) {255,255,0}
+      ,255,255,0
       ,pevent
       ,name)
-,_name_display("fonts/MLSGY.ttf",30,(SDL_Color) {255,255,255},pevent,name)
-,_what_name("fonts/MLSGY.ttf",40,(SDL_Color) {255,255,255},"Quel nom pour ce joueur ?")
+,_name_display("fonts/MLSGY.ttf",30,255,255,255,pevent,name)
+,_what_name("fonts/MLSGY.ttf",40,255,255,255,"Quel nom pour ce joueur ?")
 ,_fond(fond)
 ,_image(path_image,pevent)
 ,_width(width)

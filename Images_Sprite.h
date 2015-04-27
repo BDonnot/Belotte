@@ -4,6 +4,14 @@
 #include <array>
 //#include <vector>
 
+#if defined(__GNUC__)
+	#include "SDL/SDL.h"
+	#include "SDL/SDL_image.h"
+#elif defined(_MSC_VER)
+	#include <SDL.h>
+	#include <SDL_image.h>
+#endif //SDL include
+
 #include "Basic_Images.h"
 
 //TO DO : a short description of this class.

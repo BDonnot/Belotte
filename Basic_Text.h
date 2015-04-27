@@ -3,20 +3,19 @@
 
 #include <string>
 
-#ifndef _MSC_VER
+#if defined(__GNUC__)
 	#include "SDL/SDL.h"
 	#include "SDL/SDL_ttf.h"
-#endif //ndef _MSC_VER
-#ifdef _MSC_VER
+#elif defined(_MSC_VER)
 	#include <SDL.h>
 	#include <SDL_ttf.h>
-#endif //def _MSC_VER
+#endif //SDL include
 
 class Basic_Text
 {
     public:
         Basic_Text();
-        Basic_Text(std::string path_font,int size,SDL_Color color,std::string text);
+		Basic_Text(std::string path_font, int size, char colR, char colG, char colB, std::string text);
         virtual ~Basic_Text();
         const std::string& GetText() const;
         void ChangeText(std::string text);

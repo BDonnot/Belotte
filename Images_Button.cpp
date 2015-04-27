@@ -9,8 +9,8 @@ Images_Button::Images_Button(SDL_Event* event
                              ,PositionGraphic pos):
 Images_Sprite<2>("images/Sprite_Button.jpg")
 ,Basic_Click(event)
-,_text_on("fonts/MLSGY.ttf",24,(SDL_Color) {255,255,255}, text_button)
-,_text_off("fonts/MLSGY.ttf",24,(SDL_Color) {255,255,255}, text_button)
+,_text_on("fonts/MLSGY.ttf",24,255,255,255, text_button)
+,_text_off("fonts/MLSGY.ttf",24,255,255,255, text_button)
 ,_persistant(false)
 {
     array<Uint,2> x = {110,0};
