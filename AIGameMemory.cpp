@@ -1,10 +1,6 @@
 #include "AIGameMemory.h"
 using namespace std;
-
-AIGameMemory::~AIGameMemory()
-{
-    //dtor
-}
+/*
 void AIGameMemory::UpdateFullTrick(const TrickBasic_Memory& trick, const Position_Trick& posTrick)
 {
     Uint i;
@@ -292,10 +288,5 @@ Card_Height AIGameMemory::Smallest(const Card_Color& color) const //return the s
 bool AIGameMemory::CanReceiveCard(const Player_ID& id, const Card_Color& col, const Card_Height& height)
 {
     return !callCut(id,col,_playerCut) && canHave(id,col,height);
-}
-/*
-bool AIGameMemory::CanHaveCard(const Player_ID& player,const Card_Color& color, const Card_Height& height) const
-{
-    return !_playerCut.Cut(player,color) && canHave(player,color,height);
 }
 */

@@ -16,7 +16,7 @@
 #include "BasicMonteCarloAction.h"
 #include "MonteCarloAction.h"
 
-#define NB_MAX_SIMUL_MONTECARLO 100
+//#define NB_MAX_SIMUL_MONTECARLO 100
 /**
 idee : on simule les cartes possibles des autres joueurs par Monte Carlo
 (optimisation possible : on essaie de sur ponderer les situations mauvaises pour les ennemis
@@ -28,13 +28,12 @@ ca serait bien de faire un thread la dessus... pour que l'ordi (interface graphi
 reflechi...
 **/
 
-//TO DO : AI Play score can be a basic case of this method...
-//TO DO : multi-threading :-)
-template<class Memory, class PlayMC>
+
+template< template<class> class Memory , Uint nbMaxSimul, class PlayMC>
 class AIPlayMonteCarlo
 {
     protected :
-        std::array<PlayerMiniMonteCarlo<Memory> , 4> _players;
+        std::array< PlayerMiniMonteCarlo< Memory > , 4> _players;
         TrickBasic_Memory _trick;
         std::list<Cards_Basic> _unfallenCards;
         Random * _rand;
@@ -51,29 +50,29 @@ class AIPlayMonteCarlo
                     ,std::list<Cards* >& hand
                     ,Random& rand
                     ,const TrickStatus& trickStatus
-                    ,const Memory& playerMemory);
+                    ,const Memory<Cards*>& playerMemory);
     protected :
-        void initStates(const TrickBasic_Memory& trick,const Memory& playerMemory,Random& rand,const std::list<Cards*>& hand);
-        void updateUnfallenCardsupdateUnfallenCards(const TrickBasic_Memory& trick,const Memory& playerMemory,const std::list<Cards*>& hand);
+        void initStates(const TrickBasic_Memory& trick,const Memory<Cards*>& playerMemory,Random& rand,const std::list<Cards*>& hand);
+        void updateUnfallenCards(const TrickBasic_Memory& trick,const Memory<Cards*> & playerMemory,const std::list<Cards*>& hand);
         Uint scoreCards(const std::array<PlayerMiniMonteCarlo<Memory> , 4>& currentPlayers,
                           const Cards* pcard,
                           TrickBasic_Memory& currentTrick,
                           const std::list<Cards*> hand,
                           const TrickStatus& trickStatus);
         void simulGame(const TrickBasic_Memory& trick,
-                         const Memory& playerMemory,
+						 const Memory<Cards*>& playerMemory, //here
                          const std::list<Cards*>& hand,
                          const TrickStatus& trickStatus,
                          std::stack<MonteCarloAction>& allActions,
-                         std::array<PlayerMiniMonteCarlo<Memory> ,4 >& currentPlayers,
+                         std::array<PlayerMiniMonteCarlo<Memory > ,4 >& currentPlayers,
                          std::list<Cards_Basic>&  currentCards,
-                         std::list<PlayerMiniMonteCarlo<Memory> * >& playerStillCardsToReceive);
+                         std::list<PlayerMiniMonteCarlo<Memory > * >& playerStillCardsToReceive);
 
         bool cardsInHand(const std::list<Cards*>& hand,const Card_Color& col,const Card_Height& height);
         Cards* whichBetter(ResultMonteCarlo& resSimulations,const std::list<Cards* >& playbleCards);
-        Uint computeNbPlayerAbleToReceive(const Memory& playerMemory,const Cards_Basic& card,const TrickStatus& trickStatus);
+		Uint computeNbPlayerAbleToReceive(const Memory<Cards*>& playerMemory, const Cards_Basic& card, const TrickStatus& trickStatus);
 
-        void updateUnfallenCards(const TrickBasic_Memory& trick,const Memory& playerMemory,const std::list<Cards*>& hand);
+		//void updateUnfallenCards(const TrickBasic_Memory& trick, const Memory<Cards*>& playerMemory, const std::list<Cards*>& hand);
         //void removeContraint(const BasicMonteCarloAction& constraint);
         void removeConsequences(std::array<PlayerMiniMonteCarlo<Memory> , 4 > & currentPlayers,
                                 const std::list<BasicMonteCarloAction>& consequences,std::list<Cards_Basic>& currentCard);
@@ -100,9 +99,9 @@ class AIPlayMonteCarlo
                                            PlayerMiniMonteCarlo<Memory> * player);
 
         void resetGiving(const TrickBasic_Memory& trick,
-                         const Memory& playerMemory,
-                         Random& rand,
-                         const std::list<Cards*>& hand);
+							const Memory<Cards*>& playerMemory,
+							Random& rand,
+							const std::list<Cards*>& hand);
 
         void removeForceCard(std::array<PlayerMiniMonteCarlo<Memory> , 4 > & currentPlayers,
                              bool& changes,
@@ -119,13 +118,13 @@ class AIPlayMonteCarlo
                                 std::list<PlayerMiniMonteCarlo<Memory> * >& players);
 };
 
-template<class Memory,class PlayMC>
-Cards* AIPlayMonteCarlo<Memory,PlayMC>::Play(const TrickBasic_Memory& trick
+template< template<class> class Memory, Uint nbMaxSimul, class PlayMC>
+Cards* AIPlayMonteCarlo<Memory, nbMaxSimul, PlayMC>::Play(const TrickBasic_Memory& trick
 												,std::list<Cards*> & playbleCards
 												,std::list<Cards*>& hand
 												,Random& rand
 												,const TrickStatus& trickStatus
-												,const Memory& playerMemory)
+												,const Memory<Cards*>& playerMemory)
 {
     if(playbleCards.size() == 1) //we have no choice... we play this card
     {
@@ -142,7 +141,7 @@ Cards* AIPlayMonteCarlo<Memory,PlayMC>::Play(const TrickBasic_Memory& trick
     {
 		playbleBasic.push_back(static_cast<const Cards_Basic&>(*pcard));
     }
-    ResultMonteCarlo resMonteCarlo(NB_MAX_SIMUL_MONTECARLO,playbleBasic);
+	ResultMonteCarlo resMonteCarlo(nbMaxSimul, playbleBasic);
 
     //init the players and the cards to be given
     //give my hand to my mini-me
@@ -171,7 +170,7 @@ Cards* AIPlayMonteCarlo<Memory,PlayMC>::Play(const TrickBasic_Memory& trick
 
     //simulate each game
     Uint tempScore;
-    for(Uint nbSimul = 0; nbSimul < NB_MAX_SIMUL_MONTECARLO; ++nbSimul)
+	for (Uint nbSimul = 0; nbSimul < nbMaxSimul ; ++nbSimul)
     {
         //printf("Simulation %d\n",nbSimul);
 
@@ -210,8 +209,8 @@ Cards* AIPlayMonteCarlo<Memory,PlayMC>::Play(const TrickBasic_Memory& trick
     return res;
 }
 
-template<class Memory,class PlayMC>
-Uint AIPlayMonteCarlo<Memory,PlayMC>::scoreCards(const std::array<PlayerMiniMonteCarlo<Memory> , 4>& currentPlayers,
+template< template<class> class Memory, Uint nbMaxSimul, class PlayMC>
+Uint AIPlayMonteCarlo<Memory, nbMaxSimul, PlayMC>::scoreCards(const std::array<PlayerMiniMonteCarlo<Memory>, 4>& currentPlayers,
                                                   const Cards* pcard,
                                                   TrickBasic_Memory& currentTrick,
                                                   const std::list<Cards*> hand,
@@ -220,7 +219,6 @@ Uint AIPlayMonteCarlo<Memory,PlayMC>::scoreCards(const std::array<PlayerMiniMont
 
     _play.Init(_cardsToPlay,_number,_rand);
     return _play.Play(currentPlayers,pcard,currentTrick,hand,trickStatus);
-    return 0;
 
 
     /**
@@ -281,8 +279,8 @@ Uint AIPlayMonteCarlo<Memory,PlayMC>::scoreCards(const std::array<PlayerMiniMont
     */
 }
 
-template<class Memory,class PlayMC>
-Cards* AIPlayMonteCarlo<Memory,PlayMC>::whichBetter(ResultMonteCarlo& resSimulations,
+template< template<class> class Memory, Uint nbMaxSimul, class PlayMC>
+Cards* AIPlayMonteCarlo<Memory, nbMaxSimul, PlayMC>::whichBetter(ResultMonteCarlo& resSimulations,
 														const std::list<Cards*>& playableCards)
 {
 	Cards* res = playableCards.front();
@@ -300,8 +298,8 @@ Cards* AIPlayMonteCarlo<Memory,PlayMC>::whichBetter(ResultMonteCarlo& resSimulat
     return res;
 }
 
-template<class Memory,class PlayMC>
-void AIPlayMonteCarlo<Memory,PlayMC>::initStates(const TrickBasic_Memory& trick,const Memory& playerMemory,Random& rand,const std::list<Cards*>& hand)
+template< template<class> class Memory, Uint nbMaxSimul, class PlayMC>
+void AIPlayMonteCarlo<Memory, nbMaxSimul, PlayMC>::initStates(const TrickBasic_Memory& trick, const Memory<Cards*>& playerMemory, Random& rand, const std::list<Cards*>& hand)
 {
     for(Uint i = 0; i < 4; ++i)
     {
@@ -314,8 +312,8 @@ void AIPlayMonteCarlo<Memory,PlayMC>::initStates(const TrickBasic_Memory& trick,
 }
 
 
-template<class Memory,class PlayMC>
-void AIPlayMonteCarlo<Memory,PlayMC>::resetGiving(const TrickBasic_Memory& trick,const Memory& playerMemory,Random& rand,const std::list<Cards*>& hand)
+template< template<class> class Memory, Uint nbMaxSimul, class PlayMC>
+void AIPlayMonteCarlo<Memory, nbMaxSimul, PlayMC>::resetGiving(const TrickBasic_Memory& trick, const Memory<Cards*>& playerMemory, Random& rand, const std::list<Cards*>& hand)
 {
     Uint nbTrick = 8 - trick.TrickNumber() -1;
     Uint nbCardsPlayed = trick.NumberCardsPlayed();
@@ -340,8 +338,9 @@ void AIPlayMonteCarlo<Memory,PlayMC>::resetGiving(const TrickBasic_Memory& trick
     }
     */
 }
-template<class Memory,class PlayMC>
-void AIPlayMonteCarlo<Memory,PlayMC>::updateUnfallenCards(const TrickBasic_Memory& trick,const Memory& playerMemory,const std::list<Cards*>& hand)
+
+template< template<class> class Memory, Uint nbMaxSimul, class PlayMC>
+void AIPlayMonteCarlo<Memory, nbMaxSimul, PlayMC>::updateUnfallenCards(const TrickBasic_Memory& trick, const Memory<Cards*>& playerMemory, const std::list<Cards*>& hand)
 {
     CARDS_COLOR colors[4] = {DIAMOND,HEART,SPADE,CLUB};
     CARDS_HEIGHT heights[8] = {SEVEN,EIGHT,NINE,TEN,JACK,QUEEN,KING,ACE};
@@ -374,8 +373,8 @@ void AIPlayMonteCarlo<Memory,PlayMC>::updateUnfallenCards(const TrickBasic_Memor
     _cardsToPlay += hand.size();
 }
 
-template<class Memory,class PlayMC>
-bool AIPlayMonteCarlo<Memory,PlayMC>::cardsInHand(const std::list<Cards*>& hand,const Card_Color& col,const Card_Height& height)
+template< template<class> class Memory, Uint nbMaxSimul, class PlayMC>
+bool AIPlayMonteCarlo<Memory, nbMaxSimul, PlayMC>::cardsInHand(const std::list<Cards*>& hand, const Card_Color& col, const Card_Height& height)
 {
     for(auto pcard : hand)
     {
@@ -384,15 +383,15 @@ bool AIPlayMonteCarlo<Memory,PlayMC>::cardsInHand(const std::list<Cards*>& hand,
     return false;
 }
 
-template<class Memory,class PlayMC>
-void AIPlayMonteCarlo<Memory,PlayMC>::simulGame(const TrickBasic_Memory& trick,
-                                         const Memory& playerMemory,
-                                         const std::list<Cards*>& hand,
-                                         const TrickStatus& trickStatus,
-                                         std::stack<MonteCarloAction>& allActions,
-                                         std::array<PlayerMiniMonteCarlo<Memory> ,4 >& currentPlayers,
-                                         std::list<Cards_Basic>&  currentCards,
-                                         std::list<PlayerMiniMonteCarlo<Memory> * >& playerStillCardsToReceive)
+template< template<class> class Memory, Uint nbMaxSimul, class PlayMC>
+void AIPlayMonteCarlo<Memory, nbMaxSimul, PlayMC>::simulGame(const TrickBasic_Memory& trick,
+												const Memory<Cards*>& playerMemory,
+											const std::list<Cards*>& hand,
+											const TrickStatus& trickStatus,
+											std::stack<MonteCarloAction>& allActions,
+											std::array<PlayerMiniMonteCarlo<Memory> ,4 >& currentPlayers,
+											std::list<Cards_Basic>&  currentCards,
+											std::list<PlayerMiniMonteCarlo<Memory> * >& playerStillCardsToReceive)
 {
     ///compute how many cards each player must receive
     ///compute whom can received which card
@@ -499,8 +498,8 @@ void AIPlayMonteCarlo<Memory,PlayMC>::simulGame(const TrickBasic_Memory& trick,
     }
 }
 
-template<class Memory,class PlayMC>
-void  AIPlayMonteCarlo<Memory,PlayMC>::removeConsequences(std::array<PlayerMiniMonteCarlo<Memory> , 4 > &currentPlayers,
+template< template<class> class Memory, Uint nbMaxSimul, class PlayMC>
+void  AIPlayMonteCarlo<Memory, nbMaxSimul, PlayMC>::removeConsequences(std::array<PlayerMiniMonteCarlo<Memory>, 4 > &currentPlayers,
                                                    const std::list<BasicMonteCarloAction>& consequences,
                                                    std::list<Cards_Basic>& currentCard)
 {
@@ -512,8 +511,8 @@ void  AIPlayMonteCarlo<Memory,PlayMC>::removeConsequences(std::array<PlayerMiniM
     }
 }
 
-template<class Memory,class PlayMC>
-void AIPlayMonteCarlo<Memory,PlayMC>::updatePlayerAdd(std::array<PlayerMiniMonteCarlo<Memory> , 4 > & currentPlayers,
+template< template<class> class Memory, Uint nbMaxSimul, class PlayMC>
+void AIPlayMonteCarlo<Memory, nbMaxSimul, PlayMC>::updatePlayerAdd(std::array<PlayerMiniMonteCarlo<Memory>, 4 > & currentPlayers,
                                                std::list<PlayerMiniMonteCarlo<Memory> * >& players)
 {
     players.clear();
@@ -523,8 +522,8 @@ void AIPlayMonteCarlo<Memory,PlayMC>::updatePlayerAdd(std::array<PlayerMiniMonte
     }
 }
 
-template<class Memory,class PlayMC>
-bool AIPlayMonteCarlo<Memory,PlayMC>::computeConsequences(std::array<PlayerMiniMonteCarlo<Memory> , 4 > & currentPlayers,
+template< template<class> class Memory, Uint nbMaxSimul, class PlayMC>
+bool AIPlayMonteCarlo<Memory, nbMaxSimul, PlayMC>::computeConsequences(std::array<PlayerMiniMonteCarlo<Memory>, 4 > & currentPlayers,
                                                    std::list<BasicMonteCarloAction>& consequences,
                                                    std::list<Cards_Basic>& currentCards,
                                                    std::list<PlayerMiniMonteCarlo<Memory> * >& players)
@@ -547,8 +546,8 @@ bool AIPlayMonteCarlo<Memory,PlayMC>::computeConsequences(std::array<PlayerMiniM
     return res;
 }
 
-template<class Memory,class PlayMC>
-void AIPlayMonteCarlo<Memory,PlayMC>::removeForceCard( std::array<PlayerMiniMonteCarlo<Memory> , 4 > & currentPlayers,
+template< template<class> class Memory, Uint nbMaxSimul, class PlayMC>
+void AIPlayMonteCarlo<Memory, nbMaxSimul, PlayMC>::removeForceCard(std::array<PlayerMiniMonteCarlo<Memory>, 4 > & currentPlayers,
                                                 bool& changes,
                                                 bool& res,
                                                 std::list<BasicMonteCarloAction>& consequences,
@@ -584,8 +583,8 @@ void AIPlayMonteCarlo<Memory,PlayMC>::removeForceCard( std::array<PlayerMiniMont
 }
 
 
-template<class Memory,class PlayMC>
-void AIPlayMonteCarlo<Memory,PlayMC>::removeForcePlayer(   std::array<PlayerMiniMonteCarlo<Memory> , 4 > & currentPlayers,
+template< template<class> class Memory, Uint nbMaxSimul, class PlayMC>
+void AIPlayMonteCarlo<Memory, nbMaxSimul, PlayMC>::removeForcePlayer(std::array<PlayerMiniMonteCarlo<Memory>, 4 > & currentPlayers,
                                                     bool& changes,
                                                     bool& res,
                                                     std::list<BasicMonteCarloAction>& consequences,
@@ -622,8 +621,9 @@ void AIPlayMonteCarlo<Memory,PlayMC>::removeForcePlayer(   std::array<PlayerMini
     }
     updatePlayerAdd(currentPlayers,players);
 }
-template<class Memory,class PlayMC>
-void AIPlayMonteCarlo<Memory,PlayMC>::computeNumberOfCardReceivable(std::list<Cards_Basic>& res,
+
+template< template<class> class Memory, Uint nbMaxSimul, class PlayMC>
+void AIPlayMonteCarlo<Memory, nbMaxSimul, PlayMC>::computeNumberOfCardReceivable(std::list<Cards_Basic>& res,
                                                              const std::list<Cards_Basic>& ungivenCards,
                                                              PlayerMiniMonteCarlo<Memory> * player)
 {
@@ -634,22 +634,23 @@ void AIPlayMonteCarlo<Memory,PlayMC>::computeNumberOfCardReceivable(std::list<Ca
     }
 }
 
-template<class Memory,class PlayMC>
-void AIPlayMonteCarlo<Memory,PlayMC>::removeConstraint(std::array<PlayerMiniMonteCarlo<Memory> , 4 > & currentPlayers,
+template< template<class> class Memory, Uint nbMaxSimul, class PlayMC>
+void AIPlayMonteCarlo<Memory, nbMaxSimul, PlayMC>::removeConstraint(std::array<PlayerMiniMonteCarlo<Memory>, 4 > & currentPlayers,
                                                 const BasicMonteCarloAction& constraint)
 {
     currentPlayers[constraint.ID().ToInt()].RemoveConstraint(constraint.Card());
 }
-template<class Memory,class PlayMC>
-void AIPlayMonteCarlo<Memory,PlayMC>::addConstraint(std::array<PlayerMiniMonteCarlo<Memory> , 4 > & currentPlayers,
+
+template< template<class> class Memory, Uint nbMaxSimul, class PlayMC>
+void AIPlayMonteCarlo<Memory, nbMaxSimul, PlayMC>::addConstraint(std::array<PlayerMiniMonteCarlo<Memory>, 4 > & currentPlayers,
                                              const Player_ID & id,
                                              const Cards_Basic& card)
 {
      currentPlayers[id.ToInt()].AddConstraint(card);
 }
 
-template<class Memory,class PlayMC>
-void AIPlayMonteCarlo<Memory,PlayMC>::removeCard(const std::list<BasicMonteCarloAction>& consequences,
+template< template<class> class Memory, Uint nbMaxSimul, class PlayMC>
+void AIPlayMonteCarlo<Memory, nbMaxSimul, PlayMC>::removeCard(const std::list<BasicMonteCarloAction>& consequences,
                                           std::list<Cards_Basic>& currentCard) //update _unfallencards
 {
     for(const auto& action : consequences)
@@ -658,8 +659,8 @@ void AIPlayMonteCarlo<Memory,PlayMC>::removeCard(const std::list<BasicMonteCarlo
     }
 }
 
-template<class Memory,class PlayMC>
-void AIPlayMonteCarlo<Memory,PlayMC>::updatePlayer(PlayerMiniMonteCarlo<Memory> * pPlayer,
+template< template<class> class Memory, Uint nbMaxSimul, class PlayMC>
+void AIPlayMonteCarlo<Memory, nbMaxSimul, PlayMC>::updatePlayer(PlayerMiniMonteCarlo<Memory> * pPlayer,
                                             std::list<PlayerMiniMonteCarlo<Memory>  * >& players) //update _unfallencards
 {
     if(!pPlayer->CanReceiveAnotherCard())
@@ -676,8 +677,8 @@ void AIPlayMonteCarlo<Memory,PlayMC>::updatePlayer(PlayerMiniMonteCarlo<Memory> 
 }
 
 
-template<class Memory,class PlayMC>
-void AIPlayMonteCarlo<Memory,PlayMC>::playerReceiver(std::array<PlayerMiniMonteCarlo<Memory> , 4 > & currentPlayers,
+template< template<class> class Memory, Uint nbMaxSimul, class PlayMC>
+void AIPlayMonteCarlo<Memory, nbMaxSimul, PlayMC>::playerReceiver(std::array<PlayerMiniMonteCarlo<Memory>, 4 > & currentPlayers,
                                               std::list<PlayerMiniMonteCarlo<Memory> * >& temp,
                                               const std::list<PlayerMiniMonteCarlo<Memory> * >& players,
                                               const Cards_Basic& card)
@@ -689,8 +690,8 @@ void AIPlayMonteCarlo<Memory,PlayMC>::playerReceiver(std::array<PlayerMiniMonteC
     }
 }
 
-template<class Memory,class PlayMC>
-Uint AIPlayMonteCarlo<Memory,PlayMC>::computeNbPlayerAbleToReceive(const Memory& playerMemory,const Cards_Basic& card,const TrickStatus& trickStatus)
+template< template<class> class Memory, Uint nbMaxSimul, class PlayMC>
+Uint AIPlayMonteCarlo<Memory, nbMaxSimul,PlayMC>::computeNbPlayerAbleToReceive(const Memory<Cards*>& playerMemory, const Cards_Basic& card, const TrickStatus& trickStatus)
 {
     Uint res =  0;
     PLAYER_ID allIDs[4] = {PLAYER0,PLAYER1,PLAYER2,PLAYER3};

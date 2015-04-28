@@ -1,14 +1,32 @@
 Bonjour,
  
-J’ai contacté ceux d’entre vous qui ne m’ont pas encore transmis de proposition de sujet car il serait temps de se décider. Plusieurs d’entre vous m’ont posé des questions sur ce qui est attendu exactement cette année. En effet, par rapport à ce qui est écrit dans les objectifs de la fiche de cours sur Pamplemousse et sur le site internet, il y a des différences, car l’année de cours de 3A ayant été raccourcie, les modalités ont été adaptées en conséquence.
+J’ai contacté ceux d’entre vous qui ne m’ont pas encore transmis de proposition de sujet car il serait temps de se décider.
+Plusieurs d’entre vous m’ont posé des questions sur ce qui est attendu exactement cette année.
+En effet, par rapport à ce qui est écrit dans les objectifs de la fiche de cours sur Pamplemousse et sur le site internet, il y a des différences,
+car l’année de cours de 3A ayant été raccourcie, les modalités ont été adaptées en conséquence.
  
-Ce qui est attendu de vous est donc de réaliser le sujet que vous m’avez fait validé, dans le langage de programmation choisi, de manière personnelle et a priori, sans suivi programmé. Toutefois, en cas de problème, il pourra au cas par cas être vu si un enseignant peut vous aider. Au final, vous devrez donc rendre :
+Ce qui est attendu de vous est donc de réaliser le sujet que vous m’avez fait validé, dans le langage de programmation choisi,
+de manière personnelle et a priori, sans suivi programmé. Toutefois, en cas de problème, il pourra au cas par cas être vu si un enseignant peut vous aider.
+Au final, vous devrez donc rendre :
  
--          Votre code : sous forme de zip, de git, comme vous voulez, ce qui vous semble le plus simple, il faut juste qu’on puisse y avoir accès facilement. Vous devez, de ce fait, inclure les éventuelles librairies nécessaires etc. et indiquer s’il y a quelque chose de « spécial » à faire pour accéder à votre travail.
--          Un éventuel « résultat » de votre code : une application à lancer (ex : un jeu), une page internet à visiter, une application mobile… Bref, à voir selon votre projet s’il y a un résultat additionnel ou non.
--          Un mémoire. Le but de mémoire est de décrire votre démarche, on attend donc une partie où vous expliquez pourquoi ce sujet, son intérêt, puis comment vous avez conçu le programme avant de le programmer, puis ensuite comment vous êtes passé à la programmation. Vous pouvez également parler dans ce mémoire des difficultés rencontrées, de ce que vous avez mis en œuvre pour les résoudre (ou non : vous pouvez aussi parler des bugs), ce qui pourrait être amélioré etc. On n’attend pas à ce que le mémoire soit un catalogue de votre code : on aura accès au code donc éventuellement vous pouvez en mettre quelques extraits pour illustrer votre propos, mais c’est tout ! Il n’y a pas de limites fixes, mais je pense pas qu’en moins de 10 pages vous arriverez à rendre un rapport complet sur votre application.
--          A priori, il n’y aura pas de soutenances orales organisées cette année, le décalage du cours fait que pour organiser une soutenance, vous devriez rentre vos rapports début avril ce qui me semble très compliqué.
--          Niveau date justement, le tout (code/résultat éventuel/mémoire) doit être envoyé par mail à mon attention pour le jeudi 30 avril max. Attention, c’est la date de fin de vos examens, donc prévoyez plutôt de finir le projet vers le 20/21 (avant vos révisions).
+-          Votre code : sous forme de zip, de git, comme vous voulez, ce qui vous semble le plus simple, il faut juste qu’on puisse y avoir accès facilement.
+Vous devez, de ce fait, inclure les éventuelles librairies nécessaires etc. et indiquer s’il y a quelque chose de « spécial » à faire pour accéder à votre travail.
+
+-          Un éventuel « résultat » de votre code : une application à lancer (ex : un jeu), une page internet à visiter, une application mobile…
+Bref, à voir selon votre projet s’il y a un résultat additionnel ou non.
+
+-          Un mémoire. Le but de mémoire est de décrire votre démarche, on attend donc une partie où vous expliquez pourquoi ce sujet, son intérêt, puis comment vous avez conçu
+le programme avant de le programmer, puis ensuite comment vous êtes passé à la programmation. Vous pouvez également parler dans ce mémoire des difficultés rencontrées,
+de ce que vous avez mis en œuvre pour les résoudre (ou non : vous pouvez aussi parler des bugs), ce qui pourrait être amélioré etc.
+On n’attend pas à ce que le mémoire soit un catalogue de votre code : on aura accès au code donc éventuellement vous pouvez en mettre quelques extraits pour illustrer votre propos,
+mais c’est tout ! Il n’y a pas de limites fixes, mais je pense pas qu’en moins de 10 pages vous arriverez à rendre un rapport complet sur votre application.
+
+-          A priori, il n’y aura pas de soutenances orales organisées cette année, le décalage du cours fait que pour organiser une soutenance, vous devriez rentre vos rapports début avril
+ce qui me semble très compliqué.
+
+-          Niveau date justement, le tout (code/résultat éventuel/mémoire) doit être envoyé par mail à mon attention pour le jeudi 30 avril max. Attention, c’est la date de fin de vos examens,
+donc prévoyez plutôt de finir le projet vers le 20/21 (avant vos révisions).
+
 -          La note ne se basera donc pas uniquement sur votre code et sur le fait que votre application fonctionne, le mémoire est lui aussi très important ! Ne le négligez pas.
  
 Si vous avez d’autres questions/problèmes/remarques, n’hésitez pas à me contacter.
@@ -16,7 +34,11 @@ Si vous avez d’autres questions/problèmes/remarques, n’hésitez pas à me c
 
 
 
-Je suis en congés à partir du 17 avril. De fait, si certains d’entre vous veulent me voir pour faire un point sur le projet (c’est selon vos besoin), il faut que cela se fasse cette semaine. Merci de me prévenir par mail de vos disponibilités le cas échéant.
+Je suis en congés à partir du 17 avril. De fait, si certains d’entre vous veulent me voir pour faire un point sur le projet (c’est selon vos besoin),
+il faut que cela se fasse cette semaine. Merci de me prévenir par mail de vos disponibilités le cas échéant.
  
-De plus, la date du rendu était initialement prévue le jeudi 30 avril, je l’ai repoussé au dimanche 3 mai, minuit, dernier délai, afin de vous laisser quelques jours après vos examens pour parfaire votre projet.
-Pour rappel, vous devez rendre votre code (évidemment) sous la forme que vous souhaitez, du moment que vous précisez comment l’ouvrir, une éventuelle appli/page web/exécutable/… selon votre projet, et un rapport. Beaucoup ont demandé mais pas de nombre de lignes de code minimum ou de pages minimum pour le rapport, il faut juste que l’on arrive à juger que votre travail a été conséquent, et que votre rapport détaille votre choix de sujets/choix de programmation/architecture du programme/pistes d’évolution/…
+De plus, la date du rendu était initialement prévue le jeudi 30 avril, je l’ai repoussé au dimanche 3 mai, minuit, dernier délai, afin de vous laisser quelques jours après vos examens
+pour parfaire votre projet.
+Pour rappel, vous devez rendre votre code (évidemment) sous la forme que vous souhaitez, du moment que vous précisez comment l’ouvrir, une éventuelle appli/page web/exécutable/…
+selon votre projet, et un rapport. Beaucoup ont demandé mais pas de nombre de lignes de code minimum ou de pages minimum pour le rapport, il faut juste que l’on arrive à
+juger que votre travail a été conséquent, et que votre rapport détaille votre choix de sujets/choix de programmation/architecture du programme/pistes d’évolution/…

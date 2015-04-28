@@ -10,7 +10,7 @@
 #include "TrickStatus.h"
 
 /** A wrapper : implement the way of playing randomly **/
-template<class Memory,class TypeOfCard>
+template<class TypeOfCard, template<class> class Memory >
 class AIPlayRandom
 {
     protected :
@@ -20,10 +20,10 @@ class AIPlayRandom
         virtual ~AIPlayRandom(){}
         TypeOfCard Play(const TrickBasic_Memory& trick
                                 ,typename std::list<TypeOfCard >& plyableCards
-                                ,const std::list<Cards*>& hand
+								, const std::list<TypeOfCard>& hand
                                 ,Random& rand
                                 ,const TrickStatus& trickStatus
-                                ,const Memory& playerMemory);
+								,const Memory<TypeOfCard> & playerMemory);
         void SetNumber(const Player_ID& number)
         {
             _player = number;
@@ -33,13 +33,13 @@ class AIPlayRandom
     private:
 };
 
-template<class Memory,class TypeOfCard>
-TypeOfCard AIPlayRandom<Memory,TypeOfCard>::Play(const TrickBasic_Memory& trick
+template<class TypeOfCard, template<class> class Memory >
+TypeOfCard AIPlayRandom<TypeOfCard, Memory>::Play(const TrickBasic_Memory& trick
 													,typename std::list<TypeOfCard >& playbleCards
-													,const std::list<Cards*>& hand
+													, const std::list<TypeOfCard>& hand
 													,Random& rand
 													,const TrickStatus& trickStatus
-													,const Memory& playerMemory)
+													,const Memory<TypeOfCard>& playerMemory)
 {
     Uint n = playbleCards.size();
     switch(n)

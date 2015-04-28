@@ -10,6 +10,7 @@
 #include "Foncteurs_Players.h"
 
 #include "Cards_Basic.h"
+#include "Cards.h"
 #include "Random.h"
 #include "TrickStatus.h"
 
@@ -18,7 +19,7 @@
 //TO DO : make a basic class from which this one and Player will inherit...
 
 //play : AIPlayRandom or AIPlayScore
-template<class GameMemory>
+template<template<class> class GameMemory>
 class PlayerMiniMonteCarlo
 {
     protected:
@@ -37,7 +38,7 @@ class PlayerMiniMonteCarlo
         PlayerMiniMonteCarlo(const Player_ID& number):_number(number),_status(_number){}
         virtual ~PlayerMiniMonteCarlo(){}
         void ReceiveInitInfo(Random& initRandomState);
-        void ReceiveCardsInfo(Uint nbCardToReceive,const std::list<Cards_Basic>& cardsToBeGiven,const GameMemory& initMemory);
+        void ReceiveCardsInfo(Uint nbCardToReceive,const std::list<Cards_Basic>& cardsToBeGiven,const GameMemory<Cards*>& initMemory);
         void ReceiveHand(const std::list<Cards*>& initHand);
         void ReceiveCard(const Cards_Basic& card); //true if the cards is put, false otherwise
         bool CanReceiveCard(const Cards_Basic& card) const;
@@ -68,16 +69,16 @@ class PlayerMiniMonteCarlo
     private:
 };
 
-template<class GameMemory>
+template<template<class> class GameMemory>
 void PlayerMiniMonteCarlo<GameMemory>::ReceiveInitInfo(Random& initRandomState)
 {
     _rand = &initRandomState;
 }
 
-template<class GameMemory>
+template<template<class> class GameMemory>
 void PlayerMiniMonteCarlo<GameMemory>::ReceiveCardsInfo(Uint nbCardToReceive,
                                                        const std::list<Cards_Basic>& cardsToBeGiven,
-                                                       const GameMemory& initMemory)
+													   const GameMemory<Cards*>& initMemory)
 
 {
     _hand.clear();
@@ -88,21 +89,21 @@ void PlayerMiniMonteCarlo<GameMemory>::ReceiveCardsInfo(Uint nbCardToReceive,
     }
 }
 
-template<class GameMemory>
+template<template<class> class GameMemory>
 void PlayerMiniMonteCarlo<GameMemory>::AddConstraint(const Cards_Basic& card)
 {
     _canReceiveCard[card] = false;
     //printf("I have added the constraint in player\n");
 }
 
-template<class GameMemory>
+template<template<class> class GameMemory>
 void PlayerMiniMonteCarlo<GameMemory>::RemoveConstraint(const Cards_Basic& card)
 {
     //TO DO : maybe remember the initial state : we don't want a constraint to be added illegally
     _canReceiveCard[card] = true;
 }
 
-template<class GameMemory>
+template<template<class> class GameMemory>
 void PlayerMiniMonteCarlo<GameMemory>::ReceiveHand(const std::list<Cards*>& initHand)
 {
     _hand.clear();
@@ -114,27 +115,27 @@ void PlayerMiniMonteCarlo<GameMemory>::ReceiveHand(const std::list<Cards*>& init
 
 }
 
-template<class GameMemory>
+template<template<class> class GameMemory>
 void PlayerMiniMonteCarlo<GameMemory>::ReceiveCard(const Cards_Basic& card)
 {
     _hand.push_back(card);
     _nbCardToReceive--;
 }
 
-template<class GameMemory>
+template<template<class> class GameMemory>
 bool PlayerMiniMonteCarlo<GameMemory>::CanReceiveAnotherCard() const
 {
     return _nbCardToReceive > 0;
 }
 
-template<class GameMemory>
+template<template<class> class GameMemory>
 bool PlayerMiniMonteCarlo<GameMemory>::CanReceiveCard(const Cards_Basic& card) const
 {
     bool ok = _canReceiveCard.at(card);
     return ok && _nbCardToReceive > 0;
 }
 
-template<class GameMemory>
+template<template<class> class GameMemory>
 void PlayerMiniMonteCarlo<GameMemory>::RetrieveCard(const Cards_Basic& card)
 {
     auto it = _hand.begin();
@@ -155,13 +156,14 @@ void PlayerMiniMonteCarlo<GameMemory>::RetrieveCard(const Cards_Basic& card)
 	it = _hand.erase(it);
     //_hand.remove(card);
 }
-template<class GameMemory>
+
+template<template<class> class GameMemory>
 void PlayerMiniMonteCarlo<GameMemory>::RetrieveCard(std::list<Cards_Basic>::iterator& itCard) //retrieve the card from the hand
 {
 	itCard = _hand.erase(itCard);
 }
 
-template<class GameMemory>
+template<template<class> class GameMemory>
 void PlayerMiniMonteCarlo<GameMemory>::PrintHand() const
 {
     printf("Mini player %d have :\n",_number.ToInt());
@@ -172,7 +174,7 @@ void PlayerMiniMonteCarlo<GameMemory>::PrintHand() const
     printf("\n");
 }
 
-template<class GameMemory> //TO DO : this is a copy/paste from player, there may be another option...
+template<template<class> class GameMemory> //TO DO : this is a copy/paste from player, there may be another option...
 void PlayerMiniMonteCarlo<GameMemory>::updatePlayableCard(const TrickBasic_Memory& trick)
 {
     //auto itEnd = _hand.end();
@@ -196,7 +198,7 @@ void PlayerMiniMonteCarlo<GameMemory>::updatePlayableCard(const TrickBasic_Memor
     }
 }
 
-template<class GameMemory> //TO DO : this is a copy/paste from player, there may be another option...
+template<template<class> class GameMemory> //TO DO : this is a copy/paste from player, there may be another option...
 bool PlayerMiniMonteCarlo<GameMemory>::has_colour(const Card_Color& colour) //do I have the color
 {
     for (auto pcard : _hand)

@@ -13,21 +13,20 @@
 
 #include "AIMemPerfectInfo.h"
 
-//TO DO clean bellow, improve the coupling AIGameMemory
-template<class Memory>
+
+template<template<class> class Memory>
 class WrapperMemory
 {
 public :
-    void UpdateMemory(Memory& playerMemory,const std::array<PlayerMiniMonteCarlo<Memory> , 4>& players){}
-    void NextPlayer(Memory& playerMemory,const Player_ID& player){}
+    void InitMemory(Memory<Cards_Basic>& playerMemory,const std::array<PlayerMiniMonteCarlo<Memory> , 4>& players){}
+	void NextPlayer(Memory<Cards_Basic>& playerMemory, const PlayerMiniMonteCarlo<Memory> & player){}
 };
 
-
 template<>
-class WrapperMemory<AIMemPerfectInfo>
+class WrapperMemory<AIMemPerfectInfo >
 {
     public :
-        void UpdateMemory(AIMemPerfectInfo& playerMemory,const std::array<PlayerMiniMonteCarlo<AIMemPerfectInfo> , 4>& players)
+		void InitMemory(AIMemPerfectInfo<Cards_Basic>& playerMemory, const std::array<PlayerMiniMonteCarlo<AIMemPerfectInfo>, 4>& players)
         {
             std::array< std::pair<Player_ID,std::list<Cards_Basic> >, 4> allHands;
             for(Uint i = 0; i < 4; ++i)
@@ -36,15 +35,14 @@ class WrapperMemory<AIMemPerfectInfo>
             }
             playerMemory.SetGame(allHands);
         }
-        void NextPlayer(AIMemPerfectInfo& playerMemory,const Player_ID& player)
+		void NextPlayer(AIMemPerfectInfo<Cards_Basic>& playerMemory, const PlayerMiniMonteCarlo<AIMemPerfectInfo> & player)
         {
-            playerMemory.SetPlayer(player);
+            playerMemory.SetPlayer(player.ID(),&player.GetHand());
         }
 };
-/**
-**Force the MonteCarlo Players to play randomly
-**/
-template<class Memory,Uint nbCardToPlay,class PlayAI>
+
+
+template<template<class> class Memory,Uint nbCardToPlay,class PlayAI>
 class McPlayRandom
 {
     protected :
@@ -86,21 +84,21 @@ class McPlayRandom
     private:
 };
 
-template<class Memory,Uint nbCardToPlay,class PlayAI>
+template<template<class> class Memory, Uint nbCardToPlay, class PlayAI>
 Uint McPlayRandom<Memory,nbCardToPlay,PlayAI>::Play(const std::array<PlayerMiniMonteCarlo<Memory> , 4>& players,
-                                            const Cards* pcard,
-                                            const TrickBasic_Memory& trick,
-                                            std::list<Cards*> hand,
-                                            const TrickStatus& trickStatus)
+													const Cards* pcard,
+													const TrickBasic_Memory& trick,
+													std::list<Cards*> hand,
+													const TrickStatus& trickStatus)
 {
     Uint res = 0;
     for(Uint nbSimul = 0; nbSimul < _nbGamePlayed; ++nbSimul)
     {
         TrickBasic_Memory currentTrick = trick;
-        Memory gameMemory(_number,&hand); //TO DO : update the memory in a proper way :-)
+        Memory<Cards_Basic> gameMemory; //TO DO : update the memory in a proper way :-)
         //TrickStatus trickStatus;
         std::array<PlayerMiniMonteCarlo<Memory> , 4> currentPlayers(players);
-        _updateMemory(currentPlayers);
+		_updateMemory.InitMemory(gameMemory,currentPlayers);
 
         Cards_Basic tempCard = static_cast<const Cards_Basic&>(*pcard);
         //Cards_Basic tempItCard;
@@ -117,11 +115,11 @@ Uint McPlayRandom<Memory,nbCardToPlay,PlayAI>::Play(const std::array<PlayerMiniM
             //printf("I play trick %d\n",currentTrick.TrickNumber());
             if(currentTrick.TrickNumber() ==8 ) break;
             tempPlayer = & currentPlayers[currentTrick.NextPlaying().ToInt()];
-            _updateMemory.NextPlayer(gameMemory,tempPlayer.ID());
+            _updateMemory.NextPlayer(gameMemory,*tempPlayer);
             std::list<Cards_Basic > & playableCards = tempPlayer->GetPlayableCard(currentTrick);
 
             //chooseCard(playableCards,tempItCard);
-			tempCard = _play.Play(currentTrick, playableCards, hand, *_rand, trickStatus, gameMemory);
+			tempCard = _play.Play(currentTrick, playableCards, tempPlayer->GetHand(), *_rand, trickStatus, gameMemory);
 
 			putCardInTrick(currentTrick, tempCard);
 			tempPlayer->RetrieveCard(tempCard);
@@ -140,7 +138,7 @@ Uint McPlayRandom<Memory,nbCardToPlay,PlayAI>::Play(const std::array<PlayerMiniM
     return res;
 }
 
-template<class Memory,Uint nbCardToPlay,class PlayAI>
+template<template<class> class Memory, Uint nbCardToPlay, class PlayAI>
 void McPlayRandom<Memory,nbCardToPlay,PlayAI>::putCardInTrick(TrickBasic_Memory& currentTrick, const Cards_Basic& card)
 {
     currentTrick.PutCard( &(_allCards[card.GetColour().ToInt()*8 + card.GetHeight().ToInt()]) );

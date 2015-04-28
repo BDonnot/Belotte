@@ -1,5 +1,7 @@
 #include "AIMemPerfectInfo.h"
-void AIMemPerfectInfo::SetGame(const std::array< std::pair<Player_ID,std::list<Cards_Basic> > ,4 >& allHands)
+
+/*
+void AIMemPerfectInfo::SetGame(const std::array< std::pair<Player_ID,std::list<Cards_Basic> > ,4 >& allHands )
 {
     Player_ID tempP;
     Card_Color tempC;
@@ -29,3 +31,12 @@ void AIMemPerfectInfo::SetGame(const std::array< std::pair<Player_ID,std::list<C
         }
     }
 }
+
+void AIMemPerfectInfo::SetPlayer(const Player_ID& player,const std::list<Cards_Basic> * hand)
+{
+	_posPlayer = player;
+	_pHand = hand;
+	//COMPUTE THE THINGS RELATIVE TO THE PLAYER (DEPENDENT OF ITS HAND)
+	updatePlayerRelativeAttributes();
+}
+*/

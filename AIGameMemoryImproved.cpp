@@ -1,5 +1,5 @@
 #include "AIGameMemoryImproved.h"
-
+/*
 void AIGameMemoryImproved::updateSmarter(const TrickBasic_Memory& trick, const Position_Trick& posTrick)
 {
     Card_Color colorAsked = trick.ColorAsked();
@@ -36,10 +36,8 @@ void AIGameMemoryImproved::dealWithTrumps(Uint i,const TrickBasic_Memory& trick,
         tempHei = trick[j]->GetHeight();
         if(tempCol == trumpColor && trick[i]->Win(tempHei))
         {
-            /**
-            **If the player have not go up at trump
-            **it is because he has not higher !
-            **/
+            //If the player have not go up at trump
+            //it is because he has not higher !
             for(Uint icolTrump = 0; icolTrump < 8; ++icolTrump)
             {
                 Card_Height tempHei2(icolTrump);
@@ -64,3 +62,4 @@ bool AIGameMemoryImproved::stillHaveCards(const Player_ID& player,const Card_Col
     }
     return res;
 }
+*/
