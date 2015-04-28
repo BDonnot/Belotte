@@ -45,6 +45,7 @@ class AIGameMemory
 		WrapperMethod<TypeOfCard, std::is_pointer<TypeOfCard>::value> _wrapperCallMethod;
 
     public:
+		AIGameMemory():_posPlayer(GHOST), _pHand(nullptr){}
 		AIGameMemory(const Player_ID& posPlayer, std::list<TypeOfCard>* pHand) :
             _posPlayer(posPlayer),
             _pHand(pHand)
@@ -84,13 +85,13 @@ class AIGameMemory
         Card_Height Greatest(const Card_Color& color) const; //return the greatest cards I have in the color
         Card_Height Smallest(const Card_Color& color) const; //return the smallest cards I have in the color
 
-        bool CanReceiveCard(const Player_ID& id, const Card_Color& col, const Card_Height& height); //true if it is possible that the player have this card in the hand
+        bool CanReceiveCard(const Player_ID& id, const Card_Color& col, const Card_Height& height) const; //true if it is possible that the player have this card in the hand
 
         virtual bool SetCannotHaveCard(const Player_ID& player,const Card_Color& col, const Card_Height& height) {return false;} //return false because nothing is done
     protected:
         //Card_Height heightUnder(const Card_Height& height,bool color);
         void computeNewHeightMaster(); //also update _playerCut
-        void updateEverythingElse(const Player_ID& firstToPlay); //update everything that need to go through the hand of the player.
+        void updateEverythingElse(); //update everything that need to go through the hand of the player.
 
         virtual bool callCut(const Player_ID& player,const Card_Color& color,const MemorizeCutsCalls& StoreCallCut) const; //dot the 'player' call/cut at the 'color'
         virtual bool stillHaveCards(const Player_ID& player,const Card_Color& color) const {return true;}
@@ -146,7 +147,7 @@ void AIGameMemory<TypeOfCard>::UpdateFullTrick(const TrickBasic_Memory& trick, c
 	//update smarter memory (for derived class)
 	updateSmarter(trick, posTrick);
 	//update everything else
-	updateEverythingElse(_infos.FirstToPlay(posTrick, _posPlayer));
+	updateEverythingElse();
 
 }
 
@@ -162,7 +163,7 @@ void AIGameMemory<TypeOfCard>::InitEverything()
 		Card_Color col(i);
 		_heightsMaster[i] = (col == _infos.TrumpColor() ? JACK : ACE);
 	}
-	updateEverythingElse(_posPlayer);
+	updateEverythingElse();
 	initHeritage();
 }
 
@@ -184,18 +185,8 @@ void AIGameMemory<TypeOfCard>::computeNewHeightMaster()
 }
 
 template<class TypeOfCard>
-void AIGameMemory<TypeOfCard>::updateEverythingElse(const Player_ID& firstToPlay)
+void AIGameMemory<TypeOfCard>::updateEverythingElse()
 {
-	//INITIALIZE THE ARRAYS
-	for (Uint i = 0; i < 4; i++)
-	{
-		_IAmMaster[i] = false;
-		_HaveTen[i] = false;
-
-		_protectPoints[i] = false;
-		_longe[i] = 0;
-	}
-
 	//COMPUTE THE OTHER THINGS COLOR PER COLOR
 	CARDS_COLOR colors[4] = { DIAMOND, HEART, SPADE, CLUB };
 	Player_ID currentPlayer;
@@ -203,18 +194,6 @@ void AIGameMemory<TypeOfCard>::updateEverythingElse(const Player_ID& firstToPlay
 	for (Uint i = 0; i < 4; i++)
 	{
 		color = Card_Color(colors[i]);
-		Uint iCol = color.ToInt();
-		Uint nbLeft = 8 - _fallenCards.ComputeFallen(color);
-		if (_nbRemaining[iCol] == nbLeft)
-		{
-			currentPlayer = firstToPlay;
-			for (Uint j = 1; j < 4; j++)
-			{
-				currentPlayer.Next();
-				_playerCut.SetCut(currentPlayer, color);
-			}
-		}
-		if (_greatest[iCol] == _heightsMaster[iCol])_IAmMaster[iCol] = true;
 		for (Uint iP = 0; iP < 4; ++iP)
 		{
 			currentPlayer = Player_ID(iP);
@@ -238,28 +217,54 @@ void AIGameMemory<TypeOfCard>::updatePlayerRelativeAttributes()
 		_smallest[iColor] = (iColor == _infos.TrumpColor().ToInt() ? JACK : ACE);
 
 		_longe[iColor] = 0;
+
+		_IAmMaster[iColor] = false;
+		_HaveTen[iColor] = false;
+		_protectPoints[iColor] = false;
+
+		_longe[iColor] = 0;
 	}
+
+	CARDS_COLOR colors[4] = { DIAMOND, HEART, SPADE, CLUB };
 	Card_Color color(_infos.TrumpColor());
 	Card_Height height(UNINTIALIZED);
 	Uint iColor = color.ToInt();
+	Player_ID currentPlayer;
 	_greatest[iColor] = JACK;
 
 	//compute things directly from the hand
-	for (const TypeOfCard pcard : *_pHand)
+	if (_pHand != nullptr)
 	{
-		color = _wrapperCallMethod.callGetColour(pcard);
-		height = _wrapperCallMethod.callGetHeight(pcard);
-		iColor = color.ToInt();
-		_nbRemaining[iColor] += 1;
-		cardsPerColor[iColor].push_back(pcard);
-		if (_wrapperCallMethod.callWin(pcard, _greatest[iColor])) _greatest[iColor] = height;
-		if (!(_wrapperCallMethod.callWin(pcard, _smallest[iColor]))) _smallest[iColor] = height;
-		if (height == (color == _infos.TrumpColor() ? Card_Height(NINE) : Card_Height(TEN))) _HaveTen[iColor] = true;
+		for (const TypeOfCard pcard : *_pHand)
+		{
+			color = _wrapperCallMethod.callGetColour(pcard);
+			height = _wrapperCallMethod.callGetHeight(pcard);
+			iColor = color.ToInt();
+			_nbRemaining[iColor] += 1;
+			//printf("%d,%d\n", iColor, height.ToInt());
+			cardsPerColor[iColor].push_back(pcard);
+			if (_wrapperCallMethod.callWin(pcard, _greatest[iColor])) _greatest[iColor] = height;
+			if (!(_wrapperCallMethod.callWin(pcard, _smallest[iColor]))) _smallest[iColor] = height;
+			if (height == (color == _infos.TrumpColor() ? Card_Height(NINE) : Card_Height(TEN))) _HaveTen[iColor] = true;
+		}
 	}
-
-	//update _longe and protectPoints by going through the hand color per color a second time
-	for (Uint iCol = 0; iCol < 4; iCol++)
+	for (Uint i = 0; i < 4; ++i)
 	{
+		color = Card_Color(colors[i]);
+		Uint iCol = color.ToInt();
+		Uint nbLeft = 8 - _fallenCards.ComputeFallen(color);
+		if (_nbRemaining[iCol] == nbLeft) //I have all the cards in the color
+		{
+			//printf("I am here\n");
+			currentPlayer = _posPlayer;
+			for (Uint j = 1; j < 4; j++) //everyone but me cut
+			{
+				currentPlayer.Next();
+				//_playerCut.SetCut(currentPlayer, color);
+			}
+		}
+		if (_greatest[iCol] == _heightsMaster[iCol])_IAmMaster[iCol] = true;
+		//update _longe and protectPoints by going through the hand color per color a second time
 		computeScoreLongeAndProtectPoint(cardsPerColor[iCol], _longe[iCol], _protectPoints[iCol], _IAmMaster[iCol], _greatest[iCol]);
 	}
 }
@@ -465,7 +470,7 @@ Card_Height AIGameMemory<TypeOfCard>::Smallest(const Card_Color& color) const //
 }
 
 template<class TypeOfCard>
-bool AIGameMemory<TypeOfCard>::CanReceiveCard(const Player_ID& id, const Card_Color& col, const Card_Height& height)
+bool AIGameMemory<TypeOfCard>::CanReceiveCard(const Player_ID& id, const Card_Color& col, const Card_Height& height) const
 {
 	return !callCut(id, col, _playerCut) && canHave(id, col, height);
 }
