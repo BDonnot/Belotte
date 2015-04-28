@@ -159,7 +159,7 @@ Cards* AIPlayMonteCarlo<nbMaxSimul, MemoryPlayer, PlayMC>::Play(const TrickBasic
     {
         if(_players[iPlayer].ID() != trickStatus.ID()) playerStillCardsToReceive.push_back(&_players[iPlayer]);
     }
-    std::list<Cards_Basic> currentCards;
+    std::list<Cards_Basic> currentCards = _unfallenCards;
 
     std::stack<MonteCarloAction> allActions;
     MonteCarloAction currentActions;
@@ -342,12 +342,12 @@ void AIPlayMonteCarlo<nbMaxSimul, MemoryPlayer, PlayMC>::resetGiving(
         _players[id.ToInt()].ReceiveCardsInfo(nbTrick,_unfallenCards,playerMemory);
         id.Next();
     }
-    /*
+    
     for(Uint i = 0; i < 4; ++i)
     {
         printf("player %d : still %d card to be given\n",i,_players[i].NumberCardToReceive());
     }
-    */
+    
 }
 
 template<Uint nbMaxSimul, template<class> class MemoryPlayer, class PlayMC>
@@ -647,6 +647,7 @@ void AIPlayMonteCarlo<nbMaxSimul, MemoryPlayer, PlayMC>::computeNumberOfCardRece
 			res.push_back(card);
 		}
     }
+	printf("\n");
 }
 
 template<Uint nbMaxSimul, template<class> class MemoryPlayer, class PlayMC>
