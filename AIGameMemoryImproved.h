@@ -20,12 +20,19 @@ class MemorizePlayersCards  : public BoolStorage<128>
             Uint iHei = height.ToInt();
             return !getInfo(iPlayer*32 + iColor*8+ iHei);
         }
-        void SetCanHaveCard(const Player_ID& player,const Card_Color& color,const Card_Height& height)
+        void SetCannotHaveCard(const Player_ID& player,const Card_Color& color,const Card_Height& height)
         {
             Uint iPlayer = player.ToInt();
             Uint iColor = color.ToInt();
             Uint iHei = height.ToInt();
             setInformation(iPlayer*32 + iColor*8+ iHei);
+        }
+        void SetCanHaveCard(const Player_ID& player,const Card_Color& color,const Card_Height& height)
+        {
+            Uint iPlayer = player.ToInt();
+            Uint iColor = color.ToInt();
+            Uint iHei = height.ToInt();
+            _information[iPlayer*32 + iColor*8+ iHei] = false;
         }
         void SetFallen(const Cards & card)
         {
@@ -55,13 +62,14 @@ class MemorizePlayersCards  : public BoolStorage<128>
 
 class AIGameMemoryImproved : public AIGameMemory
 {
-    MemorizePlayersCards _canPlayersHaveCard;
+    protected :
+        MemorizePlayersCards _canPlayersHaveCard;
     public:
         AIGameMemoryImproved(const Player_ID& posPlayer,std::list<Cards*>* pHand):AIGameMemory(posPlayer,pHand){}
         virtual ~AIGameMemoryImproved(){}
-        virtual bool SetCanHaveCard(const Player_ID& player,const Card_Color& col, const Card_Height& height)
+        virtual bool SetCannotHaveCard(const Player_ID& player,const Card_Color& col, const Card_Height& height)
         {
-            _canPlayersHaveCard.SetCanHaveCard(player,col,height);
+            _canPlayersHaveCard.SetCannotHaveCard(player,col,height);
             return true;
         }
     protected:
@@ -71,6 +79,9 @@ class AIGameMemoryImproved : public AIGameMemory
             return _canPlayersHaveCard.CanHaveCard(player,col,height);
         }
         void dealWithTrumps(Uint i,const TrickBasic_Memory& trick,const Player_ID& currentPlayer,const Card_Color& trumpColor );
+
+        virtual void initHeritage(){_canPlayersHaveCard.Reset();}
+        virtual bool stillHaveCards(const Player_ID& player,const Card_Color& color) const;
 
     private:
 };

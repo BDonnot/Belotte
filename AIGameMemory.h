@@ -92,25 +92,25 @@ class MemorizeCutsCalls  : public BoolStorage<16> //efficient way to memorize wh
 
 class AIGameMemory
 {
+    //TO DO : template with the type of cards, because it might be good to store std::list<Cards_Basic>*
     protected :
         Basic_Game_Info _infos;
-        Player_ID _posPlayer;
-        std::list<Cards* >* _pHand;
         MemorizeCards _fallenCards; //
-
         MemorizeCutsCalls _playerCut; //
         MemorizeCutsCalls _playerCalls; //
         Uint _nbColorPlayed[4]; //key : color ; number of times each color have been played first
-
         Card_Height _heightsMaster[4]; //key : color, stock the height of the cards master in the color
-
-        Card_Height _greatest[4];  //key : color -> stock the height of the greatest cards I have per color
-        Card_Height _smallest[4];  //key : color -> stock the height of the smallest cards I have per color
         Uint _nbRemaining[4]; //key : color ; number of cards remaining in my hand per color
         Uint _longe[4]; //key : color ; score for the longe (number of cards in the color)
+
+        //Player dependent
+        Card_Height _greatest[4];  //key : color -> stock the height of the greatest cards I have per color
+        Card_Height _smallest[4];  //key : color -> stock the height of the smallest cards I have per color
         bool _IAmMaster[4]; //key : color ; am i the master in the color
         bool _HaveTen[4]; //key : color ; have I the TEN/NINE (at trump) in the color
         bool _protectPoints[4]; //key : color; do I have to protect some important point (TEN, NINE for example) at the color
+        Player_ID _posPlayer;
+        std::list<Cards* >* _pHand;
 
 
     public:
@@ -127,13 +127,16 @@ class AIGameMemory
         Card_Height Master(const Card_Color& color) const;
 
         //bool CanHaveCard(const Player_ID& player,const Card_Color& color, const Card_Height& height) const;
-        virtual bool Cut(const Player_ID& player,const Card_Color& color) const; //see *CallCut for more information
+        bool Cut(const Player_ID& player,const Card_Color& color) const; //see *CallCut for more information
+        bool Call(const Player_ID& player,const Card_Color& color) const;
+
         bool OpponentsCut(const Card_Color& color) const;
         bool TeammateCut(const Card_Color& color) const;
-        bool NextCut(const Card_Color& color) const; //see *CallCut for more information
-        bool Call(const Player_ID& player,const Card_Color& color) const;
         bool OpponentsCall(const Card_Color& color) const;
         bool TeammateCall(const Card_Color& color) const;
+
+
+        bool NextCut(const Card_Color& color) const; //see *CallCut for more information
         bool NextCall(const Card_Color& color) const;//see *CallCut for more information
 
         Uint NbFallen(const Card_Color& color) const; //number of cards fallen in a specific color
@@ -152,13 +155,14 @@ class AIGameMemory
 
         bool CanReceiveCard(const Player_ID& id, const Card_Color& col, const Card_Height& height); //true if it is possible that the player have this card in the hand
 
-        virtual bool SetCanHaveCard(const Player_ID& player,const Card_Color& col, const Card_Height& height) {return false;}
+        virtual bool SetCannotHaveCard(const Player_ID& player,const Card_Color& col, const Card_Height& height) {return false;} //return false because nothing is done
     protected:
         //Card_Height heightUnder(const Card_Height& height,bool color);
         void computeNewHeightMaster(); //also update _playerCut
         void updateEverythingElse(const Player_ID& firstToPlay); //update everything that need to go through the hand of the player.
 
-        bool callCut(const Player_ID& player,const Card_Color& color,const MemorizeCutsCalls& StoreCallCut) const; //dot the 'player' call/cut at the 'color'
+        virtual bool callCut(const Player_ID& player,const Card_Color& color,const MemorizeCutsCalls& StoreCallCut) const; //dot the 'player' call/cut at the 'color'
+        virtual bool stillHaveCards(const Player_ID& player,const Card_Color& color) const {return true;}
         bool opponentsCallCut(const Card_Color& color,const MemorizeCutsCalls& StoreCallCut) const; //do my opponents call/cut at the 'color'
         bool teammateCallCut(const Card_Color& color,const MemorizeCutsCalls& StoreCallCut) const; //do my  teammate call/cut at the 'color'
         bool nextCallCut(const Card_Color& color,const MemorizeCutsCalls& StoreCallCut) const; //do the player who play after me call/cut at the 'color'
@@ -166,6 +170,7 @@ class AIGameMemory
 
         virtual void updateSmarter(const TrickBasic_Memory& trick, const Position_Trick& posTrick){}
         virtual bool canHave(const Player_ID& player,const Card_Color& col, const Card_Height& height) const {return true;}
+        virtual void initHeritage(){}
     private:
 };
 

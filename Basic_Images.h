@@ -47,7 +47,6 @@ class Basic_Images
         virtual void SetPosition(PositionGraphic& pos); //to set the position of the image
         void Display(SDL_Surface* destination); //to display the image on the screen
         const SDL_Surface* Get_Surface() const;
-        //std::array<Uint16,2> GetPosition();
         const PositionGraphic& GetPosition() const;
         std::array<Uint,2> GetSize();
     protected:

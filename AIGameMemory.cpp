@@ -58,6 +58,7 @@ void AIGameMemory::InitEverything()
         _heightsMaster[i] = (col == _infos.TrumpColor() ? JACK : ACE);
     }
     updateEverythingElse(_posPlayer);
+    initHeritage();
 }
 void AIGameMemory::computeNewHeightMaster()
 {
@@ -109,6 +110,7 @@ void AIGameMemory::updateEverythingElse(const Player_ID& firstToPlay)
     }
     //COMPUTE THE OTHER THINGS COLOR PER COLOR
     CARDS_COLOR colors[4] = {DIAMOND,HEART,SPADE,CLUB};
+    Player_ID currentPlayer;
     for(Uint i = 0; i < 4; i++)
     {
         color = Card_Color( colors[i] );
@@ -116,7 +118,7 @@ void AIGameMemory::updateEverythingElse(const Player_ID& firstToPlay)
         Uint nbLeft = 8-_fallenCards.ComputeFallen(color);
         if(_nbRemaining[iCol] == nbLeft)
         {
-            Player_ID currentPlayer(firstToPlay);
+            currentPlayer = firstToPlay;
             for(Uint j= 1; j < 4; j++)
             {
                 currentPlayer.Next();
@@ -125,9 +127,15 @@ void AIGameMemory::updateEverythingElse(const Player_ID& firstToPlay)
         }
         if (_greatest[iCol] == _heightsMaster[iCol] )_IAmMaster[iCol] = true;
         computeScoreLongeAndProtectPoint(_cardsPerColor[iCol],_longe[iCol],_protectPoints[iCol],_IAmMaster[iCol],_greatest[iCol]);
+        for(Uint iP = 0; iP < 4; ++iP)
+        {
+            currentPlayer = Player_ID(iP);
+            if(!stillHaveCards(currentPlayer,color)) _playerCut.SetCut(currentPlayer,color );
+        }
     }
 
 }
+
 void AIGameMemory::computeScoreLongeAndProtectPoint(const std::list<const Cards*>& cardsInTheColor,Uint& scoreLonge, bool& protectPoints,bool iAmMasterColor,const Card_Height& greatest)
 {
     //TO DO : we can perform some optimization here !
@@ -172,21 +180,22 @@ bool AIGameMemory::callCut(const Player_ID& player,const Card_Color& color,const
 {
     return StoreCallCut.Cut(player,color);
 }
+
 bool AIGameMemory::opponentsCallCut(const Card_Color& color,const MemorizeCutsCalls& StoreCallCut) const
 {
     Player_ID opp1(_posPlayer.NextPlayer());
     Player_ID opp2 =  opp1.Teammate();
-    return StoreCallCut.Cut(opp1.ToInt(),color) || StoreCallCut.Cut(opp2.ToInt(),color) ;
+    return callCut(opp1.ToInt(),color,StoreCallCut) || callCut(opp2.ToInt(),color,StoreCallCut) ;
 }
 bool AIGameMemory::teammateCallCut(const Card_Color& color,const MemorizeCutsCalls& StoreCallCut) const
 {
     Player_ID teammate =  _posPlayer.Teammate();
-    return StoreCallCut.Cut(teammate,color);
+    return callCut(teammate,color,StoreCallCut);
 }
 bool AIGameMemory::nextCallCut(const Card_Color& color,const MemorizeCutsCalls& StoreCallCut) const
 {
     Player_ID nextPlayer(_posPlayer.NextPlayer());
-    return StoreCallCut.Cut(nextPlayer,color) ;
+    return callCut(nextPlayer,color,StoreCallCut) ;
 }
 bool AIGameMemory::Cut(const Player_ID& player,const Card_Color& color) const //Do 'player' cut at 'color'
 {
@@ -282,7 +291,7 @@ Card_Height AIGameMemory::Smallest(const Card_Color& color) const //return the s
 }
 bool AIGameMemory::CanReceiveCard(const Player_ID& id, const Card_Color& col, const Card_Height& height)
 {
-    return !_playerCut.Cut(id,col) && canHave(id,col,height);
+    return !callCut(id,col,_playerCut) && canHave(id,col,height);
 }
 /*
 bool AIGameMemory::CanHaveCard(const Player_ID& player,const Card_Color& color, const Card_Height& height) const

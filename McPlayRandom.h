@@ -11,6 +11,36 @@
 
 #include "PlayerMiniMonteCarlo.h"
 
+#include "AIMemPerfectInfo.h"
+
+//TO DO clean bellow, improve the coupling AIGameMemory
+template<class Memory>
+class WrapperMemory
+{
+public :
+    void UpdateMemory(Memory& playerMemory,const std::array<PlayerMiniMonteCarlo<Memory> , 4>& players){}
+    void NextPlayer(Memory& playerMemory,const Player_ID& player){}
+};
+
+
+template<>
+class WrapperMemory<AIMemPerfectInfo>
+{
+    public :
+        void UpdateMemory(AIMemPerfectInfo& playerMemory,const std::array<PlayerMiniMonteCarlo<AIMemPerfectInfo> , 4>& players)
+        {
+            std::array< std::pair<Player_ID,std::list<Cards_Basic> >, 4> allHands;
+            for(Uint i = 0; i < 4; ++i)
+            {
+                allHands[i] = std::pair<Player_ID,std::list<Cards_Basic> >(players[i].ID(),players[i].GetHand());
+            }
+            playerMemory.SetGame(allHands);
+        }
+        void NextPlayer(AIMemPerfectInfo& playerMemory,const Player_ID& player)
+        {
+            playerMemory.SetPlayer(player);
+        }
+};
 /**
 **Force the MonteCarlo Players to play randomly
 **/
@@ -24,6 +54,7 @@ class McPlayRandom
         Random * _rand;
         std::array<Cards,32> _allCards ;
         PlayAI _play;
+        WrapperMemory<Memory> _updateMemory;
     public:
         McPlayRandom():_nbGamePlayed(nbCardToPlay),_play(_number){}
         virtual ~McPlayRandom(){}
@@ -69,6 +100,8 @@ Uint McPlayRandom<Memory,nbCardToPlay,PlayAI>::Play(const std::array<PlayerMiniM
         Memory gameMemory(_number,&hand); //TO DO : update the memory in a proper way :-)
         //TrickStatus trickStatus;
         std::array<PlayerMiniMonteCarlo<Memory> , 4> currentPlayers(players);
+        _updateMemory(currentPlayers);
+
         Cards_Basic tempCard = static_cast<const Cards_Basic&>(*pcard);
         //Cards_Basic tempItCard;
         PlayerMiniMonteCarlo<Memory> * tempPlayer;
@@ -84,6 +117,7 @@ Uint McPlayRandom<Memory,nbCardToPlay,PlayAI>::Play(const std::array<PlayerMiniM
             //printf("I play trick %d\n",currentTrick.TrickNumber());
             if(currentTrick.TrickNumber() ==8 ) break;
             tempPlayer = & currentPlayers[currentTrick.NextPlaying().ToInt()];
+            _updateMemory.NextPlayer(gameMemory,tempPlayer.ID());
             std::list<Cards_Basic > & playableCards = tempPlayer->GetPlayableCard(currentTrick);
 
             //chooseCard(playableCards,tempItCard);

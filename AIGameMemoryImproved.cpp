@@ -45,10 +45,22 @@ void AIGameMemoryImproved::dealWithTrumps(Uint i,const TrickBasic_Memory& trick,
                 Card_Height tempHei2(icolTrump);
                 if(!trick[i]->Win(tempHei2))
                 {
-                    _canPlayersHaveCard.SetCanHaveCard(currentPlayer,trumpColor,tempHei2);
+                    _canPlayersHaveCard.SetCannotHaveCard(currentPlayer,trumpColor,tempHei2);
                 }
 
             }
         }
     }
+}
+
+bool AIGameMemoryImproved::stillHaveCards(const Player_ID& player,const Card_Color& color) const
+{
+    bool res = true;
+    Card_Height tempH;
+    for(Uint iH = 0; iH < 8; ++iH)
+    {
+        tempH = Card_Height(iH);
+        res = res || _canPlayersHaveCard.CanHaveCard(player,color,tempH);
+    }
+    return res;
 }
