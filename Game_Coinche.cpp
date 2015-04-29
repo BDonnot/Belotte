@@ -36,11 +36,11 @@ Game_Coinche::Game_Coinche(SDL_Surface* screen,Uint16 screenWidth, Uint16 screen
 #if PLAY_HUMAN > 0
         _players[i] = static_cast<Player*>(new Player_AI<AIGameMemoryImproved,AITakeBasic,AIPlayMonteCarlo<AIGameMemoryImproved,McPlayRandom<AIGameMemoryImproved,30,AIPlayRandom<AIGameMemory,Cards_Basic> > > >(Player_ID(posPlayer[i]),screenWidth,screenHeight,_event,&_backSide,_pScreen));
 #else
-		//if (i % 2 == 0) _players[i] = static_cast<Player*>(new Player_AI<AIGameMemoryImproved, AITakeBasic, AIPlayMonteCarlo<1000,AIGameMemoryImproved, McPlayRandom<AIGameMemoryImproved, 1, AIPlayRandom<Cards_Basic, AIGameMemoryImproved> > > >(Player_ID(posPlayer[i]), screenWidth, screenHeight, _event, &_backSide, _pScreen));
-		//else _players[i] = static_cast<Player*>(new Player_AI<AIGameMemoryImproved, AITakeBasic, AIPlayMonteCarlo<100,AIGameMemoryImproved, McPlayRandom<AIGameMemoryImproved, 30, AIPlayRandom<Cards_Basic, AIGameMemoryImproved> > > >(Player_ID(posPlayer[i]), screenWidth, screenHeight, _event, &_backSide, _pScreen));
+		if (i % 2 == 0) _players[i] = static_cast<Player*>(new Player_AI<AIGameMemoryImproved, AITakeBasic, AIPlayMonteCarlo<3000,AIGameMemoryImproved, McPlayRandom<AIMemPerfectInfo, 1, AIPlayScores<Cards_Basic, AIGameMemoryImproved> > > >(Player_ID(posPlayer[i]), screenWidth, screenHeight, _event, &_backSide, _pScreen));
+		else _players[i] = static_cast<Player*>(new Player_AI<AIGameMemoryImproved, AITakeBasic, AIPlayMonteCarlo<100,AIGameMemoryImproved, McPlayRandom<AIGameMemoryImproved, 30, AIPlayRandom<Cards_Basic, AIGameMemoryImproved> > > >(Player_ID(posPlayer[i]), screenWidth, screenHeight, _event, &_backSide, _pScreen));
 
-		if (i % 2 == 0) _players[i] = static_cast<Player*>(new Player_AI<AIGameMemoryImproved, AITakeBasic, AIPlayMonteCarlo<100,AIGameMemoryImproved, McPlayRandom<AIGameMemoryImproved, 30, AIPlayRandom<Cards_Basic, AIGameMemoryImproved> > > >(Player_ID(posPlayer[i]), screenWidth, screenHeight, _event, &_backSide, _pScreen));
-		else _players[i] = static_cast<Player*>(new Player_AI<AIGameMemoryImproved, AITakeBasic, AIPlayScores<Cards*, AIGameMemoryImproved> >(Player_ID(posPlayer[i]), screenWidth, screenHeight, _event, &_backSide, _pScreen));
+		//if (i % 2 == 0) _players[i] = static_cast<Player*>(new Player_AI<AIGameMemoryImproved, AITakeBasic, AIPlayMonteCarlo<100,AIGameMemoryImproved, McPlayRandom<AIGameMemoryImproved, 30, AIPlayRandom<Cards_Basic, AIGameMemoryImproved> > > >(Player_ID(posPlayer[i]), screenWidth, screenHeight, _event, &_backSide, _pScreen));
+		//else _players[i] = static_cast<Player*>(new Player_AI<AIGameMemoryImproved, AITakeBasic, AIPlayScores<Cards*, AIGameMemoryImproved> >(Player_ID(posPlayer[i]), screenWidth, screenHeight, _event, &_backSide, _pScreen));
 
 		//if (i % 2 == 0) _players[i] = static_cast<Player*>(new Player_AI<AIGameMemoryImproved, AITakeBasic, AIPlayScores<Cards*, AIGameMemoryImproved> >(Player_ID(posPlayer[i]), screenWidth, screenHeight, _event, &_backSide, _pScreen));
 		//else _players[i] = static_cast<Player*>(new Player_AI<AIGameMemoryImproved, AITakeBasic, AIPlayRandom<Cards*,AIGameMemoryImproved> >(Player_ID(posPlayer[i]), screenWidth, screenHeight, _event, &_backSide, _pScreen));
@@ -116,6 +116,7 @@ void Game_Coinche::playGame(bool& keep_playing)
     switch (_currentPhase)
     {
     case BEGINNING :
+#if PLAY_HUMAN > 0
         switch (_begin.Display(_pScreen))
         {
             case QUIT :
@@ -128,13 +129,21 @@ void Game_Coinche::playGame(bool& keep_playing)
             default :
                 return;
         }
+#else
+    _currentPhase = GIVING;
+#endif
         return;
     case SELECT_NAMES : case GIVING :
+#if PLAY_HUMAN > 0
         if(_deck.Click(_currentPhase))
         {
             _deck.Reset();
             _currentPhase = PREBET;
         }
+#else
+         _deck.Reset();
+        _currentPhase = PREBET;
+#endif
         return;
     case PREBET :
         _deck.GiveCards(_players);
@@ -200,7 +209,7 @@ void Game_Coinche::playGame(bool& keep_playing)
 			IntIntPair score = _trick.CurrentScores();
 			printf("game %d, score 0 : %d, score 1 : %d\n", _nbGame, score.first, score.second);
             _nbGame++;
-            if(_nbGame > 3000)
+            if(_nbGame >= NBGAMEMAX)
                 keep_playing = false;
             _currentPhase = SCORES;
         }
@@ -245,7 +254,9 @@ void Game_Coinche::Play()
         if (!keep_playing)
         {
             if(error) _error.Display(_pScreen);
+#if PLAY_HUMAN > 0
             else _end.Display(_pScreen);
+#endif
         }
         endLoop = SDL_GetTicks();
 #if PLAY_HUMAN > 0

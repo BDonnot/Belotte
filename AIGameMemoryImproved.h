@@ -45,13 +45,16 @@ void AIGameMemoryImproved<TypeOfCard>::updateSmarter(const TrickBasic_Memory& tr
 	Card_Color tempCol;
 	Card_Height tempHeig;
 	Cards_Basic tempCard;
+	_printf("\nI evaluate the trick for player %d\n",this->_posPlayer.ToInt());
 	for (Uint i = 0; i < 4; ++i)
 	{
 		tempCol = trick[i]->GetColour();
 		tempHeig = trick[i]->GetHeight();
+		_printf("player %d -> [c%d,h%d]\n",currentPlayer.ToInt(),tempCol.ToInt(),tempHeig.ToInt());
 		this->_canPlayersHaveCard.SetFallen(*trick[i]);
 		if (tempCol == trumpColor)
 		{
+            _printf("I deal with trumps with the %d th player\n",i);
 			dealWithTrumps(i, trick, currentPlayer, trumpColor);
 		}
 		if (tempCol != colorAsked)
@@ -60,6 +63,7 @@ void AIGameMemoryImproved<TypeOfCard>::updateSmarter(const TrickBasic_Memory& tr
 		}
 		currentPlayer.Next();
 	}
+	_printf("I am done for this player \n");
 
 }
 
@@ -75,7 +79,7 @@ void AIGameMemoryImproved<TypeOfCard>::dealWithTrumps(Uint iPlayer,
 	Card_Height tempHei;
 	Card_Height maxHTrumpPlay(SEVEN); //the height of the greatest trump played before currentPlayer played
 	_printf("Here we are :\n");
-	for (Uint j = 0; j< iPlayer-1; ++j)
+	for (Uint j = 0; j< iPlayer; ++j)
 	{
 		tempCol = trick[j]->GetColour();
 		tempHei = trick[j]->GetHeight();
@@ -97,7 +101,7 @@ void AIGameMemoryImproved<TypeOfCard>::dealWithTrumps(Uint iPlayer,
             tempHei = Card_Height(iHTrump);
             if (!maxTrump.Win(tempHei))
             {
-                _printf("player cannot have [c%d,h%d]\n",trumpColor.ToInt(),tempHei.ToInt());
+                _printf("player %d cannot have [c%d,h%d]\n",currentPlayer.ToInt(),trumpColor.ToInt(),tempHei.ToInt());
                 _canPlayersHaveCard.SetCannotHaveCard(currentPlayer, trumpColor, tempHei);
             }
         }

@@ -60,9 +60,7 @@ int main( int argc, char* args[] )
 
 //    ofstream output("datas/games.blt", ios::app);
     Basic_Game_Info _info;
-    //srand((time(NULL)));
-    srand(1);
-    for (int i = 0; i < 100; i++) {std::rand();}
+
     SDL_Init( SDL_INIT_EVERYTHING );
     SDL_Surface* _screen = nullptr;
     SDL_EnableUNICODE( SDL_ENABLE );
@@ -72,8 +70,23 @@ int main( int argc, char* args[] )
     TTF_Init();
     SDL_WM_SetCaption("Belote 1.1", NULL);
 
-    Game_Coinche game(_screen,SCREEN_WIDTH,SCREEN_HEIGHT);
-    game.Play();
+#if TEST_PLAY_GAME > 0
+    for(Uint i = 0; i < 10000; ++i)
+    {
+        printf("\n\n\nHERE %d\n",i);
+        srand(i); //2,7,13
+        //srand((time(NULL)));
+        for (int i = 0; i < 100; i++) {std::rand();}
+        Game_Coinche game(_screen,SCREEN_WIDTH,SCREEN_HEIGHT);
+        game.Play();
+    }
+#else
+        srand(2); //2,7,13
+        //srand((time(NULL)));
+        for (int i = 0; i < 100; i++) {std::rand();}
+        Game_Coinche game(_screen,SCREEN_WIDTH,SCREEN_HEIGHT);
+        game.Play();
+#endif // TEST_PLAY_GAME
 
     //Images_Text _text_on("fonts/MLSGY.ttf",24,(SDL_Color) {255,255,255}, "tuut");
 

@@ -10,7 +10,8 @@
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 768
 #define MINBET 79 //we force the bid to be strictly above 79
-
+#define NBGAMEMAX  3000
+#define TEST_PLAY_GAME 0
 
 #include<string>
 #include<ostream>
