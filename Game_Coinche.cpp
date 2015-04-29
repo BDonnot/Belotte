@@ -200,6 +200,8 @@ void Game_Coinche::playGame(bool& keep_playing)
 			IntIntPair score = _trick.CurrentScores();
 			printf("game %d, score 0 : %d, score 1 : %d\n", _nbGame, score.first, score.second);
             _nbGame++;
+            if(_nbGame > 3000)
+                keep_playing = false;
             _currentPhase = SCORES;
         }
         return;
