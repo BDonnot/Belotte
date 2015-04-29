@@ -66,11 +66,11 @@ class AIPlayScores
 
 template<class TypeOfCard, template<class> class Memory >
 TypeOfCard AIPlayScores<TypeOfCard,Memory>::Play(const TrickBasic_Memory& trick
-												,typename std::list<TypeOfCard >& playbleCards
+												,std::list<TypeOfCard >& playbleCards
 												,const std::list<TypeOfCard>& hand
 												,Random& rand
 												,const TrickStatus& trickStatus
-												,const typename Memory<TypeOfCard>& playerMemory)
+												,const Memory<TypeOfCard>& playerMemory)
 {
     auto res = playbleCards.front();
     int MaxScore = -10000,currentScore;

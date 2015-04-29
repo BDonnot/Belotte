@@ -40,7 +40,7 @@ class AIGameMemory
         bool _HaveTen[4]; //key : color ; have I the TEN/NINE (at trump) in the color
         bool _protectPoints[4]; //key : color; do I have to protect some important point (TEN, NINE for example) at the color
         Player_ID _posPlayer;
-		const std::list<TypeOfCard>* _pHand;
+		std::list<TypeOfCard>* _pHand;
 
 		WrapperMethod<TypeOfCard, std::is_pointer<TypeOfCard>::value> _wrapperCallMethod;
 
@@ -98,7 +98,7 @@ class AIGameMemory
         bool opponentsCallCut(const Card_Color& color,const MemorizeCutsCalls& StoreCallCut) const; //do my opponents call/cut at the 'color'
         bool teammateCallCut(const Card_Color& color,const MemorizeCutsCalls& StoreCallCut) const; //do my  teammate call/cut at the 'color'
         bool nextCallCut(const Card_Color& color,const MemorizeCutsCalls& StoreCallCut) const; //do the player who play after me call/cut at the 'color'
-		void computeScoreLongeAndProtectPoint(const std::list<const TypeOfCard>& cardsInTheColor, Uint& scoreLonge, bool& protectPoints, bool iAmMasterColor, const Card_Height& greatest); //always per color
+		void computeScoreLongeAndProtectPoint(const std::list<TypeOfCard>& cardsInTheColor, Uint& scoreLonge, bool& protectPoints, bool iAmMasterColor, const Card_Height& greatest); //always per color
 
         virtual void updateSmarter(const TrickBasic_Memory& trick, const Position_Trick& posTrick){}
         virtual bool canHave(const Player_ID& player,const Card_Color& col, const Card_Height& height) const {return true;}
@@ -209,7 +209,7 @@ template<class TypeOfCard>
 void AIGameMemory<TypeOfCard>::updatePlayerRelativeAttributes()
 {
 	//init the values
-	std::array< std::list<const TypeOfCard>, 4 > cardsPerColor;
+	std::array< std::list<TypeOfCard>, 4 > cardsPerColor;
 	for (Uint iColor = 0; iColor < 4; iColor++)
 	{
 		_nbRemaining[iColor] = 0;
@@ -235,7 +235,7 @@ void AIGameMemory<TypeOfCard>::updatePlayerRelativeAttributes()
 	//compute things directly from the hand
 	if (_pHand != nullptr)
 	{
-		for (const TypeOfCard pcard : *_pHand)
+		for (TypeOfCard& pcard : *_pHand)
 		{
 			color = _wrapperCallMethod.callGetColour(pcard);
 			height = _wrapperCallMethod.callGetHeight(pcard);
@@ -269,7 +269,7 @@ void AIGameMemory<TypeOfCard>::updatePlayerRelativeAttributes()
 	}
 }
 template<class TypeOfCard>
-void AIGameMemory<TypeOfCard>::computeScoreLongeAndProtectPoint(const std::list<const TypeOfCard>& cardsInTheColor, Uint& scoreLonge, bool& protectPoints, bool iAmMasterColor, const Card_Height& greatest)
+void AIGameMemory<TypeOfCard>::computeScoreLongeAndProtectPoint(const std::list<TypeOfCard>& cardsInTheColor, Uint& scoreLonge, bool& protectPoints, bool iAmMasterColor, const Card_Height& greatest)
 {
 	//TO DO : we can perform some optimizations here !
 	bool isTrump = false;

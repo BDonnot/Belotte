@@ -46,9 +46,9 @@ class PlayerMiniMonteCarlo
         bool CanReceiveAnotherCard() const;
         const Player_ID& ID() const {return _number;}
         const Uint NumberCardToReceive() const {return _nbCardToReceive;}
-        const Uint CardInHand() const {return _hand.size();}
-        const std::list<Cards_Basic>& GetHand() const {return _hand;}
-        std::list< Cards_Basic>& GetPlayableCard(const TrickBasic_Memory& trick)
+        const Uint CardInHand() {return _hand.size();}
+        std::list<Cards_Basic> & GetHand() {return _hand;}
+        std::list< Cards_Basic> & GetPlayableCard(const TrickBasic_Memory& trick)
         {
 			updatePlayableCard(trick);
             return _playableCards;

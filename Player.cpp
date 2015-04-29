@@ -143,8 +143,6 @@ void Player::UpdateEndTrick(const TrickBasic_Memory& trick,const Position_Trick&
 
 void Player::updatePlayebleCards(const TrickBasic_Memory& trick_in_progress)
 {
-    //_memory.TellTrick(trick_in_progress,_basic_info.FirstPlayer());
-    auto itEnd = _hand.end();
     if (trick_in_progress.NumberCardsPlayed() == 0) //if we are the first to play, we can play everything
     {
         for(Cards* pcard : _hand)

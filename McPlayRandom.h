@@ -26,7 +26,7 @@ template<>
 class WrapperMemory<AIMemPerfectInfo >
 {
     public :
-		void InitMemory(AIMemPerfectInfo<Cards_Basic>& playerMemory, const std::array<PlayerMiniMonteCarlo, 4>& players)
+		void InitMemory(AIMemPerfectInfo<Cards_Basic>& playerMemory, std::array<PlayerMiniMonteCarlo, 4>& players)
         {
             std::array< std::pair<Player_ID,std::list<Cards_Basic> >, 4> allHands;
             for(Uint i = 0; i < 4; ++i)
@@ -35,9 +35,9 @@ class WrapperMemory<AIMemPerfectInfo >
             }
             playerMemory.SetGame(allHands);
         }
-		void NextPlayer(AIMemPerfectInfo<Cards_Basic>& playerMemory, const PlayerMiniMonteCarlo & player)
+		void NextPlayer(AIMemPerfectInfo<Cards_Basic>& playerMemory, PlayerMiniMonteCarlo & player)
         {
-            playerMemory.SetPlayer(player.ID(),&player.GetHand());
+            playerMemory.SetPlayer(player.ID(),player.GetHand());
         }
 };
 

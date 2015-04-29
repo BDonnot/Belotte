@@ -12,7 +12,7 @@ class AIMemPerfectInfo : public AIGameMemoryImproved<TypeOfCard>
     public:
 		AIMemPerfectInfo() :AIGameMemoryImproved<TypeOfCard>(Player_ID(GHOST), nullptr){}
 		virtual ~AIMemPerfectInfo(){}
-		void SetPlayer(const Player_ID& player, const std::list<TypeOfCard> * hand);
+		void SetPlayer(const Player_ID& player, std::list<TypeOfCard>& hand);
 		void SetGame(const std::array< std::pair<Player_ID, std::list<TypeOfCard> >, 4 >& allHands);
 
         //TO DO : deals with the player dependant methods
@@ -38,7 +38,7 @@ void AIMemPerfectInfo<TypeOfCard>::SetGame(const std::array< std::pair<Player_ID
 			for (Uint iH = 0; iH < 8; ++iH)
 			{
 				tempH = Card_Height(iH);
-				_canPlayersHaveCard.SetCannotHaveCard(tempP, tempC, tempH);
+				this->_canPlayersHaveCard.SetCannotHaveCard(tempP, tempC, tempH);
 			}
 		}
 	}
@@ -49,17 +49,17 @@ void AIMemPerfectInfo<TypeOfCard>::SetGame(const std::array< std::pair<Player_ID
 		tempP = tempPair.first;
 		for (const Cards_Basic& pcard : tempPair.second)
 		{
-			_canPlayersHaveCard.SetCanHaveCard(tempP, pcard.GetColour(), pcard.GetHeight());
+			this->_canPlayersHaveCard.SetCanHaveCard(tempP, pcard.GetColour(), pcard.GetHeight());
 		}
 	}
 }
 
 template<class TypeOfCard>
-void AIMemPerfectInfo<TypeOfCard>::SetPlayer(const Player_ID& player, const std::list<TypeOfCard> * hand)
+void AIMemPerfectInfo<TypeOfCard>::SetPlayer(const Player_ID& player, std::list<TypeOfCard>& hand)
 {
-	_posPlayer = player;
-	_pHand = hand;
+	this->_posPlayer = player;
+	this->_pHand = &hand;
 	//COMPUTE THE THINGS RELATIVE TO THE PLAYER (DEPENDENT OF ITS HAND)
-	updatePlayerRelativeAttributes();
+	this->updatePlayerRelativeAttributes();
 }
 #endif // AIMEMPERFECTINFO_H

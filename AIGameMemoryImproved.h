@@ -11,7 +11,7 @@ class AIGameMemoryImproved : public AIGameMemory<TypeOfCard>
         MemorizePlayersCards _canPlayersHaveCard;
     public:
 		AIGameMemoryImproved() :AIGameMemory<TypeOfCard>(Player_ID(GHOST), nullptr){}
-		AIGameMemoryImproved(const Player_ID& posPlayer, std::list<TypeOfCard>* pHand) : AIGameMemory(posPlayer, pHand){}
+		AIGameMemoryImproved(const Player_ID& posPlayer, std::list<TypeOfCard>* pHand) : AIGameMemory<TypeOfCard>(posPlayer, pHand){}
         virtual ~AIGameMemoryImproved(){}
         virtual bool SetCannotHaveCard(const Player_ID& player,const Card_Color& col, const Card_Height& height)
         {
@@ -36,8 +36,8 @@ template<class TypeOfCard>
 void AIGameMemoryImproved<TypeOfCard>::updateSmarter(const TrickBasic_Memory& trick, const Position_Trick& posTrick)
 {
 	Card_Color colorAsked = trick.ColorAsked();
-	Card_Color trumpColor = _infos.TrumpColor();
-	Player_ID currentPlayer = _infos.FirstToPlay(posTrick, _posPlayer); //TO DO : move trick basic memory
+	Card_Color trumpColor = this->_infos.TrumpColor();
+	Player_ID currentPlayer = this->_infos.FirstToPlay(posTrick, this->_posPlayer); //TO DO : move trick basic memory
 	Card_Color tempCol;
 	Card_Height tempHeig;
 	Cards_Basic tempCard;
@@ -45,14 +45,14 @@ void AIGameMemoryImproved<TypeOfCard>::updateSmarter(const TrickBasic_Memory& tr
 	{
 		tempCol = trick[i]->GetColour();
 		tempHeig = trick[i]->GetHeight();
-		_canPlayersHaveCard.SetFallen(*trick[i]);
+		this->_canPlayersHaveCard.SetFallen(*trick[i]);
 		if (tempCol == trumpColor)
 		{
 			dealWithTrumps(i, trick, currentPlayer, trumpColor);
 		}
 		if (tempCol != colorAsked)
 		{
-			_canPlayersHaveCard.SetCutColor(currentPlayer, colorAsked);
+			this->_canPlayersHaveCard.SetCutColor(currentPlayer, colorAsked);
 		}
 		currentPlayer.Next();
 	}
@@ -60,31 +60,41 @@ void AIGameMemoryImproved<TypeOfCard>::updateSmarter(const TrickBasic_Memory& tr
 }
 
 template<class TypeOfCard>
-void AIGameMemoryImproved<TypeOfCard>::dealWithTrumps(Uint i, const TrickBasic_Memory& trick, const Player_ID& currentPlayer, const Card_Color& trumpColor)
+void AIGameMemoryImproved<TypeOfCard>::dealWithTrumps(Uint iPlayer,
+                                                      const TrickBasic_Memory& trick,
+                                                      const Player_ID& currentPlayer,
+                                                      const Card_Color& trumpColor)
 {
+    if(iPlayer == 0) return;
+
 	Card_Color tempCol;
 	Card_Height tempHei;
-	for (Uint j = 0; j < i; ++j)
+	Card_Height maxHTrumpPlay(SEVEN); //the height of the greatest trump played before currentPlayer played
+	for (Uint j = 0; j+1 < iPlayer; ++j)
 	{
 		tempCol = trick[j]->GetColour();
 		tempHei = trick[j]->GetHeight();
-		if (tempCol == trumpColor && trick[i]->Win(tempHei))
+		if (tempCol == trumpColor && trick[j]->Win(maxHTrumpPlay))
 		{
-			/**
-			**If the player have not go up at trump
-			**it is because he has not higher !
-			**/
-			for (Uint icolTrump = 0; icolTrump < 8; ++icolTrump)
-			{
-				Card_Height tempHei2(icolTrump);
-				if (!trick[i]->Win(tempHei2))
-				{
-					_canPlayersHaveCard.SetCannotHaveCard(currentPlayer, trumpColor, tempHei2);
-				}
-
-			}
+		    maxHTrumpPlay = tempHei;
 		}
 	}
+    /**
+    **If the player have not go up at trump
+    **it is because he has not higher !
+    **/
+    if (!trick[iPlayer]->Win(maxHTrumpPlay))
+    {
+        Cards_Basic maxTrump(maxHTrumpPlay,trumpColor);
+        for (Uint icolTrump = 0; icolTrump < 8; ++icolTrump)
+        {
+            tempHei = Card_Height(icolTrump);
+            if (!maxTrump.Win(tempHei))
+            {
+                _canPlayersHaveCard.SetCannotHaveCard(currentPlayer, trumpColor, tempHei);
+            }
+        }
+    }
 }
 
 template<class TypeOfCard>
