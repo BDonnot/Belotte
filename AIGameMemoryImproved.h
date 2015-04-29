@@ -4,10 +4,14 @@
 #include "Definitions.h"
 #include "AIGameMemory.h"
 
+#include "DebugwithPrint.h"
+#define PRINT_AIGAMEMEMOIMPROVE 0
+
 template<class TypeOfCard>
 class AIGameMemoryImproved : public AIGameMemory<TypeOfCard>
 {
     protected :
+        WrapperPrint<PRINT_AIGAMEMEMOIMPROVE> _printf;
         MemorizePlayersCards _canPlayersHaveCard;
     public:
 		AIGameMemoryImproved() :AIGameMemory<TypeOfCard>(Player_ID(GHOST), nullptr){}
@@ -26,7 +30,7 @@ class AIGameMemoryImproved : public AIGameMemory<TypeOfCard>
         }
         void dealWithTrumps(Uint i,const TrickBasic_Memory& trick,const Player_ID& currentPlayer,const Card_Color& trumpColor );
 
-        virtual void initHeritage(){_canPlayersHaveCard.Reset();}
+        virtual void initHeritage(){ _canPlayersHaveCard.Reset(); } //printf("right reset\n");}
         virtual bool stillHaveCards(const Player_ID& player,const Card_Color& color) const;
 
     private:
@@ -70,10 +74,12 @@ void AIGameMemoryImproved<TypeOfCard>::dealWithTrumps(Uint iPlayer,
 	Card_Color tempCol;
 	Card_Height tempHei;
 	Card_Height maxHTrumpPlay(SEVEN); //the height of the greatest trump played before currentPlayer played
-	for (Uint j = 0; j+1 < iPlayer; ++j)
+	_printf("Here we are :\n");
+	for (Uint j = 0; j< iPlayer-1; ++j)
 	{
 		tempCol = trick[j]->GetColour();
 		tempHei = trick[j]->GetHeight();
+		_printf("cards played [c%d,h%d]\n",tempCol.ToInt(),tempHei.ToInt());
 		if (tempCol == trumpColor && trick[j]->Win(maxHTrumpPlay))
 		{
 		    maxHTrumpPlay = tempHei;
@@ -83,14 +89,15 @@ void AIGameMemoryImproved<TypeOfCard>::dealWithTrumps(Uint iPlayer,
     **If the player have not go up at trump
     **it is because he has not higher !
     **/
-    if (!trick[iPlayer]->Win(maxHTrumpPlay))
+    if (!trick[iPlayer]->Win(maxHTrumpPlay) && trick[iPlayer]->GetHeight() != maxHTrumpPlay)
     {
         Cards_Basic maxTrump(maxHTrumpPlay,trumpColor);
-        for (Uint icolTrump = 0; icolTrump < 8; ++icolTrump)
+        for (Uint iHTrump = 0; iHTrump < 8; ++iHTrump)
         {
-            tempHei = Card_Height(icolTrump);
+            tempHei = Card_Height(iHTrump);
             if (!maxTrump.Win(tempHei))
             {
+                _printf("player cannot have [c%d,h%d]\n",trumpColor.ToInt(),tempHei.ToInt());
                 _canPlayersHaveCard.SetCannotHaveCard(currentPlayer, trumpColor, tempHei);
             }
         }

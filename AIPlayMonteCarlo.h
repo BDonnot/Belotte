@@ -16,7 +16,8 @@
 #include "BasicMonteCarloAction.h"
 #include "MonteCarloAction.h"
 
-#define PRINT 0
+#include "DebugwithPrint.h"
+#define PRINT_AIPLAYMC 0
 //#define NB_MAX_SIMUL_MONTECARLO 100
 /**
 idee : on simule les cartes possibles des autres joueurs par Monte Carlo
@@ -28,24 +29,6 @@ on renvoie la carte qui nous parait la mieux : a definir ce qu'on entend par mie
 ca serait bien de faire un thread la dessus... pour que l'ordi (interface graphique) ne freeze pas pendant que l'ordi
 reflechi...
 **/
-template<int Print>
-class WrapperPrint
-{
-    public :
-    void operator()( const char * format, ... ){}
-};
-template<>
-class WrapperPrint<1>
-{
-    public :
-    void operator()( const char * format, ... )
-    {
-        va_list argptr;
-        va_start(argptr, format);
-        vfprintf(stderr, format, argptr);
-        va_end(argptr);
-    }
-};
 
 template<Uint nbMaxSimul, template<class> class MemoryPlayer, class PlayMC>
 class AIPlayMonteCarlo
@@ -58,7 +41,7 @@ class AIPlayMonteCarlo
         const Player_ID _number;
         PlayMC _play;
         Uint _cardsToPlay;
-        WrapperPrint<PRINT> _printf;
+        WrapperPrint<PRINT_AIPLAYMC> _printf;
         //const _nbMaxSimul;
     public :
         //AIPlayMonteCarlo():_number(GHOST){}

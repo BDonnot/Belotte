@@ -50,7 +50,7 @@ class AIGameMemory
             _posPlayer(posPlayer),
             _pHand(pHand)
             {
-                InitEverything();
+                //InitEverything();
             }
 		virtual ~AIGameMemory(){}
         const Player_ID& ID() {return _posPlayer;}
@@ -102,7 +102,7 @@ class AIGameMemory
 
         virtual void updateSmarter(const TrickBasic_Memory& trick, const Position_Trick& posTrick){}
         virtual bool canHave(const Player_ID& player,const Card_Color& col, const Card_Height& height) const {return true;}
-        virtual void initHeritage(){}
+        virtual void initHeritage(){}//printf("wrong reset\n");}
 		void updatePlayerRelativeAttributes();
     private:
 };
@@ -163,8 +163,8 @@ void AIGameMemory<TypeOfCard>::InitEverything()
 		Card_Color col(i);
 		_heightsMaster[i] = (col == _infos.TrumpColor() ? JACK : ACE);
 	}
-	updateEverythingElse();
-	initHeritage();
+	this->updateEverythingElse();
+	this->initHeritage();
 }
 
 template<class TypeOfCard>

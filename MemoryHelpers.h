@@ -105,6 +105,7 @@ public:
 		Uint iColor = color.ToInt();
 		Uint iHei = height.ToInt();
 		_information[iPlayer * 32 + iColor * 8 + iHei] = false;
+		//setInformation(iPlayer * 32 + iColor * 8 + iHei);
 	}
 	void SetFallen(const Cards & card)
 	{
