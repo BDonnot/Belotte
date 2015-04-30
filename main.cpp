@@ -81,7 +81,7 @@ int main( int argc, char* args[] )
         game.Play();
     }
 #else
-        srand(2); //2,7,13
+        srand(143); //2,7,13
         //srand((time(NULL)));
         for (int i = 0; i < 100; i++) {std::rand();}
         Game_Coinche game(_screen,SCREEN_WIDTH,SCREEN_HEIGHT);
