@@ -65,6 +65,15 @@ bool Trick_Basic::Play() // TO DO code the same way as Bidding.cpp
     //TO DO c'est moche !
     if (_cardsPlayed == 4 && _trickFinished) //the trick is over
     {
+        _printf("The trick is over\n");
+        _printf("Player have played : ");
+        Player_ID tempP = _to_play;
+        for(Uint i = 0; i < 4; ++i)
+        {
+            _printf("%d -> [c:%d;h:%d] |",tempP.ToInt(),_currentTrick[i]->GetColour().ToInt(),_currentTrick[i]->GetHeight().ToInt());
+            tempP.Next();
+        }
+        _printf("\n");
         trickOver();
         terminatecurrentTrick(i);
         return true;

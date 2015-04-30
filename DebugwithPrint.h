@@ -1,6 +1,8 @@
 #ifndef DEBUGWITHPRINT_H_INCLUDED
 #define DEBUGWITHPRINT_H_INCLUDED
 
+#include <stdarg.h>
+
 template<int Print>
 class WrapperPrint
 {

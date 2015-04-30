@@ -6,11 +6,14 @@
 
 #include "Basic_Game_Info.h"
 #include "TrickBasic_Memory.h"
-//#include "Cards_Basic.h"
-#include "Cards.h" // TO DO : graphics here : to remove
-#include "Player.h" // TO DO : graphics here : to remove
-#include "Score_Team.h" // TO DO : graphics here : to remove
-#include "Cards_Deck.h" // TO DO : graphics here : to remove
+
+#include "Cards.h"
+#include "Player.h"
+#include "Score_Team.h"
+#include "Cards_Deck.h"
+
+#include "DebugwithPrint.h"
+#define TRICKBASIC_DEBUG 1
 
 class Trick_Basic : public TrickBasic_Memory
 {
@@ -22,6 +25,7 @@ class Trick_Basic : public TrickBasic_Memory
         std::array<Cards*,4> _previousTrick;
         Uint _cardsPlayedThisTurn;
         Cards_Deck* _pDeck;
+        WrapperPrint<TRICKBASIC_DEBUG> _printf;
 
     public:
         Trick_Basic(){}
@@ -33,13 +37,11 @@ class Trick_Basic : public TrickBasic_Memory
 
         void WinnerTakeCards();
 
-        //Uint TrickNumber() const {return _trickMemory.TrickNumber(); }
         std::string GetString() const;
     protected:
-        void terminatecurrentTrick(Uint first); //compute the score
+        void terminatecurrentTrick(Uint first); //compute also the scores
         Position_Trick whoWinTrick();
-        //virtual bool trickFinished(){ return false;}
-        //virtual void animateIfGraphic(Cards_Basic* pcard, Uint i){}
+
         virtual void animateIfGraphic(Cards* pcard, Uint i){}
         virtual void updateBasicGameInfo(){_infos.SetScores(_to_play,_scores);}
     private:

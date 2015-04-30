@@ -1,6 +1,7 @@
 #ifndef AIMEMPERFECTINFO_H
 #define AIMEMPERFECTINFO_H
 
+#define AIMEMPERFECTINFO 0
 #include <array>
 
 #include "Definitions.h"
@@ -9,6 +10,8 @@
 template<class TypeOfCard>
 class AIMemPerfectInfo : public AIGameMemoryImproved<TypeOfCard>
 {
+    protected :
+        WrapperPrint<AIMEMPERFECTINFO> _printf;
     public:
 		AIMemPerfectInfo() :AIGameMemoryImproved<TypeOfCard>(Player_ID(GHOST), nullptr){}
 		virtual ~AIMemPerfectInfo(){}
@@ -28,6 +31,7 @@ void AIMemPerfectInfo<TypeOfCard>::SetGame(const std::array< std::pair<Player_ID
 	Player_ID tempP;
 	Card_Color tempC;
 	Card_Height tempH;
+	_printf("I set the game of all players\n");
 	//tell everyone that they cannot have this cards, for each cards
 	for (Uint iPlayer = 0; iPlayer < 4; ++iPlayer)
 	{
@@ -47,10 +51,13 @@ void AIMemPerfectInfo<TypeOfCard>::SetGame(const std::array< std::pair<Player_ID
 	{
 		const std::pair<Player_ID, std::list<TypeOfCard> > & tempPair = allHands[iPair];
 		tempP = tempPair.first;
+		_printf("The hand for player %d is :",tempP.ToInt());
 		for (const Cards_Basic& pcard : tempPair.second)
 		{
+            _printf("[c:%d;h:%d] ; ",pcard.GetHeight().ToInt(),pcard.GetColour().ToInt());
 			this->_canPlayersHaveCard.SetCanHaveCard(tempP, pcard.GetColour(), pcard.GetHeight());
 		}
+		_printf("\n");
 	}
 }
 
@@ -59,6 +66,7 @@ void AIMemPerfectInfo<TypeOfCard>::SetPlayer(const Player_ID& player, std::list<
 {
 	this->_posPlayer = player;
 	this->_pHand = &hand;
+	_printf("I set the memory for player %d\n",player.ToInt());
 	//COMPUTE THE THINGS RELATIVE TO THE PLAYER (DEPENDENT OF ITS HAND)
 	this->updatePlayerRelativeAttributes();
 }

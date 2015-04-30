@@ -295,7 +295,9 @@ void AIPlayMonteCarlo<nbMaxSimul, MemoryPlayer, PlayMC>::resetGiving(
 }
 
 template<Uint nbMaxSimul, template<class> class MemoryPlayer, class PlayMC>
-void AIPlayMonteCarlo<nbMaxSimul, MemoryPlayer, PlayMC>::updateUnfallenCards(const TrickBasic_Memory& trick, const MemoryPlayer<Cards*>& playerMemory, const std::list<Cards*>& hand)
+void AIPlayMonteCarlo<nbMaxSimul, MemoryPlayer, PlayMC>::updateUnfallenCards(const TrickBasic_Memory& trick,
+                                                                             const MemoryPlayer<Cards*>& playerMemory,
+                                                                             const std::list<Cards*>& hand)
 {
     CARDS_COLOR colors[4] = {DIAMOND,HEART,SPADE,CLUB};
     CARDS_HEIGHT heights[8] = {SEVEN,EIGHT,NINE,TEN,JACK,QUEEN,KING,ACE};
@@ -317,7 +319,7 @@ void AIPlayMonteCarlo<nbMaxSimul, MemoryPlayer, PlayMC>::updateUnfallenCards(con
                 _printf("=> :");
                 for(Uint iPlayer = 0; iPlayer < 4; ++iPlayer)
                 {
-                    if (iPlayer != _number.ToInt() && !playerMemory.CanReceiveCard(Player_ID(iPlayer),col,height)) _printf("%d ; ",iPlayer);
+                    if (iPlayer != _number.ToInt() && playerMemory.CanReceiveCard(Player_ID(iPlayer),col,height)) _printf("%d ; ",iPlayer);
                 }
                 _printf("\n");
 
@@ -612,11 +614,11 @@ void AIPlayMonteCarlo<nbMaxSimul, MemoryPlayer, PlayMC>::addConstraint(std::arra
 
 template<Uint nbMaxSimul, template<class> class MemoryPlayer, class PlayMC>
 void AIPlayMonteCarlo<nbMaxSimul, MemoryPlayer, PlayMC>::removeCard(const std::list<BasicMonteCarloAction>& consequences,
-                                          std::list<Cards_Basic>& currentCard) //update _unfallencards
+                                          std::list<Cards_Basic>& currentCards) //update _unfallencards
 {
     for(const auto& action : consequences)
     {
-        currentCard.remove(action.Card());
+        currentCards.remove(action.Card());
     }
 }
 
@@ -642,7 +644,7 @@ template<Uint nbMaxSimul, template<class> class MemoryPlayer, class PlayMC>
 void AIPlayMonteCarlo<nbMaxSimul, MemoryPlayer, PlayMC>::playerReceiver(std::array<PlayerMiniMonteCarlo, 4 > & currentPlayers,
 	std::list<PlayerMiniMonteCarlo * >& temp,
 	const std::list<PlayerMiniMonteCarlo * >& players,
-                                              const Cards_Basic& card)
+    const Cards_Basic& card)
 {
     temp.clear();
     for(Uint i = 0; i < 4 ;++i)
@@ -652,7 +654,9 @@ void AIPlayMonteCarlo<nbMaxSimul, MemoryPlayer, PlayMC>::playerReceiver(std::arr
 }
 
 template<Uint nbMaxSimul, template<class> class MemoryPlayer, class PlayMC>
-Uint AIPlayMonteCarlo<nbMaxSimul, MemoryPlayer, PlayMC>::computeNbPlayerAbleToReceive(const MemoryPlayer<Cards*>& playerMemory, const Cards_Basic& card, const TrickStatus& trickStatus)
+Uint AIPlayMonteCarlo<nbMaxSimul, MemoryPlayer, PlayMC>::computeNbPlayerAbleToReceive(const MemoryPlayer<Cards*>& playerMemory,
+                                                                                      const Cards_Basic& card,
+                                                                                      const TrickStatus& trickStatus)
 {
     Uint res =  0;
     PLAYER_ID allIDs[4] = {PLAYER0,PLAYER1,PLAYER2,PLAYER3};

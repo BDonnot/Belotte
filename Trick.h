@@ -13,6 +13,8 @@
 #include "Player_Bid_Graphic.h"
 #include "Cards_Deck.h"
 #include "Score_Team.h"
+
+
 class Trick :public Trick_Basic
 {
     protected :
