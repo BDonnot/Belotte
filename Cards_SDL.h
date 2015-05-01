@@ -27,7 +27,10 @@ class Cards_SDL: public  Basic_Transparency, public  Basic_Click, public Images_
         Cards_SDL(Uint height,Uint color,SDL_Event* event,SDL_Surface * pscreen);
         virtual void Update_on_it();
 
-        void InitMouvement(bool transparency,PositionGraphic pos,Uint duration,Uint time_lag);//to init a mouvement
+        //void InitMouvement(const PositionGraphic& pos,Uint duration,Uint time_lag);//to init a mouvement
+        void RevealCard(const PositionGraphic& pos,Uint duration,Uint time_lag);//to init a mouvement
+        void HideCard(const PositionGraphic& pos,Uint duration,Uint time_lag);//to init a mouvement
+
         void UpdatePositionHand(PositionGraphic& pos_end);
 
         void Up(bool go_up); //up the card if go_up, otherwise down the card
@@ -38,6 +41,7 @@ class Cards_SDL: public  Basic_Transparency, public  Basic_Click, public Images_
         virtual void Display() = 0;
         virtual ~Cards_SDL(){}
     protected:
+        void initMouvement(bool transparency,PositionGraphic pos,Uint duration,Uint time_lag);//to init a mouvement
         virtual void act();
         void updateMouvement();
         void revealing();

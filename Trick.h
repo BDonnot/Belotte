@@ -60,8 +60,8 @@ class Trick :public Trick_Basic
         virtual void animateIfGraphic(Cards* pcard, Uint i)
         {
             updatePosCard(i%4);
-            pcard->InitMouvement(true,_posCard,1000,(i%4)*50);
-            //pcard->Reveal(_posCard,1000,(i%4)*50); //reveal the hidden cards
+            //pcard->InitMouvement(pcard->GetSpriteNumber() == 0,_posCard,1000,(i%4)*50);
+            pcard->RevealCard(_posCard,1000,(i%4)*50); //reveal the hidden cards
         }
     private:
 };

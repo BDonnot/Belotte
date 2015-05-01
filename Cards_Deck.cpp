@@ -39,6 +39,11 @@ void Cards_Deck::BeginGame()
 
 void Cards_Deck::Cut() //cut the pack
 {
+    for(Cards* pCard : _pile)
+    {
+        pCard->SetPosition(_screenCenter);
+        pCard->ChangeSprite(0);
+    }
     int nb_rand = _rand.generate_number();
     list<Cards*>::iterator it = _pile.begin();
     advance(it,nb_rand);
@@ -201,7 +206,6 @@ void Cards_Deck::Reset()
 
 void Cards_Deck::GetCardBack(Cards*& pCard)
 {
-    //pCard->Hide(_screenCenter,0,0);
     pCard->SetPosition(_screenCenter);
     pCard->ChangeSprite(0);
     pCard->Reset();

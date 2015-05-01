@@ -4,12 +4,12 @@ using namespace::std;
 void Player::ReceivedCard(Cards* pcard,unsigned int card_number)
 {
     //pcard->InitMouvement(true,_pos,1000,50*card_number); //only the cards of "North are revealed"
-    pcard->InitMouvement(_number == PLAYER0,_pos,1000,50*card_number); //only the cards of "North are revealed"
-    /*if(_number == PLAYER0)
-        pcard->Reveal(_pos,1000,50*card_number);
+    //pcard->InitMouvement(_number == PLAYER0,_pos,1000,50*card_number); //only the cards of "North are revealed"
+    if(_number == PLAYER0)
+        pcard->RevealCard(_pos,1000,50*card_number);
     else
-        pcard->InitMouvement(_pos,1000,50*card_number);
-        */
+        pcard->HideCard(_pos,1000,50*card_number);
+
     _hand.push_back(pcard);
 }
 
@@ -228,7 +228,7 @@ void Player::GiveCardsBack(list<Cards*>& deck)
     for(Cards* pcard : _hand)
     {
         pcard->Reset_Click();
-        pcard->InitMouvement(_number==PLAYER0,pos,1000,0); //HERE FOR HIDING CARDS
+        pcard->HideCard(pos,1000,0); //HERE FOR HIDING CARDS
     }
     deck.splice(deck.end(),_hand);
 }

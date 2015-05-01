@@ -123,8 +123,8 @@ void Trick::GatherCards()
     posReturn(_to_play);
     for(Uint i = 0; i < 4; ++i)
     {
-        _currentTrick[i]->InitMouvement(true,_posCard,600,0);
-        //_currentTrick[i]->Hide(_posCard,600,0); //hide the cards
+        //_currentTrick[i]->InitMouvement(true,_posCard,1000,(i%4)*50);
+        _currentTrick[i]->HideCard(_posCard,600,0); //hide the cards
     }
 }
 
