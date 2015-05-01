@@ -1,17 +1,6 @@
 #include "Player_Bid.h"
 using namespace std;
 
-Player_Bid::Player_Bid():
-_color_bid(NOT_CHOSEN)
-,_bid(MINBET)
-{
-    //ctor
-}
-
-Player_Bid::~Player_Bid()
-{
-    //dtor
-}
 bool Player_Bid::Bid(const Card_Color& color,Uint bid)
 {
     Uint minbid = _info.MaxBid() == MINBET ? MINBET+1 : _info.MaxBid(); //TO ENSURE THAT WE BET AT LEAST MINBET+1
@@ -20,7 +9,6 @@ bool Player_Bid::Bid(const Card_Color& color,Uint bid)
     case NOT_CHOSEN :
         _color_bid = NOT_CHOSEN;
         _bid = max<Uint>(bid,minbid);
-        //handleGraphicsIfAny();
         return false;
     case NO :
         _color_bid = NO;
@@ -56,11 +44,10 @@ void Player_Bid::Reset()
 {
     _color_bid = NOT_CHOSEN;
     _bid = max<Uint>(MINBET,_info.MaxBid());
-    //_displayed_logo_color = true;
 }
 
- std::string Player_Bid::GetString() const
- {
+std::string Player_Bid::GetString() const
+{
     string res = "";
     if(_color_bid==NOT_CHOSEN) return res;
     res += "<bid>";

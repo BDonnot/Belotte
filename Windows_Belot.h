@@ -1,6 +1,11 @@
 #ifndef WINDOWS_BELOT_H
 #define WINDOWS_BELOT_H
 
+/**
+** This class is here to display the main windows of the game
+** with the image of the carpet, the table and everything else.
+**/
+
 #if defined (__GNUC__)
 	#include "SDL/SDL.h"
 #elif defined(_MSC_VER)
@@ -18,7 +23,7 @@ class Windows_Belot : public Quit
     public:
         Windows_Belot();
         void Display();
-        virtual ~Windows_Belot();
+        virtual ~Windows_Belot(){}
     protected:
         Basic_Images _back;
         SDL_Surface* _screen;

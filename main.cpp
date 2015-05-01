@@ -41,7 +41,7 @@ int main( int argc, char* args[] )
         }
     }
 #else
-        srand(28); //2,7,13,28
+        srand(1); //2,7,13,28
         //srand((time(NULL)));
         for (int i = 0; i < 100; i++) {std::rand();}
         Game_Coinche game(_screen,SCREEN_WIDTH,SCREEN_HEIGHT);

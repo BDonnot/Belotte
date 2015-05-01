@@ -1,13 +1,21 @@
 #ifndef RANDOM_H
 #define RANDOM_H
 
+/**
+** It creates the classes for simulating pseudo random number
+** generator.
+** Depends on Boost, which can be avoided thank to feature of c++11.
+**/
+
 #include <iostream>
 #include <ctime>
 #include <boost/random.hpp>
 
+//Debugging
 #include "DebugwithPrint.h"
-
 #define RANDOM_DEBUG 0
+
+///TO DO : remove boost dependency
 class Random
 {
     protected :

@@ -1,6 +1,14 @@
 #ifndef GAME_COINCHE_H
 #define GAME_COINCHE_H
 
+/**
+** This is the class of the game of Coinche.
+** It handles the proper behavior of the main classes,
+** and ensure the good progress of the game.
+** It defines the class of player used.
+** It is a "conductor", in a sens that it does nothing,
+** but tells everyone when it is time to work.
+**/
 #include<array>
 #include<list>
 #include <fstream>

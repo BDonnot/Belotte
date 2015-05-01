@@ -1,11 +1,18 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+/**
+** This class defines what is a player in a generic way.
+** The different kinds of players are derived from this class.
+** There are two main kinds of players : the AI and the human.
+** For historical reason, this is not templated.
+** One improvement would be to delete the classes "Player_AI" and "Player_Human"
+** and regroup everyone in this class, which would be templated.
+**/
 #include <list>
 #include <array>
 #include <algorithm>
 
-//NON UI dependent
 #include "Definitions.h"
 #include "Basic_Game_Info.h"
 #include "Player_Bid.h"
@@ -15,20 +22,21 @@
 #include "Foncteurs_CardsBasic.h"
 #include "Foncteurs_Players.h"
 
-//UI dependent
 #include "Cards.h"
 #include "Player_Name.h"
 #include "Player_Bid_Graphic.h"
 #include "BetsMemory.h" //for the bets to be remembered
-//#include "GameMemory.h" //for the past tricks to be remembered
 
-//TO DO handle Belote and Coinche during game phases.
-//template<class TakeAI,class PlayAI>
+//Define the variable for debugging purpose
+#include "DebugwithPrint.h"
+#define PLAYER_DEBUG 1
+
+///TO DO : template to remove Player_AI and Player_Human...
+///->static polymorphism.
+
 class Player
 {
     protected:
-
-
         std::list<Cards*> _hand; //the hand of the player
         std::list<Cards* > _playable_cards; //the card a player can play in a trick
         const Player_ID _number; //the number
@@ -45,6 +53,7 @@ class Player
         Player_Bid_Graphic _oldBid;
 
         CanPlayCards<Cards*> _fCanPlayCard;
+        WrapperPrint<PLAYER_DEBUG> _printf;
 
 
     public:
@@ -65,7 +74,6 @@ class Player
             ,_DisplayCardPlayer(screen,windows_width,windows_height,number)
             ,_oldBid(number,pevent,screen,windows_width,windows_height)
         {
-            //_pos = setPosition(number,windows_width,windows_height);
             _screen = screen;
         }
 
@@ -76,7 +84,6 @@ class Player
                 delete(pcards);
             }
         }
-
 
         void ReceivedCard(Cards* pcard,unsigned int card_number); //received a card, during the phase of giving
         virtual void Display(GAME_PHASES currentPhase); //to display the right thing : the name, the image, and the cards in the hand.
@@ -98,7 +105,6 @@ class Player
         const Card_Color& CurrentColorBid();
 
         void InitMemory(); //and sort the hand
-        //void
 
         std::string GetString(const std::string& embraced) const; //return <Player : (#)> (embraced) <\player>
         std::string GetString() const; //return <Player : (#)> (hands) <\player>
@@ -106,8 +112,8 @@ class Player
         std::string GetString(const Player_Bid& bid) const; //return <Player : (#)> (bet) <\player>
 
     protected:
-        virtual void updateMemoryTrick(const TrickBasic_Memory& trick,const Position_Trick& myPos);
-        virtual void initMemoryTrick();
+        virtual void updateMemoryTrick(const TrickBasic_Memory& trick,const Position_Trick& myPos){}
+        virtual void initMemoryTrick() {}
         virtual void updateBid(const BetsMemory& bets){}
         virtual bool do_I_coinche();
 
@@ -125,7 +131,6 @@ class Player
         void updatePlayebleCards(const TrickBasic_Memory& trick_in_progress);
         bool can_play_card(Cards* PmyCard,const TrickBasic_Memory& trick);
 
-        //bool has_higher(const Card_Color&  color_asked,const Card_Height& max_height);
         bool has_colour(const Card_Color& color);
 };
 

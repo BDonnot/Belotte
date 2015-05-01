@@ -7,19 +7,23 @@ Basic_Click::Basic_Click(SDL_Event* event)
     _click_on_long = false;
     _pEvent = event;
 }
+
 void Basic_Click::Update_on_it()
 {
     _on_it = false;
 }
+
 void Basic_Click::Set_click_on_long()
 {
     if (_click_on_long)  _click_on_long=(_on_it||!(_pEvent->type == SDL_MOUSEBUTTONDOWN));
     else _click_on_long = (_on_it&&(_pEvent->type==SDL_MOUSEBUTTONDOWN));
 }
+
 void Basic_Click::Set_click_on_short()
 {
     _click_on_short=(_on_it&&(_pEvent->type==SDL_MOUSEBUTTONDOWN));
 }
+
 bool Basic_Click::Click(bool Short)
 {
     bool cShort = _click_on_short;
@@ -31,6 +35,7 @@ bool Basic_Click::Click(bool Short)
     }
     return cLong ;
 }
+
 void Basic_Click::Reset_Click()
 {
     _click_on_long = false;

@@ -13,10 +13,6 @@ Windows_Belot::Windows_Belot():Quit()
     _nb_human_player = 1;
 }
 
-Windows_Belot::~Windows_Belot()
-{
-    //dtor
-}
 void Windows_Belot::Display()
 {
     bool continuer = true;
@@ -31,12 +27,11 @@ void Windows_Belot::Display()
             {
                 case 0 : //TO DO why integer, use "define"'s instead
                     i+=_screen_begin.Display(_screen);
-                    //if (i==64) _screen_option.Set_Origin(0);
                     break;
                 case 64 : //TO DO why integer, use "define"'s instead
                     i+= _screen_option.Display(_screen);
                     break;
-                default: //gere les evenements si aucun ecran particulier n'est difuse
+                default: //handles event if nothing does it
                     while(SDL_PollEvent(_event))
                     {
                         continuer = continuer && KeepLooping();

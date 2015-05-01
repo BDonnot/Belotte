@@ -32,7 +32,7 @@ bool Bidding::Bid(GAME_PHASES currentPhase) //TO DO test, test test !
     const Player_Bid& bid = _players[i_playerBid]->Take(_bets);
     choose = bid.Color() != Card_Color(NOT_CHOSEN);
     if (!choose) return false;
-    _printf("%d has chosen\n",_bidder.ID());
+    _printf("%d has chosen {v: %d c : %d}\n",_bidder.ID(),bid.Bid(),bid.Color().ToInt());
     _printf("max bet : %d, current bet : %d\n",_infos.MaxBid(),bid.Bid());
     handleBet(bid,_bidder); //TO DO move to BetsMemory
 
@@ -84,6 +84,7 @@ bool Bidding::Click(bool Short)
 }
 void Bidding::SummarizeBet()
 {
+    _printf("I enter SummarizeBet\n");
     //the first player to play is the player after the giver
     _bidder = _infos.Giver().NextPlayer();
 
@@ -105,6 +106,7 @@ void Bidding::SummarizeBet()
 }
 GAME_PHASES Bidding::NextPhase()
 {
+     _printf("I enter NextPhase\n");
     for(Uint i = 0; i < 4; ++i)
     {
         _players[i]->InitMemory(); //and sort the hand
@@ -113,11 +115,13 @@ GAME_PHASES Bidding::NextPhase()
     Uint i_start = ((_infos.Giver().ToInt()+1)%4);
     switch (_infos.TrumpColor().Color())
     {
-    case NO : case NOT_CHOSEN:
+    case NO : case NOT_CHOSEN :
+        _printf("I give the cards back\n");
         for (Uint i = i_start; i < i_start+4; i++)
         {
             _players[i%4]->GiveCardsBack(_pDeck->GetPile());
         }
+        _pDeck->ReceiveCardsBack();
         return BEGINNING;
     case HEART : case DIAMOND : case SPADE : case CLUB :
         return PLAYING;

@@ -1,9 +1,18 @@
 #ifndef MEMORYHELPERS_H_INCLUDED
 #define MEMORYHELPERS_H_INCLUDED
 
+/**
+** These class are here to store in an efficient manner
+** booleans informations, like for example
+** which card have been played, or if a specific has still
+** a color.
+**/
+
 template<Uint n>
 class BoolStorage
 {
+    ///n : number of boolean stored
+    ///by default it is false
 protected:
 	Basic_Game_Info _infos;
 	bool _information[n];

@@ -15,6 +15,13 @@
 #include "DebugwithPrint.h"
 #define PRINT_AIGAMEMEMOIMPROVE 0
 
+///Next improvment :
+///TO DO : this class only deduce things directly from the game itself.
+///It could be a good idea to implement some method like "computeConsequences" (in AIPlayMonteCarlo)
+///directly in this class thus allowing player to deduce informations like :
+///This player have still 3 cards in hand, it can receive only the three cards 3,0 2,0 and 1,0
+///So for sure : he has them, the others cannot have them.
+
 template<class TypeOfCard>
 class AIGameMemoryImproved : public AIGameMemory<TypeOfCard>
 {

@@ -1,9 +1,5 @@
 #include "Screen_end.h"
 
-Screen_end::Screen_end():Quit()
-{
-    //ctor
-}
 Screen_end::Screen_end(Basic_Images* fond,SDL_Event* pevent,double screen_width,double screen_height,std::string message):Quit(pevent),
 _quit(pevent,"Quitter",PositionGraphic())
 ,_thanks("fonts/MLSGY.ttf",60,255,255,255,message)
@@ -15,10 +11,6 @@ _quit(pevent,"Quitter",PositionGraphic())
     _quit.SetPosition(pos);
 }
 
-Screen_end::~Screen_end()
-{
-    //dtor
-}
 void Screen_end::Display(SDL_Surface* destination)
 {
     bool continuer = true;

@@ -9,22 +9,22 @@ _score(_nbCardUnfallen,vector<Uint>(nbMaxSimul,0))
     for(const Cards_Basic& card : playableCards)
     {
         _refCardsInt.emplace(card,refCard);
-        //printf("Cards [c:%d,h:%d] -> %d\n",card.GetColour().ToInt(),card.GetHeight().ToInt(),refCard);
+        _printf("Cards [c:%d,h:%d] -> %d\n",card.GetColour().ToInt(),card.GetHeight().ToInt(),refCard);
         refCard++;
     }
 }
 
 void ResultMonteCarlo::Put(Uint idTraj,const Cards_Basic& cardPlayed,Uint scoreTraj)
 {
-    //Cards_Basic card = cardPlayed;
-    //printf("Storing the result for card [c:%d,h:%d]\n",cardPlayed.GetColour().ToInt(),cardPlayed.GetHeight().ToInt());
+    _printf("Storing the result for card [c:%d,h:%d]\n",cardPlayed.GetColour().ToInt(),cardPlayed.GetHeight().ToInt());
     Uint refCard = _refCardsInt[cardPlayed];
-    //printf("The references is %d \n",refCard);
+    _printf("The references is %d \n",refCard);
     _score[ refCard ][idTraj] = scoreTraj;
 }
 
 Uint ResultMonteCarlo::ScoreAggr(const Cards_Basic& cardPlayed)
 {
+    //Default behavior : do the average ...
     double res = 0;
     Uint refCard = _refCardsInt[cardPlayed];
     vector<Uint>& scoresCard = _score[refCard];

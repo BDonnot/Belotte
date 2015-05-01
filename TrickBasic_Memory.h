@@ -1,18 +1,24 @@
 #ifndef TRICKBASIC_MEMORY_H
 #define TRICKBASIC_MEMORY_H
 
+/**
+** This class is the basic one handling the trick.
+** It memorizes (and computes) all informations related to the trick memory
+** -the current winner
+** -the last player who have played
+** -the number of trick played
+** -etc.
+** Copy safe, and does not influence _infos
+**/
+
 #include <array>
 
 #include "Definitions.h"
 #include "Cards.h"
 
-/**Memorize all informations related to the trick memory :
--the current winner
--the last player who have played
--the number of trick played
--etc.
-Copy safe, and does not influence _infos
-**/
+//Debugging
+#include "DebugwithPrint.h"
+#define TRICKBASICMEMORY_DEBUG 0
 
 class TrickBasic_Memory
 {
@@ -32,9 +38,10 @@ class TrickBasic_Memory
         bool _trickFinished;
 
         std::array<Cards*,4> _currentTrick;
+        WrapperPrint<TRICKBASICMEMORY_DEBUG> _printf;
     public:
-        TrickBasic_Memory();
-        virtual ~TrickBasic_Memory();
+        TrickBasic_Memory(){Reset();}
+        virtual ~TrickBasic_Memory(){}
 
         const Uint& TrickNumber() const {return _trickNumber;}
         const Uint& NumberCardsPlayed() const {return _cardsPlayed;}
@@ -50,7 +57,6 @@ class TrickBasic_Memory
         void Reset(); //at the end of the game (8 trick)
 
         void PutCard(Cards* card);
-        //void PutCard(const Cards_Basic& card);
         void NextToPlay();
 
     protected:

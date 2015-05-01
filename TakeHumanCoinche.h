@@ -1,6 +1,12 @@
 #ifndef TAKEHUMANCOINCHE_H
 #define TAKEHUMANCOINCHE_H
 
+/**
+** This class allows the human player to
+** interact with game, and to choose the color
+** and the value of its bet.
+**/
+
 #include<string>
 #include<ostream>
 #include <sstream>
@@ -41,7 +47,7 @@ class TakeHumanCoinche
     public:
         TakeHumanCoinche(){};
         TakeHumanCoinche(SDL_Event* event,SDL_Surface* screen,Uint16 windows_width, Uint16 windows_height);
-        virtual ~TakeHumanCoinche();
+        virtual ~TakeHumanCoinche(){}
 
         void Display(GAME_PHASES currentPhase);
         void UpdateMouse(GAME_PHASES currentPhase);

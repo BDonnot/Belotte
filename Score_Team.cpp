@@ -1,10 +1,6 @@
 #include "Score_Team.h"
 using namespace::std;
 
-Score_Team::Score_Team()
-{
-    //ctor
-}
 Score_Team::Score_Team(SDL_Surface* pScreen):
 _info()
 ,_pScreen(pScreen)
@@ -16,11 +12,6 @@ _info()
     _scoreFirstTeam.SetPosition(pos);
     pos.Set(_info.WindowsWidth()-30,60,TOP_RIGHT);
     _scoreSecondTeam.SetPosition(pos);
-}
-
-Score_Team::~Score_Team()
-{
-    //dtor
 }
 
 void Score_Team::Display(GAME_PHASES currentPhase)
@@ -35,14 +26,12 @@ void Score_Team::Update()
     //first team
     string newStr = "Equipe ";
     newStr += " 1 : ";
-//    newStr += _info.IntToString(scores[0]);
     newStr += IntToString(scores[0]);
     _scoreFirstTeam.ChangeText(newStr);
 
     //Second team
     newStr = "Equipe ";
     newStr += " 2 : ";
-//    newStr += _info.IntToString(scores[1]);
     newStr += IntToString(scores[1]);
     _scoreSecondTeam.ChangeText(newStr);
 }

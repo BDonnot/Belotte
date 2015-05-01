@@ -15,13 +15,13 @@
 #include <string>
 
 ///Readability :
-//TO DO : remove _datas_selected_0, which was done for multiple kind of AI player regarding
-//to score, but has no more usage.
-//TO DO : specialize among cases :
-//1 -> the scores can be update [on the hardrive] (not currently used but why not)
-//2 -> the scores cannot be are just read, and won't be change (on the hard drive)
-//TO DO : remove the deprecated functions, keep only the necessary, depending
-//on the specialization above.
+///TO DO : remove _datas_selected_0, which was done for multiple kind of AI player regarding
+///to score, but has no more usage.
+///TO DO : specialize among cases :
+///1 -> the scores can be update [on the hardrive] (not currently used but why not)
+///2 -> the scores cannot be are just read, and won't be change (on the hard drive)
+///TO DO : remove the deprecated functions, keep only the necessary, depending
+///on the specialization above.
 class Datas
 {
     protected:

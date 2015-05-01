@@ -9,8 +9,8 @@
 #include "Images_Button.h"
 
 /**
-This class aim to easy the display of the last part of the game : who win, the current scores and
-other interesting informations.
+** This class aims to easy the display of the last part of the game : who win, the current scores and
+** other interesting informations.
 **/
 class End_Of_Game
 {
@@ -26,7 +26,7 @@ class End_Of_Game
     public:
         End_Of_Game(){}
         End_Of_Game(SDL_Event* pEvent,SDL_Surface* pScreen,Uint windowsWidth, Uint windowsHeight);
-        virtual ~End_Of_Game();
+        virtual ~End_Of_Game(){}
         void Display(GAME_PHASES currentPhase);
         void Update(); //update the scores and the texts.
         void UpdateEvent(GAME_PHASES currentPhase);

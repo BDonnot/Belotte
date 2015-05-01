@@ -1,6 +1,13 @@
 #ifndef PLAYER_HUMAN_H
 #define PLAYER_HUMAN_H
 
+/**
+** This class has been done specifically for the human player.
+** Now it would be better to have one single class
+** player, templated with the method of playing.
+** See Player.h and Player_AI.h for more informations.
+**/
+
 #include "Player.h"
 #include "Take_Human.h"
 #include "TakeHumanCoinche.h"
@@ -31,12 +38,7 @@ class Player_Human : public Player
 
     private:
         Player_Human(const Player_Human& other){}
-        Player_Human& operator=(const Player_Human& rhs)
-        {
-            if (this == &rhs) return *this; // handle self assignment
-            //assignment operator
-            return *this;
-        }
+        Player_Human& operator=(const Player_Human& rhs){return *this;}
         Random _rand;
 };
 

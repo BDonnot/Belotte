@@ -1,10 +1,6 @@
 #include "Take_Human.h"
 using namespace::std;
-//TO DO construtor, destructor should probably be inlined
-Take_Human::Take_Human()
-{
-    //ctor
-}
+
 Take_Human::Take_Human(SDL_Event* event,SDL_Surface* screen,Uint16 windows_width, Uint16 windows_height):
     _windows_width(windows_width)
     ,_windows_height(windows_height)
@@ -22,8 +18,6 @@ Take_Human::Take_Human(SDL_Event* event,SDL_Surface* screen,Uint16 windows_width
     PositionGraphic pos(windows_width/2,windows_height/3,CENTER);
     _question.SetPosition(pos);
     _first_round = false;
-    //_color_proposed = NO;
-   // _color_take = NO;
     _displayed = true;
     Change(true);
     pos.Set(windows_width/3,7*windows_height/16,CENTER);
@@ -41,10 +35,10 @@ Take_Human::Take_Human(SDL_Event* event,SDL_Surface* screen,Uint16 windows_width
     pos.Set(2*windows_width/3,windows_height/2,CENTER);
     _no.SetPosition(pos);
 }
+
 void Take_Human::Change(bool first_round)
 {
     _displayed= true;
-    //_color_proposed = color_proposed;
     _first_round = first_round;
     PositionGraphic pos0(_windows_width/3,7*_windows_height/16,CENTER);
     PositionGraphic pos1(2*_windows_width/3,7*_windows_height/16,CENTER);
@@ -85,10 +79,7 @@ void Take_Human::Change(bool first_round)
         break;
     }
 }
-Take_Human::~Take_Human()
-{
-    //dtor
-}
+
 Card_Color Take_Human::Has_Taken() //255 if the human did'nt choose yet, 127 if he passes, otherwie the number of the color choosen
 {
     if( _first_round)
@@ -126,6 +117,7 @@ Card_Color Take_Human::Has_Taken() //255 if the human did'nt choose yet, 127 if 
     if (_pass.Click(true)) return NO;
     return NOT_CHOSEN;
 }
+
 void Take_Human::Display()
 {
     if (!_displayed) return; //we do nothing if we are not in a phase we can take
@@ -166,12 +158,12 @@ void Take_Human::Display()
     }
     _pass.Display(_screen);
 }
+
 void Take_Human::Reset()
 {
     _displayed = true;
-    //_info.ResetColorProposed();
-    //_color_take = NO;
 }
+
 void Take_Human::Update()
 {
     if (!_displayed) return; //we don't update if we don't display
@@ -189,6 +181,7 @@ void Take_Human::Update()
         _pass.Update_on_it();
     }
 }
+
 string Take_Human::DefineQuestion()
 {
     string res = "Voulez-vous prendre à";

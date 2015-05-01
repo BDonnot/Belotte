@@ -4,14 +4,11 @@ using namespace::std;
 
 Trick_Basic::Trick_Basic(Cards_Deck* pDeck,const std::array<Player*,4>& players):
 _players(players),
-//_currentTrick(),
 _previousTrick(),
-//_oldFirstPlayer(GHOST),
 _pDeck(pDeck)
 {
     _currentTrick = {nullptr,nullptr,nullptr,nullptr};
     _previousTrick = {nullptr,nullptr,nullptr,nullptr};
-    //_posTrick = {FIRST,SECOND,THIRD,FOURTH};
 }
 
 Trick_Basic::~Trick_Basic()
@@ -55,14 +52,12 @@ void Trick_Basic::WinnerTakeCards()
     }
     _previousTrick = _currentTrick;
     _currentTrick = {nullptr,nullptr,nullptr,nullptr};
-    //printf("WinnerTakeCards for trick %d \n",_trickNumber);
 }
 
 bool Trick_Basic::Play() // TO DO code the same way as Bidding.cpp
 {
     Uint i = _to_play.ToInt();
     trickFinished();
-    //TO DO c'est moche !
     if (_cardsPlayed == 4 && _trickFinished) //the trick is over
     {
         _printf("The trick is over\n");

@@ -1,6 +1,6 @@
 #include "Display_Trump.h"
-//#include "SDL/SDL_image.h"
 using namespace std;
+
 Display_trump::Display_trump()
 {
     _trunk = -1;
@@ -43,17 +43,6 @@ Display_trump::~Display_trump()
     SDL_FreeSurface(_surface_name);
 }
 
-Display_trump::Display_trump(const Display_trump& other)
-{
-    //copy ctor
-}
-
-Display_trump& Display_trump::operator=(const Display_trump& rhs)
-{
-    if (this == &rhs) return *this; // handle self assignment
-    //assignment operator
-    return *this;
-}
 SDL_Surface* Display_trump::load_sprite( std::string filename )
 {
     SDL_Surface* loadedImage = NULL;
@@ -70,6 +59,7 @@ SDL_Surface* Display_trump::load_sprite( std::string filename )
     }
     return optimizedImage;
 }
+
 void Display_trump::Apply_sprite(SDL_Surface* destination )
 {
     if (_trunk != -1)
@@ -89,10 +79,12 @@ void Display_trump::Apply_sprite(SDL_Surface* destination )
         SDL_BlitSurface( _surface_name, NULL, destination, &offset );
     }
 }
+
 void Display_trump::Set_color(int color)
 {
     _trunk = color;
 }
+
 void Display_trump::Set_names(string name0,string name1,string name2,string name3)
 {
     _names[0] = name0;
@@ -100,6 +92,7 @@ void Display_trump::Set_names(string name0,string name1,string name2,string name
     _names[2] = name2;
     _names[3] = name3;
 }
+
 void Display_trump::Set_taker(int taker)
 {
     _taker = taker;
@@ -110,14 +103,12 @@ void Display_trump::Set_taker(int taker)
     }
 
 }
+
 void Display_trump::Set_event(SDL_Event* pevent)
 {
     _pEvent = pevent;
 }
-bool Display_trump::Mouse_over()
-{
-    return _on_it >= 10;
-}
+
 void Display_trump::Update()
 {
     int pos_mouse_x = -1;
@@ -127,10 +118,9 @@ void Display_trump::Update()
         pos_mouse_x = _pEvent->motion.x;
         pos_mouse_y = _pEvent->motion.y;
         if ((_on_it != 0)&&!(( pos_mouse_x < 100)&&(pos_mouse_y < 100))) _on_it = 0;
-        else {
-
-        //if (!_on_it&&(( pos_mouse_x < 100)&&(pos_mouse_y < 100))) _on_it = true;
-        if (( pos_mouse_x < 100)&&(pos_mouse_y < 100)) _on_it += 1;
+        else
+        {
+            if (( pos_mouse_x < 100)&&(pos_mouse_y < 100)) _on_it += 1;
         }
     }
 }

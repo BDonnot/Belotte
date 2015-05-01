@@ -20,7 +20,7 @@ class BetsMemory
         const Player_Bid _defaultBid; //to return when there is nothing to return
         std::list<Player_Bid>::const_iterator _itSaved; //the iterator of the element that need to be stored
     public:
-        BetsMemory():_itSaved(_bets.begin()){}
+        BetsMemory():_defaultBid(),_itSaved(_bets.begin()){}
         virtual ~BetsMemory(){}
         void TellBet(Uint lastbiddingTurn,const Player_Bid& bid);
         void TellBet(const Player_Bid& bid);

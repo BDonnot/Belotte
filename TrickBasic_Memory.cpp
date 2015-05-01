@@ -1,16 +1,6 @@
 #include "TrickBasic_Memory.h"
 using namespace std;
 
-TrickBasic_Memory::TrickBasic_Memory()
-{
-    Reset();
-}
-
-TrickBasic_Memory::~TrickBasic_Memory()
-{
-    //dtor
-}
-
 void TrickBasic_Memory::Reset()
 {
     _trickNumber = 0;
@@ -34,13 +24,12 @@ void TrickBasic_Memory::updateWinner()
         _colorMaster = _colorAsked;
         _heightMaster = _currentTrick[0]->GetHeight();
         _winner = Position_Trick(FIRST);
-        //printf("color asked : %d, trump color : %d\n",_colorAsked.ToInt(),_infos.TrumpColor().ToInt());
+        _printf("color asked : %d, trump color : %d\n",_colorAsked.ToInt(),_infos.TrumpColor().ToInt());
         return ;
     }
     Card_Color colorTrump = _infos.TrumpColor();
     Card_Color color = _currentTrick[_cardsPlayed]->GetColour();
-    //printf("color asked : %d, trump color : %d, color played : %d\n",_colorAsked.ToInt(),_infos.TrumpColor().ToInt(),color.ToInt());
-    //Card_Height height = _currentTrick[_cardsPlayed]->GetHeight();
+    _printf("color asked : %d, trump color : %d, color played : %d\n",_colorAsked.ToInt(),_infos.TrumpColor().ToInt(),color.ToInt());
 
     bool needUpdate = false; //do the last cards played is master
     if(color == colorTrump)
@@ -63,12 +52,12 @@ void TrickBasic_Memory::updateWinner()
         _heightMaster = _currentTrick[_cardsPlayed]->GetHeight();
         _winner = Position_Trick(_cardsPlayed);
     }
-    //printf("after player %d played, the winner is %d \n",_cardsPlayed,_winner.Position());
+    _printf("after player %d played, the winner is %d \n",_cardsPlayed,_winner.Position());
 }
 
 void TrickBasic_Memory::finishTrick()
 {
-    //printf("le pli %d est fini\n",_trickNumber);
+    _printf("le pli %d est fini\n",_trickNumber);
     Uint pointsInTheTrick = 0;
     for(auto pcards : _currentTrick) { pointsInTheTrick += pcards->Value(); }
     if(_trickNumber == 8) pointsInTheTrick += 10;
@@ -78,7 +67,7 @@ void TrickBasic_Memory::finishTrick()
 
 void TrickBasic_Memory::updateToPlay()
 {
-    //printf("updateToPlay : first player is %d \n",_to_play.ID());
+    _printf("updateToPlay : first player is %d \n",_to_play.ID());
     _oldFirstPlayer = _to_play;
     switch(_winner.Position()) //TO DO better to do here !
     {
@@ -126,14 +115,15 @@ void TrickBasic_Memory::trickOver()
     _trickNumber++;
     finishTrick();
     _winner = Position_Trick(UNKNOWN);
-    //_oldFirstPlayer = Player_ID(GHOST);
 }
+
 void TrickBasic_Memory::playerPlayed()
 {
     updateWinner();
     _to_play.Next();
     _cardsPlayed++;
 }
+
 bool TrickBasic_Memory::IsFallen(const Card_Color& color, const Card_Height& height) const
 {
     Cards* temp;
@@ -156,7 +146,5 @@ void TrickBasic_Memory::NextToPlay()
     if (_cardsPlayed == 4 && _trickFinished) //the trick is over
     {
         trickOver();
-        //terminatecurrentTrick(i);
     }
-
 }

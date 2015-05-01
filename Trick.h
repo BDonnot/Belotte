@@ -1,8 +1,16 @@
 #ifndef TRICK_H
 #define TRICK_H
 
+/** This class is the last of the classes
+** used to represent the trick.
+** It handles mainly the displaying / updating of the
+** cards.
+** For example it tells the cards where to go (for pretty animations).
+**/
+
 #include<array>
 #include<string>
+
 #include "Definitions.h"
 #include "Basic_Game_Info.h"
 
@@ -43,7 +51,6 @@ class Trick :public Trick_Basic
         void posReturn(const Player_ID& posPlayer);
         virtual void trickFinished()
         {
-            //printf("ok ; %d\n",_trickFinished);
 #if PLAY_HUMAN > 0
             _trickFinished = _trickFinished || _ok.Click(true);
 #else
@@ -54,6 +61,7 @@ class Trick :public Trick_Basic
         {
             updatePosCard(i%4);
             pcard->InitMouvement(true,_posCard,1000,(i%4)*50);
+            //pcard->Reveal(_posCard,1000,(i%4)*50); //reveal the hidden cards
         }
     private:
 };

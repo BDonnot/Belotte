@@ -1,6 +1,19 @@
 #ifndef SAVE_GAME_H
 #define SAVE_GAME_H
 
+/**
+** This project save the game (xml format).
+** It records the hands of the players, their action (bets and what so ever)
+** the cards they played etc.
+** All of this is store in "games.blt" .
+** This class makes sure that these informations are
+** properly written, regardless
+** if the human quit during the game or if other external/internal
+** events occur.
+** The idea is to store every information in a temporary file, and if the
+** game ends properly to write it in the main file.
+**/
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -10,25 +23,13 @@
 #include "Player.h"
 #include "Trick.h"
 #include "Bidding.h"
-/** The aim of this class is to make sure that the informations
-relative to the bets and the trick are written properly, regardless
-is the human quit during the game or if other external/internal
-events occur.
-The idea is to store every information in a temporary file, and if the
-game end properly to write it in the main file.**/
 
 class Save_Game
 {
     protected :
-//        bool _gameOpen;
-//        bool _trickOpen;
-//        bool _betOpen;
-//        std::string _currentTrick;
-//        std::string _currentBit;
         std::ofstream _mainFile;
         std::ofstream _temporaryFile;
         std::array<Uint,2> _prevScores;
-
 
     public:
         Save_Game();

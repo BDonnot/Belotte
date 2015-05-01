@@ -1,6 +1,15 @@
 #ifndef PLAYERMINIMONTECARLO_H
 #define PLAYERMINIMONTECARLO_H
 
+/**
+** This class represent "Mini Players".
+** A "Mini Player" is a player of the game
+** which only enters in action in AIPlayMonteCarlo and MCPlayGames
+** and has only the basis of a player.
+** It is a structure to store the hand,
+** and to store efficiently which player can receive which cards
+**/
+
 #include <list>
 #include<algorithm>
 #include<unordered_map>
@@ -16,7 +25,13 @@
 
 #include "BasicMonteCarloAction.h"
 #include "MonteCarloAction.h"
-//TO DO : make a basic class from which this one and Player will inherit...
+
+//Define the variable for debugging purpose
+#include "DebugwithPrint.h"
+#define PLAYERMINIMONTECARLO_DEBUG 0
+
+///Code Consistency :
+///TO DO : some method are copy/paste from player, this should not be
 
 class PlayerMiniMonteCarlo
 {
@@ -30,6 +45,7 @@ class PlayerMiniMonteCarlo
         TrickStatus _status;
         std::list< Cards_Basic > _playableCards;
         CanPlayCards<Cards_Basic> _fCanPlayCard;
+        WrapperPrint<PLAYERMINIMONTECARLO_DEBUG> _printf;
 
     public:
         PlayerMiniMonteCarlo():_number(GHOST),_status(_number){}

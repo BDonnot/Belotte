@@ -2,16 +2,6 @@
 
 using namespace std;
 
-
-Player_Bid_Graphic::Player_Bid_Graphic()
-{
-    //ctor
-}
-
-Player_Bid_Graphic::~Player_Bid_Graphic()
-{
-    //dtor
-}
 Player_Bid_Graphic::Player_Bid_Graphic(const Player_ID& player_number,SDL_Event* pevent,SDL_Surface* screen,Uint windows_width,Uint windows_height):
 Player_Bid()
 ,_bubble("images/sprite_bulles.png",pevent)
@@ -51,6 +41,7 @@ Player_Bid()
     _oldColor.ChangeSprite(1);
 
 }
+
 void Player_Bid_Graphic::HandleColor()
 {
     switch(_color_bid.Color())
@@ -76,6 +67,7 @@ void Player_Bid_Graphic::HandleColor()
         return;
     }
 }
+
 void Player_Bid_Graphic::HandleText()
 {
     string Result(_dsplOldBets.IntToString(_color_bid,_bid));
@@ -87,6 +79,7 @@ void Player_Bid_Graphic::handleGraphicsIfAny()
     HandleColor();
     HandleText();
 }
+
 void Player_Bid_Graphic::Display(SDL_Surface* screen,GAME_PHASES currentPhase)
 {
     if(((currentPhase!=BIDDING)&&(currentPhase!=AFTER_BET))||(_color_bid==NOT_CHOSEN)) return;
@@ -105,10 +98,12 @@ void Player_Bid_Graphic::Coinche()
     _displayed_logo_color = false;
     _text.ChangeText("Coinche");
 }
+
 void Player_Bid_Graphic::UpdateEvent()
 {
     _bubble.Update_on_it();
 }
+
 bool Player_Bid_Graphic::AddBid(const Card_Color& color, Uint bid)
 {
     _listOldBet.push_front(Player_Bid(static_cast<Player_Bid&>(*this)));
@@ -128,6 +123,5 @@ string Player_Bid_Graphic::GetString(Uint biddingTurn) const
         res += (*itOldBet).GetString();
     }
     else if (biddingTurn == sizeMax) res += static_cast<const Player_Bid&>(*this).GetString();
-//    string res = _listOldBet.front().GetString();
     return res;
 }

@@ -39,15 +39,15 @@ void Cards_SDL::Update_on_it()
 void Cards_SDL::act()
 {
     updateMouvement();
-    transparency(); //calcul of alpha
+    transparency(); //computation of alpha
     SDL_SetAlpha( _surface.get(), SDL_SRCALPHA | SDL_RLEACCEL, _alpha ); //apply the new level of transparency
-    Move(); //calcul of the new position
+    Move(); //computation of the new position
 }
 
 void Cards_SDL::InitMouvement(bool transparency,PositionGraphic pos,Uint32 duration,Uint32 time_lag)
 {
     Uint32 current_time = _info.Time();
-    if(transparency && (GetSpriteNumber() ==  0)) Reveal(duration,time_lag,current_time);
+    if (transparency) Reveal(duration,time_lag,current_time);
     pos.SetProperPosition(_width,_height);
     Set_animate(pos,duration,time_lag);
 }
@@ -104,4 +104,3 @@ void Cards_SDL::Reset()
     Reset_Click();
     _up = false;
 }
-

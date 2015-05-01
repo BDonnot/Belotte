@@ -1,21 +1,22 @@
 #include "Quit.h"
 
-Quit::Quit()
+Quit::Quit():_destruct(true)
 {
     _keystates = SDL_GetKeyState( NULL );
     _event = new SDL_Event;
-    _destruct = true;
 }
-Quit::Quit(SDL_Event* pevent)
+
+Quit::Quit(SDL_Event* pevent):_destruct(false)
 {
     _event = pevent;
     _keystates = SDL_GetKeyState( NULL );
-    _destruct = false;
 }
+
 Quit::~Quit()
 {
     if (_destruct) delete(_event);
 }
+
 bool Quit::KeepLooping()
 {
     bool continuer = true;

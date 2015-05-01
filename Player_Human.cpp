@@ -15,7 +15,6 @@ void Player_Human::Update_Mouse(GAME_PHASES currentPhase)
     }
     if (currentPhase == BIDDING)
      {
-         //_Take.Update();
         _TakeCoinche.UpdateMouse(currentPhase);
         _oldBid.UpdateEvent();
      }
@@ -34,7 +33,6 @@ void Player_Human::Display(GAME_PHASES currentPhase)
 //Play
 Cards* Player_Human::what_card_do_i_play(const TrickBasic_Memory& trick)
 {
-   //_playable_cards = _hand;
    Cards *pcard = nullptr;
     if (_UpdateCardMouse.Click() != 255)
     {
@@ -52,14 +50,14 @@ Cards* Player_Human::what_card_do_i_play(const TrickBasic_Memory& trick)
 //Take
 void Player_Human::updateBid(const BetsMemory& bets)
 {
-    //coinche
+    //TO DO : ask if Coinche
     const Player_Bid& bid = _TakeCoinche.Has_Taken();
     _currentBid.Bid(bid.Color(),bid.Bid());
 }
+
 void Player_Human::ResetBid(bool betFinished)
 {
     _TakeCoinche.Reset(betFinished);
-    //_TakeCoinche.Reset(false);
     _currentBid.Reset();
     if(!betFinished) return;
     _oldBid.Reset();

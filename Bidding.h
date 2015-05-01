@@ -17,9 +17,9 @@
 #include "Cards_Deck.h"
 #include "BetsMemory.h"
 
-//Define the variable for debuging purpose
+//Define the variable for debugging purpose
 #include "DebugwithPrint.h"
-#define BIDDING_DEBUG 0
+#define BIDDING_DEBUG 1
 
 class Bidding
 {

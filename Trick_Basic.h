@@ -1,6 +1,12 @@
 #ifndef TRICK_BASIC_H
 #define TRICK_BASIC_H
 
+/**
+** This class is the second one that deals with the
+** trick. It handles the player aspect,
+** tells them what to do ans some things like that.
+**/
+
 #include <string>
 #include <array>
 
@@ -12,13 +18,13 @@
 #include "Score_Team.h"
 #include "Cards_Deck.h"
 
+//Debugging
 #include "DebugwithPrint.h"
-#define TRICKBASIC_DEBUG 1
+#define TRICKBASIC_DEBUG 0
 
 class Trick_Basic : public TrickBasic_Memory
 {
     protected :
-        //TrickBasic_Memory _trickMemory;
         std::array<POSITION_TRICK,4> _posTrick;
 
         std::array<Player*,4> _players;

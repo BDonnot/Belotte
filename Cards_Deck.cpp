@@ -65,6 +65,7 @@ void Cards_Deck::Shuffle()
 
 void Cards_Deck::GiveCards(const list<Player*>& li_players,bool first_round,unsigned int i_taker)
 {
+    //DEPRECATED (used for classical Belote)
     Cards* pcard = NULL;
     unsigned int nb_cards_given = 3;
     unsigned int counter = 0;
@@ -83,7 +84,7 @@ void Cards_Deck::GiveCards(const list<Player*>& li_players,bool first_round,unsi
             }
             nb_cards_given--;
         }
-        (_pile.front())->Reveal(1000,50*counter,_info.Time());
+        //(_pile.front())->Reveal(1000,50*counter,_info.Time());
     }
     else
     {
@@ -106,6 +107,7 @@ void Cards_Deck::GiveCards(const list<Player*>& li_players,bool first_round,unsi
         }
     }
 }
+
 void Cards_Deck::GiveCards(const std::list<Player*>& li_players)
 {
     Cards* pcard = NULL;
@@ -199,9 +201,21 @@ void Cards_Deck::Reset()
 
 void Cards_Deck::GetCardBack(Cards*& pCard)
 {
+    //pCard->Hide(_screenCenter,0,0);
     pCard->SetPosition(_screenCenter);
     pCard->ChangeSprite(0);
     pCard->Reset();
     _pile.push_back(pCard);
     pCard = nullptr;
+}
+
+void Cards_Deck::ReceiveCardsBack()
+{
+    /*
+    for(Cards* pcard : _pile)
+    {
+        pcard->ChangeSprite(0);
+        pcard->Reset();
+    }
+    */
 }

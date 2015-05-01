@@ -1,6 +1,12 @@
 #ifndef FONCTEURS_PLAYERS_H_INCLUDED
 #define FONCTEURS_PLAYERS_H_INCLUDED
 
+/**
+** These classes define
+** some functors on Players, usefull to know if a card can be played or not,
+** for example.
+**/
+
 #include<list>
 
 #include "Cards.h"
@@ -31,8 +37,6 @@ public :
     }
     bool operator()(const TypeOfCard& PmyCard)
     {
-        /*if (PmyCard==nullptr)
-            return false;*/
         Card_Color my_colour = _wrapperCallMethod.callGetColour(PmyCard);
         Card_Height maxHeight = _pTrick->HeightMaster();
         Card_Color maxColor = _pTrick->ColorMaster();

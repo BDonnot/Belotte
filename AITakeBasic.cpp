@@ -1,25 +1,17 @@
 #include "AITakeBasic.h"
-/*
-AITakeBasic::AITakeBasic()
-{
-    //ctor
-}
 
-AITakeBasic::~AITakeBasic()
-{
-    //dtor
-}
-*/
 void AITakeBasic::Bid(Player_Bid& bid,const std::list<Cards*>& hand,Random& rand,const BetsMemory& bets)
 {
     if(_alreadyBid)
     {
         bid.Bid(NO,_basic_info.MaxBid()+10);
+        _printf("I do not want to bet\n");
         return;
     }
     _alreadyBid = true;
     //if I am the first player of my team to choose :
     const Player_Bid& bidTeammate = bets.AskBet();
+    _printf("I will probably bet\n");
     if(bidTeammate.Color() == NOT_CHOSEN)
         return iChoose(bid,hand);
     return iFollow(bid,hand,bidTeammate);
@@ -65,6 +57,7 @@ void AITakeBasic::iChoose(Player_Bid& bid,const std::list<Cards*>& hand)
     }
     if(colorBet != notChosen) bid.Bid(colorBet,highBet);
     else bid.Bid(Card_Color(NO),maxBet+10);
+    _printf("My bet is : %d, c: %d\n",bid.Bid(),bid.Color().ToInt());
 }
 
 void AITakeBasic::iFollow(Player_Bid& bid,const std::list<Cards*>& hand,const Player_Bid& bidTeammate)

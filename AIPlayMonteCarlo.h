@@ -31,7 +31,7 @@
 #include "MonteCarloAction.h"
 #include "MCPlayGames.h"
 
-//Define the variable for debuging purpose
+//Define the variable for debugging purpose
 #include "DebugwithPrint.h"
 #define AIPLAYMC_DEBUG 0
 
@@ -84,7 +84,7 @@ class AIPlayMonteCarlo
                           const std::list<Cards*> hand,
                           const TrickStatus& trickStatus);
         void simulGame(const TrickBasic_Memory& trick,
-			const MemoryPlayer<Cards*>& playerMemory, //here
+                        const MemoryPlayer<Cards*>& playerMemory, //here
                          const std::list<Cards*>& hand,
                          const TrickStatus& trickStatus,
                          std::stack<MonteCarloAction>& allActions,
@@ -121,7 +121,7 @@ class AIPlayMonteCarlo
 										   PlayerMiniMonteCarlo * player);
 
         void resetGiving(const TrickBasic_Memory& trick,
-			const MemoryPlayer<Cards*>& playerMemory,
+                            const MemoryPlayer<Cards*>& playerMemory,
 							Random& rand,
 							const std::list<Cards*>& hand);
 

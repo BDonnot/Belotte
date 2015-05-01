@@ -44,7 +44,7 @@ Game_Coinche::Game_Coinche(SDL_Surface* screen,Uint16 screenWidth, Uint16 screen
 
 		//if (i % 2 == 0)
             //_players[i] = static_cast<Player*>(new AIScores(Player_ID(posPlayer[i]), screenWidth, screenHeight, _event, &_backSide, _pScreen));
-		//else
+        //else
             //_players[i] = static_cast<Player*>(new AIRandom(Player_ID(posPlayer[i]), screenWidth, screenHeight, _event, &_backSide, _pScreen));
 #endif
     }

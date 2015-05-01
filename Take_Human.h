@@ -1,5 +1,11 @@
 #ifndef TAKE_HUMAN_H
 #define TAKE_HUMAN_H
+
+/**
+** Old class, used when I coded the Belote games.
+** It is now deprecated.
+**/
+
 #include "Basic_Game_Info.h"
 #include "Images_Button.h"
 #include "Images_Text.h"
@@ -25,9 +31,9 @@ class Take_Human
         bool _displayed;
 
     public:
-        Take_Human();
+        Take_Human(){}
         Take_Human(SDL_Event* event,SDL_Surface* screen,Uint16 windows_width, Uint16 widows_height);
-        virtual ~Take_Human();
+        virtual ~Take_Human(){}
         void Display();
         void UpdateMouse();
         Card_Color Has_Taken(); //255 if the human did'nt took, otherwie the number of the color choosen

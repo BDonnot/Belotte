@@ -1,6 +1,12 @@
 #ifndef DEBUGWITHPRINT_H_INCLUDED
 #define DEBUGWITHPRINT_H_INCLUDED
 
+/**
+** These classes help when debugging.
+** If the templates is '1', it actually print the input
+** otherwise it does nothing.
+**/
+
 #include <stdarg.h>
 
 template<int Print>

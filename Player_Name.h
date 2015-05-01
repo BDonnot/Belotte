@@ -1,6 +1,13 @@
 #ifndef PLAYER_NAME_H
 #define PLAYER_NAME_H
 
+/**
+** This class display the name of the player.
+** It is also charged to handle the changing of the name
+** at the beginning of game.
+** The names can be changed by clicking on the image of the player.
+**/
+
 #include <string>
 
 #include "Basic_Game_Info.h"
@@ -28,10 +35,9 @@ class Player_Name:public Quit //contains the name, the question, and the image o
         Images_Button _return;
 
     public:
-        Player_Name();
-        //Player_Name(Basic_Images* fond,std::string name,std::string path_image,SDL_Event* pevent,Uint width,Uint height,Uint pos_x,Uint pos_y,POSITIONGRAPHIC_H pos_option);
+        Player_Name(){}
         Player_Name(Basic_Images* fond,std::string name,std::string path_image,SDL_Event* pevent,Uint width,Uint height,PositionGraphic& pos);
-        virtual ~Player_Name();
+        virtual ~Player_Name(){}
         bool WhatName(SDL_Surface* screen);
         void Display(SDL_Surface* destination,bool choose_name);
         void Update(GAME_PHASES currentPhase);

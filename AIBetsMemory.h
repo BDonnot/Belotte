@@ -17,8 +17,8 @@ class AIBetsMemory
     protected :
         bool _toBeRemoved;
     public:
-        AIBetsMemory();
-        virtual ~AIBetsMemory();
+        AIBetsMemory(){}
+        virtual ~AIBetsMemory(){}
     protected:
     private:
 };

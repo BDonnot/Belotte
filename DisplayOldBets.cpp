@@ -26,18 +26,17 @@ DisplayOldBets::DisplayOldBets(SDL_Surface* screen
 		, { windows_width - 200, windows_height / 2 - 135 }
 		, { windows_width / 2 - 100, 215 }
 	, { 200, windows_height / 2 - 135 } };
-	//POSITION_OPTION pos_opt[4] = {BOTTOM_CENTER,CENTER_RIGHT,TOP_CENTER,CENTER_LEFT};
-	//PositionGraphic pos(position[player_number][0],position[player_number][1],pos_opt[player_number]);
 	_pos_th.Set(position[player_number.ToInt()][0], position[player_number.ToInt()][1], CENTER);
 
 }
+
 void DisplayOldBets::Reset()
 {
 	_nb_bets = 0;
 }
+
 void DisplayOldBets::operator()(const Player_Bid& bid)
 {
-	//_pLogo->Change_sprite(bid.Color());
 	string text;
 	switch (bid.Color().Color())
 	{
@@ -64,6 +63,7 @@ void DisplayOldBets::operator()(const Player_Bid& bid)
 	}
 	_nb_bets++;
 }
+
 Uint DisplayOldBets::colorToInt(CARDS_COLOR color)
 {
 	switch (color)
@@ -80,6 +80,7 @@ Uint DisplayOldBets::colorToInt(CARDS_COLOR color)
 		return 0;
 	}
 }
+
 string DisplayOldBets::IntToString(const Card_Color & color, const Uint& number)
 {
 	string Result;

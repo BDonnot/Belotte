@@ -1,17 +1,26 @@
 #ifndef TEXT_TYPING_H
 #define TEXT_TYPING_H
+
+/**
+** This class allows the human player to interact with
+** the game with the keyboard.
+** It is useful for changing the name of the players at
+** the beginning of the game for example.
+**/
+
+#include <list>
+
 #include "Basic_Text.h"
 #include "Images_Click.h"
-#include <list>
 
 
 class Text_Typing : public Images_Click,public Basic_Text
 {
     public:
-        Text_Typing();
+        Text_Typing(){}
         Text_Typing(std::string path_font,int size, char colR, char colG, char colB,SDL_Event* event);
 		Text_Typing(std::string path_font, int size, char colR, char colG, char colB, SDL_Event* event, std::string text);
-        virtual ~Text_Typing();
+        virtual ~Text_Typing(){}
         void Update_Text_OnIt();
         void Change_Text(std::string text);
     protected:

@@ -43,12 +43,22 @@ class MCPlayGames
         WrapperMemory<Memory> _updateMemory;
         WrapperPrint<MCPLAYRANDOM_DEBUG> _printf;
     public:
-        MCPlayGames():_nbGamePlayed(nbSimulGames),_play(_number){}
+        MCPlayGames():_nbGamePlayed(nbSimulGames),_play(_number)
+        {
+            for(Uint iCol = 0; iCol < 4; ++iCol)
+            {
+                for(Uint iHei = 0; iHei < 8; ++iHei)
+                {
+                    _allCards[iCol*8+iHei] = nullptr;
+                }
+            }
+        }
         virtual ~MCPlayGames()
         {
+            _printf("destructor of MCPlayGames called\n");
             if(_allCards[0] != nullptr)
             {
-                 for(Uint iCol = 0; iCol < 4; ++iCol)
+                for(Uint iCol = 0; iCol < 4; ++iCol)
                 {
                     for(Uint iHei = 0; iHei < 8; ++iHei)
                     {
@@ -61,6 +71,7 @@ class MCPlayGames
                   const Player_ID& number,
                   Random * rand)
         {
+            _printf("I init the game\n");
             _cardsToPlay = cardsToPlay;
             _number = number;
             _play.SetNumber(_number);
@@ -75,6 +86,7 @@ class MCPlayGames
                     }
                 }
             }
+            _printf("I have finished initiating the game\n");
         }
         Uint Play(const std::array<PlayerMiniMonteCarlo , 4>& players,
                     const Cards* pcard,

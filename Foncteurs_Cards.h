@@ -1,9 +1,13 @@
 #ifndef FONCTEURS_CARDS_H_INCLUDED
 #define FONCTEURS_CARDS_H_INCLUDED
-//UI DEPENDENT
+
+/**
+** These classes define some functors dealing with Cards, or Cards*
+**/
+
 #include "Cards.h"
 
-class DisplayCardPlayer //handle the positionning of the card in the hand
+class DisplayCardPlayer //handle the positioning of the card in the hand
 {
     public :
         DisplayCardPlayer(){};
@@ -58,7 +62,6 @@ class DisplayCardPlayer //handle the positionning of the card in the hand
             _nb_cards++;
             UpdatePosHand(pcard->GetUp());
             pcard->UpdatePositionHand(_pos_hand);
-            //pcard->Display(_screen);
             pcard->Display();
         }
     private :
@@ -77,28 +80,11 @@ class DisplayCardPlayer //handle the positionning of the card in the hand
             _pos_hand.Set(_pos_player.Getx()+ shift*_shift[0]
                             ,_pos_player.Gety()+ shift*_shift[1]
                             ,CENTER);
-            if (up)// res.at(1) -= 35;
+            if (up)
                 _pos_hand.Gety() -= 35;
         }
 };
-/*
-class UpdateCardMouvement
-{
-    public :
-        UpdateCardMouvement(){};
-        UpdateCardMouvement(Uint32 current_time):_current_time(current_time){}
-        void operator()(Cards* pcard)
-        {
-            pcard->UpdateMouvement(_current_time);
-        }
-        void Update(Uint32 current_time)
-        {
-            _current_time = current_time;
-        }
-    private :
-        Uint32 _current_time;
-};
-*/
+
 class DisplayCardPile
 {
     public :
@@ -106,7 +92,6 @@ class DisplayCardPile
         DisplayCardPile(SDL_Surface* screen):_screen(screen){}
         void operator()(Cards* pcard)
         {
-            //pcard->Display(_screen);
             pcard->Display();
         }
     private :

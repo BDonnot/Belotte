@@ -1,12 +1,18 @@
 #ifndef TRICKSTATUS_H
 #define TRICKSTATUS_H
 
+/**
+** This class aims to store all the useful informations
+** of the current trick.
+** Instances of this class are own by players.
+** It store informations that are given to
+** the playing method.
+**/
+
 #include "Definitions.h"
 #include "Cards.h"
 #include "TrickBasic_Memory.h"
-/** This class aims to store all the useful informations
-of the current trick for the player.
-**/
+
 class TrickStatus
 {
     protected:

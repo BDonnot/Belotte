@@ -52,7 +52,8 @@ void Trick::Display(GAME_PHASES currentPhase)
         {
             if(_previousTrick[i]==nullptr) break;
             updatePosCard(posPlayer);
-            _previousTrick[i]->InitMouvement(true,_posCard,600,0);
+            _previousTrick[i]->SetPosition(_posCard);
+            _previousTrick[i]->ChangeSprite(1);
             posPlayer.Next();
             _previousTrick[i]->Display();
         }
@@ -92,7 +93,6 @@ void Trick::Update()
 	text += DisplayOldBets::IntToString(_infos.TrumpColor(), _infos.Taker().ToInt() % 2 + 1);
     _teamName.ChangeText(text);
     Reset();
-    //_scoreTeam.Update();
 }
 
 void Trick::updatePosCard(const Player_ID& player)
@@ -120,16 +120,14 @@ void Trick::updatePosCard(const Player_ID& player)
 void Trick::GatherCards()
 {
     _scoreTeam.Update();
-    //posReturn(_infos.FirstPlayer());
     posReturn(_to_play);
     for(Uint i = 0; i < 4; ++i)
     {
-        //if(_currentTrick[i] == nullptr) break; //TO DO : exception here !
-        //_currentTrick[i]->InitMouvement(true,_posCard,600,0);
         _currentTrick[i]->InitMouvement(true,_posCard,600,0);
+        //_currentTrick[i]->Hide(_posCard,600,0); //hide the cards
     }
-    //printf("gather cards for trick %d \n",_trickNumber);
 }
+
 void Trick::posReturn(const Player_ID& posPlayer)
 {
     switch(posPlayer.ID())

@@ -28,11 +28,6 @@ _info()
     _quit.SetPosition(pos);
 }
 
-End_Of_Game::~End_Of_Game()
-{
-    //dtor
-}
-
 void End_Of_Game::Display(GAME_PHASES currentPhase)
 {
     if(currentPhase != SCORES) return;
@@ -43,12 +38,14 @@ void End_Of_Game::Display(GAME_PHASES currentPhase)
     _again.Display(_pScreen);
     _quit.Display(_pScreen);
 }
+
 void End_Of_Game::UpdateEvent(GAME_PHASES currentPhase)
 {
     if(currentPhase != SCORES) return;
     _again.Update_on_it();
     _quit.Update_on_it();
 }
+
 void End_Of_Game::Update()
 {
     Uint taker = _info.Taker().ToInt();
@@ -80,13 +77,12 @@ void End_Of_Game::Update()
     const array<Uint,2>& scores(_info.FinalScores());
     text1 = "Equipe 1 : ";
     text1 += IntToString(scores[0]);
-//    text1 +=_info.IntToString(scores[0]);
     text2 = "Equipe 2 : ";
-//    text2 +=_info.IntToString(scores[1]);
     text2 += IntToString(scores[1]);
     _firstScore.ChangeText(text1);
     _secondScore.ChangeText(text2);
 }
+
 GAME_PHASES End_Of_Game::Next()
 {
 #if PLAY_HUMAN > 0

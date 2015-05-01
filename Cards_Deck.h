@@ -41,6 +41,7 @@ class Cards_Deck
         const bool Click(GAME_PHASES currentPhase);
         void UpdateEvent(GAME_PHASES currentPhase);
         void Reset();
+        void ReceiveCardsBack(); //call once the game is over and no one took
 
         const std::list<Cards*>& GetPile() const {return _pile;}
         std::list<Cards*>& GetPile() {return _pile;}

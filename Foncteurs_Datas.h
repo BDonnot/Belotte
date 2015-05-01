@@ -1,5 +1,14 @@
 #ifndef FONCTEURS_DATAS_H_INCLUDED
 #define FONCTEURS_DATAS_H_INCLUDED
+
+/**
+** These classes define
+** some functors on Data.
+** These functors are currently useless, as the data on the
+** hard drive are not modified, but can be re-used
+** for a future development.
+**/
+
 #include "Datas.h"
 class Update_Stats
 {
@@ -14,6 +23,7 @@ class Update_Stats
         int _trump_color;
 
 };
+
 class Reset_Stats
 {
     public :
@@ -23,6 +33,7 @@ class Reset_Stats
             data->reset_choices();
         }
 };
+
 class Obtain_value
 {
     public :

@@ -1,14 +1,12 @@
 #ifndef DISPLAYOLDBETS_H
 #define DISPLAYOLDBETS_H
 
+/**
+** This class handles the displaying of the old bets.
+** When the mouse is over a player, during the Bidding phases
+** we can see which bets (color and value) have been done by this player.
+**/
 #include<string>
-
-/*
-#include<list>
-#include<algorithm>
-#include<ostream>
-#include<sstream>
-*/
 
 #if defined(__GNUC__)
 	#include "SDL/SDL.h"
