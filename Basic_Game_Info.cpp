@@ -17,37 +17,11 @@ array<unsigned int,2> Basic_Game_Info::_tricks_win = {0,0};
 
 Uint Basic_Game_Info::_windowsWidth = SCREEN_WIDTH;
 Uint Basic_Game_Info::_windowsHeight = SCREEN_HEIGHT;
-Basic_Game_Info::Basic_Game_Info()
-{
-    //ctor
-}
 
-Basic_Game_Info::~Basic_Game_Info()
-{
-    //dtor
-}
 void Basic_Game_Info::SetTaker(const Player_ID& taker)
 {
     _taker = taker;
 }
-/*
-PLAYER_ID Basic_Game_Info::Next(const Player_ID& posPlayer) const
-{
-    switch(posPlayer.ID())
-    {
-    case PLAYER0 :
-        return PLAYER1;
-    case PLAYER1 :
-        return PLAYER2;
-    case PLAYER2 :
-        return PLAYER3;
-    case PLAYER3 :
-        return PLAYER0;
-    default :
-        return GHOST;
-    }
-}
-*/
 void Basic_Game_Info::SetGiver() //the giver is always the person at the right
 {
     _giver.Next();

@@ -5,6 +5,7 @@ Datas::Datas()
 {
     _selected = new int[1];
 }
+
 Datas::Datas(const string& path)
 {
     _path = path;
@@ -18,12 +19,8 @@ Datas::Datas(const string& path)
     _datas_selected_3 = nul;
 
     _selected = new int[_number_of_datas];
-    //reset_choices();
 }
-vector<double> Datas::GetDatas()
-{
-    return _datas;
-}
+
 Datas::Datas(const string& path,int num_line)
 {
     _path = path;
@@ -37,17 +34,14 @@ Datas::Datas(const string& path,int num_line)
     _datas_selected_3 = nul;
     _selected = new int[_number_of_datas];
 }
+
 Datas::~Datas()
 {
     delete [] _selected;
 }
-void Datas::reset_choices()
+
+void Datas::Reset_choices()
 {
-    /*vector<int> nul(_number_of_datas,0);
-    _datas_selected_0 = nul;
-    _datas_selected_1 = nul;
-    _datas_selected_2 = nul;
-    _datas_selected_3 = nul;*/
     for (int i = 0; i < _number_of_datas;i++)
     {
         _datas_selected_0[i] = 0;
@@ -81,6 +75,7 @@ vector<string> Datas::splittexte(const string& str, const string& delim)
     }
     return parts;
 }
+
 vector<string> Datas::convert_to_str()
 {
     vector<string> res;
@@ -94,6 +89,7 @@ vector<string> Datas::convert_to_str()
     }
     return res;
 }
+
 void Datas::write() //to write new datas (the one in 'datas') in the file.
 {
     fstream infile;
@@ -112,10 +108,8 @@ void Datas::write() //to write new datas (the one in 'datas') in the file.
     while (!infile.eof())
     {
         getline(infile,data_load);
-        //outfile << data_load <<endl;
         outfile << data_load ;
         if (!infile.eof()) outfile << endl;
-        //else outfile << data_load ;
     }
     //close the files
     infile.close();
@@ -125,10 +119,10 @@ void Datas::write() //to write new datas (the one in 'datas') in the file.
     //rename the new file
     rename("copie.txt",_path.c_str());
 }
+
 string Datas::write_aux(vector<string> concerned_line,string delim)
 {
     string res = "";
-    //int number_data_per_line = concerned_line.size();
     for (int i = 0; i < _number_of_datas-1; i++)
     {
         res += concerned_line[i];
@@ -137,10 +131,12 @@ string Datas::write_aux(vector<string> concerned_line,string delim)
     res+=concerned_line[_number_of_datas-1];
     return res;
 }
+
 double Datas::coeffmul_win(int diff_score,int nb_cards)
 {
     return pow(nb_cards,coeffmul_win(diff_score));
 }
+
 double Datas::coeffmul_win(int diff_score)
 {
     if (diff_score<30) return 1.01;
@@ -151,10 +147,12 @@ double Datas::coeffmul_win(int diff_score)
     if (diff_score<190) return 1.07;
     return 1.1;
 }
+
 double Datas::coeffadd_win(int diff_score,int nb_cards)
 {
     return nb_cards*coeffadd_win(diff_score);
 }
+
 double Datas::coeffadd_win(int diff_score)
 {
     if (diff_score<30) return 0.2;
@@ -165,7 +163,8 @@ double Datas::coeffadd_win(int diff_score)
     if (diff_score<190) return 0.8;
     return 1;
 }
-void Datas::update_gen(int diff_score,int color_trump) //gen for 'generic'
+
+void Datas::Update_gen(int diff_score,int color_trump) //gen for 'generic'
 {
     int has_won = (diff_score >= 0);
     double coeffmult = coeffmul_win(diff_score);
@@ -185,6 +184,7 @@ void Datas::update_gen(int diff_score,int color_trump) //gen for 'generic'
     }
     write();
 }
+
 void Datas::win(double& data, double coeffmult,double coeffadd)
 {
     if (data >=0 ) data = data*coeffmult+coeffadd;
@@ -194,6 +194,7 @@ void Datas::win(double& data, double coeffmult,double coeffadd)
         data += diff;
     }
 }
+
 void Datas::lose(double& data, double coeffmult,double coeffadd)
 {
     if (data >= 0) data = (data-coeffadd)*1./coeffmult;
@@ -203,6 +204,7 @@ void Datas::lose(double& data, double coeffmult,double coeffadd)
         data += diff;
     }
 }
+
 void Datas::load()
 {
     string data;
@@ -220,7 +222,8 @@ void Datas::load()
     }
     infile.close();
 }
-double Datas::value(int num_col,int color_selected)
+
+double Datas::Value(int num_col,int color_selected)
 {
     if (color_selected != -1)
     {
@@ -229,15 +232,13 @@ double Datas::value(int num_col,int color_selected)
     }
     return _datas[num_col];
 }
-double Datas::Value(int num_colon)
-{
-   return _datas[num_colon];
-}
+
 double Datas::Value_memo(int num_colon)
 {
     _selected[num_colon]+=1;
     return _datas[num_colon];
 }
+
 vector<int>* Datas::choose_selected(int color_selected)
 {
     switch(color_selected)
@@ -249,6 +250,7 @@ vector<int>* Datas::choose_selected(int color_selected)
         default : return NULL;
     }
 }
+
 double Datas::pow(int exposant,double number)
 {
     if (exposant==0) return 1;

@@ -1,9 +1,5 @@
 #include "Screen_Begin.h"
 
-Screen_Begin::Screen_Begin()
-{
-    //ctor
-}
 Screen_Begin::Screen_Begin(Basic_Images* fond,SDL_Event* pevent,double screen_width,double screen_height):
 Quit(pevent)
 ,_fond(fond)
@@ -21,10 +17,6 @@ Quit(pevent)
     _quit.SetPosition(pos);
 }
 
-Screen_Begin::~Screen_Begin()
-{
-    //dtor
-}
 void Screen_Begin::Update()
 {
     if (!_onScreen) return;
@@ -32,13 +24,13 @@ void Screen_Begin::Update()
     _play.Update_on_it();
     _option.Update_on_it();
 }
+
 OUTPUT_BEGIN Screen_Begin::Display(SDL_Surface* destination)
 {
     if (!_onScreen) return PLAY;
     bool keep_displaying = true;
     Uint32 start = 0,end = 0;
-    double FRAMES_PER_SECOND = 32.;
-    Uint32 min_time_loop = static_cast<Uint32>(1000./FRAMES_PER_SECOND);
+    Uint32 min_time_loop = static_cast<Uint32>(1000./FRAMES_PER_SECOND_FOR_ME);
     while (keep_displaying)
     {
         start = SDL_GetTicks();

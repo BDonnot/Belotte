@@ -13,10 +13,6 @@ Basic_Transparency::Basic_Transparency(Uint8 transparency)
     _fps = 1000/32;
 }
 
-Basic_Transparency::~Basic_Transparency()
-{
-    //dtor
-}
 void Basic_Transparency::transparency()
 {
     if ((_timer_alpha_current >= _timer_alpha_start)&&(_timer_alpha_current < _timer_alpha_end))

@@ -29,8 +29,8 @@ Uint ResultMonteCarlo::ScoreAggr(const Cards_Basic& cardPlayed)
     Uint refCard = _refCardsInt[cardPlayed];
     vector<Uint>& scoresCard = _score[refCard];
     sort(scoresCard.begin(),scoresCard.end());
-    auto itLast = scoresCard.end() - 5;
-    for(auto it = scoresCard.begin()+5; it != itLast; ++it )
+    auto itLast = scoresCard.end();
+    for(auto it = scoresCard.begin(); it != itLast; ++it )
     {
         res += static_cast<double>(*it);
     }

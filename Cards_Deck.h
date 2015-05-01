@@ -1,6 +1,12 @@
 #ifndef Cards_DECK_H
 #define Cards_DECK_H
 
+/**
+** This class represent the deck of the cards.
+** This is particularly useful at the beginning
+** while giving, cutting / shuffling all the cards etc.
+**/
+
 #include <list>
 #include <array>
 #include <algorithm>
@@ -9,7 +15,6 @@
 #include "Player.h"
 #include "Foncteurs_Cards.h"
 #include "Random.h"
-
 
 class Cards_Deck
 {
@@ -23,7 +28,7 @@ class Cards_Deck
         Random_Decreasing _randDecreasing;
 
     public:
-        Cards_Deck();
+        Cards_Deck():_rand(3,28),_randDecreasing(31){}
         Cards_Deck(SDL_Event* event,SDL_Surface* screen,Uint16 screenWidth, Uint16 screenHeight);
         virtual ~Cards_Deck();
         void BeginGame();
@@ -37,8 +42,8 @@ class Cards_Deck
         void UpdateEvent(GAME_PHASES currentPhase);
         void Reset();
 
-        const std::list<Cards*>& GetPile() const;
-        std::list<Cards*>& GetPile();
+        const std::list<Cards*>& GetPile() const {return _pile;}
+        std::list<Cards*>& GetPile() {return _pile;}
 
         void GetCardBack(Cards*& pCard);
 

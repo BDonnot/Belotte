@@ -1,12 +1,6 @@
 #include "Cards_Deck.h"
 using namespace::std;
 
-Cards_Deck::Cards_Deck():
-_rand(3,28)
-,_randDecreasing(31)
-{
-    //ctor
-}
 Cards_Deck::Cards_Deck(SDL_Event* event,SDL_Surface* screen,Uint16 screenWidth, Uint16 screenHeight):
 _DisplayCardPile(screen)
 ,_screenCenter(PositionGraphic(screenWidth/2,screenHeight/2,CENTER))
@@ -17,7 +11,6 @@ _DisplayCardPile(screen)
     Cards* pcard = NULL;
     array<CARDS_COLOR,4> Color = {DIAMOND,HEART,SPADE,CLUB};
     array<CARDS_HEIGHT,8> Height = {SEVEN,EIGHT,NINE,TEN,JACK,QUEEN,KING,ACE};
-    //PositionGraphic pos(screenWidth/2,screenHeight/2,CENTER);
     for (int height = 0; height < 8; height++)
     {
         for(int color = 0; color < 4; color++)
@@ -36,12 +29,14 @@ Cards_Deck::~Cards_Deck()
         delete (pcards);
     }
 }
+
 void Cards_Deck::BeginGame()
 {
     if (_first) Shuffle();
     else Cut();
     _first = false;
 }
+
 void Cards_Deck::Cut() //cut the pack
 {
     int nb_rand = _rand.generate_number();
@@ -51,6 +46,7 @@ void Cards_Deck::Cut() //cut the pack
     aux.splice(aux.begin(),_pile,_pile.begin(),it);
     _pile.splice(_pile.end(),aux);
 }
+
 void Cards_Deck::Shuffle()
 {
     list<Cards*> aux;
@@ -66,11 +62,11 @@ void Cards_Deck::Shuffle()
 	aux.splice(aux.begin(), _pile, _pile.begin()); //constant
     _pile.swap(aux); //constant
 }
+
 void Cards_Deck::GiveCards(const list<Player*>& li_players,bool first_round,unsigned int i_taker)
 {
     Cards* pcard = NULL;
     unsigned int nb_cards_given = 3;
-    //Uint32 current_time = SDL_GetTicks();
     unsigned int counter = 0;
     if (first_round)
     {
@@ -114,7 +110,6 @@ void Cards_Deck::GiveCards(const std::list<Player*>& li_players)
 {
     Cards* pcard = NULL;
     unsigned int nb_cards_given = 0;
-//    Uint32 current_time = SDL_GetTicks();
     unsigned int counter = 0;
     unsigned int number_cards[3] = {3,2,3};
     for(unsigned int k = 0; k < 3; k++)
@@ -132,11 +127,11 @@ void Cards_Deck::GiveCards(const std::list<Player*>& li_players)
         }
     }
 }
+
 void Cards_Deck::GiveCards(const std::array<Player*,4>& li_players)
 {
     Cards* pcard = NULL;
     unsigned int nb_cards_given = 0;
-    //Uint32 current_time = SDL_GetTicks();
     unsigned int counter = 0;
     unsigned int number_cards[3] = {3,2,3};
     for(unsigned int k = 0; k < 3; k++)
@@ -154,25 +149,21 @@ void Cards_Deck::GiveCards(const std::array<Player*,4>& li_players)
         }
     }
 }
+
 void Cards_Deck::Display(GAME_PHASES currentPhase)
 {
     if((currentPhase!=SELECT_NAMES)&&(currentPhase!=GIVING)) return;
     for_each(_pile.rbegin(),_pile.rend(),_DisplayCardPile);
 }
-/*
-void Cards_Deck::Update(Uint32 current_time)
-{
-    _UpdateCardMouvement.Update(current_time);
-    for_each(_pile.begin(),_pile.end(),_UpdateCardMouvement);
-}
-*/
+
 const bool Cards_Deck::FirstGame()
 {
     return _first;
 }
+
 const bool Cards_Deck::Click(GAME_PHASES currentPhase)
 {
-    //if ((currentPhase != GIVING)&&(currentPhase != SELECT_NAMES)) return false;
+#if PLAY_HUMAN > 0
     for(auto it = _pile.begin(); it != _pile.end(); ++it)
     {
         if ((*it)->Click(true))
@@ -184,32 +175,28 @@ const bool Cards_Deck::Click(GAME_PHASES currentPhase)
             return true;
         }
     }
-    //return false;
+    return false;
+#else
     return true;
+#endif
 }
 void Cards_Deck::UpdateEvent(GAME_PHASES currentPhase)
 {
     if ((currentPhase != GIVING)&&(currentPhase != SELECT_NAMES)) return;
-    for(auto it = _pile.begin(); it != _pile.end(); ++it)
+    for(Cards* pcard : _pile)
     {
-        (*it)->Update_on_it();
+        pcard->Update_on_it();
     }
 }
-const std::list<Cards*>& Cards_Deck::GetPile() const
-{
-    return _pile;
-}
-std::list<Cards*>& Cards_Deck::GetPile()
-{
-    return _pile;
-}
+
 void Cards_Deck::Reset()
 {
-    for(auto it = _pile.begin(); it != _pile.end(); ++it)
+    for(Cards* pcard : _pile)
     {
-        (*it)->Reset();
+        pcard->Reset();
     }
 }
+
 void Cards_Deck::GetCardBack(Cards*& pCard)
 {
     pCard->SetPosition(_screenCenter);

@@ -1,6 +1,12 @@
 #ifndef CARDS_HEIGHT_H_INCLUDED
 #define CARDS_HEIGHT_H_INCLUDED
 
+/**
+** This class is a helper, dealing with
+** the height of the cards.
+** The height is one particular aspect of cards, of course.
+**/
+
 enum CARDS_HEIGHT {SEVEN,EIGHT,NINE,TEN,JACK,QUEEN,KING,ACE,UNINTIALIZED};
 class Card_Height
 {

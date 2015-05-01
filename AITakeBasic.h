@@ -10,11 +10,14 @@
 #include "Random.h"
 #include "BetsMemory.h"
 /**
-The class to compute a basic bidding for the AI players.
-The first player of the team take at 80/90 if he has (Jack or 9)/(Jack and 9) in a color.
-The  second player increase the bidding by its numbers of non trump aces.
+** The class compute a basic bidding for the AI players.
+** The first player of the team take at 80/90 if he has (Jack or 9)/(Jack and 9) in a color.
+** The  second player increase the bidding by its numbers of non trump aces.
 **/
-//TO DO implement this strategy.
+
+///Game Improvement :
+///TO DO : implement other strategies
+
 class AITakeBasic
 {
     protected :

@@ -1,9 +1,25 @@
 #ifndef BASIC_GAME_INFO_H
 #define BASIC_GAME_INFO_H
 
+/**
+** This class store all the informations common for
+** all players during the game.
+** Kind of informations stored :
+** current score, trump color,
+** taker, giver etc.
+** All of its members are static.
+**/
+
 #include <array>
 
 #include "Definitions.h"
+
+///Readability :
+///TO DO : as the game changed a lot, there is probably bit of
+///of work to  do to clean this class.
+///Some methods are probably deprecated...
+///TO DO : there is probably some work related to "const correctness"
+///to do
 
 class Basic_Game_Info
 {
@@ -26,8 +42,8 @@ class Basic_Game_Info
         static Uint _windowsWidth;
         static Uint _windowsHeight;
     public:
-        Basic_Game_Info();
-        virtual ~Basic_Game_Info();
+        Basic_Game_Info(){}
+        virtual ~Basic_Game_Info(){}
 
         const unsigned long long& Time() const;
         void AddClock(unsigned long long diffTime);
@@ -59,9 +75,6 @@ class Basic_Game_Info
         void SetMaxBid(unsigned int max_bid); //TO DO : smarter way here...
         void SetColorProposed(const Card_Color& color);
 
-        //PLAYER_ID Next(PLAYER_ID posPlayer) const;
-        //inline Uint PosPlayerToInt(PLAYER_ID posPlayer) const;
-        //inline PLAYER_ID IntToPosPlayer(Uint num) const;
         inline Player_ID FirstToPlay(const Position_Trick& posTrick, const Player_ID& playerConcerned) const;
 
         void SetGiver(); //the giver is always the person at the left of the current giver
@@ -110,36 +123,6 @@ inline const Uint& Basic_Game_Info::WindowsHeight()
 {
     return _windowsHeight;
 }
-/*
-inline PLAYER_ID Basic_Game_Info::IntToPosPlayer(Uint num) const
-{
-    switch(num)
-    {
-        case 0: return PLAYER0;
-        case 1: return PLAYER1;
-        case 2: return PLAYER2;
-        case 3: return PLAYER3;
-        default: return GHOST; // TO DO exception here
-    }
-}
-
-inline Uint Basic_Game_Info::PosPlayerToInt(PLAYER_ID posPlayer) const
-{
-    switch(posPlayer)
-    {
-    case PLAYER0 :
-        return 0;
-    case PLAYER1 :
-        return 1;
-    case PLAYER2:
-        return 2;
-    case PLAYER3 :
-        return 3;
-    default : // TO DO exception here
-        return 4;
-    }
-}
-*/
 inline Player_ID Basic_Game_Info::FirstToPlay(const Position_Trick& posTrick, const Player_ID& playerConcerned) const
 {
     Uint posT = posTrick.ToInt();

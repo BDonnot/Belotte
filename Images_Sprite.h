@@ -1,8 +1,13 @@
 #ifndef IMAGES_SPRITE_H
 #define IMAGES_SPRITE_H
 
+/**
+** This class define an specific type of image :
+** an image that can be displayed with "numberOfSprite"
+** different faces.
+**/
+
 #include <array>
-//#include <vector>
 
 #if defined(__GNUC__)
 	#include "SDL/SDL.h"
@@ -14,8 +19,6 @@
 
 #include "Basic_Images.h"
 
-//TO DO : a short description of this class.
-//TO DO : inlined the function that needs to be.
 template<Uint numberOfSprite>
 class Images_Sprite: public Basic_Images
 {

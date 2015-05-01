@@ -1,9 +1,17 @@
 #ifndef AIGAMEMEMORYIMPROVED_H
 #define AIGAMEMEMORYIMPROVED_H
 
+/**
+** This class inherit from AIGameMemory.
+** It remembers everything that this basis class remembers,
+** but will deduce thinks that are not deduce by this previous one.
+** It is able to store information cards per players for each (card,player)
+**/
+
 #include "Definitions.h"
 #include "AIGameMemory.h"
 
+//Debugging :
 #include "DebugwithPrint.h"
 #define PRINT_AIGAMEMEMOIMPROVE 0
 
@@ -30,7 +38,7 @@ class AIGameMemoryImproved : public AIGameMemory<TypeOfCard>
         }
         void dealWithTrumps(Uint i,const TrickBasic_Memory& trick,const Player_ID& currentPlayer,const Card_Color& trumpColor );
 
-        virtual void initHeritage(){ _canPlayersHaveCard.Reset(); } //printf("right reset\n");}
+        virtual void initHeritage(){ _canPlayersHaveCard.Reset(); }
         virtual bool stillHaveCards(const Player_ID& player,const Card_Color& color) const;
 
     private:
@@ -89,10 +97,8 @@ void AIGameMemoryImproved<TypeOfCard>::dealWithTrumps(Uint iPlayer,
 		    maxHTrumpPlay = tempHei;
 		}
 	}
-    /**
-    **If the player have not go up at trump
-    **it is because he has not higher !
-    **/
+    ///If the player have not go up at trump
+    ///it is because he has not higher !
     if (!trick[iPlayer]->Win(maxHTrumpPlay) && trick[iPlayer]->GetHeight() != maxHTrumpPlay)
     {
         Cards_Basic maxTrump(maxHTrumpPlay,trumpColor);

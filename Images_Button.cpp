@@ -1,9 +1,6 @@
 #include "Images_Button.h"
 using namespace::std;
-Images_Button::Images_Button()
-{
-    //ctor
-}
+
 Images_Button::Images_Button(SDL_Event* event
                              ,std::string text_button
                              ,PositionGraphic pos):
@@ -21,6 +18,7 @@ Images_Sprite<2>("images/Sprite_Button.jpg")
     ChangeSprite(0);
     SetPosition(pos);
 }
+
 Images_Button::Images_Button(SDL_Event* event
                              ,PositionGraphic pos
                              ,std::string path
@@ -38,16 +36,14 @@ Images_Sprite<2>(path)
     ChangeSprite(0);
     SetPosition(pos);
 }
-Images_Button::~Images_Button()
-{
-    //dtor
-}
+
 void Images_Button::PositionText()
 {
      PositionGraphic pos_text(_pos.Getx()+_width/2,_pos.Gety()+_height/2,CENTER);
     _text_on.SetPosition(pos_text);
     _text_off.SetPosition(pos_text);
 }
+
 void Images_Button::Update_on_it()
 {
     if( _pEvent->type == SDL_MOUSEMOTION )
@@ -65,6 +61,7 @@ void Images_Button::Update_on_it()
     Set_click_on_long();
     Set_click_on_short();
 }
+
 void Images_Button::act()
 {
     bool test = false;
@@ -74,6 +71,7 @@ void Images_Button::act()
     if (test) _sprite_number = 0;
     else _sprite_number = 1;
 }
+
 void Images_Button::Display(SDL_Surface* destination)
 {
     act();
@@ -84,6 +82,7 @@ void Images_Button::Display(SDL_Surface* destination)
         else _text_off.Display(destination);
     }
 }
+
 void Images_Button::SetPosition(PositionGraphic& pos)
 {
     _height = _clip[_sprite_number].h;

@@ -1,6 +1,16 @@
 #ifndef AIGAMEMEMORY_H
 #define AIGAMEMEMORY_H
 
+/**
+** This class handles one part of the memory of the AI players.
+** It stores (hopefully in an efficient manner -- see MemoryHelpers)
+** all the informations a player need to take the right decision,
+** but it will concern only the playing phase.
+** This is the basic method for remembering it.
+** It remembers every fallen cards, and if a player
+** has no more cards in one color for example.
+**/
+
 #include <array>
 #include <list>
 
@@ -13,21 +23,18 @@
 #include "MemoryHelpers.h"
 #include "CardsGetMethod.h"
 
-/**
-This class handles the memory of the AI players. It will store (hopefully in an efficient manner)
-all the informations a player need to take the right decision.
-This class worries only about the playing phase of the game.
-**/
+//Define the variable for debuging purpose
+#include "DebugwithPrint.h"
+#define AIGAMEMEMORY_DEBUG 0
 
 template<class TypeOfCard>
 class AIGameMemory
 {
-    //TO DO : template with the type of cards, because it might be good to store std::list<Cards_Basic>*
     protected :
         Basic_Game_Info _infos;
-        MemorizeCards _fallenCards; //
-        MemorizeCutsCalls _playerCut; //
-        MemorizeCutsCalls _playerCalls; //
+        MemorizeCards _fallenCards; //all the fallen cards
+        MemorizeCutsCalls _playerCut; //if the players cut (have cards no more) at each color
+        MemorizeCutsCalls _playerCalls; //if the players have called at one color (store by color of course)
         Uint _nbColorPlayed[4]; //key : color ; number of times each color have been played first
         Card_Height _heightsMaster[4]; //key : color, stock the height of the cards master in the color
         Uint _nbRemaining[4]; //key : color ; number of cards remaining in my hand per color
@@ -44,21 +51,20 @@ class AIGameMemory
 
 		WrapperMethod<TypeOfCard, std::is_pointer<TypeOfCard>::value> _wrapperCallMethod;
 
+		WrapperPrint<AIGAMEMEMORY_DEBUG> _printf;
+
     public:
 		AIGameMemory():_posPlayer(GHOST), _pHand(nullptr){}
 		AIGameMemory(const Player_ID& posPlayer, std::list<TypeOfCard>* pHand) :
             _posPlayer(posPlayer),
             _pHand(pHand)
-            {
-                //InitEverything();
-            }
+            { }
 		virtual ~AIGameMemory(){}
         const Player_ID& ID() {return _posPlayer;}
         void UpdateFullTrick(const TrickBasic_Memory& trick,const Position_Trick& posTrick); //posTrick : the position of the player in the trick
         void InitEverything(); //call after the trump have been chosen, to set everything :-)
         Card_Height Master(const Card_Color& color) const;
 
-        //bool CanHaveCard(const Player_ID& player,const Card_Color& color, const Card_Height& height) const;
         bool Cut(const Player_ID& player,const Card_Color& color) const; //see *CallCut for more information
         bool Call(const Player_ID& player,const Card_Color& color) const;
 
@@ -89,7 +95,6 @@ class AIGameMemory
 
         virtual bool SetCannotHaveCard(const Player_ID& player,const Card_Color& col, const Card_Height& height) {return false;} //return false because nothing is done
     protected:
-        //Card_Height heightUnder(const Card_Height& height,bool color);
         void computeNewHeightMaster(); //also update _playerCut
         void updateEverythingElse(); //update everything that need to go through the hand of the player.
 
@@ -102,7 +107,7 @@ class AIGameMemory
 
         virtual void updateSmarter(const TrickBasic_Memory& trick, const Position_Trick& posTrick){}
         virtual bool canHave(const Player_ID& player,const Card_Color& col, const Card_Height& height) const {return true;}
-        virtual void initHeritage(){}//printf("wrong reset\n");}
+        virtual void initHeritage(){}
 		void updatePlayerRelativeAttributes();
     private:
 };
@@ -241,7 +246,7 @@ void AIGameMemory<TypeOfCard>::updatePlayerRelativeAttributes()
 			height = _wrapperCallMethod.callGetHeight(pcard);
 			iColor = color.ToInt();
 			_nbRemaining[iColor] += 1;
-			//printf("%d,%d\n", iColor, height.ToInt());
+			_printf("%d,%d\n", iColor, height.ToInt());
 			cardsPerColor[iColor].push_back(pcard);
 			if (_wrapperCallMethod.callWin(pcard, _greatest[iColor])) _greatest[iColor] = height;
 			if (!(_wrapperCallMethod.callWin(pcard, _smallest[iColor]))) _smallest[iColor] = height;
@@ -255,7 +260,7 @@ void AIGameMemory<TypeOfCard>::updatePlayerRelativeAttributes()
 		Uint nbLeft = 8 - _fallenCards.ComputeFallen(color);
 		if (_nbRemaining[iCol] == nbLeft) //I have all the cards in the color
 		{
-			//printf("I am here\n");
+			_printf("I am here\n");
 			currentPlayer = _posPlayer;
 			for (Uint j = 1; j < 4; j++) //everyone but me cut
 			{

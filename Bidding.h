@@ -1,6 +1,14 @@
 #ifndef BIDDING_H
 #define BIDDING_H
 
+/**
+** This class implement the bidding phase.
+** Each player bid (one after the other), at the end it
+** stores the "winning bet" which define the taker and
+** the contract : minimum score to be done and color of
+** trump.
+**/
+
 #include<array>
 #include<list>
 
@@ -8,6 +16,10 @@
 #include "Player.h"
 #include "Cards_Deck.h"
 #include "BetsMemory.h"
+
+//Define the variable for debuging purpose
+#include "DebugwithPrint.h"
+#define BIDDING_DEBUG 0
 
 class Bidding
 {
@@ -23,6 +35,7 @@ class Bidding
         Images_Button _ok;
         Cards_Deck* _pDeck;
         Player_ID _bidder;
+        WrapperPrint<BIDDING_DEBUG> _printf;
 
     public:
         Bidding(){}

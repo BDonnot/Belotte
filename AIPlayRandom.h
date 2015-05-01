@@ -1,6 +1,12 @@
 #ifndef AIPLAYRANDOM_H
 #define AIPLAYRANDOM_H
 
+/**
+** This is the first wrapper for the method playing for AI players.
+** It allow them to play randomly a card among
+** the cards playable.
+**/
+
 #include<list>
 #include<array>
 
@@ -9,7 +15,6 @@
 #include "Random.h"
 #include "TrickStatus.h"
 
-/** A wrapper : implement the way of playing randomly **/
 template<class TypeOfCard, template<class> class Memory >
 class AIPlayRandom
 {

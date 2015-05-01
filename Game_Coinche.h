@@ -12,17 +12,14 @@
 #include "Player.h"
 #include "Player_Human.h"
 #include "Player_AI.h"
-//#include "GameMemory.h"
+
 #include "AIPlayRandom.h"
 #include "AIPlayScores.h"
 #include "AIPlayMonteCarlo.h"
-#include "McPlayRandom.h"
+#include "MCPlayGames.h"
 
 #include "AIGameMemory.h"
 #include "AIGameMemoryImproved.h"
-//#include "AIBetsMemory.h"
-//#include "AIGameMemory.h"
-//#include "AIPlayRandom.h"
 
 #include "AITakeBasic.h"
 #include "Screen_Begin.h"
@@ -33,9 +30,20 @@
 #include "End_Of_Game.h"
 #include "Save_Game.h"
 
+//Define the variable for debuging purpose
+#include "DebugwithPrint.h"
+#define GAME_COINCHE_DEBUG 0
+
+///Add the exception :
+///TO DO : future feature to be added here, one day... like handling an exception and trying to recover the game from the files saved...
 class Game_Coinche : public Quit
 {
     protected :
+        typedef Player_AI<AIGameMemoryImproved,AITakeBasic,AIPlayMonteCarlo<3000,1,AIGameMemoryImproved,AIMemPerfectInfo,AIPlayScores<Cards_Basic, AIGameMemoryImproved> > > AIMCScores;
+        typedef Player_AI<AIGameMemoryImproved,AITakeBasic,AIPlayMonteCarlo<100,30,AIGameMemoryImproved,AIMemPerfectInfo,AIPlayRandom<Cards_Basic, AIGameMemoryImproved> > > AIMCRandom;
+        typedef Player_AI<AIGameMemoryImproved,AITakeBasic, AIPlayScores<Cards*, AIGameMemoryImproved> > AIScores;
+        typedef Player_AI<AIGameMemoryImproved,AITakeBasic, AIPlayRandom<Cards*, AIGameMemoryImproved> > AIRandom;
+
         Basic_Game_Info _infos;
         SDL_Surface* _pScreen;
         Basic_Images _backSide;
@@ -50,11 +58,12 @@ class Game_Coinche : public Quit
         Trick _trick;
         End_Of_Game _endGame;
         Save_Game _saveGame; //to save the game
-        Uint _nbGame;
+        Uint _nbGame; //number of game played
 
+        WrapperPrint<GAME_COINCHE_DEBUG> _printf;
 
     public:
-        Game_Coinche();
+        Game_Coinche(){}
         void Play();
         Game_Coinche(SDL_Surface* screen,Uint16 screenWidth, Uint16 screenHeight);
         virtual ~Game_Coinche();

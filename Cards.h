@@ -1,10 +1,13 @@
 #ifndef CARDS_H
 #define CARDS_H
 
-
 /**
-CardsUI : depends on the graphical interface
+** Inherit from Cards_Basic and Cards_SDL.
+** A card is 2 things :
+** the information it contains (height, color etc.)
+** and the image on the screen.
 **/
+
 #include "Cards_Basic.h"
 #include "Cards_SDL.h"
 
@@ -25,8 +28,8 @@ class Cards : public Cards_Basic, public Cards_SDL
     protected:
 
     private:
-        //Cards(const Cards& other);
-        //Cards& operator=(const Cards& other);
+        Cards(const Cards& other){}
+        Cards& operator=(const Cards& other){return *this;}
 
 };
 #endif // CARDS_H

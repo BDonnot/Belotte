@@ -1,11 +1,22 @@
 #ifndef AIMEMPERFECTINFO_H
 #define AIMEMPERFECTINFO_H
 
-#define AIMEMPERFECTINFO 0
+/**
+** This class inherit from AIGameMemoryImproved.
+** It is some king a specification of this previous methods,
+** in the case of the cards of everyone is known by everyone.
+** This is currently use in MCPlayGames.
+**/
+
 #include <array>
 
 #include "Definitions.h"
 #include "AIGameMemoryImproved.h"
+
+//Debugging :
+#include "DebugwithPrint.h"
+#define AIMEMPERFECTINFO 0
+
 
 template<class TypeOfCard>
 class AIMemPerfectInfo : public AIGameMemoryImproved<TypeOfCard>
@@ -17,9 +28,6 @@ class AIMemPerfectInfo : public AIGameMemoryImproved<TypeOfCard>
 		virtual ~AIMemPerfectInfo(){}
 		void SetPlayer(const Player_ID& player, std::list<TypeOfCard>& hand);
 		void SetGame(const std::array< std::pair<Player_ID, std::list<TypeOfCard> >, 4 >& allHands);
-
-        //TO DO : deals with the player dependant methods
-        //eg relative to :
 
     protected:
     private:

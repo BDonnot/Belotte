@@ -1,5 +1,12 @@
 #ifndef CARDS_COLOR_H_INCLUDED
 #define CARDS_COLOR_H_INCLUDED
+
+/**
+** This class is a helper, dealing with
+** the color of the cards.
+** The color is one particular aspect of cards, of course.
+**/
+
 enum CARDS_COLOR {DIAMOND,HEART,SPADE,CLUB,ALL_TRUMP,NO_TRUMP,NO,NOT_CHOSEN}; //carreau,coeur,pique,trefle, non je ne prends pas,je n'ai pas choisi
 class Card_Color
 {

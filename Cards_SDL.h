@@ -1,6 +1,12 @@
 #ifndef CARDS_SDL_H
 #define CARDS_SDL_H
 
+/**
+** This class implement representation of the cards
+** on the screen through SDL.
+** It is a pure virtual method.
+**/
+
 #include "Basic_Transparency.h"
 #include "Basic_Click.h"
 #include "Images_Sprite_Move.h"
@@ -24,9 +30,9 @@ class Cards_SDL: public  Basic_Transparency, public  Basic_Click, public Images_
         void Reveal(Uint duration,Uint time_lag,Uint current_time); //reveal or hide the card, depending on which part of the card is visible
         void Reset();
 
-        const bool GetUp() const;
+        const bool GetUp() const {return _up;}
         virtual void Display() = 0;
-        virtual ~Cards_SDL();
+        virtual ~Cards_SDL(){}
     protected:
         virtual void act();
         void updateMouvement();

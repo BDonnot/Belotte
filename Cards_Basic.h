@@ -1,13 +1,19 @@
 #ifndef CARDS_BASIC_H
 #define CARDS_BASIC_H
 
+/**
+** This class implement the basic concept of a card, and the related methods.
+** It implements the height, the color, the value, etc.
+**/
+
 #include <array>
 #include <string>
 
 #include "Definitions.h"
 #include "Basic_Game_Info.h"
-#include "PositionGraphic.h" //non UI Related ...
-/**This class implement the basic concept of a card, and the related methods. It does not depend on the graphic interface**/
+//#include "PositionGraphic.h"
+
+
 //TO DO : find a more elegant way for 'getString()'
 
 class Cards_Basic

@@ -18,11 +18,6 @@ Cards_SDL::Cards_SDL(Uint height,Uint color,SDL_Event* event,SDL_Surface * pscre
     _first_sprite = false;
 }
 
-Cards_SDL::~Cards_SDL()
-{
-    //dtor
-}
-
 void Cards_SDL::Update_on_it()
 {
     if( _pEvent->type == SDL_MOUSEMOTION )
@@ -40,14 +35,15 @@ void Cards_SDL::Update_on_it()
     Set_click_on_long();
     Set_click_on_short();
 }
+
 void Cards_SDL::act()
 {
     updateMouvement();
     transparency(); //calcul of alpha
     SDL_SetAlpha( _surface.get(), SDL_SRCALPHA | SDL_RLEACCEL, _alpha ); //apply the new level of transparency
-//    if(_Up)  _pos_end.Gety() -= 50;
     Move(); //calcul of the new position
 }
+
 void Cards_SDL::InitMouvement(bool transparency,PositionGraphic pos,Uint32 duration,Uint32 time_lag)
 {
     Uint32 current_time = _info.Time();
@@ -55,16 +51,19 @@ void Cards_SDL::InitMouvement(bool transparency,PositionGraphic pos,Uint32 durat
     pos.SetProperPosition(_width,_height);
     Set_animate(pos,duration,time_lag);
 }
+
 void Cards_SDL::UpdatePositionHand(PositionGraphic& pos_end)
 {
     pos_end.SetProperPosition(_width,_height);
     if ((pos_end.Getx() != _pos.Getx())||(pos_end.Gety() != _pos.Gety())) Set_animate(pos_end);
 }
+
 void Cards_SDL::updateMouvement()
 {
     _timer_alpha_current = _info.Time();
     revealing();
 }
+
 void Cards_SDL::revealing()
 {
     if(_timer_alpha_current <= _timer_alpha_end) return;
@@ -79,40 +78,30 @@ void Cards_SDL::revealing()
         _alpha = SDL_ALPHA_OPAQUE;
     }
 }
+
 void Cards_SDL::Up(bool go_up)
 {
     if((go_up)&&(!_up))
     {
         _up = true;
-//        _pos_end.Gety() -= 50;
         return;
     }
     if ((!go_up)&&(_up))
     {
         _up = false;
-//        _pos_end.Gety() -= 50;
     }
 }
+
 void Cards_SDL::Reveal(Uint32 duration,Uint32 time_lag,Uint32 current_time) //init the revealing of a card : first the back disapear slowly and then the front appear
 {
     _first_sprite = true;
-//    Uint32 half_duration = duration /2;
     _half_duration = duration /2;
     Set_Transparent((Uint8) 30,_half_duration,time_lag,_info.Time());
 }
-const bool Cards_SDL::GetUp() const
-{
-    return _up;
-}
+
 void Cards_SDL::Reset()
 {
     Reset_Click();
     _up = false;
 }
-/*
-void Cards_SDL::Display()
-{
-    this->Display(_pScreen);
-}
-*/
 

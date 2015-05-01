@@ -1,6 +1,11 @@
 #ifndef IMAGES_SPRITEEVENT_H
 #define IMAGES_SPRITEEVENT_H
 
+/**
+** This class define an specific type of image :
+** an image with multiple faces, that can be clicked on.
+**/
+
 #if defined(__GNUC__)
 	#include "SDL/SDL.h"
 	#include "SDL/SDL_image.h"
@@ -16,28 +21,13 @@ template<Uint numberOfSprite>
 class Images_SpriteEvent : public Images_Sprite<numberOfSprite> , public Basic_Click
 {
     public:
-        Images_SpriteEvent();
-        Images_SpriteEvent(std::string path, SDL_Event* pevent);
+        Images_SpriteEvent(){}
+        Images_SpriteEvent(std::string path, SDL_Event* pevent):Images_Sprite<numberOfSprite>(path),Basic_Click(pevent){}
         virtual ~Images_SpriteEvent(){}
         virtual void Update_on_it();
     protected:
     private:
 };
-
-template<Uint numberOfSprite>
-Images_SpriteEvent<numberOfSprite>::Images_SpriteEvent():
-Images_Sprite<numberOfSprite>()
-{
-    //ctor
-}
-
-template<Uint numberOfSprite>
-Images_SpriteEvent<numberOfSprite>::Images_SpriteEvent(std::string path, SDL_Event* pevent):
-Images_Sprite<numberOfSprite>(path)
-,Basic_Click(pevent)
-{
-    //ctor
-}
 
 template<Uint numberOfSprite>
 void Images_SpriteEvent<numberOfSprite>::Update_on_it()

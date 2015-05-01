@@ -1,10 +1,6 @@
 #include "Game_Coinche.h"
 
 using namespace std;
-Game_Coinche::Game_Coinche()
-{
-    //ctor
-}
 
 Game_Coinche::Game_Coinche(SDL_Surface* screen,Uint16 screenWidth, Uint16 screenHeight):
     Quit()
@@ -34,24 +30,24 @@ Game_Coinche::Game_Coinche(SDL_Surface* screen,Uint16 screenWidth, Uint16 screen
 #endif
     {
 #if PLAY_HUMAN > 0
-        _players[i] = static_cast<Player*>(new Player_AI<AIGameMemoryImproved,AITakeBasic,AIPlayMonteCarlo<AIGameMemoryImproved,McPlayRandom<AIGameMemoryImproved,30,AIPlayRandom<AIGameMemory,Cards_Basic> > > >(Player_ID(posPlayer[i]),screenWidth,screenHeight,_event,&_backSide,_pScreen));
+        _players[i] = static_cast<Player*>(new AIMCScores(Player_ID(posPlayer[i]), screenWidth, screenHeight, _event, &_backSide, _pScreen));
 #else
-		if (i % 2 == 0) _players[i] = static_cast<Player*>(new Player_AI<AIGameMemoryImproved, AITakeBasic, AIPlayMonteCarlo<3000,AIGameMemoryImproved, McPlayRandom<AIMemPerfectInfo, 1, AIPlayScores<Cards_Basic, AIGameMemoryImproved> > > >(Player_ID(posPlayer[i]), screenWidth, screenHeight, _event, &_backSide, _pScreen));
-		else _players[i] = static_cast<Player*>(new Player_AI<AIGameMemoryImproved, AITakeBasic, AIPlayMonteCarlo<100,AIGameMemoryImproved, McPlayRandom<AIGameMemoryImproved, 30, AIPlayRandom<Cards_Basic, AIGameMemoryImproved> > > >(Player_ID(posPlayer[i]), screenWidth, screenHeight, _event, &_backSide, _pScreen));
+		if (i % 2 == 0)
+            _players[i] = static_cast<Player*>(new AIMCScores(Player_ID(posPlayer[i]), screenWidth, screenHeight, _event, &_backSide, _pScreen));
+		else
+            _players[i] = static_cast<Player*>(new AIMCRandom(Player_ID(posPlayer[i]), screenWidth, screenHeight, _event, &_backSide, _pScreen));
 
-		//if (i % 2 == 0) _players[i] = static_cast<Player*>(new Player_AI<AIGameMemoryImproved, AITakeBasic, AIPlayMonteCarlo<100,AIGameMemoryImproved, McPlayRandom<AIGameMemoryImproved, 30, AIPlayRandom<Cards_Basic, AIGameMemoryImproved> > > >(Player_ID(posPlayer[i]), screenWidth, screenHeight, _event, &_backSide, _pScreen));
-		//else _players[i] = static_cast<Player*>(new Player_AI<AIGameMemoryImproved, AITakeBasic, AIPlayScores<Cards*, AIGameMemoryImproved> >(Player_ID(posPlayer[i]), screenWidth, screenHeight, _event, &_backSide, _pScreen));
+		//if (i % 2 == 0)
+            //_players[i] = static_cast<Player*>(new AIMCRandom(Player_ID(posPlayer[i]), screenWidth, screenHeight, _event, &_backSide, _pScreen));
+		//else
+            //_players[i] = static_cast<Player*>(new AIScores(Player_ID(posPlayer[i]), screenWidth, screenHeight, _event, &_backSide, _pScreen));
 
-		//if (i % 2 == 0) _players[i] = static_cast<Player*>(new Player_AI<AIGameMemoryImproved, AITakeBasic, AIPlayScores<Cards*, AIGameMemoryImproved> >(Player_ID(posPlayer[i]), screenWidth, screenHeight, _event, &_backSide, _pScreen));
-		//else _players[i] = static_cast<Player*>(new Player_AI<AIGameMemoryImproved, AITakeBasic, AIPlayRandom<Cards*,AIGameMemoryImproved> >(Player_ID(posPlayer[i]), screenWidth, screenHeight, _event, &_backSide, _pScreen));
+		//if (i % 2 == 0)
+            //_players[i] = static_cast<Player*>(new AIScores(Player_ID(posPlayer[i]), screenWidth, screenHeight, _event, &_backSide, _pScreen));
+		//else
+            //_players[i] = static_cast<Player*>(new AIRandom(Player_ID(posPlayer[i]), screenWidth, screenHeight, _event, &_backSide, _pScreen));
 #endif
-        //if(i%2 ==0) _players[i] =  static_cast<Player*>(new Player_AI<AIGameMemoryImproved,AITakeBasic,AIPlayMonteCarlo<AIGameMemoryImproved,McPlayRandom<AIGameMemoryImproved,1,AIPlayScores<AIGameMemory,Cards_Basic> > > >(Player_ID(posPlayer[i]),screenWidth,screenHeight,_event,&_backSide,_pScreen));
-        //else _players[i] =  static_cast<Player*>(new Player_AI<AIGameMemoryImproved,AITakeBasic,AIPlayMonteCarlo<AIGameMemoryImproved,McPlayRandom<AIGameMemoryImproved,30,AIPlayRandom<AIGameMemory,Cards_Basic> > > >(Player_ID(posPlayer[i]),screenWidth,screenHeight,_event,&_backSide,_pScreen));
-
-
-
-
-		    }
+    }
     _bid.SetPlayers(_players);
     _trick.SetPlayers(_players);
 }
@@ -63,6 +59,7 @@ Game_Coinche::~Game_Coinche()
         delete _players[i];
     }
 }
+
 void Game_Coinche::updateEvent(bool& keep_playing)
 {
     while(SDL_PollEvent(_event))
@@ -94,10 +91,12 @@ bool Game_Coinche::waitForClick()
         }
     }
 }
+
 void Game_Coinche::updateTime(Uint32 diffTime)
 {
     _infos.AddClock(diffTime);
 }
+
 void Game_Coinche::Display()
 {
      _backSide.Display(_pScreen);
@@ -110,6 +109,7 @@ void Game_Coinche::Display()
     _trick.Display(_currentPhase);
     _endGame.Display(_currentPhase);
 }
+
 void Game_Coinche::playGame(bool& keep_playing)
 {
     if(_infos.Time() < _timeNextAction) return;
@@ -130,7 +130,7 @@ void Game_Coinche::playGame(bool& keep_playing)
                 return;
         }
 #else
-    _currentPhase = GIVING;
+        _currentPhase = GIVING;
 #endif
         return;
     case SELECT_NAMES : case GIVING :
@@ -165,9 +165,9 @@ void Game_Coinche::playGame(bool& keep_playing)
         return;
     case AFTER_BET :
 #if PLAY_HUMAN > 0
-        if (_bid.Click(true)) //HERE
+        if (_bid.Click(true))
 #else
-        if (true) //HERE
+        if (true)
 #endif
         {
             _currentPhase = _bid.NextPhase();
@@ -175,20 +175,16 @@ void Game_Coinche::playGame(bool& keep_playing)
             {
                 _saveGame.SaveTake(_infos.Taker().ToInt(),_infos.TrumpColor().ToInt(),_infos.MaxBid());
                 _trick.Update();
-                /*for(auto it = _players.begin(); it != _players.end();++it)
-                {
-                    (*it)->InitMemory();
-                }*/
             }
             else _saveGame.EndGame();
         }
         return;
     case PLAYING :
-        //printf("playing trick %d\n",_trick.TrickNumber());
+        _printf("playing trick %d\n",_trick.TrickNumber());
         if(_trick.Play()) _currentPhase = AFTER_TRICK0; //HERE : changer dans trickFinished
         return;
     case AFTER_TRICK0 :
-        //printf("AFTER_TRICK0 %d \n",_trick.TrickNumber());
+        _printf("AFTER_TRICK0 %d \n",_trick.TrickNumber());
         _saveGame.SaveTrick(_trick);
         _trick.GatherCards();
 #if PLAY_HUMAN > 0
@@ -197,12 +193,12 @@ void Game_Coinche::playGame(bool& keep_playing)
         _currentPhase = AFTER_TRICK1;
         return;
     case AFTER_TRICK1 :
-        //printf("AFTER_TRICK1 %d \n",_trick.TrickNumber());
+        _printf("AFTER_TRICK1 %d \n",_trick.TrickNumber());
          _trick.WinnerTakeCards();
         _currentPhase = PLAYING;
         if(_trick.TrickNumber() == 8)
         {
-            //printf("game over\n");
+            _printf("game over\n");
             _endGame.Update();
             const array<Uint,2>& scores = _infos.FinalScores();
             _saveGame.SaveScores(scores[0],scores[1]);
@@ -215,7 +211,7 @@ void Game_Coinche::playGame(bool& keep_playing)
         }
         return;
     case SCORES :
-        //printf("Should be displaying scores\n");
+        _printf("Should be displaying scores\n");
         _currentPhase = _endGame.Next(); //HERE (inside function)
         if(_currentPhase!=SCORES)
         {
@@ -230,14 +226,13 @@ void Game_Coinche::Play()
 {
     bool keep_playing = true;
     Uint32 startLoop = 0,endLoop = 0;
-    double FRAMES_PER_SECOND = 32.;
-    Uint32 min_time_loop = static_cast<Uint32>(1000./FRAMES_PER_SECOND);
+    Uint32 min_time_loop = static_cast<Uint32>(1000./FRAMES_PER_SECOND_FOR_ME);
     _timeNextAction = 0;
     bool error = false;
      while (keep_playing)
     {
         updateTime(endLoop-startLoop);
-        try //future feature to be added here, one day... like handling an exception and trying to recover the game from the files saved...
+        try
         {
             if(error) throw 0;
             startLoop = SDL_GetTicks();

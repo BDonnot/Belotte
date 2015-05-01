@@ -1,6 +1,13 @@
 #ifndef CARDSGETMETHOD_H_INCLUDED
 #define CARDSGETMETHOD_H_INCLUDED
 
+/**
+** These wrapper define properly the way to access some methods of
+** class Cards/Card_Basic, depending on the fact
+** it is pointer or not
+** access through '.' or '->'
+**/
+
 template<class TypeOfCard,bool isPointer>
 class WrapperMethod {};
 

@@ -1,9 +1,6 @@
 #include "Basic_Text.h"
 using namespace::std;
-Basic_Text::Basic_Text()
-{
-    //ctor
-}
+
 Basic_Text::Basic_Text(std::string path_font, int size, char colR, char colG, char colB, std::string text) :
 _size(size)
 {
@@ -15,13 +12,7 @@ _size(size)
 	_color.g = colG;
 	_color.b = colB;
 }
-Basic_Text::~Basic_Text()
-{
-}
-const string& Basic_Text::GetText() const
-{
-    return _current_text;
-}
+
 SDLKey Basic_Text::Convert(SDLKey key)
 {
     switch(key)

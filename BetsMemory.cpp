@@ -44,7 +44,6 @@ bool BetsMemory::IsBetsOver() const //TO DO : change signature
     for(Uint i = 0; i < 3; i++)
     {
         res &= (*itBet).Color()==NO;
-        //next = _infos.Next(next);
         ++itBet;
     }
     return res;

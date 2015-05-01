@@ -1,5 +1,12 @@
 #ifndef PLAYER_ID_H_INCLUDED
 #define PLAYER_ID_H_INCLUDED
+
+/**
+** This class is a helper, dealing with
+** the ID of the players.
+** In Coinche games, there is 4 players.
+**/
+
 enum PLAYER_ID {PLAYER0,PLAYER1,PLAYER2,PLAYER3,GHOST};
 class Player_ID
 {

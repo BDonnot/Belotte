@@ -1,6 +1,13 @@
 #ifndef BASICMONTECARLOACTION_H
 #define BASICMONTECARLOACTION_H
 
+/**
+** During the simulating of the games in AIPlayMonteCarlo,
+** "actions" (eg giving a specific card to a specific player)
+** are done.
+** This class define these kind of actions.
+**/
+
 #include "Definitions.h"
 #include "Cards_Basic.h"
 #include "PLAYER_ID.h"

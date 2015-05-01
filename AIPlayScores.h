@@ -1,22 +1,40 @@
 #ifndef AIPLAYSCORES_H
 #define AIPLAYSCORES_H
 
+/**
+** This is another wrapper for the method playing for AI players.
+** It allow them to play according to scores.
+** Those scores are stored in csv files, handle by
+** the class Datas.
+** This way of playing consist in assign a score for each
+** playable cards, and play the cards with the higher score.
+** The score are increased / decreased regarding some conditions.
+** The value of the increasing/decreasing is stored in _play_*
+**/
+
+
 #include <list>
 #include <array>
 #include <type_traits>
 
 #include "Definitions.h"
-//#include "Cards.h"
-//#include "AIGameMemoryImproved.h"
 #include "Random.h"
 #include "TrickStatus.h"
 #include "Datas.h"
 #include "TrickBasic_Memory.h"
 #include "CardsGetMethod.h"
-/** The AI player will play according to a score. These one are defined in some csv files**/
 
-//TO DO: hash table instead of indices in the current file "datas.h"
+///Informatically :
+///TO DO: hash table instead of indices in the current file "datas.h"
 
+///Game Improvement :
+///TO DO : ouvrir est souvent une bonne idée
+///TO DO : jouer atout quand son partenaire a pris !!!
+///TO DO : mettre ses AS quand on a la main et qu'on est en defense
+///TO DO : ne pas mettre des points quand le plis n'est pas remporte
+///eviter de jouer une couleur dans laquelle on a un 10
+///TO DO : ne pas lancer son dernier atout
+///TO DO : ne pas défausser ses AS : essayer de garder ses cartes maitresses !
 
 template<class TypeOfCard, template<class> class Memory >
 class AIPlayScores
@@ -146,93 +164,91 @@ int AIPlayScores<TypeOfCard, Memory>::playFirst(const TypeOfCard& pcard,
     }
     Player_ID teammate = _player.Teammate();
 
-    //if (pcard == nullptr) return -10000; //TO DO : exception here
-
     //if I or my teammate took, I try to play trump
     if (team_taken == (_player.ToInt()%2) && playerMemory.NbColorPlayed(color_trump) == 0)
     {
         if(color == color_trump )
         {
-            res += _play_1st.value(28,0); //res = 30
+            res += _play_1st.Value(28); //res = 30
             if(playerMemory.Greatest(color_trump) == JACK) //if I have the jack
             {
-                if(height_ == JACK) res += _play_1st.value(29,0); //res += 10
-                else res += _play_1st.value(30,0); //res += -10
+                if(height_ == JACK) res += _play_1st.Value(29); //res += 10
+                else res += _play_1st.Value(30); //res += -10
             }
         }
-        else res += _play_1st.value(31,0); //res -= 30
+        else res += _play_1st.Value(31); //res -= 30
 
     }
     if(playerMemory.OpponentsCut(color_trump)) //if the opponents have no more trump, I don't play trump
     {
-        if(color == color_trump) res += _play_1st.value(32,0); //res -= 50
+        if(color == color_trump) res += _play_1st.Value(32); //res -= 50
     }
     //trumps case
     if (play_trump && (color==color_trump))
     {
-        res += _play_1st.value(0,0); //res = 30
+        res += _play_1st.Value(0); //res = 30
         if (height==playerMemory.Master(color))
         {
-            if (number_trick == 6) res += _play_1st.value(1,0); //res = -17
-            else res += _play_1st.value(2,0); //res=100
+            if (number_trick == 6) res += _play_1st.Value(1); //res = -17
+            else res += _play_1st.Value(2); //res=100
         }
-        if (height_==TEN)  res += _play_1st.value(3,0); //ten;res=7
-        else if (height_==NINE)  res += _play_1st.value(4,0); //nine;res=-20
-        else if (height_==ACE)  res += _play_1st.value(5,0); //Ace;res=-15
-        else if (height_==JACK)  res += _play_1st.value(6,0); //Jack;res=100
+        if (height_==TEN)  res += _play_1st.Value(3); //ten;res=7
+        else if (height_==NINE)  res += _play_1st.Value(4); //nine;res=-20
+        else if (height_==ACE)  res += _play_1st.Value(5); //Ace;res=-15
+        else if (height_==JACK)  res += _play_1st.Value(6); //Jack;res=100
     }
-    if (!play_trump&&(color==color_trump)) res += _play_1st.value(7,0); //res=-15
+    if (!play_trump&&(color==color_trump)) res += _play_1st.Value(7); //res=-15
     //Case of friend call : TO DO
 
     if (playerMemory.Call(teammate,color)) //add an additional condition : if the teammate does a call and we are not the strongest in this colour
     {
-        res += _play_1st.value(8,0); //res=5
+        res += _play_1st.Value(8); //res=5
         if (height_==TEN) //10
         {
-            res += _play_1st.value(9,0); //res=-10
-            if (oponentCut) res += _play_1st.value(10,0); //res=-10
+            res += _play_1st.Value(9); //res=-10
+            if (oponentCut) res += _play_1st.Value(10); //res=-10
         }
-        else if (height_==KING) res += _play_1st.value(11,0); //res=8
+        else if (height_==KING) res += _play_1st.Value(11); //res=8
         else if (height_==QUEEN) //queen
         {
-            if (oponentCut) res += _play_1st.value(12,0); //res=-10
-            else res += _play_1st.value(13,0); //res=7
+            if (oponentCut) res += _play_1st.Value(12); //res=-10
+            else res += _play_1st.Value(13); //res=7
         }
         //if (height_==TEN) res += _play_1st.value(14,0); //res=4
-        if (playerMemory.NbColorPlayed(color) == 0) res += _play_1st.value(15,0); //res=7
+        if (playerMemory.NbColorPlayed(color) == 0) res += _play_1st.Value(15); //res=7
         if (oponentCut)
         {
-            if (playerMemory.DoMyTeamTook()) res += _play_1st.value(16,0); //res=-5
-            else res += _play_1st.value(17,0); //res=7
+            if (playerMemory.DoMyTeamTook()) res += _play_1st.Value(16); //res=-5
+            else res += _play_1st.Value(17); //res=7
         }
     }
 
     //Case of the major card
     if (height == playerMemory.Master(color))
     {
-        res += _play_1st.value(18,0); //res=12
+        res += _play_1st.Value(18); //res=12
         if (height_==TEN) //10
         {
-            if (!oponentCut) res += _play_1st.value(19,0); //17
-            else res += _play_1st.value(20,0); //res=-25
+            if (!oponentCut) res += _play_1st.Value(19); //17
+            else res += _play_1st.Value(20); //res=-25
         }
         else if (height_==ACE) //ace
         {
-            if (!oponentCut) res += _play_1st.value(21,0); //res=35
-            else res += _play_1st.value(22,0); //res=-30
+            if (!oponentCut) res += _play_1st.Value(21); //res=35
+            else res += _play_1st.Value(22); //res=-30
         }
         else if (height_==KING) //king
         {
-            if (!oponentCut) res += _play_1st.value(23,0); //res=5
-            else res += _play_1st.value(24,0); //res=-12
+            if (!oponentCut) res += _play_1st.Value(23); //res=5
+            else res += _play_1st.Value(24); //res=-12
         }
         if (playerMemory.NbColorPlayed(color) == 0) //if the color has not been played
         {
-            if (height == heightsOrder[1]) res += _play_1st.value(25,0); // res= 15
-            else res += _play_1st.value(26,0); // res=-9
+            if (height == heightsOrder[1]) res += _play_1st.Value(25); // res= 15
+            else res += _play_1st.Value(26); // res=-9
             //if (height == heightsOrder[2]) res += _play_1st.value(26,0); // res=-9
         }
-        if ((number_trick == 6)&&(color == color_trump)) res += _play_1st.value(27,0); //res=-10
+        if ((number_trick == 6)&&(color == color_trump)) res += _play_1st.Value(27); //res=-10
     }
     //We try to not play in the "longe" of our opponents : TO DO
     //if (_calls[((_number+1)%4)*4+color]||_calls[modulo(_number+1,4)*4+color]) res += _play_1st.value(28,0); //res=-9
@@ -273,71 +289,71 @@ int AIPlayScores<TypeOfCard, Memory>::playSecond(const TypeOfCard& pcard,
     {
         if (color==color_asked) //if the colour asked is the trump color
         {
-            if (playerMemory.AmIMaster(color)) res += _play_2nd.value(0,0); //res=20
+            if (playerMemory.AmIMaster(color)) res += _play_2nd.Value(0); //res=20
             else //you are not master: you play the smallest trump you can
             {
-                if (height_ == heightsOrder[1]) res += _play_2nd.value(1,0); //res=-55
-                if (height_ == heightsOrder[2]) res += _play_2nd.value(2,0); //res=-30
-                if (height_ == heightsOrder[3]) res += _play_2nd.value(3,0); //res=-20
-                if (height == playerMemory.Smallest(color)) res += _play_2nd.value(4,0); //res=30
+                if (height_ == heightsOrder[1]) res += _play_2nd.Value(1); //res=-55
+                if (height_ == heightsOrder[2]) res += _play_2nd.Value(2); //res=-30
+                if (height_ == heightsOrder[3]) res += _play_2nd.Value(3); //res=-20
+                if (height == playerMemory.Smallest(color)) res += _play_2nd.Value(4); //res=30
             }
         }
         else //we play a trump but the color asked is not the trump
         {
-            if (height==playerMemory.Smallest(color)) res += _play_2nd.value(5,0); //res=10
-            if (height==playerMemory.Greatest(color)) res += _play_2nd.value(6,0); //res=-30
-            if (height_ == JACK) res += _play_2nd.value(32,0); //res=-20
-            if (height_ == NINE) res += _play_2nd.value(7,0); //res=-20
-            if (height_ == ACE) res += _play_2nd.value(8,0); //res=-10
+            if (height==playerMemory.Smallest(color)) res += _play_2nd.Value(5); //res=10
+            if (height==playerMemory.Greatest(color)) res += _play_2nd.Value(6); //res=-30
+            if (height_ == JACK) res += _play_2nd.Value(32); //res=-20
+            if (height_ == NINE) res += _play_2nd.Value(7); //res=-20
+            if (height_ == ACE) res += _play_2nd.Value(8); //res=-10
         }
     }
 //If I am the strongest in the color
     if ((height == playerMemory.Master(color))&&(color==color_asked))
     {
-        res += _play_2nd.value(9,0); //res=15
+        res += _play_2nd.Value(9); //res=15
         if (height_ == NINE) //10
         {
-            res += _play_2nd.value(10,0); //res=10
-            if (oponentCut) res += _play_2nd.value(11,0); //res=-17
+            res += _play_2nd.Value(10); //res=10
+            if (oponentCut) res += _play_2nd.Value(11); //res=-17
         }
-        if (height_ == QUEEN) res += _play_2nd.value(12,0); //res=15
-        if (height_ == KING) res += _play_2nd.value(13,0); //res=5
+        if (height_ == QUEEN) res += _play_2nd.Value(12); //res=15
+        if (height_ == KING) res += _play_2nd.Value(13); //res=5
         if (playerMemory.NbColorPlayed(color) ==0)
         {
-            if (height_ == TEN) res += _play_2nd.value(14,0); //res=-20
-            if (height_ == TEN) res += _play_2nd.value(14,0); //res=-7
+            if (height_ == TEN) res += _play_2nd.Value(14); //res=-20
+            if (height_ == TEN) res += _play_2nd.Value(14); //res=-7
         }
-        if (oponentCut) res += _play_2nd.value(16,0); //res=-20
-        if ((number_trick == 6)&&(color == color_trump)) res += _play_2nd.value(17,0); //res=-10
+        if (oponentCut) res += _play_2nd.Value(16); //res=-20
+        if ((number_trick == 6)&&(color == color_trump)) res += _play_2nd.Value(17); //res=-10
     }
     //I have the colour and I am not the strongest
     if ((color==color_asked)&&(height != playerMemory.Master(color)))
     {
-        if (oponentCut) res += _play_2nd.value(18,0); //res=-10
-        if (height_ == heightsOrder[1]) res += _play_2nd.value(19,0); //res=-30
-        if (height_ == heightsOrder[2]) res += _play_2nd.value(20,0); //res=-10
-        if (height_ == heightsOrder[3]) res += _play_2nd.value(21,0); //res=-5
+        if (oponentCut) res += _play_2nd.Value(18); //res=-10
+        if (height_ == heightsOrder[1]) res += _play_2nd.Value(19); //res=-30
+        if (height_ == heightsOrder[2]) res += _play_2nd.Value(20); //res=-10
+        if (height_ == heightsOrder[3]) res += _play_2nd.Value(21); //res=-5
     }
 //the case of the 10 is taken into account in the case of "pisse"
 //If we "pisse"(calls)
     if ((pisse)&&(color!=color_asked)&&(color!=color_trump))
     {
-        if (playerMemory.AmIMaster(color)) res += _play_2nd.value(22,0); //res=-15
-        if (height == playerMemory.Greatest(color)) res += _play_2nd.value(23,0); //res=-15
-        if (height == playerMemory.Smallest(color)) res += _play_2nd.value(24,0); //res=15
+        if (playerMemory.AmIMaster(color)) res += _play_2nd.Value(22); //res=-15
+        if (height == playerMemory.Greatest(color)) res += _play_2nd.Value(23); //res=-15
+        if (height == playerMemory.Smallest(color)) res += _play_2nd.Value(24); //res=15
         //we are risk-adverse (more than in the position 3) and the aversion is inversely proportional to the pseudo_height of the card
-        if (height_ == heightsOrder[0]) res += _play_2nd.value(25,0); //res=-100
-        else if (height_ == heightsOrder[1]) res += _play_2nd.value(26,0); //res=-30
-        else if (height_ == heightsOrder[2]) res += _play_2nd.value(27,0); //res=-10
-        else if (height_ == heightsOrder[3]) res += _play_2nd.value(28,0); //res=-5
-        else if (height_ == heightsOrder[4]) res += _play_2nd.value(29,0); //res=-2
-        if (playerMemory.ScoreLonge(color) > 5) res += _play_2nd.value(30,0); //res=7
-        if (playerMemory.ScoreLonge(color) > 8) res += _play_2nd.value(31,0); //res=10
+        if (height_ == heightsOrder[0]) res += _play_2nd.Value(25); //res=-100
+        else if (height_ == heightsOrder[1]) res += _play_2nd.Value(26); //res=-30
+        else if (height_ == heightsOrder[2]) res += _play_2nd.Value(27); //res=-10
+        else if (height_ == heightsOrder[3]) res += _play_2nd.Value(28); //res=-5
+        else if (height_ == heightsOrder[4]) res += _play_2nd.Value(29); //res=-2
+        if (playerMemory.ScoreLonge(color) > 5) res += _play_2nd.Value(30); //res=7
+        if (playerMemory.ScoreLonge(color) > 8) res += _play_2nd.Value(31); //res=10
     }
-//if the cards value something and the that it is not the color played, we don't play the card
+//if the cards Value something and the that it is not the color played, we don't play the card
     if (color!=color_asked)
     {
-        if (height_ == heightsOrder[0]) res += _play_2nd.value(33,0); //res = -25
+        if (height_ == heightsOrder[0]) res += _play_2nd.Value(33); //res = -25
     }
     return res;
 }
@@ -377,26 +393,26 @@ int AIPlayScores<TypeOfCard, Memory>::playThird(const TypeOfCard& pcard,
 //If I can play trump
     if (play_trump)
     {
-        if ((color_asked!=color_trump)&&(i_master==First)&&(color==color_trump)) res += _play_3rd.value(0,0);//res=-10, we don't play  trump if the partner is mayor
+        if ((color_asked!=color_trump)&&(i_master==First)&&(color==color_trump)) res += _play_3rd.Value(0);//res=-10, we don't play  trump if the partner is mayor
         if ((color==color_trump)&&(color==color_asked))
         {
-            if (playerMemory.AmIMaster(color)) res += _play_3rd.value(1,0); //res=20
+            if (playerMemory.AmIMaster(color)) res += _play_3rd.Value(1); //res=20
             else //you are not master: you play the smallest trump you can
             {
-                if (height_ == heightsOrder[1]) res += _play_3rd.value(2,0); //res=-55
-                if (height_ == heightsOrder[2]) res += _play_3rd.value(3,0); //res=-20
-                if (height_ == heightsOrder[3]) res += _play_3rd.value(4,0); //res=-10
-                if (height ==playerMemory.Smallest(color)) res += _play_3rd.value(5,0); //res=30
+                if (height_ == heightsOrder[1]) res += _play_3rd.Value(2); //res=-55
+                if (height_ == heightsOrder[2]) res += _play_3rd.Value(3); //res=-20
+                if (height_ == heightsOrder[3]) res += _play_3rd.Value(4); //res=-10
+                if (height ==playerMemory.Smallest(color)) res += _play_3rd.Value(5); //res=30
             }
         }
         if ((color_asked!=color_trump)&&(i_master==SECOND)&&(color==color_trump))
         {
-            res += _play_3rd.value(6,0);//res=15
-            if (height==playerMemory.Smallest(color)) res += _play_3rd.value(7,0); //res=10
-            if (height==playerMemory.Greatest(color)) res += _play_3rd.value(8,0); //res=-30
-            if (height_ == heightsOrder[0]) res += _play_3rd.value(9,0); //res=-20, we keep the jack for a trick where the color of the trump is played
-            if (height_ == heightsOrder[1]) res += _play_3rd.value(10,0); //res=-20
-            if (height_ == heightsOrder[2]) res += _play_3rd.value(11,0); //res=-10
+            res += _play_3rd.Value(6);//res=15
+            if (height==playerMemory.Smallest(color)) res += _play_3rd.Value(7); //res=10
+            if (height==playerMemory.Greatest(color)) res += _play_3rd.Value(8); //res=-30
+            if (height_ == heightsOrder[0]) res += _play_3rd.Value(9); //res=-20, we keep the jack for a trick where the color of the trump is played
+            if (height_ == heightsOrder[1]) res += _play_3rd.Value(10); //res=-20
+            if (height_ == heightsOrder[2]) res += _play_3rd.Value(11); //res=-10
         }
     }
 //If my teammate is major
@@ -405,20 +421,20 @@ int AIPlayScores<TypeOfCard, Memory>::playThird(const TypeOfCard& pcard,
         if (color==color_trump)
         {
             //printf("je suis a 1\n");
-            if ((color_asked!=color_trump)&& playerMemory.ProtectPoints(color) && (height == playerMemory.Greatest(color))) res += _play_3rd.value(12,0); //res=9
+            if ((color_asked!=color_trump)&& playerMemory.ProtectPoints(color) && (height == playerMemory.Greatest(color))) res += _play_3rd.Value(12); //res=9
         }
         else
         {
             if (playerMemory.NbColorPlayed(color_asked) == 0)
             {
-                if (height_ == heightsOrder[1]) res += _play_3rd.value(13,0);//res=-8
-                if (height_ == heightsOrder[2]) res += _play_3rd.value(14,0); //res=5
-                else res += _play_3rd.value(15,0); //res=-3
+                if (height_ == heightsOrder[1]) res += _play_3rd.Value(13);//res=-8
+                if (height_ == heightsOrder[2]) res += _play_3rd.Value(14); //res=5
+                else res += _play_3rd.Value(15); //res=-3
             }
             else
             {
-                if (!(_wrapperCallMethod.callWin(pcard,Card_Height(heightsOrder[2])))) res += _play_3rd.value(16,0); //res=-5
-                else res += _play_3rd.value(17,0); //res=3
+                if (!(_wrapperCallMethod.callWin(pcard,Card_Height(heightsOrder[2])))) res += _play_3rd.Value(16); //res=-5
+                else res += _play_3rd.Value(17); //res=3
             }
         }
         //add the case where the opponent don't cut (or has no more trumps) and my partner has the master card in the colour
@@ -428,42 +444,42 @@ int AIPlayScores<TypeOfCard, Memory>::playThird(const TypeOfCard& pcard,
     {
         if (height_ == heightsOrder[1]) //if it's the 10 (or the 9 of trump)
         {
-            if ((height == playerMemory.Master(color))&&(!oponentCut)) res += _play_3rd.value(18,0); //res=15
-            else res += _play_3rd.value(19,0); //res=-25
-            if (playerMemory.NbColorPlayed(color) == 1) res += _play_3rd.value(20,0); //res=3
-            else if (playerMemory.NbColorPlayed(color) ==0) res += _play_3rd.value(21,0);//res=-7
-            if (playerMemory.NextCall(color) || playerMemory.NextCut(color)) res += _play_3rd.value(22,0); //res=-8
-            else res += _play_3rd.value(23,0); //res=6
+            if ((height == playerMemory.Master(color))&&(!oponentCut)) res += _play_3rd.Value(18); //res=15
+            else res += _play_3rd.Value(19); //res=-25
+            if (playerMemory.NbColorPlayed(color) == 1) res += _play_3rd.Value(20); //res=3
+            else if (playerMemory.NbColorPlayed(color) ==0) res += _play_3rd.Value(21);//res=-7
+            if (playerMemory.NextCall(color) || playerMemory.NextCut(color)) res += _play_3rd.Value(22); //res=-8
+            else res += _play_3rd.Value(23); //res=6
         }
         else
         {
-            if (playerMemory.NextCall(color)||playerMemory.NextCut(color) ) res += _play_3rd.value(24,0); //res=-5
-            else res += _play_3rd.value(25,0); //res=6
+            if (playerMemory.NextCall(color)||playerMemory.NextCut(color) ) res += _play_3rd.Value(24); //res=-5
+            else res += _play_3rd.Value(25); //res=6
         }
     }
 //If I am major in the color
     if (playerMemory.AmIMaster(color))
     {
-        if (_wrapperCallMethod.callValue(pcard) < 4) res += _play_3rd.value(26,0); //res=13
+        if (_wrapperCallMethod.callValue(pcard) < 4) res += _play_3rd.Value(26); //res=13
         else
         {
             if (oponentCut)
             {
                 switch (height.Height())
                 {
-                    case TEN : res += _play_3rd.value(27,0); //res=-15
+                    case TEN : res += _play_3rd.Value(27); //res=-15
                         break;
-                    case ACE : res += _play_3rd.value(28,0); //res=-25
+                    case ACE : res += _play_3rd.Value(28); //res=-25
                         break;
-                    case NINE : res += _play_3rd.value(29,0); //res=-20
+                    case NINE : res += _play_3rd.Value(29); //res=-20
                         break;
                     default : break;
                 }
             }
             else
             {
-                if (playerMemory.NbColorPlayed(color) == 0) res += _play_3rd.value(30,0); //res=7
-                else res += _play_3rd.value(31,0); //res=-6
+                if (playerMemory.NbColorPlayed(color) == 0) res += _play_3rd.Value(30); //res=7
+                else res += _play_3rd.Value(31); //res=-6
             }
         }
     }
@@ -472,12 +488,12 @@ int AIPlayScores<TypeOfCard, Memory>::playThird(const TypeOfCard& pcard,
     {
         if (playerMemory.AmIMaster(color))
         {
-            res += _play_3rd.value(32,0); //res=10
-            if (height==playerMemory.Greatest(color)) res += _play_3rd.value(33,0); //res=-25
-            if (height==playerMemory.Smallest(color)) res += _play_3rd.value(34,0); //res=25
+            res += _play_3rd.Value(32); //res=10
+            if (height==playerMemory.Greatest(color)) res += _play_3rd.Value(33); //res=-25
+            if (height==playerMemory.Smallest(color)) res += _play_3rd.Value(34); //res=25
         }
-        if (playerMemory.ScoreLonge(color) > 5) res += _play_3rd.value(35,0); //res=7
-        if (playerMemory.ScoreLonge(color) > 8) res += _play_3rd.value(36,0); //res=10
+        if (playerMemory.ScoreLonge(color) > 5) res += _play_3rd.Value(35); //res=7
+        if (playerMemory.ScoreLonge(color) > 8) res += _play_3rd.Value(36); //res=10
     }
     return res;
 }
@@ -510,95 +526,95 @@ int AIPlayScores<TypeOfCard, Memory>::playFourth(const TypeOfCard& pcard,
             //printf("je suis a 2\n");
             if (playerMemory.ProtectPoints(color))
             {
-                if (height == playerMemory.Greatest(color)) res += _play_4th.value(0,0);//res=-7
+                if (height == playerMemory.Greatest(color)) res += _play_4th.Value(0);//res=-7
             }
             else
             {
-                if (height == playerMemory.Smallest(color)) res += _play_4th.value(1,0);//res=7
+                if (height == playerMemory.Smallest(color)) res += _play_4th.Value(1);//res=7
             }
         }
     }
 // If my teammate is major
     if (trick.CurrentWinner() == SECOND)
     {
-        if (color == color_trump) res += _play_4th.value(2,0); //res=-30
+        if (color == color_trump) res += _play_4th.Value(2); //res=-30
         else
         {
-            if (height_ == TEN) res += _play_4th.value(3,0); //res=8
+            if (height_ == TEN) res += _play_4th.Value(3); //res=8
             if (height_ == ACE)
             {
-                if (color == color_asked) res += _play_4th.value(4,0); //res=15
-                else res += _play_4th.value(5,0);//res=-10
+                if (color == color_asked) res += _play_4th.Value(4); //res=15
+                else res += _play_4th.Value(5);//res=-10
             }
-            if ((playerMemory.AllRemainingCards(color))&&(height == playerMemory.Greatest(color))) res += _play_4th.value(6,0); //res=35
+            if ((playerMemory.AllRemainingCards(color))&&(height == playerMemory.Greatest(color))) res += _play_4th.Value(6); //res=35
         }
         //printf("je suis a 3\n");
         if (playerMemory.ProtectPoints(color))
         {
-            if (height == playerMemory.Greatest(color)) res += _play_4th.value(7,0); //res=9
+            if (height == playerMemory.Greatest(color)) res += _play_4th.Value(7); //res=9
         }
         else
         {
-            if (height == playerMemory.Smallest(color)) res += _play_4th.value(8,0); //res=7
+            if (height == playerMemory.Smallest(color)) res += _play_4th.Value(8); //res=7
         }
     }
     else
     {
         switch (_wrapperCallMethod.callValue(pcard))
         {
-            case 0 : res += _play_4th.value(9,0); //res=13
+            case 0 : res += _play_4th.Value(9); //res=13
                 break;
-            case 2 : res += _play_4th.value(10,0); //res=9
+            case 2 : res += _play_4th.Value(10); //res=9
                 break;
-            case 3 : res += _play_4th.value(11,0); //res=7
+            case 3 : res += _play_4th.Value(11); //res=7
                 break;
-            case 4 : res += _play_4th.value(12,0); //res=5
+            case 4 : res += _play_4th.Value(12); //res=5
                 break;
-            case 10 : res += _play_4th.value(13,0); //res=-15
+            case 10 : res += _play_4th.Value(13); //res=-15
                 break;
-            case 11 : res += _play_4th.value(14,0); //res=-20
+            case 11 : res += _play_4th.Value(14); //res=-20
                 break;
-            case 14 : res += _play_4th.value(15,0); //res=-25
+            case 14 : res += _play_4th.Value(15); //res=-25
                 break;
-            case 20 : res += _play_4th.value(16,0); //res=100
+            case 20 : res += _play_4th.Value(16); //res=100
                 break;
             default : break;
         }
-        if (height == playerMemory.Greatest(color)) res += _play_4th.value(17,0); //res=-7
+        if (height == playerMemory.Greatest(color)) res += _play_4th.Value(17); //res=-7
     }
  //If we "pisse"
     if ((pisse)&&(color!=color_asked)&&(color!=color_trump))
     {
         if (playerMemory.AmIMaster(color))
         {
-            res += _play_4th.value(18,0); //res=-10
-            if (height==playerMemory.Greatest(color)) res += _play_4th.value(19,0); //res=-25
-            if (height==playerMemory.Smallest(color)) res += _play_4th.value(20,0); //res=25
+            res += _play_4th.Value(18); //res=-10
+            if (height==playerMemory.Greatest(color)) res += _play_4th.Value(19); //res=-25
+            if (height==playerMemory.Smallest(color)) res += _play_4th.Value(20); //res=25
         }
         else
         {
             if (trick.CurrentWinner() == SECOND)
             {
-               res += _play_4th.value(21,0); //res=5
-                if (height==playerMemory.Greatest(color)) res += _play_4th.value(22,0); //res=15
-                if (height==playerMemory.Smallest(color)) res += _play_4th.value(23,0); //res=-15
+               res += _play_4th.Value(21); //res=5
+                if (height==playerMemory.Greatest(color)) res += _play_4th.Value(22); //res=15
+                if (height==playerMemory.Smallest(color)) res += _play_4th.Value(23); //res=-15
             }
             else
             {
-                res += _play_4th.value(24,0); //res=-5
-                if (height==playerMemory.Greatest(color)) res += _play_4th.value(25,0); //res=-15
-                if (height==playerMemory.Smallest(color)) res += _play_4th.value(26,0); //res=15
+                res += _play_4th.Value(24); //res=-5
+                if (height==playerMemory.Greatest(color)) res += _play_4th.Value(25); //res=-15
+                if (height==playerMemory.Smallest(color)) res += _play_4th.Value(26); //res=15
             }
         }
-        if (playerMemory.ScoreLonge(color) > 5) res += _play_4th.value(27,0); //res=7
-        if (playerMemory.ScoreLonge(color) > 8) res += _play_4th.value(28,0); //res=10
+        if (playerMemory.ScoreLonge(color) > 5) res += _play_4th.Value(27); //res=7
+        if (playerMemory.ScoreLonge(color) > 8) res += _play_4th.Value(28); //res=10
     }
 //If it is the penultimate trick, we try to keep our trump for the last trick
-    if ((number_trick == 6)&&(color == color_trump)) res += _play_4th.value(29,0); //res=-8
+    if ((number_trick == 6)&&(color == color_trump)) res += _play_4th.Value(29); //res=-8
 //"Passe" of the ace, not always (risky)
     if ((color != color_trump)&&(height_ == ACE)&&(playerMemory.NbColorPlayed(color_asked)==0)&&(trick.HeightMaster().Height() != TEN)&&(!playerMemory.CardsFallen(color,Card_Height(TEN))))
     {
-        if (rand.generate_number() >= 768) res += _play_4th.value(30,0); //res=-9 /3 chance out of 4 not to "passe"
+        if (rand.generate_number() >= 768) res += _play_4th.Value(30); //res=-9 /3 chance out of 4 not to "passe"
     }
     return res;
 }

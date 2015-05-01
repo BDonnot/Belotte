@@ -1,5 +1,14 @@
 #ifndef POSITION_TRICK_H_INCLUDED
 #define POSITION_TRICK_H_INCLUDED
+/**
+** This class is a helper, dealing with
+** the position of the players in the trick.
+** This is usefull in some cases, for example
+** knowing its position and its ID allow us to
+** have access at which player played when
+** during a trick.
+**/
+
 enum POSITION_TRICK {FIRST,SECOND,THIRD,FOURTH,UNKNOWN};
 class Position_Trick
 {

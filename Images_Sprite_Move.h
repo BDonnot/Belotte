@@ -1,6 +1,11 @@
 #ifndef IMAGES_SPRITE_MOVE_H
 #define IMAGES_SPRITE_MOVE_H
 
+/**
+** This class define an specific type of image :
+** with multiple faces, and that can move.
+**/
+
 #include "Basic_Game_Info.h"
 #include "Images_Sprite.h"
 
@@ -18,7 +23,7 @@ class Images_Sprite_Move : public Images_Sprite<numberOfSprite>
         void setSpeed(Uint32 duration);
 
     public:
-        Images_Sprite_Move();
+        Images_Sprite_Move(){}
         Images_Sprite_Move(std::string path);
         virtual ~Images_Sprite_Move(){}
         virtual void SetPosition(PositionGraphic& pos);
@@ -31,13 +36,6 @@ class Images_Sprite_Move : public Images_Sprite<numberOfSprite>
 
     private:
 };
-
-template<Uint numberOfSprite>
-Images_Sprite_Move<numberOfSprite>::Images_Sprite_Move():
-Images_Sprite<numberOfSprite>()
-{
-    //ctor
-}
 
 template<Uint numberOfSprite>
 Images_Sprite_Move<numberOfSprite>::Images_Sprite_Move(std::string path):
@@ -108,7 +106,7 @@ void Images_Sprite_Move<numberOfSprite>::Move()
     if (timer_current <= _timer_start)
     {
         _timer_current = timer_current;
-        return; //If the mouvement has not started, we do nothing
+        return; //If the movement has not started, we do nothing
     }
     if (timer_current > _timer_end)
     {

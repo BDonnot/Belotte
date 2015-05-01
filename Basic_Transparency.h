@@ -1,6 +1,10 @@
 #ifndef BASIC_TRANSPARENCY_H
 #define BASIC_TRANSPARENCY_H
 
+/**
+** Class to help dealing with the transparency of the images.
+**/
+
 #if defined (__GNUC__)
 	#include "SDL/SDL.h"
 #elif defined(_MSC_VER)
@@ -19,7 +23,7 @@ class Basic_Transparency
     public:
         Basic_Transparency();
         Basic_Transparency(Uint8 transparency);
-        virtual ~Basic_Transparency();
+        virtual ~Basic_Transparency(){}
         void Set_Transparent(bool increasing,Uint32 duration,Uint32 time_lag,Uint32 current_time); //to start the transparency's changing from the current value to totally transparent/visible
         void Set_Transparent(Uint8 alpha_end,Uint32 duration,Uint32 time_lag,Uint32 current_time); //to start the transparency's changing from the current value given to another value given
         virtual void Update_Transparent(Uint32 current_time); //to update the timer current
