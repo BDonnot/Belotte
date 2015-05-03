@@ -27,6 +27,8 @@
 #include "DebugwithPrint.h"
 #define AIGAMEMEMORY_DEBUG 0
 
+///TO DO : use template for the different kinds of memory (template and wrapper for the update)
+///instead of  inheritance
 template<class TypeOfCard>
 class AIGameMemory
 {

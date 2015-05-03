@@ -14,7 +14,7 @@
 \usepackage{amsthm}
 \usepackage{amssymb} %symboles en plus.
 \usepackage{amsfonts}
-
+\usepackage{a4wide}
 %autres packages :
 \usepackage{verbatim} %pour pouvoir changer de police dans le document.
 \usepackage{mathptmx} %pour utiliser une autre police
@@ -54,9 +54,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%% Pour reduire les marges ! %%%%%%%%%%%%%%%
-\setlength{\textwidth}{15cm} %Largeur du texte : n
+%\setlength{\textwidth}{15cm} %Largeur du texte : n
 %\setlength{\marginparwidth}{0cm}
-\setlength{\oddsidemargin}{0.5cm} %m avec 2m+n = 16 pour que ca marche bien.
+%\setlength{\oddsidemargin}{0.5cm} %m avec 2m+n = 16 pour que ca marche bien.
 %\setlength{\headheight}{0cm}
 %\setlength{\topmargin}{2cm} %hauteur marge d'en haut
 %\setlength{\headsep}{0cm} %hauteur de l'en tete
@@ -244,31 +244,42 @@
 \addcontentsline{toc}{section}{Introduction} 
 Depuis le cours de python de première année, j'ai découvert un champ assez vaste informatiquement : celui de l'\textit{intelligence artificielle}. Ce terme assez générique a plusieurs sens. Ce que j'entends par "intelligence artificielle" dans tout ce rapport, et plus généralement dans le projet tout entier, c'est la capacité pour un ordinateur à prendre des décisions "cohérentes" et ainsi à jouer "convenablement" à la coinche. \\
 
-La coinche, comme de nombreux jeu de cartes ne se joue pas en information parfaite. Les cartes des adversaires sont cachées ! Outre l'aspect ludique de coder des jeux, ceci peut s'avérer utile "dans la vraie vie". En effet, tous les jours nous sommes amenés à prendre des décisions dans un environnement incertains\footnote{Qui est plus nettement plus compliqué que l'environnement simplifié du jeu de Coinche.} Résoudre ce type de problème pourrait permettre de faire des grandes avancées dans tout les domaines informatisés, c'est à dire partout... \\
+La "coinche", comme de nombreux jeu de cartes ne se joue pas en information parfaite : les cartes des adversaires sont cachées ! Résoudre\footnote{Entendre ici : performer aussi bien que les humains en général.} un jeu de coinche pourrait donc permettre de faire des avancées dans certains types de problèmes rencontrés dans la vie de tous les jours qui ne se limitent pas simplement aux jeux de cartes. Chaque jour, nous sommes amenés à prendre des décisions dans un environnement incertains\footnote{Qui est plus nettement plus compliqué que l'environnement simplifié du jeu de Coinche.}. \\
+Ainsi, il n'est pas rare que la recherche en intelligence artificielle se concentre sur des jeux. C'était notamment le cas au début des années 90 avec IBM et "Deep Blue", le premier ordinateur à avoir battu un grand maître aux échecs\footnote{Cette victoire a suscité de nombreuses polémiques qui ne seront pas abordées ici, car ce n'est pas le sujet. Toujours est-il qu'aujourd'hui, il est communément admis que les ordinateurs jouent mieux que les humains aux échecs.}. Encore aujourd'hui, de nombreuses compétitions de jeux se voient affronter les meilleurs programmes informatiques du monde, notamment au Go\footnote{On pourra se reporter au "Computer Go" :  \url{http://en.wikipedia.org/wiki/Computer_Go}.}, ou encore le Bridge\footnote{Jeu relativement proche de la Coinche, mais beaucoup plus populaire outre Manche et outre Atlantique. On pourra se reporter au "Computer Bridge" : \url{http://en.wikipedia.org/wiki/Computer_bridge}.}. D'un point de vue fondamental, se concentrer sur des jeux présente plusieurs intérêts, notamment le fait que les données soient faciles à acquérir (il suffit de faire jouer un ordinateur contre lui-même un grand nombre de fois pour avoir des parties simulées), mais également parce que ces jeux sont souvent des versions (très) simplifiées de problèmes réels. \\
+Ce type de jeu de cartes est également en relation avec la filière statistique et apprentissage, dans laquelle j'effectue ma 3\ieme{} année à l'ENSAE. L'"Intelligence Artificielle" est le "Machine Learning" sont des champs très proches, notamment lorsque l'environnement n'est pas entièrement connu par les acteurs. Dans ce cas, il faut souvent faire des statistiques afin de prendre la meilleure décision possible. Il n'est donc pas surprenant que les meilleurs algorithmes de Bridge actuels reposent sur des techniques "Monte Carlo" : on va simuler un grand nombre de jeux possibles, tenter de résoudre chaque jeu en information complète, puis agréger tous ces résultats pour en tirer la meilleure action à faire dans l'environnement incertains. On pourra se reporter à la partie \ref{MCPlay} page \pageref{sec:MCPlay} ci après pour plus d'informations. \\
 
-Ainsi, la recherche informatique se 
-
-En 2\ieme{} année, j'ai pu suivre le cours de C++, et j'ai réalisé un projet de Belote. Je disposais donc d'une interface graphique\footnote{Celle-ci, même si je l'ai recodée en grande partie n'est pas exempte de défauts, mais ne fait pas l'objet de ce rapport, ni même de ce projet.}. Cette partie, indispensable pour les jeux de cartes est très longue à coder, pourtant indispensable pour pouvoir jouer convenablement. \\
-Ne trouvant que peu d'intérêt dans la création d'une seconde interface graphique au cours de ma scolarité, j'ai donc décidé de faire ce projet sur un jeu de Coinche, jeu très proche de la Belote, au moins dans les règles. \\
-Au cours de ma deuxième année, je m'étais concentré sur deux aspects principaux : l'interface graphique, ainsi que la prise. La partie jeu à proprement parlé n'avait été que peu étudiée, et faisait l'objet d'une implémentation rudimentaire. Ce projet aura donc pour but de réaliser une intelligence artificielle capable de jouer de façon "correcte" sur toute une partie de Coinche. \\
-
-\'A de nombreux endroits, dans le code sont présents des commentaires commençant par "TO DO", ceci est dû à de multiples facteurs. J'ai l'intention de continuer à coder ce projet pendant mon temps libre même après ma scolarité de ce projet. J'ai donc laissé consciemment certains aspects à un développement ultérieur. N'étant pas un joueur de Coinche professionnel, une de mes aspirations serait de coder un jeu qui soit au moins aussi fort que moi. \\
+En 2\ieme{} année, j'ai pu suivre le cours de C++, et j'ai réalisé un projet de Belote\footnote{Les sources de l'époque sont disponibles dans le répertoire SVN suivant : \url{https://subversion.assembla.com/svn/belote_cpp/}.}. Pour la réalisation de ce projet, je disposais donc d'une interface graphique correcte\footnote{Celle-ci, même si je l'ai recodée en grande partie n'est pas exempte de défauts, mais ne fait pas l'objet de ce rapport, ni même de ce projet.}. Cette interface est primordiale dans des jeux de cartes et est très longues à coder. Ne trouvant que peu d'intérêt dans la création d'une seconde interface graphique au cours de ma scolarité, j'ai donc décidé de faire ce projet sur un jeu de Coinche, jeu très proche de la Belote, au moins dans les règles. \\
+Au cours de ma deuxième année, je m'étais concentré sur deux aspects principaux : l'interface graphique, ainsi que la prise. La partie jeu à proprement parlé n'avait été que peu étudiée, et faisait l'objet d'une implémentation rudimentaire. Ce projet aura donc pour but de réaliser une intelligence artificielle capable de jouer de façon "correcte" sur toute une partie de Coinche, en utilisant des techniques Monte Carlo décrites précédemment. \\
 
 \clearpage
-\section{Architecture}
+\section{Préambule}
+\subsection{Architecture}
+Ce code est relativement volumineux, il contient plus de $7~000$ lignes de codes\footnote{Sans compter les commentaires, ni les lignes avec un seul caractère, comme '$\{$' par exemple. Plus de $10~000$ sont présentes au total.}. Il compte 73 fichier de déclaration (.h) et 45 fichier source (.cpp) et environ 90 définitions de classes. Le détail de chaque fichier, ou même de chaque classe est donc beaucoup trop long pour être présenté en exhaustivité dans ce rapport. \\
+En revanche, chaque "header" est construit de la même façon. Tout d'abord, un courte description des classes qu'il contient est présentée, ensuite d'autre "headers" sont inclus, puis enfin des "TO DO" sont présents. Encore une fois, comme ce projet s'inscrit pour moi dans une vision à plus long terme que la validation de ce cours, ceux-ci sont présents parce que beaucoup d'aspects restent à améliorer, et il est donc important de garder quelques parts les améliorations auxquelles je pense pour améliorer ce code.\\
+Cette partie sera uniquement dédiée à l'architecture du code en général. On pourra se reporter au header définissant une classe si l'utilité de celle-ci n'est pas claire. \\
 
+On rentre dans le programme via le fichier "main.cpp". Celui-ci va déclarer une instance de la classe "Game\_Coinche". Cette classe a pour but d'orchester le jeu. Elle ne va rien calculer, mais va faire en sorte que les différentes phases du jeu se déroulent sans accros, c'est à dire que toutes les phases du jeu se déroulent sans accro les une après les autres. \\
 
-\clearpage
-\section{Limitations}
-pas de tout atout sans atout \\
+Ce sont d'autres classes qui sont chargées de gérer quel joueur fait quelle action à quel moment, il s'agit des classes "\textit{Cards\_Deck}" (qui va donner les cartes), "\textit{Bidding}" (qui va organiser la phase des enchères) et "\textit{Trick}" qui assure le bon déroulement des 8 plis. Globalement, ces classes vont donner des instructions à la classes "\textit{Player}" qui est chargée de faire les actions à proprement parlé. \\
 
-Belotte non prise en compte \\
+Pour l'instant, la classe "\textit{Player}" se divise en deux : "\textit{Player\_AI}" et "\textit{Player\_Human}" qui gère respectivement les joueurs "Artificiel" et les joueurs humains. Dans l'architecture actuelle, la classe joueur va faire descendre les informations requises à la prise de décision à des "wrappers" spécialisés ("\textit{AIPlayMonteCarlo}", "\textit{AIPlayScores}", ou "\textit{Player\_Bid\_Graphic}" par exemple). Dans la version précédente (2A), les différentes façon de jouer étaient gérées via un polymorphisme dynamique (fonction virtuelle) : ceci nécessitait de créer une classe par type de joueur IA et une pour les joueurs humains. Aujourd'hui, l'utilisation de template et de \textit{wrapper} permettrait de s'en passer et de n'avoir qu'une seule classe "\textit{Player}" : ce serait au moment de la compilation (et non de l'exécution) que le choix du \textit{wrapper} serait décidé. Il n'y aurait plus d'héritages qui concernerait les joueurs. \\
 
-prise rudimentaire \\
+Afin de prendre les bonnes décisions, les joueurs doivent retenir ce qui s'est passé, ceci est géré par les classes dénommées "*Memory*". Celle-ci est principalement gérée par trois classes "en cascade" : qui hérite de la précédente. Une fois encore il serait probablement une bonne idée d'utiliser des templates plutôt que d'avoir recourt à un polymorphisme dynamique.\\
+La première, "\textit{AIGameMemory}", est une mémoire "basique". Elle va retenir quelle carte sont tombées, si des joueurs ont encore une couleur ou ce genre d'informations primaires. \\
+La deuxième "\textit{AIGameMemoryImproved}" hérite de la première. Elle va faire des déductions plus fines, notamment en ce qui concerne les atouts. Il serait bien que cette classe gère aussi les conséquences directes de ce qu'elle observe  : par exemple si un joueur a encore 3 cartes, et qu'il ne peut recevoir que le roi de trèfle, l'as de coeur et le sept de pique, on pourrait facilement déduire qu'il a les trois cartes précédentes (cette partie sera faite) et ainsi que les autres joueurs ne peuvent pas les avoir (ceci n'est pas fait ici, mais dans la classe "\textit{AIPlayMonteCarlo}", ce qui n'est pas forcément adapté : seuls les joueurs jouant avec cette technique déduiront ces conséquences). \\
+Enfin, la dernière classe concernées, héritant de la précédente est "\textit{AIMemPerfectInfo}". Elle est utile pour la classe "\textit{AIPlayMonteCarlo}", lorsque les jeux ont été donnés. Le jeu sera alors en information parfaite (cf. partie \ref{sec:MCPlay} page \pageref{sec:MCPlay} pour plus de détails).
 
-encore beaucoup de "TO DO" dans le code, parce que ce projet n'a pas vocation a être arrêté pour la validation de ce cours.
-\clearpage
-\section{Interface graphique}
+\subsection{Limitations principales}
+
+En plus des différents "TO DO" dans le code, le jeu est encore loin d'être parfait. Certaines limitations impactant directement le jeu n'ont pas encore été implémentées. On peu notamment citer :
+\begin{itemize}
+\item Les variantes de jeu 'tout atout' et 'sans atout' n'ont pas été prises en compte. Ces variantes modifient profondément les règles du jeu, et j'ai préféré me concentrer sur la façon de jouer plutôt que d'adapter le code historique (de 2A) de façon à ce qu'il puisse supporter ces variantes.
+\item La belote (fait d'avoir la dame \textit{et} le roi dans la couleur d'atout) n'est également pas prise en compte. Il aurait fallu pour ça adapter l'interface graphique, je n'ai pas jugé cette tâche prioritaire.
+\item La coinche est également absente. Lors de la phase des enchères, on peut "coincher" pour dire à l'adversaire qu'il ne fera pas le contrat qu'il a annoncé. Ceci modifie entre autre les règles de comptage des points, et n'a pas été implémenté car j'ai laissé de côté la phase des enchères pour me concentrer sur le phase de jeu.
+\item Pour les mêmes raison, la prise a été mise de côté. Les joueurs IA prennent selon des critères très rudimentaires.
+\end{itemize}
+
+\subsection{Interface graphique}
 multi-threading :-) \\
 
 upgrade to SDL 2.0, voire SFML :-)
@@ -285,7 +296,7 @@ score de chaque carte jouable en fonction de conditions, on joue la carte avec l
 prise en compte des appels, via la classe "Memory" (template)
 
 \clearpage
-\section{\textit{Intelligence Artificielle} par évaluation Monte Carlo}
+\section{\textit{Intelligence Artificielle} par évaluation Monte Carlo \label{sec:MCPlay}}
 \subsection{Donner les cartes}
 problème : respect de l'aléa final : il faut une certaine uniformité dans quand on donne les cartes (cf. pistes d'améliorations) \\
 

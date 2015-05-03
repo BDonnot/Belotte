@@ -44,6 +44,8 @@
 
 ///Add the exception :
 ///TO DO : future feature to be added here, one day... like handling an exception and trying to recover the game from the files saved...
+
+///TO DO : code the "options" menu, and be able to choose against which AI I want to play.
 class Game_Coinche : public Quit
 {
     protected :
