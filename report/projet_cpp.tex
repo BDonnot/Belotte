@@ -224,8 +224,8 @@
 \blurb{}
 
 \renewcommand{\thesection}{\Roman{section}}
-\renewcommand{\thesubsection}{\arabic{subsection}}
-\renewcommand{\thesubsubsection}{\roman{subsection}}
+\renewcommand{\thesubsection}{\Roman{section}.\arabic{subsection}}
+\renewcommand{\thesubsubsection}{\Roman{section}.\arabic{subsection}.\roman{subsection}}
 %%%%%%%%%Pour l'en-tete et le pied de page%%%%%%%%%%%%%%%%%%
 \usepackage{fancyhdr}
 \pagestyle{fancy}
@@ -246,11 +246,22 @@ Depuis le cours de python de première année, j'ai découvert un champ assez va
 
 La "coinche", comme de nombreux jeu de cartes ne se joue pas en information parfaite : les cartes des adversaires sont cachées ! Résoudre\footnote{Entendre ici : performer aussi bien que les humains en général.} un jeu de coinche pourrait donc permettre de faire des avancées dans certains types de problèmes rencontrés dans la vie de tous les jours qui ne se limitent pas simplement aux jeux de cartes. Chaque jour, nous sommes amenés à prendre des décisions dans un environnement incertains\footnote{Qui est plus nettement plus compliqué que l'environnement simplifié du jeu de Coinche.}. \\
 Ainsi, il n'est pas rare que la recherche en intelligence artificielle se concentre sur des jeux. C'était notamment le cas au début des années 90 avec IBM et "Deep Blue", le premier ordinateur à avoir battu un grand maître aux échecs\footnote{Cette victoire a suscité de nombreuses polémiques qui ne seront pas abordées ici, car ce n'est pas le sujet. Toujours est-il qu'aujourd'hui, il est communément admis que les ordinateurs jouent mieux que les humains aux échecs.}. Encore aujourd'hui, de nombreuses compétitions de jeux se voient affronter les meilleurs programmes informatiques du monde, notamment au Go\footnote{On pourra se reporter au "Computer Go" :  \url{http://en.wikipedia.org/wiki/Computer_Go}.}, ou encore le Bridge\footnote{Jeu relativement proche de la Coinche, mais beaucoup plus populaire outre Manche et outre Atlantique. On pourra se reporter au "Computer Bridge" : \url{http://en.wikipedia.org/wiki/Computer_bridge}.}. D'un point de vue fondamental, se concentrer sur des jeux présente plusieurs intérêts, notamment le fait que les données soient faciles à acquérir (il suffit de faire jouer un ordinateur contre lui-même un grand nombre de fois pour avoir des parties simulées), mais également parce que ces jeux sont souvent des versions (très) simplifiées de problèmes réels. \\
-Ce type de jeu de cartes est également en relation avec la filière statistique et apprentissage, dans laquelle j'effectue ma 3\ieme{} année à l'ENSAE. L'"Intelligence Artificielle" est le "Machine Learning" sont des champs très proches, notamment lorsque l'environnement n'est pas entièrement connu par les acteurs. Dans ce cas, il faut souvent faire des statistiques afin de prendre la meilleure décision possible. Il n'est donc pas surprenant que les meilleurs algorithmes de Bridge actuels reposent sur des techniques "Monte Carlo" : on va simuler un grand nombre de jeux possibles, tenter de résoudre chaque jeu en information complète, puis agréger tous ces résultats pour en tirer la meilleure action à faire dans l'environnement incertains. On pourra se reporter à la partie \ref{MCPlay} page \pageref{sec:MCPlay} ci après pour plus d'informations. \\
+Ce type de jeu de cartes est également en relation avec la filière statistique et apprentissage, dans laquelle j'effectue ma 3\ieme{} année à l'ENSAE. L'"Intelligence Artificielle" est le "Machine Learning" sont des champs très proches, notamment lorsque l'environnement n'est pas entièrement connu par les acteurs. Dans ce cas, il faut souvent faire des statistiques afin de prendre la meilleure décision possible. Il n'est donc pas surprenant que les meilleurs algorithmes de Bridge actuels reposent sur des techniques "Monte Carlo" : on va simuler un grand nombre de jeux possibles, tenter de résoudre chaque jeu en information complète, puis agréger tous ces résultats pour en tirer la meilleure action à faire dans l'environnement incertains. On pourra se reporter à la partie \ref{sec:MCPlay} page \pageref{sec:MCPlay} ci après pour plus d'informations. \\
 
 En 2\ieme{} année, j'ai pu suivre le cours de C++, et j'ai réalisé un projet de Belote\footnote{Les sources de l'époque sont disponibles dans le répertoire SVN suivant : \url{https://subversion.assembla.com/svn/belote_cpp/}.}. Pour la réalisation de ce projet, je disposais donc d'une interface graphique correcte\footnote{Celle-ci, même si je l'ai recodée en grande partie n'est pas exempte de défauts, mais ne fait pas l'objet de ce rapport, ni même de ce projet.}. Cette interface est primordiale dans des jeux de cartes et est très longues à coder. Ne trouvant que peu d'intérêt dans la création d'une seconde interface graphique au cours de ma scolarité, j'ai donc décidé de faire ce projet sur un jeu de Coinche, jeu très proche de la Belote, au moins dans les règles. \\
 Au cours de ma deuxième année, je m'étais concentré sur deux aspects principaux : l'interface graphique, ainsi que la prise. La partie jeu à proprement parlé n'avait été que peu étudiée, et faisait l'objet d'une implémentation rudimentaire. Ce projet aura donc pour but de réaliser une intelligence artificielle capable de jouer de façon "correcte" sur toute une partie de Coinche, en utilisant des techniques Monte Carlo décrites précédemment. \\
 
+Ce projet a été principalement codé grâce à codeblocks dans un environnement Linux (14.04 LTS), le compilateur principal est gcc 4.8.2. Ce projet dépend également de boost (pour la partie génération de nombres aléatoires : cette dépendence sera surement enlevée dans un futur proche), utilise le standard c++11. Parce que je voulais que mon jeu soit également disponible à des personnes utilisant windows, je l'ai également compilé avec codeblocks sous windows (avec le compilateur MingW). Comme ce compilateur ne me satisfaisait plus, j'ai essayer de faire en sorte que ce projet soit compilable avec visual studio (Visual C++). L'étape de compilation fonctionne, mais il reste quelques bugs dans l'application compilée. Je n'ai pas toujours eu le temps de m'y attardé, d'autant que ces bugs n'apparaissaient pas avec GCC...
+
+Le fonctionnement est donc garanti avec :
+\begin{itemize}
+\item gcc 4.8.2
+\item codeblocks 13.12
+\item boost 1.55
+\item SDL 1.2 (version de développement)
+\end{itemize}
+
+La compilation avec Visual Studio reste expérimentale.
 \clearpage
 \section{Préambule}
 \subsection{Architecture}
@@ -280,24 +291,73 @@ En plus des différents "TO DO" dans le code, le jeu est encore loin d'être par
 \end{itemize}
 
 \subsection{Interface graphique}
-multi-threading :-) \\
 
-upgrade to SDL 2.0, voire SFML :-)
+Une des raisons qui m'ont poussées à choisir ce sujet était le fait que j'avais déjà codé une interface graphique pendant que j'étais en 2A.\\
+La librairie utilisée est \textit{SDL 1.2}, une librairie codée en C. Durant ce projet, j'ai été plusieurs fois confronté à des problèmes d'utilisation, parce que les fonctions que j'avais codées étaient assez complexes d'utilisation. Pour l'interface graphique,  j'avais eu recourt à une architecture particulière, basée sur l'héritage multiple, qui rend les classes que j'ai créées assez "obscures", même pour moi. \\
+Ce pourrait donc être une bonne idée de recoder cette partie. Mais, comme une nouvelle version de cette librairie est maintenant disponible (la version 2.0), ce pourrait être également une bonne idée de profiter des nouvelles fonctionnalités. Je pense à également à re-coder l'interface pour utiliser SFML, qui a le mérite d'être codée en C++.\\
+%Et, par la même occasion, pourquoi utiliser une librairie en C alors que le projet est codé en c++ ? Je pense donc changer de librairie pour l'interface graphique et utiliser SFML, qui a le mérite de ne pas utiliser de pointeurs, à ma connaissance. \\
 
+Dans cette sous-partie, je voulais également mentionné que par rapport à l'interface originale, j'ai ajouté une partie "Multi-Threading"\footnote{En utilisant les header de la librairie standard "thread" et "future". Ceci implique entre autre que le projet ne puisse plus être compilé avec Codeblocks sous windows (qui utilise MingW), parce que le compilateur en question ne prend pas en compte ces librairies.}. Lorsqu'un joueur IA prend une décision pour jouer une carte, l'interface graphique ne se fige pas, contrairement à ce qui se serait passer si l'application n'utilisait qu'un seul thread.
+
+\subsection{Débugage}
+Une telle application a connu pas mal de bugs. Aujourd'hui, je pense en avoir éliminé une grande partie. Ceci n'a pas été facile, d'autant que les débugueurs ralentissent grandement la vitesse d'execution des programmes, et que certains bugs apparaissaient au bout de plusieurs minutes d'exécution "standard"\footnote{Comprendre ici : sans que le debugueur ne soit activé.}. Pour arriver au même moment avec un débugueur, il aurait sans doute fallu attendre plusieurs dizaines de minutes, ce qui est très frustrant. \\
+
+J'ai donc beaucoup pratiqué le débugueur via l'affichage à l'écran. Pour que le code que je créé soit relativement générique, j'ai donc codé deux wrappers, codés dans le fichier "DebugWithPrint". Il s'agit de la classe "\textit{WrapperPrint}". Cette classe est templaté par un entier. En général elle ne fait rien, mais une spécialisation de cette classe a lieu lorsque cet entier est $1$ et dans ce cas elle va afficher (via vfprintf) du texte dans la console. \\
+Cette petite astuce a permet de localiser les bugs quand il y en a de façon assez rapide, mais permet également de ne pas ralentir l'exécution du programme (ça prend du temps d'afficher beaucoup de texte) une fois que le bug a été trouvé, le tout en ne déclarant que quelques variables.
 \clearpage
-\section{\textit{Intelligence Artificielle} "basique"}
+\section{\textit{Intelligence Artificielle} : premier pas}
+Les deux prochaines parties vont rentrer plus en détail dans l'aspect intelligence artificielle lors de la phase de jeu. Il serait sans doute plus facile de coder une intelligence artificielle qui est en information parfaite. Mais ceci ferait perdre beaucoup d'intérêt à ce projet. Donc, les 3 joueurs gérés par l'ordinateur ne connaissent pas le jeu des autres, et n'ont accès qu'au leur.\\
+
+Cette première partie y sera consacrée et détaillera d'abord le fonctionnement de celle-ci, puis les deux méthodes implémentées dans le jeu de Belote de 2A, que j'ai recoder pour rentrer dans la nouvelle architecture.
+\subsection{Architecture}
+Les décisions que l'ordinateur doit prendre concernant le jeu sont prises via la méthode "what\_card\_do\_i\_play". Dans cette méthode, il s'agit de choisir une parmi une liste de "cartes jouables"\footnote{Ces cartes sont déjà connues à ce stade.}. Aujourd'hui, pour le joueur IA, cette méthode se contente (dans le cas o\`u l'application n'est pas mult-threadée) de rediriger la sortie du wrapper "PlayAI" (template). \\
+
+\`A ce jour, ce wrapper peut être de 3 natures différentes : 
+\begin{itemize}
+\item "\textit{AIPlayRandom}" : va permettre au joueur de jouer une carte aléatoire
+\item "\textit{AIPlayScores}" : va permettre au joueur de jouer une carte selon des scores prédéfinis
+\item "\textit{AIPlayMonteCarlo}" : va jouer avec la méthode "Monte Carlo". On pourra se reporter à la partie \ref{sec:MCPlay} pour plus d'information. \\
+\end{itemize}
+
+Cette architecture permet rapidement de créer de nouveaux types d'IA (avant, il aurait fallu recréer une classe héritant de "\textit{Player\_AI}"), mais permet également de faire interagir des types d'IA entre eux : il y a deux sous-façon de jouer "Mont Carlo" : la première est de simuler des parties o\`u les joueurs jouent aléatoirement, la seconde d'en simuler lorsque les joueurs jouent avec des scores. Ce schéma aurait été impossible (à moins d'utiliser de l'héritage multiple) avec une architecture "en dérivant des classes".
 \subsection{Aléatoirement}
-On joue une carte aléatoire parmi celles qu'on a le droit de jouer :-)\\
+La classe qui s'occupe de ce type de jeu est la classe "\textit{AIPlayRandom}". L'ordinateur va choisir aléatoirement une carte parmi celle qu'il peut jouer. \\
 
-benchmark : référence de jeu.
+Cette "intelligence" artificielle est la première que j'aie implémentée, la plus simple et va pouvoir servir de benchmark pour comparer l'efficacité des autres.
 \subsection{Avec des scores}
-score de chaque carte jouable en fonction de conditions, on joue la carte avec le plus gros score. \\
+Ce type de jeu est géré par la classe "\textit{AIPlayRandom}". L'ordinateur va calculer le score de chacune des cartes qu'il peut jouer, et jouer celle avec le plus gros. \\
 
-prise en compte des appels, via la classe "Memory" (template)
+Le score de chaque carte est influencé par différentes conditions. Ces conditions n'ont pas réellement été calibrées, mais reposent surtout sur des heuristiques : "moi en tant que joueur humain, dans ce cas là je ferais ça". \\
+
+La performance de cette classe est directement influencée par l'humain ayant codé les conditions et les scores associés.\\
+Il serait donc utile de mettre en place une méthode de calibration de ces scores. Ceci avait été envisagé dans le projet de 2A, mais non implémenté.\\
+Aujourd'hui, les scores ne sont plus "hard-codés" mais lus depuis des fichiers stockés sur le disque dur de l'utilisateur grâce à la classe "\textit{Datas}". Cette classe pourrait également réécrire les nouveaux codes qui seraient calculés. Il faudrait donc encore établir précisément une méthode de calibration, donc de la formulation plus mathématique du problème puis de sa résolution. Ceci n'a toujours pas été fait, mais est envisagé dans un futur proche. \\
+
+Cette classe présente également des avantages. En effet, elle interagit de façon claire avec la mémoire du joueur, et permet donc une communication rudimentaire entre les joueurs, avec la gestion des "appels"\footnote{Lors d'une partie de Belote (ou de coinche) il est possible de faire passer des informations à son partenaire en jouant certains types de cartes dans certaines conditions. C'est ce que j'appelle "appel".}.
 
 \clearpage
 \section{\textit{Intelligence Artificielle} par évaluation Monte Carlo \label{sec:MCPlay}}
-\subsection{Donner les cartes}
+Le point commun des deux méthodes précédentes est le fait qu'elle ne sont pas "aléatoire". Les mêmes causes entraîneront les mêmes effets. Ce ne sera pas forcément le cas des deux méthodes qui seront décrites dans cette partie. \\
+
+Ces méthodes proviennent toutes les deux de la classe "\textit{AIPlayMonteCarlo}" reposent sur la simulation de nombreux "mini-jeux", ensuite ces mini-jeux sont joués, les résultats agrégés et la meilleure action est faite en fonction de ces résultats. Le jeu suit ainsi le principe suivant :
+\begin{enumerate}
+\item donner les cartes encore en jeu en accord avec les actions qui ont été faites précédemment dans les tours précédents
+\item jouer des "mini-jeux" en respectant les règles bien entendu.
+\item agréger les résultats puis sélectionner la meilleure carte parmi les cartes jouables.
+\end{enumerate}
+Les deux méthodes diffèrent pour l'instant par la façon dont les "mini-jeux" sont joués. Mais l'architecture du code, et notamment l'utilisation de templates permettrait de modifier facilement les autres aspects. Ceci n'a pas été fait pour l'instant.
+
+\subsection{La mémoire}
+La mémoire des actions entreprises pour les joueurs est ici fondamentale. Plus elle sera élaborée, moins des jeux "impossibles" seront distribués. \\
+
+Ainsi, un travail assez important a été fait pour être sûr que le joueur IA retienne ce qui s'est passé et en déduise des choses pertinentes. \\
+
+Pour l'heure, j'envisage deux pistes d'amélioration principales pour la mémoire :
+\begin{itemize}
+\item Comme je l'ai mentionné précédemment, celle-ci pourrait également prendre en compte les conséquences directes de ce qu'elle vient d'observer. Pour l'instant cette tâche est confié à la méthode "\textit{computeConsequences}" de la classe "\textit{AIPlayMonteCarlo}". Il serait sans doute bien de déplacer cette fonction dans la mémoire directement.
+\item Une des améliorations majeures pourraient la prise en compte d'information "probables", et non certaines. Ainsi, la mémoire pourrait déduire des choses comme : "un joueur a joué cette carte, il doit avoir cette autre carte, car il ne serait pas logique qu'il en soit autrement". On pourrait ainsi associer des degré de certitude. Ceci pourrait sans doute permettre de simuler des jeux plus proches de la réalité lors de la phase "donner les cartes" cf. sous partie \ref{sec:giveCards} ci après, en utilisant des techniques "d'importance sampling" par exemple.
+\end{itemize}
+\subsection{Donner les cartes \label{sec:giveCards}}
 problème : respect de l'aléa final : il faut une certaine uniformité dans quand on donne les cartes (cf. pistes d'améliorations) \\
 
 autre difficulté : respecter les contraintes stockées dans la mémoire.
