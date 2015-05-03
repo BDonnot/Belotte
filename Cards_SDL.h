@@ -12,7 +12,7 @@
 
 //Define the variable for debugging purpose
 #include "DebugwithPrint.h"
-#define CARDS_SDL_DEBUG 1
+#define CARDS_SDL_DEBUG 0
 
 class Cards_SDL: public  Basic_Transparency, public  Basic_Click, public Images_Sprite_Move<2>
 {

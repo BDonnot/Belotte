@@ -19,7 +19,7 @@
 
 //Define the variable for debugging purpose
 #include "DebugwithPrint.h"
-#define BIDDING_DEBUG 1
+#define BIDDING_DEBUG 0
 
 class Bidding
 {

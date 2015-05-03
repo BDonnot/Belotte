@@ -29,7 +29,7 @@
 
 //Define the variable for debugging purpose
 #include "DebugwithPrint.h"
-#define PLAYER_DEBUG 1
+#define PLAYER_DEBUG 0
 
 ///TO DO : template to remove Player_AI and Player_Human...
 ///->static polymorphism.
