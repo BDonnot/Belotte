@@ -22,8 +22,10 @@
 #include "Images_Sprite.h"
 #include "Images_Text.h"
 
-class DisplayOldBets //handle the positioning of the card in the hand
+namespace SDL
 {
+	class DisplayOldBets //handle the positioning of the card in the hand
+	{
 	private:
 		Uint _nb_bets;
 		SDL_Surface* _screen;
@@ -35,7 +37,7 @@ class DisplayOldBets //handle the positioning of the card in the hand
 		std::array<Uint, 2> _shift; //the shift of the card (all the card must be visible)
 		Uint colorToInt(CARDS_COLOR color);
 	public:
-		DisplayOldBets() :_pText(nullptr), _pLogo(nullptr){}
+		DisplayOldBets() :_pText(nullptr), _pLogo(nullptr) {}
 		DisplayOldBets(SDL_Surface* screen
 			, Uint windows_width
 			, Uint windows_height
@@ -45,6 +47,6 @@ class DisplayOldBets //handle the positioning of the card in the hand
 		static std::string IntToString(const Card_Color& color, const Uint& number);
 		void Reset();
 		void operator()(const Player_Bid& bid);
+	};
 };
-
 #endif // DISPLAYOLDBETS_H

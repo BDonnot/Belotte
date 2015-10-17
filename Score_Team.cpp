@@ -1,5 +1,6 @@
 #include "Score_Team.h"
 using namespace::std;
+using namespace SDL;
 
 Score_Team::Score_Team(SDL_Surface* pScreen):
 _info()

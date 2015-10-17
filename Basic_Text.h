@@ -19,27 +19,29 @@
 
 ///TO DO : on UNIX system, the conversion done by Convert is not right ...
 ///find a way to be OS specific. (#if defined ... )
-class Basic_Text
+namespace SDL
 {
-    protected:
-        int _size; //the size of the text
-        Uint8* _keystates; //state of the key : pressed / not pressed
-        TTF_Font* _font; //the font of te writing
-        SDL_Color _color; //the color of the writing
-        std::string _current_text; //the text
-        bool _change;
-    public:
-        Basic_Text(){}
+	class Basic_Text
+	{
+	protected:
+		int _size; //the size of the text
+		Uint8* _keystates; //state of the key : pressed / not pressed
+		TTF_Font* _font; //the font of te writing
+		SDL_Color _color; //the color of the writing
+		std::string _current_text; //the text
+		bool _change;
+	public:
+		Basic_Text() {}
 		Basic_Text(std::string path_font, int size, char colR, char colG, char colB, std::string text);
-        virtual ~Basic_Text(){}
-        const std::string& GetText() const {return _current_text;}
-        void ChangeText(std::string text);
+		virtual ~Basic_Text() {}
+		const std::string& GetText() const { return _current_text; }
+		void ChangeText(std::string text);
 
-    protected :
-        SDLKey Convert(SDLKey); //convert keyboard qwerty in keyboard azerty
-        std::string Character(SDLKey); //deal with maj/min
-        std::string DeleteChar(std::string strs); //to delete the last character of a string
-    private:
+	protected:
+		SDLKey Convert(SDLKey); //convert keyboard qwerty in keyboard azerty
+		std::string Character(SDLKey); //deal with maj/min
+		std::string DeleteChar(std::string strs); //to delete the last character of a string
+	private:
+	};
 };
-
 #endif // BASIC_TEXT_H

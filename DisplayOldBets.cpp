@@ -1,5 +1,6 @@
 #include "DisplayOldBets.h"
 using namespace std;
+using namespace SDL;
 
 DisplayOldBets::DisplayOldBets(SDL_Surface* screen
 	, Uint windows_width

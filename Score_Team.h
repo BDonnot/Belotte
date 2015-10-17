@@ -17,8 +17,8 @@ class Score_Team
     protected :
         Basic_Game_Info _info;
         SDL_Surface* _pScreen;
-        Images_Text _scoreFirstTeam;
-        Images_Text _scoreSecondTeam;
+		SDL::Images_Text _scoreFirstTeam;
+		SDL::Images_Text _scoreSecondTeam;
     public:
         Score_Team(){}
         Score_Team(SDL_Surface* pScreen);

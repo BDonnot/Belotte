@@ -1,5 +1,6 @@
 #include "Player_Name.h"
 using namespace::std;
+using namespace SDL;
 
 Player_Name::Player_Name(Basic_Images* fond,string name,string path_image,SDL_Event* pevent,Uint width,Uint height,PositionGraphic& pos):
 Quit(pevent)

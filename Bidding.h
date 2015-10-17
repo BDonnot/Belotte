@@ -30,9 +30,9 @@ class Bidding
         SDL_Event* _pEvent;
         SDL_Surface* _pScreen;
         Uint _previousPlayerPassed;
-        Images_Text _textAfterBet0;
-        Images_Text _textAfterBet1;
-        Images_Button _ok;
+		SDL::Images_Text _textAfterBet0;
+		SDL::Images_Text _textAfterBet1;
+		SDL::Images_Button _ok;
         Cards_Deck* _pDeck;
         Player_ID _bidder;
         WrapperPrint<BIDDING_DEBUG> _printf;

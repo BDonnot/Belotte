@@ -1,4 +1,5 @@
 #include "Basic_Transparency.h"
+using namespace SDL;
 
 Basic_Transparency::Basic_Transparency()
 {

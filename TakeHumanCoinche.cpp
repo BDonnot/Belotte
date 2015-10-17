@@ -1,6 +1,8 @@
 #include "TakeHumanCoinche.h"
 
 using namespace std;
+using namespace SDL;
+
 TakeHumanCoinche::TakeHumanCoinche(SDL_Event* event,SDL_Surface* screen,Uint16 windows_width, Uint16 windows_height):
         _windows_width(windows_width)
         ,_windows_height(windows_height)

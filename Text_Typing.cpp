@@ -1,5 +1,6 @@
 #include "Text_Typing.h"
 using namespace::std;
+using namespace SDL;
 
 Text_Typing::Text_Typing(string path_font, int size, char colR, char colG, char colB, SDL_Event* event) :
 Images_Click("", event),

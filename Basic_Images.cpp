@@ -1,6 +1,7 @@
 #include "Basic_Images.h"
 
 using namespace::std;
+using namespace SDL;
 
 Basic_Images::Basic_Images():
     _info()

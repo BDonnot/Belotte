@@ -1,4 +1,5 @@
 #include "Screen_Begin.h"
+using namespace SDL;
 
 Screen_Begin::Screen_Begin(Basic_Images* fond,SDL_Event* pevent,double screen_width,double screen_height):
 Quit(pevent)

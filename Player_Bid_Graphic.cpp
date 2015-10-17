@@ -17,7 +17,7 @@ Player_Bid()
                             ,{windows_width/2 + 150,0}
                             ,{0,windows_height/2-150}};
     POSITION_OPTION pos_opt[4] = {BOTTOM_CENTER,CENTER_RIGHT,TOP_CENTER,CENTER_LEFT};
-    PositionGraphic pos(position[player_number.ToInt()][0],position[player_number.ToInt()][1],pos_opt[player_number.ToInt()]);
+    SDL::PositionGraphic pos(position[player_number.ToInt()][0],position[player_number.ToInt()][1],pos_opt[player_number.ToInt()]);
 
     array<Uint,4> x = {0,200,400,600};
     array<Uint,4> y = {0,0,0,0};
@@ -28,7 +28,7 @@ Player_Bid()
     _bubble.SetPosition(pos);
 
     //positioning correctly the text and the images :
-    PositionGraphic pos2(pos.Getx()+60,pos.Gety()+40,CENTER);
+    SDL::PositionGraphic pos2(pos.Getx()+60,pos.Gety()+40,CENTER);
     _text.SetPosition(pos2);
 
     x = {1,64,129,197};

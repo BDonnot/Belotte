@@ -12,22 +12,23 @@
 #include "Images_Sprite.h"
 #include "Player_Name.h"
 
-
-class Trump_Image : public Images_Sprite<4>,Basic_Click
+namespace SDL
 {
-    protected :
-        int _trunk;
-        int _taker;
-    public:
-        Trump_Image(){}
-        Trump_Image(SDL_Event* event);
-        void Set_Taker(int taker);
-        virtual ~Trump_Image(){}
-    protected:
-        void Update_on_it();
-    private:
-        Trump_Image(const Trump_Image& other){}
-        Trump_Image& operator=(const Trump_Image& other){return *this;}
-};
-
+	class Trump_Image : public Images_Sprite<4>, public Basic_Click
+	{
+	protected:
+		int _trunk;
+		int _taker;
+	public:
+		Trump_Image() {}
+		Trump_Image(SDL_Event* event);
+		void Set_Taker(int taker);
+		virtual ~Trump_Image() {}
+	protected:
+		void Update_on_it();
+	private:
+		Trump_Image(const Trump_Image& other) {}
+		Trump_Image& operator=(const Trump_Image& other) { return *this; }
+	};
+}
 #endif // TRUMP_IMAGE_H

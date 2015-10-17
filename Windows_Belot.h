@@ -18,22 +18,22 @@
 #include "Screen_Begin.h"
 #include "Screen_Option.h"
 
-class Windows_Belot : public Quit
+class Windows_Belot : public SDL::Quit
 {
     public:
         Windows_Belot();
         void Display();
         virtual ~Windows_Belot(){}
     protected:
-        Basic_Images _back;
+		SDL::Basic_Images _back;
         SDL_Surface* _screen;
         Uint16 _SCREEN_WIDTH;
         Uint16 _SCREEN_HEIGHT;
         Uint16 _SCREEN_BPP;
         Uint16 _fps;
-        Screen_end _screen_end;
-        Screen_Begin _screen_begin;
-        Screen_Option _screen_option;
+		SDL::Screen_end _screen_end;
+		SDL::Screen_Begin _screen_begin;
+		SDL::Screen_Option _screen_option;
         int _nb_human_player;
         Uint32 _start_loop;
         Uint32 _end_loop;

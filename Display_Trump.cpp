@@ -1,5 +1,6 @@
 #include "Display_Trump.h"
 using namespace std;
+using namespace SDL;
 
 Display_trump::Display_trump()
 {

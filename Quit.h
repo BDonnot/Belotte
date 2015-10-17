@@ -12,18 +12,20 @@
 	#include <SDL.h>
 #endif  //SDL include
 
-class Quit //Just contain the method Quit()
+namespace SDL
 {
-    protected:
-        SDL_Event* _event;
-        Uint8* _keystates;
-        const bool _destruct;
-    public:
-        Quit();
-        Quit(SDL_Event* pevent);
-        virtual ~Quit();
-        bool KeepLooping();
-    private:
-};
-
+	class Quit //Just contain the method Quit()
+	{
+	protected:
+		SDL_Event* _event;
+		Uint8* _keystates;
+		const bool _destruct;
+	public:
+		Quit();
+		Quit(SDL_Event* pevent);
+		virtual ~Quit();
+		bool KeepLooping();
+	private:
+	};
+}
 #endif // QUIT_H

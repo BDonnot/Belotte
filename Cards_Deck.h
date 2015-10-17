@@ -21,9 +21,9 @@ class Cards_Deck
     protected:
         std::list<Cards*> _pile;
         bool _first;
-        DisplayCardPile _DisplayCardPile;
+		SDL::DisplayCardPile _DisplayCardPile;
         Basic_Game_Info _info;
-        PositionGraphic _screenCenter;
+        SDL::PositionGraphic _screenCenter;
         Random _rand;
         Random_Decreasing _randDecreasing;
 

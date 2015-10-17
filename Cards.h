@@ -9,9 +9,9 @@
 **/
 
 #include "Cards_Basic.h"
-#include "Cards_SDL.h"
+#include "Cards_Image.h"
 
-class Cards : public Cards_Basic, public Cards_SDL
+class Cards : public Cards_Basic, public SDL::Cards_Image
 {
     public:
         Cards(){}
@@ -19,7 +19,7 @@ class Cards : public Cards_Basic, public Cards_SDL
              Cards_Basic(height,color){}
         Cards(const Card_Height& height,const Card_Color& color,SDL_Event* event,SDL_Surface * pScreen):
             Cards_Basic(height,color),
-            Cards_SDL(height.ToInt(),color.ToInt(),event,pScreen){}
+			SDL::Cards_Image(height.ToInt(),color.ToInt(),event,pScreen){}
         virtual ~Cards(){}
         virtual void Display()
         {

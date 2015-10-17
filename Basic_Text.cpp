@@ -1,6 +1,6 @@
 #include "Basic_Text.h"
 using namespace::std;
-
+using namespace SDL;
 Basic_Text::Basic_Text(std::string path_font, int size, char colR, char colG, char colB, std::string text) :
 _size(size)
 {

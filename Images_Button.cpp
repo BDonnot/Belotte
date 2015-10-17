@@ -1,5 +1,6 @@
 #include "Images_Button.h"
 using namespace::std;
+using namespace SDL;
 
 Images_Button::Images_Button(SDL_Event* event
                              ,std::string text_button

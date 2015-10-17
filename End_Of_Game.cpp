@@ -3,14 +3,14 @@ using namespace std;
 End_Of_Game::End_Of_Game(SDL_Event* pEvent,SDL_Surface* pScreen,Uint windowsWidth, Uint windowsHeight):
 _info()
 ,_pScreen(pScreen)
-,_again(pEvent,"Continuer",move(PositionGraphic()))
-,_quit(pEvent,"Quitter",move(PositionGraphic()))
+,_again(pEvent,"Continuer",move(SDL::PositionGraphic()))
+,_quit(pEvent,"Quitter",move(SDL::PositionGraphic()))
 ,_firstLine("fonts/MLSGY.ttf",25,255,255,255,"L'équipe 1 (attaquante) a gagné avec 123 points.")
 , _secondLine("fonts/MLSGY.ttf", 25, 255, 255, 255, "Le contrat est donc rempli, et les scores sont donc :")
 , _firstScore("fonts/MLSGY.ttf", 25, 255, 255, 255, "Equipe 0 : 445 points")
 , _secondScore("fonts/MLSGY.ttf", 25, 255, 255, 255, "Equipe 1 : 445 points")
 {
-    PositionGraphic pos(windowsWidth/2,windowsHeight/9-20,CENTER);
+    SDL::PositionGraphic pos(windowsWidth/2,windowsHeight/9-20,CENTER);
     _again.SetPosition(pos);
     pos.Set(windowsWidth/2,2*windowsHeight/9-20,CENTER);
     _quit.SetPosition(pos);

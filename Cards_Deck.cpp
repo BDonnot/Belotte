@@ -1,5 +1,6 @@
 #include "Cards_Deck.h"
 using namespace::std;
+using namespace SDL;
 
 Cards_Deck::Cards_Deck(SDL_Event* event,SDL_Surface* screen,Uint16 screenWidth, Uint16 screenHeight):
 _DisplayCardPile(screen)

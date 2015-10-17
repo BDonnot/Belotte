@@ -1,4 +1,5 @@
 #include "Images_Click.h"
+using namespace SDL;
 
 void Images_Click::Update_on_it()
 {

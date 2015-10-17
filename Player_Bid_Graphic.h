@@ -34,14 +34,14 @@
 class Player_Bid_Graphic : public Player_Bid
 {
     protected :
-        Images_SpriteEvent<4> _bubble; //the bubble around the text
-        Images_Text _text; //the text "passe" or "110", or "coinche"
-        Images_Sprite<4> _color; //logo of the color (if any)
+        SDL::Images_SpriteEvent<4> _bubble; //the bubble around the text
+		SDL::Images_Text _text; //the text "passe" or "110", or "coinche"
+		SDL::Images_Sprite<4> _color; //logo of the color (if any)
         bool _displayed_logo_color;
-        Images_Sprite<4> _oldColor;
-        Images_Text _oldText;
+		SDL::Images_Sprite<4> _oldColor;
+		SDL::Images_Text _oldText;
         std::list<Player_Bid> _listOldBet;
-        DisplayOldBets _dsplOldBets;
+		SDL::DisplayOldBets _dsplOldBets;
     public:
         Player_Bid_Graphic(){}
         Player_Bid_Graphic(const Player_ID& player_number,SDL_Event* pevent,SDL_Surface* screen,Uint windows_width,Uint windows_height);

@@ -43,7 +43,12 @@ class Player_AI : public Player
         WrapperPrint<PLAYER_AI_DEBUG> _printf;
     public:
         Player_AI(){}
-        Player_AI(const Player_ID& number,Uint16 windows_width, Uint16 windows_height,SDL_Event* pevent,Basic_Images* fond,SDL_Surface* screen):
+        Player_AI(const Player_ID& number
+			,Uint16 windows_width
+			,Uint16 windows_height
+			,SDL_Event* pevent
+			,SDL::Basic_Images* fond
+			,SDL_Surface* screen):
             Player(number,windows_width,windows_height,pevent,fond,screen)
             ,_rand(rand())
             ,_betsMemory()

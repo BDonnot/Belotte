@@ -1,5 +1,6 @@
 #include "Images_Text.h"
 using namespace::std;
+using namespace SDL;
 
 Images_Text::Images_Text()
 {

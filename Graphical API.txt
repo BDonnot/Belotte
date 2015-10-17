@@ -1,0 +1,48 @@
+Strongly dependant (namespace)
+*Basic_Click
+*Basic_Images
+*Basic_Text
+*Basic_Transparency
+*Cards_Images
+*Images_Button
+*Images_Click
+*Images_Move
+*Images_Sprite
+*Images_Sprite_Move
+*Images_SpriteEvent
+*Images_Text
+*Imges_Transparency
+*Position_Graphic
+*Screen_Begin (transform to windows)
+*Screen_end (transform to windows)
+*Screen_Options (transform to windows)
+*Text_Typing
+*Windows_Belot
+
+*Display_Trimp
+*DisplayOldBets
+*Player_Bid_Graphic
+*Quit
+*Score_Team
+
+
+Using it : 
+*Bidding
+*Cards
+*Cards_Deck
+*End_Of_game
+*Foncteurs_Cards
+*Game_Coinche
+*Player
+*Player_AI
+*Player_Human
+*Player_Name
+*Take_Human
+*TakeHumanCoinche
+*Trick_Belot
+*Trick
+*Trump_Image
+
+
+
+

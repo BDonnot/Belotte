@@ -1,4 +1,5 @@
 #include "Windows_Belot.h"
+using namespace SDL;
 
 Windows_Belot::Windows_Belot():Quit()
 ,_back("images/tapis_moyen_2.jpg")

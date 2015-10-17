@@ -27,12 +27,12 @@ class Trick :public Trick_Basic
 {
     protected :
         SDL_Surface* _pScreen;
-        Images_SpriteEvent<4> _logo;
-        Images_Text _teamName;
-        Images_Text _contract;
-        Images_Text _infoPreviousTrick;
-        Images_Button _ok;
-        PositionGraphic _posCard;
+		SDL::Images_SpriteEvent<4> _logo;
+		SDL::Images_Text _teamName;
+		SDL::Images_Text _contract;
+		SDL::Images_Text _infoPreviousTrick;
+		SDL::Images_Button _ok;
+        SDL::PositionGraphic _posCard;
         Score_Team _scoreTeam;
 
     public:

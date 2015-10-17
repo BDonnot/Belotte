@@ -16,14 +16,14 @@ class Take_Human
         Uint16 _windows_width;
         Uint16 _windows_height;
         const Basic_Game_Info _info;
-        Images_Button _carreau;
-        Images_Button _coeur;
-        Images_Button _pique;
-        Images_Button _trefle;
-        Images_Button _pass;
-        Images_Button _yes;
-        Images_Button _no;
-        Images_Text _question;
+		SDL::Images_Button _carreau;
+		SDL::Images_Button _coeur;
+		SDL::Images_Button _pique;
+		SDL::Images_Button _trefle;
+		SDL::Images_Button _pass;
+		SDL::Images_Button _yes;
+		SDL::Images_Button _no;
+		SDL::Images_Text _question;
         std::string _question_which_color;
         SDL_Surface* _screen;
 

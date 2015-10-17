@@ -1,5 +1,6 @@
 #include "Player.h"
 using namespace::std;
+using namespace SDL;
 
 void Player::ReceivedCard(Cards* pcard,unsigned int card_number)
 {

@@ -1,5 +1,6 @@
 #include "Images_Transparency.h"
 using namespace::std;
+using namespace SDL;
 
 void Images_Transparency::act()
 {

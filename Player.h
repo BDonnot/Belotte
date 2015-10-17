@@ -44,9 +44,9 @@ class Player
         Cards* _cardPlayed;
         TrickStatus _currentTrickStatus;
 
-        PositionGraphic _pos;
+        SDL::PositionGraphic _pos;
         Player_Name _name; //his name
-        DisplayCardPlayer _DisplayCardPlayer;//to display the cards the proper way
+		SDL::DisplayCardPlayer _DisplayCardPlayer;//to display the cards the proper way
         SDL_Surface* _screen;
         SDL_Event* _event;
         Player_Bid _currentBid;
@@ -58,7 +58,12 @@ class Player
 
     public:
         Player():_number(PLAYER0),_currentTrickStatus(_number){}
-        Player(const Player_ID& number,Uint windows_width, Uint windows_height,SDL_Event* pevent,Basic_Images* fond,SDL_Surface* screen):
+        Player(const Player_ID& number
+			,Uint windows_width
+			,Uint windows_height
+			,SDL_Event* pevent
+			,SDL::Basic_Images* fond
+			,SDL_Surface* screen):
             _playable_cards()
             ,_number(number)
             ,_cardPlayed(nullptr)
@@ -124,7 +129,7 @@ class Player
 
         virtual void resetTake(){} //for the AI to be able to forget the previous bets
     private:
-        PositionGraphic setPosition(const Player_ID& number,Uint16 windows_width, Uint16 widows_height); //to properly set the right position
+        SDL::PositionGraphic setPosition(const Player_ID& number,Uint16 windows_width, Uint16 widows_height); //to properly set the right position
         std::string setName(const Player_ID&  number); //to set the default name
         std::string setPathImage(const Player_ID&  number); //to set the path of the image of the player
 

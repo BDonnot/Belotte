@@ -1,6 +1,7 @@
 #include "Trick.h"
 
 using namespace std;
+using namespace SDL;
 
 Trick::Trick(Cards_Deck* pDeck,const std::array<Player*,4>& players,Uint windowsWidth,Uint windowsHeight,SDL_Event* pevent,SDL_Surface* pScreen):
 Trick_Basic(pDeck,players),

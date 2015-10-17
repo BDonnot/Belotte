@@ -1,5 +1,6 @@
 #include "Take_Human.h"
 using namespace::std;
+using namespace SDL;
 
 Take_Human::Take_Human(SDL_Event* event,SDL_Surface* screen,Uint16 windows_width, Uint16 windows_height):
     _windows_width(windows_width)

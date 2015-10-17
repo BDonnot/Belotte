@@ -1,6 +1,7 @@
 #include "Game_Coinche.h"
 
 using namespace std;
+using namespace SDL;
 
 Game_Coinche::Game_Coinche(SDL_Surface* screen,Uint16 screenWidth, Uint16 screenHeight):
     Quit()

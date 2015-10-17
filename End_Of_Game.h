@@ -17,12 +17,12 @@ class End_Of_Game
     protected :
        Basic_Game_Info _info;
        SDL_Surface* _pScreen;
-       Images_Button _again;
-       Images_Button _quit;
-       Images_Text _firstLine;
-       Images_Text _secondLine;
-       Images_Text _firstScore;
-       Images_Text _secondScore;
+	   SDL::Images_Button _again;
+	   SDL::Images_Button _quit;
+	   SDL::Images_Text _firstLine;
+	   SDL::Images_Text _secondLine;
+	   SDL::Images_Text _firstScore;
+	   SDL::Images_Text _secondScore;
     public:
         End_Of_Game(){}
         End_Of_Game(SDL_Event* pEvent,SDL_Surface* pScreen,Uint windowsWidth, Uint windowsHeight);

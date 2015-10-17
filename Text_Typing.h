@@ -13,21 +13,22 @@
 #include "Basic_Text.h"
 #include "Images_Click.h"
 
-
-class Text_Typing : public Images_Click,public Basic_Text
+namespace SDL
 {
-    public:
-        Text_Typing(){}
-        Text_Typing(std::string path_font,int size, char colR, char colG, char colB,SDL_Event* event);
+	class Text_Typing : public Images_Click, public Basic_Text
+	{
+	public:
+		Text_Typing() {}
+		Text_Typing(std::string path_font, int size, char colR, char colG, char colB, SDL_Event* event);
 		Text_Typing(std::string path_font, int size, char colR, char colG, char colB, SDL_Event* event, std::string text);
-        virtual ~Text_Typing(){}
-        void Update_Text_OnIt();
-        void Change_Text(std::string text);
-    protected:
-        std::string _text_old;
+		virtual ~Text_Typing() {}
+		void Update_Text_OnIt();
+		void Change_Text(std::string text);
+	protected:
+		std::string _text_old;
 
-        void act();
-    private:
-};
-
+		void act();
+	private:
+	};
+}
 #endif // TEXT_TYPING_H

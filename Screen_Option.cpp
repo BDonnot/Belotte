@@ -1,4 +1,5 @@
 #include "Screen_Option.h"
+using namespace SDL;
 
 Screen_Option::Screen_Option(Basic_Images* fond,SDL_Event* pevent,Uint screen_width,Uint screen_height):Quit(pevent),
 _nb_player(pevent,"Joueurs",PositionGraphic())

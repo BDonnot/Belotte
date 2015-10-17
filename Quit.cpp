@@ -1,4 +1,5 @@
 #include "Quit.h"
+using namespace SDL;
 
 Quit::Quit():_destruct(true)
 {

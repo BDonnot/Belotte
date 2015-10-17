@@ -1,6 +1,7 @@
 #include "Trick_Basic.h"
 
 using namespace::std;
+using namespace SDL;
 
 Trick_Basic::Trick_Basic(Cards_Deck* pDeck,const std::array<Player*,4>& players):
 _players(players),
@@ -63,9 +64,9 @@ bool Trick_Basic::Play() // TO DO code the same way as Bidding.cpp
         _printf("The trick is over\n");
         _printf("Player have played : ");
         Player_ID tempP = _to_play;
-        for(Uint i = 0; i < 4; ++i)
+        for(Uint j = 0; j < 4; ++j)
         {
-            _printf("%d -> [c:%d;h:%d] |",tempP.ToInt(),_currentTrick[i]->GetColour().ToInt(),_currentTrick[i]->GetHeight().ToInt());
+            _printf("%d -> [c:%d;h:%d] |",tempP.ToInt(),_currentTrick[j]->GetColour().ToInt(),_currentTrick[j]->GetHeight().ToInt());
             tempP.Next();
         }
         _printf("\n");

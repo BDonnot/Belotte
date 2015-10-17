@@ -1,5 +1,6 @@
 #include "Trump_Image.h"
 using namespace::std;
+using namespace SDL;
 
 Trump_Image::Trump_Image(SDL_Event* event):Images_Sprite<4>("images/sprite_trunk.png"),Basic_Click(event)
 {

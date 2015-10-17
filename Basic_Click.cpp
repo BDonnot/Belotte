@@ -1,4 +1,5 @@
 #include "Basic_Click.h"
+using namespace SDL;
 
 Basic_Click::Basic_Click(SDL_Event* event)
 {

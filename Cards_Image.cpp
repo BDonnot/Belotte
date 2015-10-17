@@ -1,7 +1,9 @@
-#include "Cards_SDL.h"
+#include "Cards_Image.h"
 
 using namespace std;
-Cards_SDL::Cards_SDL(Uint height,Uint color,SDL_Event* event,SDL_Surface * pscreen):
+using namespace SDL;
+
+Cards_Image::Cards_Image(Uint height,Uint color,SDL_Event* event,SDL_Surface * pscreen):
     Basic_Transparency(SDL_ALPHA_OPAQUE),
     Basic_Click(event),
     Images_Sprite_Move<2>("images/sprite_carte (70-90).jpg"),
@@ -18,7 +20,7 @@ Cards_SDL::Cards_SDL(Uint height,Uint color,SDL_Event* event,SDL_Surface * pscre
     _first_sprite = false;
 }
 
-void Cards_SDL::Update_on_it()
+void Cards_Image::Update_on_it()
 {
     if( _pEvent->type == SDL_MOUSEMOTION )
     {
@@ -36,7 +38,7 @@ void Cards_SDL::Update_on_it()
     Set_click_on_short();
 }
 
-void Cards_SDL::act()
+void Cards_Image::act()
 {
     updateMouvement();
     transparency(); //computation of alpha
@@ -49,17 +51,17 @@ void Cards_SDL::InitMouvement(const PositionGraphic& pos,Uint32 duration,Uint32 
     initMouvement(false,pos,duration,time_lag);
 }
 */
-void Cards_SDL::RevealCard(const PositionGraphic& pos,Uint32 duration,Uint32 time_lag)
+void Cards_Image::RevealCard(const PositionGraphic& pos,Uint32 duration,Uint32 time_lag)
 {
     initMouvement(_sprite_number == 0,pos,duration,time_lag);
 }
 
-void Cards_SDL::HideCard(const PositionGraphic& pos,Uint32 duration,Uint32 time_lag)
+void Cards_Image::HideCard(const PositionGraphic& pos,Uint32 duration,Uint32 time_lag)
 {
     initMouvement(_sprite_number == 1,pos,duration,time_lag);
 }
 
-void Cards_SDL::initMouvement(bool transparency,PositionGraphic pos,Uint32 duration,Uint32 time_lag)
+void Cards_Image::initMouvement(bool transparency,PositionGraphic pos,Uint32 duration,Uint32 time_lag)
 {
     Uint32 current_time = _info.Time();
     if (transparency) Reveal(duration,time_lag,current_time);
@@ -67,19 +69,19 @@ void Cards_SDL::initMouvement(bool transparency,PositionGraphic pos,Uint32 durat
     Set_animate(pos,duration,time_lag);
 }
 
-void Cards_SDL::UpdatePositionHand(PositionGraphic& pos_end)
+void Cards_Image::UpdatePositionHand(PositionGraphic& pos_end)
 {
     pos_end.SetProperPosition(_width,_height);
     if ((pos_end.Getx() != _pos.Getx())||(pos_end.Gety() != _pos.Gety())) Set_animate(pos_end);
 }
 
-void Cards_SDL::updateMouvement()
+void Cards_Image::updateMouvement()
 {
     _timer_alpha_current = _info.Time();
     revealing();
 }
 
-void Cards_SDL::revealing()
+void Cards_Image::revealing()
 {
     if(_timer_alpha_current <= _timer_alpha_end) return;
     if (_first_sprite)
@@ -94,7 +96,7 @@ void Cards_SDL::revealing()
     }
 }
 
-void Cards_SDL::Up(bool go_up)
+void Cards_Image::Up(bool go_up)
 {
     if((go_up)&&(!_up))
     {
@@ -107,14 +109,14 @@ void Cards_SDL::Up(bool go_up)
     }
 }
 
-void Cards_SDL::Reveal(Uint32 duration,Uint32 time_lag,Uint32 current_time) //init the revealing of a card : first the back disapear slowly and then the front appear
+void Cards_Image::Reveal(Uint32 duration,Uint32 time_lag,Uint32 current_time) //init the revealing of a card : first the back disapear slowly and then the front appear
 {
     _first_sprite = true;
     _half_duration = duration /2;
     Set_Transparent((Uint8) 30,_half_duration,time_lag,_info.Time());
 }
 
-void Cards_SDL::Reset()
+void Cards_Image::Reset()
 {
     Reset_Click();
     _up = false;
