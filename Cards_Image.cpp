@@ -42,7 +42,7 @@ void Cards_Image::act()
 {
     updateMouvement();
     transparency(); //computation of alpha
-    SDL_SetAlpha( _surface.get(), SDL_SRCALPHA | SDL_RLEACCEL, _alpha ); //apply the new level of transparency
+    SDL_SetAlpha( _surface.get(), SDL_SRCALPHA | SDL_RLEACCEL, static_cast<Uint8>(_alpha) ); //apply the new level of transparency
     Move(); //computation of the new position
 }
 /*
@@ -63,7 +63,7 @@ void Cards_Image::HideCard(const PositionGraphic& pos,Uint32 duration,Uint32 tim
 
 void Cards_Image::initMouvement(bool transparency,PositionGraphic pos,Uint32 duration,Uint32 time_lag)
 {
-    Uint32 current_time = _info.Time();
+    Uint32 current_time = static_cast<Uint32>(_info.Time());
     if (transparency) Reveal(duration,time_lag,current_time);
     pos.SetProperPosition(_width,_height);
     Set_animate(pos,duration,time_lag);
@@ -77,7 +77,7 @@ void Cards_Image::UpdatePositionHand(PositionGraphic& pos_end)
 
 void Cards_Image::updateMouvement()
 {
-    _timer_alpha_current = _info.Time();
+    _timer_alpha_current = static_cast<Uint32>(_info.Time());
     revealing();
 }
 

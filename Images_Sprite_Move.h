@@ -87,13 +87,13 @@ namespace SDL
 		}
 		if (_timer_current <= _timer_end - _fps) //if it has not yet arrived
 		{
-			_timer_start = info.Time();
+			_timer_start = static_cast< Uint32 >(info.Time()) ;
 			setSpeed(_timer_end - _timer_start);
 		}
 		else //it has arrived at the wrong destination
 		{
-			_timer_start = info.Time() - 1;
-			_timer_end = info.Time() + 200;
+			_timer_start = static_cast<Uint32>(info.Time()) - 1;
+			_timer_end = static_cast<Uint32>(info.Time()) + 200;
 			setSpeed(_timer_end - _timer_start);
 		}
 	}
@@ -103,7 +103,7 @@ namespace SDL
 	{
 		PositionGraphic& pos = (this)->_pos;
 		PositionGraphic& pos_end = (this)->_pos_end;
-		Uint timer_current = (this)->_info.Time();
+		Uint timer_current = static_cast<Uint32>( (this)->_info.Time() );
 		if (timer_current <= _timer_start)
 		{
 			_timer_current = timer_current;

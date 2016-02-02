@@ -34,10 +34,12 @@ Game_Coinche::Game_Coinche(SDL_Surface* screen,Uint16 screenWidth, Uint16 screen
         _players[i] = static_cast<Player*>(new AIMCRandom(Player_ID(posPlayer[i]), screenWidth, screenHeight, _event, &_backSide, _pScreen));
         //_players[i] = static_cast<Player*>(new AIScores(Player_ID(posPlayer[i]), screenWidth, screenHeight, _event, &_backSide, _pScreen));
 #else
-		if (i % 2 == 0)
-            _players[i] = static_cast<Player*>(new AIMCScores(Player_ID(posPlayer[i]), screenWidth, screenHeight, _event, &_backSide, _pScreen));
-		else
-            _players[i] = static_cast<Player*>(new AIMCRandom(Player_ID(posPlayer[i]), screenWidth, screenHeight, _event, &_backSide, _pScreen));
+		_players[i] = static_cast<Player*>(new AIMCRandom(Player_ID(posPlayer[i]), screenWidth, screenHeight, _event, &_backSide, _pScreen));
+
+		//if (i % 2 == 0) //AIMCScores
+           // _players[i] = static_cast<Player*>(new AIMCScores(Player_ID(posPlayer[i]), screenWidth, screenHeight, _event, &_backSide, _pScreen));
+		//else //AIMCRandom
+           // _players[i] = static_cast<Player*>(new AIMCRandom(Player_ID(posPlayer[i]), screenWidth, screenHeight, _event, &_backSide, _pScreen));
 
 		//if (i % 2 == 0)
             //_players[i] = static_cast<Player*>(new AIMCRandom(Player_ID(posPlayer[i]), screenWidth, screenHeight, _event, &_backSide, _pScreen));

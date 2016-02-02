@@ -33,7 +33,7 @@ class ResultMonteCarlo
         ResultMonteCarlo(Uint nbMaxSimul,const std::list<Cards_Basic>& playableCards);
         virtual ~ResultMonteCarlo(){}
         void Put(Uint idTraj,const Cards_Basic& cardsPlayed,Uint scoreTraj);
-        Uint ScoreAggr(const Cards_Basic& cardsPlayed); //default behavior : average the result
+        double ScoreAggr(const Cards_Basic& cardsPlayed); //default behavior : average the result
     protected:
     private:
 };

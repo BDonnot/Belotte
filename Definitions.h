@@ -21,8 +21,9 @@
 //Definition of some constant, used for simulation and testing
 #define NBGAMEMAX  3000
 #define TEST_PLAY_GAME 0
-#define PLAY_HUMAN 1
+#define PLAY_HUMAN 0
 #define MULTITHREAD_GRAPHIC 1
+#define USE_BOOST 0 //EXPERIMENTAL
 
 #include<string>
 #include<ostream>

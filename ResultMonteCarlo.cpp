@@ -22,10 +22,10 @@ void ResultMonteCarlo::Put(Uint idTraj,const Cards_Basic& cardPlayed,Uint scoreT
     _score[ refCard ][idTraj] = scoreTraj;
 }
 
-Uint ResultMonteCarlo::ScoreAggr(const Cards_Basic& cardPlayed)
+double ResultMonteCarlo::ScoreAggr(const Cards_Basic& cardPlayed)
 {
     //Default behavior : do the average ...
-    double res = 0;
+    double res = 0.;
     Uint refCard = _refCardsInt[cardPlayed];
     vector<Uint>& scoresCard = _score[refCard];
     sort(scoresCard.begin(),scoresCard.end());
