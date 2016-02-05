@@ -3,8 +3,8 @@ using namespace SDL;
 
 Basic_Transparency::Basic_Transparency()
 {
-    _alpha = SDL_ALPHA_OPAQUE;
-    _alpha_end = SDL_ALPHA_OPAQUE;
+    _alpha = ALPHA_OPAQUE;
+    _alpha_end = ALPHA_OPAQUE;
     _fps = 1000/32;
 }
 
@@ -37,8 +37,8 @@ void Basic_Transparency::Set_Transparent(bool increasing,Uint32 duration,Uint32 
     _timer_alpha_current = current_time;
     _timer_alpha_end = current_time+time_lag+duration;
     _timer_alpha_start = current_time+time_lag;
-    if (increasing) _alpha_end = SDL_ALPHA_OPAQUE;
-    else _alpha_end = SDL_ALPHA_TRANSPARENT;
+    if (increasing) _alpha_end = ALPHA_OPAQUE;
+    else _alpha_end = ALPHA_TRANSPARENT;
 }
 
 void Basic_Transparency::Set_Transparent(Uint8 alpha_end,Uint32 duration,Uint32 time_lag,Uint32 current_time)

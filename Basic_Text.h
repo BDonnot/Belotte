@@ -9,6 +9,7 @@
 
 #include <string>
 
+#if COMPLETE_GAME > 0
 #if defined(__GNUC__)
 	#include "SDL/SDL.h"
 	#include "SDL/SDL_ttf.h"
@@ -16,17 +17,18 @@
 	#include <SDL.h>
 	#include <SDL_ttf.h>
 #endif //SDL include
-
+#endif //COMPLETE_GAME
 ///TO DO : on UNIX system, the conversion done by Convert is not right ...
 ///find a way to be OS specific. (#if defined ... )
 namespace SDL
 {
+#if COMPLETE_GAME > 0
 	class Basic_Text
 	{
 	protected:
 		int _size; //the size of the text
 		Uint8* _keystates; //state of the key : pressed / not pressed
-		TTF_Font* _font; //the font of te writing
+		TTF_Font* _font; //the font of the writing
 		SDL_Color _color; //the color of the writing
 		std::string _current_text; //the text
 		bool _change;
@@ -43,5 +45,27 @@ namespace SDL
 		std::string DeleteChar(std::string strs); //to delete the last character of a string
 	private:
 	};
+#else
+	class Basic_Text
+	{
+	protected:
+		int _size; //the size of the text
+		Uint8 * _keystates; //state of the key : pressed / not pressed
+		std::string _current_text; //the text
+		bool _change;
+	public:
+		Basic_Text() {}
+		Basic_Text(std::string path_font, int size, char colR, char colG, char colB, std::string text):
+			_size(size)
+			,_change(false)
+			,_keystates(nullptr){}
+		virtual ~Basic_Text() {}
+		const std::string& GetText() const { return _current_text; }
+		void ChangeText(std::string text);
+	protected:
+		std::string DeleteChar(std::string strs); //to delete the last character of a string
+	private:
+	};
+#endif //COMPLETE_GAME
 };
 #endif // BASIC_TEXT_H

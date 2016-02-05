@@ -12,6 +12,7 @@
 #include <array>
 #include <memory>
 
+#if COMPLETE_GAME > 0
 #if defined(__GNUC__)
 	#include "SDL/SDL.h"
 	#include "SDL/SDL_image.h"
@@ -19,12 +20,14 @@
 	#include <SDL.h>
 	#include <SDL_image.h>
 #endif //SDL include
+#endif //COMPLETE_GAME
 
 #include "Basic_Game_Info.h"
 #include "PositionGraphic.h"
 
 namespace SDL
 {
+#if COMPLETE_GAME > 0
 	class DeleteSurface
 	{
 	public:
@@ -63,6 +66,36 @@ namespace SDL
 		Basic_Images(const Basic_Images& other) {} //to prevent copy
 		Basic_Images& operator=(const Basic_Images& other) { return *this; } //to prevent assignment
 	};
+#else
+	class Basic_Images
+	{
+	protected:
+		const Basic_Game_Info _info;
+		int _height; //height
+		int _width; //width
+		PositionGraphic _pos;
+	public:
+		Basic_Images():_info()
+			, _height(0)
+			, _width(0)
+			, _pos(0, 0, TOP_LEFT){}
+		Basic_Images(std::string path):_info()
+			, _height(0)
+			, _width(0)
+			, _pos(0, 0, TOP_LEFT){}
 
+		virtual ~Basic_Images() {}
+		virtual void SetPosition(PositionGraphic& pos); //to set the position of the image
+		const PositionGraphic& GetPosition() const { return _pos; }
+		std::array<Uint, 2> GetSize();
+	protected:
+
+		virtual void act() {} //the action : will be overrode in the derivate classes (for example changing the position if the image is moving)
+
+	private:
+		Basic_Images(const Basic_Images& other) {} //to prevent copy
+		Basic_Images& operator=(const Basic_Images& other) { return *this; } //to prevent assignment
+	};
+#endif //COMPLETE_GAME
 };
 #endif // BASIC_IMAGES_H

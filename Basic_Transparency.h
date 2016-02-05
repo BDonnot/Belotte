@@ -4,12 +4,14 @@
 /**
 ** Class to help dealing with the transparency of the images.
 **/
+#if COMPLETE_GAME > 0
+	#if defined (__GNUC__)
+		#include "SDL/SDL.h"
+	#elif defined(_MSC_VER)
+		#include <SDL.h>
+	#endif  //SDL include
+#endif //COMPLETE_GAME
 
-#if defined (__GNUC__)
-	#include "SDL/SDL.h"
-#elif defined(_MSC_VER)
-	#include <SDL.h>
-#endif  //SDL include
 namespace SDL
 {
 	class Basic_Transparency

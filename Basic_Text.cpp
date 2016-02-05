@@ -1,6 +1,8 @@
 #include "Basic_Text.h"
 using namespace::std;
 using namespace SDL;
+
+#if COMPLETE_GAME > 0
 Basic_Text::Basic_Text(std::string path_font, int size, char colR, char colG, char colB, std::string text) :
 _size(size)
 {
@@ -119,20 +121,24 @@ string Basic_Text::Character(SDLKey key)
         }
     }
 }
+#else
+
+#endif //COMPLETE_GAME
 string Basic_Text::DeleteChar(string str)
 {
-    if (str == "") return "";
-    string res = "";
-    int n = str.size() ;
-    for (int i = 0; i < n-1; i++)
-    {
-        res+=str[i];
-    }
-    return res;
+	if (str == "") return "";
+	string res = "";
+	int n = str.size();
+	for (int i = 0; i < n - 1; i++)
+	{
+		res += str[i];
+	}
+	return res;
 }
+
 void Basic_Text::ChangeText(std::string text)
 {
-    if (text == _current_text) return ;
-    _current_text = text;
-    _change = true;
+	if (text == _current_text) return;
+	_current_text = text;
+	_change = true;
 }
