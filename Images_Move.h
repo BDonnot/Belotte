@@ -16,10 +16,24 @@ namespace SDL
 		Images_Move();
 		Images_Move(std::string path, Uint32 current_time);
 		virtual ~Images_Move();
+#if COMPLETE_GAME > 0
 		virtual void Update_Movement(Uint32 current_time); //for updating the movement
-		void Set_animate(PositionGraphic& pos_end, Uint32 duration, Uint32 time_lag, Uint32 current_time); //the first 2 numbers are for the final position, the 3rd for the time in milisecond, the last one is for the time
+		void Set_animate(PositionGraphic& pos_end, Uint32 duration, Uint32 time_lag, Uint32 current_time); 
+		//the first 2 numbers are for the final position, the 3rd for the time in milisecond, the last one is for the time
+#else
+		virtual void Update_Movement(Uint32 current_time) {} //for updating the movement
+		void Set_animate(PositionGraphic& pos_end, Uint32 duration, Uint32 time_lag, Uint32 current_time){}
+#endif //#if COMPLETE_GAME > 0
 	protected:
+#if COMPLETE_GAME > 0
 		void Move();
+		void setSpeed(Uint32 duration);
+		virtual void act(); //to act : update the coordinates
+#else
+		void Move()  {}
+		void setSpeed(Uint32 duration) {}
+		virtual void act() {}
+#endif //#if COMPLETE_GAME > 0
 		PositionGraphic _pos_end;
 		Uint32 _timer_end; //time of creation of the Basic_Images instance
 		Uint32 _timer_current; //current time
@@ -27,9 +41,7 @@ namespace SDL
 		Uint16 _fps;
 		double _vx;
 		double _vy;
-		void setSpeed(Uint32 duration);
 
-		virtual void act(); //to act : update the coordinates
 	private:
 	};
 }

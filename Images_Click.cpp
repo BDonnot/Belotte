@@ -1,6 +1,7 @@
 #include "Images_Click.h"
 using namespace SDL;
 
+#if COMPLETE_GAME > 0
 void Images_Click::Update_on_it()
 {
     if( _pEvent->type == SDL_MOUSEMOTION )
@@ -18,3 +19,6 @@ void Images_Click::Update_on_it()
     Set_click_on_long();
     Set_click_on_short();
 }
+#else
+void Images_Click::Update_on_it() { _on_it = true; }
+#endif //#if COMPLETE_GAME > 0

@@ -28,12 +28,24 @@ namespace SDL
 		Images_Sprite_Move(std::string path);
 		virtual ~Images_Sprite_Move() {}
 		virtual void SetPosition(PositionGraphic& pos);
+#if COMPLETE_GAME > 0
 		void Set_animate(PositionGraphic& pos_final, Uint32 duration, Uint32 time_lag); //the first 2 numbers are for the final position, the 3rd for the time in milisecond, the last one is for the time
 		void Set_animate(PositionGraphic& pos_final); //init the mouvement without updating the current time
+#else
+		void Set_animate(PositionGraphic& pos_final, Uint32 duration, Uint32 time_lag); {}
+		//the first 2 numbers are for the final position, the 3rd for the time in milisecond, the last one is for the time
 
+		void Set_animate(PositionGraphic& pos_final) {}
+		//init the mouvement without updating the current time
+#endif //#if COMPLETE_GAME > 0
 	protected:
+#if COMPLETE_GAME > 0
 		void Move();
 		virtual void act(); //to act : update the coordonatess
+#else
+		void Move() {}
+		virtual void act() {}
+#endif//#if COMPLETE_GAME > 0
 
 	private:
 	};
@@ -50,7 +62,7 @@ namespace SDL
 	{
 		this->ChangeSprite(0);
 	}
-
+#if COMPLETE_GAME > 0
 	template<Uint numberOfSprite>
 	void Images_Sprite_Move<numberOfSprite>::Set_animate(PositionGraphic& pos_final, Uint32 duration, Uint32 time_lag)
 	{
@@ -61,18 +73,6 @@ namespace SDL
 		_pos_end = pos_final;
 		setSpeed(duration);
 	}
-
-	template<Uint numberOfSprite>
-	void Images_Sprite_Move<numberOfSprite>::setSpeed(Uint32 duration)
-	{
-		PositionGraphic& pos = (this)->_pos;
-		PositionGraphic& pos_end = (this)->_pos_end;
-		_vx = static_cast<double>(pos_end.Getx()) - static_cast<double>(pos.Getx());
-		_vx /= static_cast<double>(duration);
-		_vy = static_cast<double>(pos_end.Gety()) - static_cast<double>(pos.Gety());
-		_vy /= static_cast<double>(duration);
-	}
-
 	template<Uint numberOfSprite>
 	void Images_Sprite_Move<numberOfSprite>::Set_animate(PositionGraphic& pos_final)
 	{
@@ -87,7 +87,7 @@ namespace SDL
 		}
 		if (_timer_current <= _timer_end - _fps) //if it has not yet arrived
 		{
-			_timer_start = static_cast< Uint32 >(info.Time()) ;
+			_timer_start = static_cast< Uint32 >(info.Time());
 			setSpeed(_timer_end - _timer_start);
 		}
 		else //it has arrived at the wrong destination
@@ -97,13 +97,12 @@ namespace SDL
 			setSpeed(_timer_end - _timer_start);
 		}
 	}
-
 	template<Uint numberOfSprite>
 	void Images_Sprite_Move<numberOfSprite>::Move()
 	{
 		PositionGraphic& pos = (this)->_pos;
 		PositionGraphic& pos_end = (this)->_pos_end;
-		Uint timer_current = static_cast<Uint32>( (this)->_info.Time() );
+		Uint timer_current = static_cast<Uint32>((this)->_info.Time());
 		if (timer_current <= _timer_start)
 		{
 			_timer_current = timer_current;
@@ -124,11 +123,21 @@ namespace SDL
 		if (_vy > 0.0)  pos.Gety() += std::min<Uint>(static_cast<Uint>(_vy*dt), pos_end.Gety() - pos.Gety());
 		else            pos.Gety() -= std::min<Uint>(static_cast<Uint>((-_vy)*dt), pos.Gety() - pos_end.Gety());
 	}
-
 	template<Uint numberOfSprite>
 	void Images_Sprite_Move<numberOfSprite>::act()
 	{
 		Move();
+	}
+#endif //#if COMPLETE_GAME > 0
+	template<Uint numberOfSprite>
+	void Images_Sprite_Move<numberOfSprite>::setSpeed(Uint32 duration)
+	{
+		PositionGraphic& pos = (this)->_pos;
+		PositionGraphic& pos_end = (this)->_pos_end;
+		_vx = static_cast<double>(pos_end.Getx()) - static_cast<double>(pos.Getx());
+		_vx /= static_cast<double>(duration);
+		_vy = static_cast<double>(pos_end.Gety()) - static_cast<double>(pos.Gety());
+		_vy /= static_cast<double>(duration);
 	}
 
 	template<Uint numberOfSprite>

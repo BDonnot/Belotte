@@ -6,6 +6,7 @@
 ** an image with multiple faces, that can be clicked on.
 **/
 
+#if COMPLETE_GAME > 0
 #if defined(__GNUC__)
 	#include "SDL/SDL.h"
 	#include "SDL/SDL_image.h"
@@ -13,6 +14,7 @@
 	#include <SDL.h>
 	#include <SDL_image.h>
 #endif //SDL include
+#endif //#if COMPLETE_GAME > 0
 
 #include "Images_Sprite.h"
 #include "Basic_Click.h"
@@ -24,13 +26,22 @@ namespace SDL
 	{
 	public:
 		Images_SpriteEvent() {}
+#if COMPLETE_GAME > 0
 		Images_SpriteEvent(std::string path, SDL_Event* pevent) :Images_Sprite<numberOfSprite>(path), Basic_Click(pevent) {}
+#else
+		Images_SpriteEvent(std::string path) : Images_Sprite<numberOfSprite>(path), Basic_Click() {}
+#endif //#if COMPLETE_GAME > 0
 		virtual ~Images_SpriteEvent() {}
+#if COMPLETE_GAME > 0
 		virtual void Update_on_it();
+#else
+		virtual void Update_on_it(){}
+#endif //#if COMPLETE_GAME > 0
 	protected:
 	private:
 	};
 
+#if COMPLETE_GAME > 0
 	template<Uint numberOfSprite>
 	void Images_SpriteEvent<numberOfSprite>::Update_on_it()
 	{
@@ -52,4 +63,6 @@ namespace SDL
 		Set_click_on_short();
 	}
 }
+#endif //#if COMPLETE_GAME > 0
+
 #endif // IMAGES_SPRITEEVENT_H

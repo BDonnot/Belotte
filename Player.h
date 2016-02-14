@@ -21,6 +21,7 @@
 #include "Foncteurs_Cards.h"
 #include "Foncteurs_CardsBasic.h"
 #include "Foncteurs_Players.h"
+#include "BetsMemory.h"
 
 #include "Cards.h"
 #include "Player_Name.h"
@@ -47,8 +48,10 @@ class Player
         SDL::PositionGraphic _pos;
         Player_Name _name; //his name
 		SDL::DisplayCardPlayer _DisplayCardPlayer;//to display the cards the proper way
+#if COMPLETE_GAME > 0
         SDL_Surface* _screen;
         SDL_Event* _event;
+#endif //#if COMPLETE_GAME > 0
         Player_Bid _currentBid;
         Player_Bid_Graphic _oldBid;
 
@@ -58,6 +61,24 @@ class Player
 
     public:
         Player():_number(PLAYER0),_currentTrickStatus(_number){}
+		        Player(const Player_ID& number
+						,Uint windows_width
+						,Uint windows_height):
+            _playable_cards()
+            ,_number(number)
+            ,_cardPlayed(nullptr)
+            ,_currentTrickStatus(_number)
+            ,_pos(setPosition(number,windows_width,windows_height))
+            ,_name(setName(number)
+                   ,setPathImage(number)
+                   ,windows_width
+                   ,windows_height
+                   ,_pos)
+            ,_DisplayCardPlayer(windows_width,windows_height,number)
+            ,_oldBid(number, windows_width,windows_height)
+        {
+        }
+#if COMPLETE_GAME > 0
         Player(const Player_ID& number
 			,Uint windows_width
 			,Uint windows_height
@@ -81,7 +102,7 @@ class Player
         {
             _screen = screen;
         }
-
+#endif //#if COMPLETE_GAME > 0
         virtual ~Player()
         {
             for (Cards * pcards : _hand)
@@ -91,9 +112,13 @@ class Player
         }
 
         void ReceivedCard(Cards* pcard,unsigned int card_number); //received a card, during the phase of giving
+#if COMPLETE_GAME > 0
         virtual void Display(GAME_PHASES currentPhase); //to display the right thing : the name, the image, and the cards in the hand.
-
         virtual void Update_Mouse(GAME_PHASES currentPhase); //to update the position of the mouse, the click etc.
+#else
+		virtual void Display(GAME_PHASES currentPhase) {} //to display the right thing : the name, the image, and the cards in the hand.
+		virtual void Update_Mouse(GAME_PHASES currentPhase) {} //to update the position of the mouse, the click etc.
+#endif //#if COMPLETE_GAME > 0
 
         Cards* PlayCard(const TrickBasic_Memory& trick); //choose the right card to play
         void UpdateEndTrick(const TrickBasic_Memory& trick,const Position_Trick& myPos); //do whatever you have to do at the end of each trick

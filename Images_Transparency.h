@@ -19,7 +19,11 @@ namespace SDL
 		Images_Transparency(std::string path, Uint16 transparency) :Basic_Images(path), Basic_Transparency(transparency) {}
 		virtual ~Images_Transparency() {}
 	protected:
+#if COMPLETE_GAME > 0
 		virtual void act(); //overriding of the method act : ajust transparency
+#else
+		virtual void act() {} //overriding of the method act : ajust transparency
+#endif //#if COMPLETE_GAME > 0
 	private:
 	};
 }

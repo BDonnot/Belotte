@@ -7,6 +7,8 @@
 ** This object store both the value and the color of the bet.
 **/
 
+#include <string>
+
 #include "Definitions.h"
 #include "Basic_Game_Info.h"
 

@@ -17,6 +17,7 @@ Images_Move::~Images_Move()
 {
     //dtor
 }
+#if COMPLETE_GAME > 0
 void Images_Move::Set_animate(PositionGraphic& pos_end,Uint32 duration,Uint32 time_lag,Uint32 current_time)
 {
     _timer_current = current_time;
@@ -67,3 +68,4 @@ void Images_Move::setSpeed(Uint32 duration)
     _vy = static_cast<double>(_pos_end.Gety()) - static_cast<double>(_pos.Gety());
     _vy /= static_cast<double>(duration);
 }
+#endif //#if COMPLETE_GAME > 0

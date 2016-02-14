@@ -13,6 +13,7 @@
 #include<ostream>
 #include<sstream>
 
+#if COMPLETE_GAME > 0
 #if defined(__GNUC__)
 	#include "SDL/SDL.h"
 	#include "SDL/SDL_image.h"
@@ -20,6 +21,7 @@
 	#include <SDL.h>
 	#include <SDL_image.h>
 #endif //SDL include
+#endif //#if COMPLETE_GAME > 0
 
 #include"Definitions.h"
 
@@ -44,13 +46,32 @@ class Player_Bid_Graphic : public Player_Bid
 		SDL::DisplayOldBets _dsplOldBets;
     public:
         Player_Bid_Graphic(){}
+#if COMPLETE_GAME > 0
         Player_Bid_Graphic(const Player_ID& player_number,SDL_Event* pevent,SDL_Surface* screen,Uint windows_width,Uint windows_height);
-        virtual ~Player_Bid_Graphic(){}
-        void Display(SDL_Surface* screen,GAME_PHASES currentPhase);
-        void Coinche();
-        void UpdateEvent();
-        bool AddBid(const Card_Color& color,Uint bid);
+		void Display(SDL_Surface* screen, GAME_PHASES currentPhase);
+#else
+		Player_Bid_Graphic(const Player_ID& player_number, Uint windows_width, Uint windows_height):
+			Player_Bid()
+			, _bubble("images/sprite_bulles.png", pevent)
+			, _text("fonts/MLSGY.ttf", 20, 255, 255, 255, "Passe")
+			, _color("images/sprite_take_color.png")
+			, _displayed_logo_color(true)
+			, _oldColor("images/sprite_take_color.png")
+			, _oldText("fonts/MLSGY.ttf", 20, 255, 255, 255, "Passe")
+			, _dsplOldBets(screen, windows_width, windows_height, player_number, &_oldText, &_oldColor) {}
+		void Display(GAME_PHASES currentPhase) {}
+#endif //#if COMPLETE_GAME > 0
 
+		virtual ~Player_Bid_Graphic(){}
+        void Coinche();
+
+#if COMPLETE_GAME > 0
+        void UpdateEvent();
+#else 
+		void UpdateEvent() {}
+#endif //#if COMPLETE_GAME > 0
+
+        bool AddBid(const Card_Color& color,Uint bid);
         std::string GetString(Uint biddingTurn) const;
     protected:
         virtual void handleGraphicsIfAny();

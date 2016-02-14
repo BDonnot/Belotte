@@ -4,7 +4,9 @@
 #include "Foncteurs_Cards.h"
 /**
 Handle the keyboard and mouse input for human player
+currently unused
 **/
+
 class HumanEventHandler
 {
     public:

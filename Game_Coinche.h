@@ -55,7 +55,6 @@ class Game_Coinche : public SDL::Quit
         typedef Player_AI<AIGameMemoryImproved,AITakeBasic, AIPlayRandom<Cards*, AIGameMemoryImproved> > AIRandom;
 
         Basic_Game_Info _infos;
-        SDL_Surface* _pScreen;
 		SDL::Basic_Images _backSide;
 		SDL::Screen_Begin _begin;
 		SDL::Screen_end _end;
@@ -69,21 +68,36 @@ class Game_Coinche : public SDL::Quit
         End_Of_Game _endGame;
         Save_Game _saveGame; //to save the game
         Uint _nbGame; //number of game played
-
+#if COMPLETE_GAME > 0
+		SDL_Surface* _pScreen;
+#endif //COMPLETE_GAME > 0
         WrapperPrint<GAME_COINCHE_DEBUG> _printf;
 
     public:
         Game_Coinche(){}
         void Play();
+		Game_Coinche(Uint16 screenWidth, Uint16 screenHeight);
+#if COMPLETE_GAME > 0
         Game_Coinche(SDL_Surface* screen,Uint16 screenWidth, Uint16 screenHeight);
+#endif //#if COMPLETE_GAME > 0
         virtual ~Game_Coinche();
     protected:
+#if COMPLETE_GAME > 0
         void updateEvent(bool& keep_playing);
+		void Display();
+#else
+		void updateEvent(bool& keep_playing) {}
+		void Display() {}
+#endif //#if COMPLETE_GAME > 0
         void updateTime(Uint32 diffTime);
         void playGame(bool& keep_playing);
-        void Display();
+        
     private:
+#if COMPLETE_GAME > 0
         bool waitForClick();
+#else
+		bool waitForClick(){}
+#endif //#if COMPLETE_GAME > 0
 };
 
 #endif // GAME_COINCHE_H

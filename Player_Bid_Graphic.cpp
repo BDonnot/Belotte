@@ -2,6 +2,7 @@
 
 using namespace std;
 
+#if COMPLETE_GAME > 0
 Player_Bid_Graphic::Player_Bid_Graphic(const Player_ID& player_number,SDL_Event* pevent,SDL_Surface* screen,Uint windows_width,Uint windows_height):
 Player_Bid()
 ,_bubble("images/sprite_bulles.png",pevent)
@@ -42,6 +43,19 @@ Player_Bid()
 
 }
 
+void Player_Bid_Graphic::Display(SDL_Surface* screen, GAME_PHASES currentPhase)
+{
+	if (((currentPhase != BIDDING) && (currentPhase != AFTER_BET)) || (_color_bid == NOT_CHOSEN)) return;
+	_bubble.Display(screen);
+	_text.Display(screen);
+	if (_displayed_logo_color) _color.Display(screen);
+	if (_bubble.Mouse_Over())
+	{
+		_dsplOldBets.Reset();
+		for_each(_listOldBet.begin(), _listOldBet.end(), _dsplOldBets);
+	}
+}
+#endif //#if COMPLETE_GAME > 0
 void Player_Bid_Graphic::HandleColor()
 {
     switch(_color_bid.Color())
@@ -78,19 +92,6 @@ void Player_Bid_Graphic::handleGraphicsIfAny()
 {
     HandleColor();
     HandleText();
-}
-
-void Player_Bid_Graphic::Display(SDL_Surface* screen,GAME_PHASES currentPhase)
-{
-    if(((currentPhase!=BIDDING)&&(currentPhase!=AFTER_BET))||(_color_bid==NOT_CHOSEN)) return;
-    _bubble.Display(screen);
-    _text.Display(screen);
-    if(_displayed_logo_color) _color.Display(screen);
-    if (_bubble.Mouse_Over())
-    {
-        _dsplOldBets.Reset();
-        for_each(_listOldBet.begin(),_listOldBet.end(),_dsplOldBets);
-    }
 }
 
 void Player_Bid_Graphic::Coinche()

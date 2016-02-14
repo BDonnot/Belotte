@@ -83,21 +83,6 @@ string Player::setPathImage(const Player_ID&  number)
 	return "";
 }
 
-void Player::Display(GAME_PHASES currentPhase)
-{
-	_name.Display(_screen, currentPhase == SELECT_NAMES);
-	_oldBid.Display(_screen, currentPhase);
-	_DisplayCardPlayer.Reset(_hand.size());
-	for_each(_hand.begin(), _hand.end(), _DisplayCardPlayer); //display the cards in the right order
-}
-
-void Player::Update_Mouse(GAME_PHASES currentPhase)
-{
-	_name.Update(currentPhase);
-	if ((currentPhase == BIDDING) || (currentPhase == AFTER_BET))
-		_oldBid.UpdateEvent();
-}
-
 int Player::how_many_colour(const Card_Color& colour) //how many cards I have in the color
 {
 	int res = 0;
@@ -281,3 +266,20 @@ string Player::GetString(const Player_Bid& bid) const
     if(embraced == "") return "";
     return GetString(embraced);
 }
+
+#if COMPLETE_GAME > 0
+void Player::Display(GAME_PHASES currentPhase)
+{
+	_name.Display(_screen, currentPhase == SELECT_NAMES);
+	_oldBid.Display(_screen, currentPhase);
+	_DisplayCardPlayer.Reset(_hand.size());
+	for_each(_hand.begin(), _hand.end(), _DisplayCardPlayer); //display the cards in the right order
+}
+
+void Player::Update_Mouse(GAME_PHASES currentPhase)
+{
+	_name.Update(currentPhase);
+	if ((currentPhase == BIDDING) || (currentPhase == AFTER_BET))
+		_oldBid.UpdateEvent();
+}
+#endif //#if COMPLETE_GAME > 0

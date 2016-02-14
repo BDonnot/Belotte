@@ -15,7 +15,10 @@ namespace SDL
 	{
 	public:
 		Images_Click() {}
+		Images_Click(std::string path) :Basic_Images(path) {}
+#if COMPLETE_GAME > 0
 		Images_Click(std::string path, SDL_Event* event) :Basic_Images(path), Basic_Click(event) {}
+#endif //#if COMPLETE_GAME > 0
 		virtual ~Images_Click() {}
 		virtual void Update_on_it(); //true if the mouse is on it
 	protected:

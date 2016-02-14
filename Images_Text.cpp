@@ -2,6 +2,7 @@
 using namespace::std;
 using namespace SDL;
 
+#if COMPLETE_GAME > 0
 Images_Text::Images_Text()
 {
     SDL_EnableUNICODE( SDL_ENABLE );
@@ -33,3 +34,4 @@ void Images_Text::Display(SDL_Surface* destination)
     }
     apply_surface(_pos.Getx(),_pos.Gety(),_surface,destination);
 }
+#endif //#if COMPLETE_GAME > 0
