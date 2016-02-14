@@ -21,15 +21,19 @@ class Cards_Deck
     protected:
         std::list<Cards*> _pile;
         bool _first;
-		SDL::DisplayCardPile _DisplayCardPile;
         Basic_Game_Info _info;
-        SDL::PositionGraphic _screenCenter;
         Random _rand;
         Random_Decreasing _randDecreasing;
+		SDL::DisplayCardPile _DisplayCardPile;
+		SDL::PositionGraphic _screenCenter;
 
     public:
         Cards_Deck():_rand(3,28),_randDecreasing(31){}
+#if COMPLETE_GAME > 0
         Cards_Deck(SDL_Event* event,SDL_Surface* screen,Uint16 screenWidth, Uint16 screenHeight);
+#else
+		Cards_Deck(Uint16 screenWidth, Uint16 screenHeight);
+#endif //COMPLETE_GAME > 0
         virtual ~Cards_Deck();
         void BeginGame();
         void GiveCards(const std::list<Player*>& li_players,bool first_round,unsigned int i_taker);

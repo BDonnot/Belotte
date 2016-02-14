@@ -1,12 +1,12 @@
 #include "Cards_Deck.h"
 using namespace::std;
 using namespace SDL;
-
+#if COMPLETE_GAME > 0
 Cards_Deck::Cards_Deck(SDL_Event* event,SDL_Surface* screen,Uint16 screenWidth, Uint16 screenHeight):
-_DisplayCardPile(screen)
-,_screenCenter(PositionGraphic(screenWidth/2,screenHeight/2,CENTER))
-,_rand(3,28)
+_rand(3,28)
 ,_randDecreasing(31)
+,_DisplayCardPile(screen)
+, _screenCenter(PositionGraphic(screenWidth / 2, screenHeight / 2, CENTER))
 {
     _first = true;
     Cards* pcard = NULL;
@@ -22,6 +22,25 @@ _DisplayCardPile(screen)
         }
     }
 }
+#else
+Cards_Deck::Cards_Deck(Uint16 screenWidth, Uint16 screenHeight) :
+	_rand(3, 28)
+	, _randDecreasing(31)
+{
+	_first = true;
+	Cards* pcard = NULL;
+	array<CARDS_COLOR, 4> Color = { DIAMOND,HEART,SPADE,CLUB };
+	array<CARDS_HEIGHT, 8> Height = { SEVEN,EIGHT,NINE,TEN,JACK,QUEEN,KING,ACE };
+	for (int height = 0; height < 8; height++)
+	{
+		for (int color = 0; color < 4; color++)
+		{
+			pcard = new Cards(Card_Height(Height[height]), Color[color]);
+			_pile.push_back(pcard);
+		}
+	}
+}
+#endif //COMPLETE_GAME > 0
 
 Cards_Deck::~Cards_Deck()
 {

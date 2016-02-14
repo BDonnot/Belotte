@@ -11,22 +11,25 @@
 #include "Cards_Basic.h"
 #include "Cards_Image.h"
 
+
 class Cards : public Cards_Basic, public SDL::Cards_Image
 {
     public:
         Cards(){}
         Cards(const Card_Height& height,const Card_Color& color):
              Cards_Basic(height,color){}
-        Cards(const Card_Height& height,const Card_Color& color,SDL_Event* event,SDL_Surface * pScreen):
-            Cards_Basic(height,color),
-			SDL::Cards_Image(height.ToInt(),color.ToInt(),event,pScreen){}
         virtual ~Cards(){}
-        virtual void Display()
-        {
-            static_cast< Images_Sprite<2> * >(this)->Display(_pScreen);
-        }
-    protected:
-
+#if COMPLETE_GAME > 0
+		Cards(const Card_Height& height, const Card_Color& color, SDL_Event* event, SDL_Surface * pScreen) :
+			Cards_Basic(height, color),
+			SDL::Cards_Image(height.ToInt(), color.ToInt(), event, pScreen) {}
+		virtual void Display()
+		{
+			static_cast< Images_Sprite<2> * >(this)->Display(_pScreen);
+		}
+#else
+		virtual void Display(){}
+#endif //COMPLETE_GAME > 0
     private:
         Cards(const Cards& other){}
         Cards& operator=(const Cards& other){return *this;}

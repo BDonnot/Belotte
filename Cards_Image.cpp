@@ -3,6 +3,7 @@
 using namespace std;
 using namespace SDL;
 
+#if COMPLETE_GAME > 0
 Cards_Image::Cards_Image(Uint height,Uint color,SDL_Event* event,SDL_Surface * pscreen):
     Basic_Transparency(SDL_ALPHA_OPAQUE),
     Basic_Click(event),
@@ -121,3 +122,4 @@ void Cards_Image::Reset()
     Reset_Click();
     _up = false;
 }
+#endif //COMPLETE_GAME > 0

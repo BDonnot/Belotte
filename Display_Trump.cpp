@@ -2,6 +2,7 @@
 using namespace std;
 using namespace SDL;
 
+#if COMPLETE_GAME > 0
 Display_trump::Display_trump()
 {
     _trunk = -1;
@@ -125,3 +126,4 @@ void Display_trump::Update()
         }
     }
 }
+#endif //COMPLETE_GAME > 0

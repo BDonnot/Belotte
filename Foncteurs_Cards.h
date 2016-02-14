@@ -8,6 +8,7 @@
 #include "Cards.h"
 namespace SDL
 {
+#if COMPLETE_GAME > 0
 	class DisplayCardPlayer //handle the positioning of the card in the hand
 	{
 	public:
@@ -132,5 +133,35 @@ namespace SDL
 		Uint8 _number_click; //the number of the card we have click on
 
 	};
+#else
+class DisplayCardPlayer //handle the positioning of the card in the hand
+{
+public:
+	DisplayCardPlayer() {};
+	DisplayCardPlayer(Uint windows_width, Uint windows_height, const Player_ID& player_number) {}
+	void Reset(unsigned int n) {}
+	void operator()(Cards* pcard) {}
+};
+
+class DisplayCardPile
+{
+public:
+	DisplayCardPile() {}
+	void operator()(Cards* pcard)
+	{
+		pcard->Display();
+	}
+};
+
+class UpdateCardMouse
+{
+public:
+	UpdateCardMouse() :_on_it(true), _number(0), _number_click(255) {};
+	void operator()(Cards* pcard) {}
+	void Reset() {}
+	Uint8 Click() {}
+};
+
+#endif //#if COMPLETE_GAME > 0
 }
 #endif // FONCTEURS_CARDS_H_INCLUDED

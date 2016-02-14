@@ -16,7 +16,9 @@ class End_Of_Game
 {
     protected :
        Basic_Game_Info _info;
+#if COMPLETE_GAME > 0
        SDL_Surface* _pScreen;
+#endif //COMPLETE_GAME > 0
 	   SDL::Images_Button _again;
 	   SDL::Images_Button _quit;
 	   SDL::Images_Text _firstLine;
@@ -25,7 +27,11 @@ class End_Of_Game
 	   SDL::Images_Text _secondScore;
     public:
         End_Of_Game(){}
+#if COMPLETE_GAME > 0
         End_Of_Game(SDL_Event* pEvent,SDL_Surface* pScreen,Uint windowsWidth, Uint windowsHeight);
+#else
+		End_Of_Game(Uint windowsWidth, Uint windowsHeight);
+#endif //COMPLETE_GAME > 0
         virtual ~End_Of_Game(){}
         void Display(GAME_PHASES currentPhase);
         void Update(); //update the scores and the texts.

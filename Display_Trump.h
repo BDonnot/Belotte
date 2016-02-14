@@ -12,6 +12,7 @@
 #include <string>
 #include <array>
 
+#if COMPLETE_GAME > 0
 #if defined (__GNUC__)
 	#include "SDL/SDL.h"
 	#include "SDL/SDL_ttf.h"
@@ -21,9 +22,11 @@
 	#include <SDL_ttf.h>
 	#include <SDL_image.h>
 #endif //SDL include
+#endif //COMPLETE_GAME > 0
 
 namespace SDL
 {
+#if COMPLETE_GAME > 0
 class Display_trump
 {
 	private:
@@ -52,6 +55,31 @@ class Display_trump
 		SDL_Surface* load_sprite(std::string filename);
 		Display_trump(const Display_trump& other);
 		Display_trump& operator=(const Display_trump& other);
+};
+#else
+	class Display_trump
+	{
+	private:
+		int _trunk;
+		int _taker;
+		std::array<std::string, 4> _names;
+		int _on_it;
+
+	public:
+		Display_trump(){}
+		virtual ~Display_trump(){}
+		void Apply_sprite() {}
+		void Set_color(int color){}
+		void Set_names(std::string name0, std::string name1, std::string name2, std::string name3) {}
+		void Set_taker(int taker) {}
+		void Set_event() {}
+		bool Mouse_over() const { return _on_it >= 10; }
+		void Update() {}
+	protected:
+		//SDL_Surface* load_sprite(std::string filename);
+		Display_trump(const Display_trump& other) {}
+		Display_trump& operator=(const Display_trump& other) {}
 	};
+#endif //COMPLETE_GAME > 0
 };
 #endif // DISPLAY_TRUNK_H

@@ -2,6 +2,7 @@
 using namespace std;
 using namespace SDL;
 
+#if COMPLETE_GAME > 0
 DisplayOldBets::DisplayOldBets(SDL_Surface* screen
 	, Uint windows_width
 	, Uint windows_height
@@ -97,3 +98,4 @@ string DisplayOldBets::IntToString(const Card_Color & color, const Uint& number)
 	}
 	return Result;
 }
+#endif // COMPLETE_GAME > 0

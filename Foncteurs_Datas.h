@@ -16,7 +16,7 @@ class Update_Stats
         Update_Stats(int diff_score,int trump_color):_diff_score(diff_score),_trump_color(trump_color){}
         void operator()(Datas* data) //update the data properly
         {
-            data->update_gen(_diff_score,_trump_color);
+            data->Update_gen(_diff_score,_trump_color);
         }
     private :
         int _diff_score;
@@ -30,7 +30,7 @@ class Reset_Stats
         Reset_Stats(){}
         void operator()(Datas* data) //update the data properly
         {
-            data->reset_choices();
+            data->Reset_choices();
         }
 };
 
