@@ -19,6 +19,7 @@
 #include "Player_Bid.h"
 #include "Random.h"
 
+#if COMPLETE_GAME > 0
 class TakeHumanCoinche
 {
     protected :
@@ -26,17 +27,17 @@ class TakeHumanCoinche
         Uint16 _windows_height;
         SDL_Surface* _screen;
         const Basic_Game_Info _info;
-		SDL::Images_Button _carreau;
-		SDL::Images_Button _coeur;
-		SDL::Images_Button _pique;
-		SDL::Images_Button _trefle;
-		SDL::Images_Button _tt_atout;
-		SDL::Images_Button _ss_atout;
-		SDL::Images_Button _pass;
-		SDL::Images_Button _ok;
-		SDL::Images_Button _plus;
-		SDL::Images_Button _minus;
-		SDL::Images_Text _score;
+		Images_Button _carreau;
+		Images_Button _coeur;
+		Images_Button _pique;
+		Images_Button _trefle;
+		Images_Button _tt_atout;
+		Images_Button _ss_atout;
+		Images_Button _pass;
+		Images_Button _ok;
+		Images_Button _plus;
+		Images_Button _minus;
+		Images_Text _score;
 
         Player_Bid _unconfirmedBid;
         Player_Bid _confirmedBid;
@@ -60,5 +61,6 @@ class TakeHumanCoinche
         void ChangeText(Uint number);
     private:
 };
+#endif //#if COMPLETE_GAME > 0
 
 #endif // TAKEHUMANCOINCHE_H

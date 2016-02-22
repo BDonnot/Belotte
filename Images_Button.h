@@ -11,8 +11,6 @@
 #include "Images_Click.h"
 #include "Images_Text.h"
 
-namespace SDL
-{
 	class Images_Button :public Images_Sprite<2>, public Basic_Click //changes color when mouse is over (or clicked on) and we can click on
 	{
 		protected:
@@ -24,10 +22,9 @@ namespace SDL
 #if COMPLETE_GAME > 0
 			Images_Button(SDL_Event* event, std::string text_button, PositionGraphic pos);
 			Images_Button(SDL_Event* event, PositionGraphic pos, std::string path, int color);
-#else 
+#endif //#if COMPLETE_GAME > 0
 			Images_Button(std::string text_button, PositionGraphic pos) {}
 			Images_Button(PositionGraphic pos, std::string path, int color) {}
-#endif //#if COMPLETE_GAME > 0
 			virtual ~Images_Button() {}
 			virtual void Update_on_it();
 #if COMPLETE_GAME > 0
@@ -42,5 +39,4 @@ namespace SDL
 			void PositionText();
 		private:
 	};
-}
 #endif // IMAGES_BUTTON_H

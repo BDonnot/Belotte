@@ -9,8 +9,6 @@
 #include "Basic_Images.h"
 #include "Basic_Click.h"
 
-namespace SDL
-{
 	class Images_Click : public Basic_Images, public Basic_Click
 	{
 	public:
@@ -25,5 +23,5 @@ namespace SDL
 
 	private:
 	};
-};
+
 #endif // IMAGES_CLICK_H

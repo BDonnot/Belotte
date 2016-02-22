@@ -45,9 +45,9 @@ class Player
         Cards* _cardPlayed;
         TrickStatus _currentTrickStatus;
 
-        SDL::PositionGraphic _pos;
+        PositionGraphic _pos;
         Player_Name _name; //his name
-		SDL::DisplayCardPlayer _DisplayCardPlayer;//to display the cards the proper way
+		DisplayCardPlayer _DisplayCardPlayer;//to display the cards the proper way
 #if COMPLETE_GAME > 0
         SDL_Surface* _screen;
         SDL_Event* _event;
@@ -61,29 +61,45 @@ class Player
 
     public:
         Player():_number(PLAYER0),_currentTrickStatus(_number){}
-		        Player(const Player_ID& number
-						,Uint windows_width
-						,Uint windows_height):
-            _playable_cards()
-            ,_number(number)
-            ,_cardPlayed(nullptr)
-            ,_currentTrickStatus(_number)
-            ,_pos(setPosition(number,windows_width,windows_height))
-            ,_name(setName(number)
-                   ,setPathImage(number)
-                   ,windows_width
-                   ,windows_height
-                   ,_pos)
-            ,_DisplayCardPlayer(windows_width,windows_height,number)
-            ,_oldBid(number, windows_width,windows_height)
-        {
-        }
+		Player(const Player_ID& number
+			, Uint windows_width
+			, Uint windows_height) :
+			_playable_cards()
+			, _number(number)
+			, _cardPlayed(nullptr)
+			, _currentTrickStatus(_number)
+			, _pos(setPosition(number, windows_width, windows_height))
+			, _name(setName(number)
+				, setPathImage(number)
+				, windows_width
+				, windows_height
+				, _pos)
+			, _DisplayCardPlayer(windows_width, windows_height, number)
+			, _oldBid(number, windows_width, windows_height) {}
+		Player(const Player_ID& number
+			, Uint windows_width
+			, Uint windows_height
+			, Basic_Images* fond) :
+			_playable_cards()
+			, _number(number)
+			, _cardPlayed(nullptr)
+			, _currentTrickStatus(_number)
+			, _pos(setPosition(number, windows_width, windows_height))
+			, _name(fond
+				, setName(number)
+				, setPathImage(number)
+				, windows_width
+				, windows_height
+				, _pos)
+			, _DisplayCardPlayer(windows_width, windows_height, number)
+			, _oldBid(number, windows_width, windows_height) {}
+
 #if COMPLETE_GAME > 0
         Player(const Player_ID& number
 			,Uint windows_width
 			,Uint windows_height
 			,SDL_Event* pevent
-			,SDL::Basic_Images* fond
+			,Basic_Images* fond
 			,SDL_Surface* screen):
             _playable_cards()
             ,_number(number)
@@ -154,7 +170,7 @@ class Player
 
         virtual void resetTake(){} //for the AI to be able to forget the previous bets
     private:
-        SDL::PositionGraphic setPosition(const Player_ID& number,Uint16 windows_width, Uint16 widows_height); //to properly set the right position
+        PositionGraphic setPosition(const Player_ID& number,Uint16 windows_width, Uint16 widows_height); //to properly set the right position
         std::string setName(const Player_ID&  number); //to set the default name
         std::string setPathImage(const Player_ID&  number); //to set the path of the image of the player
 

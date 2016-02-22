@@ -1,6 +1,6 @@
 #include "Images_Move.h"
 using namespace::std;
-using namespace SDL;
+
 
 Images_Move::Images_Move()
 {

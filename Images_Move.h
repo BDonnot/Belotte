@@ -8,8 +8,6 @@
 
 #include "Basic_Images.h"
 
-namespace SDL
-{
 	class Images_Move : public Basic_Images
 	{
 	public:
@@ -44,5 +42,5 @@ namespace SDL
 
 	private:
 	};
-}
+
 #endif // IMAGES_MOVE_H

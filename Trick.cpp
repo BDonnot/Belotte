@@ -1,8 +1,8 @@
 #include "Trick.h"
 
 using namespace std;
-using namespace SDL;
 
+#if COMPLETE_GAME > 0
 Trick::Trick(Cards_Deck* pDeck,const std::array<Player*,4>& players,Uint windowsWidth,Uint windowsHeight,SDL_Event* pevent,SDL_Surface* pScreen):
 Trick_Basic(pDeck,players),
 _pScreen(pScreen),
@@ -120,33 +120,67 @@ void Trick::updatePosCard(const Player_ID& player)
 
 void Trick::GatherCards()
 {
-    _scoreTeam.Update();
-    posReturn(_to_play);
-    for(Uint i = 0; i < 4; ++i)
-    {
-        //_currentTrick[i]->InitMouvement(true,_posCard,1000,(i%4)*50);
-        _currentTrick[i]->HideCard(_posCard,600,0); //hide the cards
-    }
+	_scoreTeam.Update();
+	posReturn(_to_play);
+	for (Uint i = 0; i < 4; ++i)
+	{
+		//_currentTrick[i]->InitMouvement(true,_posCard,1000,(i%4)*50);
+		_currentTrick[i]->HideCard(_posCard, 600, 0); //hide the cards
+	}
 }
+
+
+#else
+Trick::Trick(Cards_Deck* pDeck, const std::array<Player*, 4>& players, Uint windowsWidth, Uint windowsHeight) :
+	Trick_Basic(pDeck, players),
+	_logo("images/sprite_trunk.png"),
+	_teamName("fonts/MLSGY.ttf", 20, 255, 255, 255, "???"),
+	_contract("fonts/MLSGY.ttf", 20, 255, 255, 255, "???"),
+	_infoPreviousTrick("fonts/MLSGY.ttf", 25, 255, 255, 255, "???"),
+	_ok( "OK", PositionGraphic(windowsWidth / 2, windowsHeight - 225, CENTER)),
+	_posCard(),
+	_scoreTeam()
+{
+	array<Uint, 4> x = { 0,150,0,150 };
+	array<Uint, 4> y = { 0,0,150,150 };
+	array<Uint, 4> size_ = { 100,100,100,100 };
+	_logo.SetDimensionSprite(x, y, size_, size_);
+	_logo.ChangeSprite(0);
+	PositionGraphic pos(0, 0, TOP_LEFT);
+	_logo.SetPosition(pos);
+	pos.Set(50, 30, CENTER);
+	_teamName.SetPosition(pos);
+	pos.Set(50, 70, CENTER);
+	_contract.SetPosition(pos);
+	_infoPreviousTrick.ChangeText("Voici le dernier pli :");
+	pos.Set(windowsWidth / 2, windowsHeight / 3 - 20, CENTER);
+	_infoPreviousTrick.SetPosition(pos);
+}
+
+void Trick::updatePosCard(const Player_ID& player) {}
+void Trick::GatherCards() {}
+void Trick::Update() {}
+#endif //#if COMPLETE_GAME > 0
+
 
 void Trick::posReturn(const Player_ID& posPlayer)
 {
-    switch(posPlayer.ID())
-    {
-        case PLAYER0 :
-            _posCard.Set(_infos.WindowsWidth()/2,_infos.WindowsHeight()-120,CENTER);
-            return;
-        case PLAYER1 :
-            _posCard.Set(_infos.WindowsWidth() -100,_infos.WindowsHeight()/2,CENTER);
-            return;
-        case PLAYER2 :
-            _posCard.Set(_infos.WindowsWidth()/2,120,CENTER);
-            return;
-        case PLAYER3 :
-            _posCard.Set(100,_infos.WindowsHeight()/2,CENTER);
-            return;
-        default : //TO DO exception here
-            _posCard.Set(0,0,TOP_LEFT);
-            return;
-    }
+	switch (posPlayer.ID())
+	{
+	case PLAYER0:
+		_posCard.Set(_infos.WindowsWidth() / 2, _infos.WindowsHeight() - 120, CENTER);
+		return;
+	case PLAYER1:
+		_posCard.Set(_infos.WindowsWidth() - 100, _infos.WindowsHeight() / 2, CENTER);
+		return;
+	case PLAYER2:
+		_posCard.Set(_infos.WindowsWidth() / 2, 120, CENTER);
+		return;
+	case PLAYER3:
+		_posCard.Set(100, _infos.WindowsHeight() / 2, CENTER);
+		return;
+	default: //TO DO exception here
+		_posCard.Set(0, 0, TOP_LEFT);
+		return;
+	}
 }

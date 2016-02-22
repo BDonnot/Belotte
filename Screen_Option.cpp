@@ -1,5 +1,7 @@
 #include "Screen_Option.h"
-using namespace SDL;
+
+
+#if COMPLETE_GAME > 0
 
 Screen_Option::Screen_Option(Basic_Images* fond,SDL_Event* pevent,Uint screen_width,Uint screen_height):Quit(pevent),
 _nb_player(pevent,"Joueurs",PositionGraphic())
@@ -52,4 +54,25 @@ OPTION_OUTPUT Screen_Option::Display(SDL_Surface* destination)
     }
     return OPTION_CONTINUE;
 }
+
+#else
+
+Screen_Option::Screen_Option(Basic_Images* fond, Uint screen_width, Uint screen_height) :
+	Quit(),
+_nb_player( "Joueurs", PositionGraphic())
+, _screen_size( "Ecran", PositionGraphic())
+, _retour( "Retour", PositionGraphic())
+{
+	_fond = fond;
+	PositionGraphic pos(screen_width / 2, 3 * screen_height / 8, CENTER);
+	_nb_player.SetPosition(pos);
+	pos.Set(screen_width / 2, 4 * screen_height / 8, CENTER);
+	_screen_size.SetPosition(pos);
+	pos.Set(screen_width / 2, 5 * screen_height / 8, CENTER);
+	_retour.SetPosition(pos);
+}
+
+void Screen_Option::Update()  { return OPTION_RETURN; }
+
+#endif //#if COMPLETE_GAME > 0
 

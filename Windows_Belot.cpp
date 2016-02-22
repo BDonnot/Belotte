@@ -1,6 +1,7 @@
 #include "Windows_Belot.h"
-using namespace SDL;
 
+
+#if COMPLETE_GAME > 0
 Windows_Belot::Windows_Belot():Quit()
 ,_back("images/tapis_moyen_2.jpg")
 ,_SCREEN_WIDTH(1024),_SCREEN_HEIGHT(768)
@@ -50,3 +51,6 @@ void Windows_Belot::Display()
         else continuer = false;
     }
 }
+#else
+void Windows_Belot::Display() {}
+#endif //#if COMPLETE_GAME > 0

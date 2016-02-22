@@ -1,6 +1,6 @@
 #include "DisplayOldBets.h"
 using namespace std;
-using namespace SDL;
+
 
 #if COMPLETE_GAME > 0
 DisplayOldBets::DisplayOldBets(SDL_Surface* screen
@@ -31,12 +31,6 @@ DisplayOldBets::DisplayOldBets(SDL_Surface* screen
 	_pos_th.Set(position[player_number.ToInt()][0], position[player_number.ToInt()][1], CENTER);
 
 }
-
-void DisplayOldBets::Reset()
-{
-	_nb_bets = 0;
-}
-
 void DisplayOldBets::operator()(const Player_Bid& bid)
 {
 	string text;
@@ -64,6 +58,41 @@ void DisplayOldBets::operator()(const Player_Bid& bid)
 		break;
 	}
 	_nb_bets++;
+}
+
+#else
+void DisplayOldBets::operator()(const Player_Bid& bid) {}
+#endif //#if COMPLETE_GAME > 0
+DisplayOldBets::DisplayOldBets(Uint windows_width
+	, Uint windows_height
+	, const Player_ID& player_number
+	, Images_Text* text
+	, Images_Sprite<4>* logo) :
+	_pText(text)
+	, _pLogo(logo)
+{
+	bool vertical_move = (player_number.ToInt() % 2 == 1);
+	if (vertical_move)
+	{
+		_shift.at(0) = 0;
+		_shift.at(1) = 60;
+	}
+	else
+	{
+		_shift.at(0) = 60;
+		_shift.at(1) = 0;
+	}
+	Uint position[4][2] = { { windows_width / 2 - 100, windows_height - 230 }
+		,{ windows_width - 200, windows_height / 2 - 135 }
+		,{ windows_width / 2 - 100, 215 }
+	,{ 200, windows_height / 2 - 135 } };
+	_pos_th.Set(position[player_number.ToInt()][0], position[player_number.ToInt()][1], CENTER);
+
+}
+
+void DisplayOldBets::Reset()
+{
+	_nb_bets = 0;
 }
 
 Uint DisplayOldBets::colorToInt(CARDS_COLOR color)
@@ -98,4 +127,3 @@ string DisplayOldBets::IntToString(const Card_Color & color, const Uint& number)
 	}
 	return Result;
 }
-#endif // COMPLETE_GAME > 0

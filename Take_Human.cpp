@@ -1,7 +1,7 @@
 #include "Take_Human.h"
 using namespace::std;
-using namespace SDL;
 
+#if COMPLETE_GAME > 0
 Take_Human::Take_Human(SDL_Event* event,SDL_Surface* screen,Uint16 windows_width, Uint16 windows_height):
     _windows_width(windows_width)
     ,_windows_height(windows_height)
@@ -205,3 +205,4 @@ string Take_Human::DefineQuestion()
         return res;
     }
 }
+#endif //#if COMPLETE_GAME > 0

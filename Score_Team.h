@@ -16,12 +16,16 @@ class Score_Team
 {
     protected :
         Basic_Game_Info _info;
+#if COMPLETE_GAME > 0
         SDL_Surface* _pScreen;
-		SDL::Images_Text _scoreFirstTeam;
-		SDL::Images_Text _scoreSecondTeam;
+#endif //#if COMPLETE_GAME > 0
+		Images_Text _scoreFirstTeam;
+		Images_Text _scoreSecondTeam;
     public:
         Score_Team(){}
+#if COMPLETE_GAME > 0
         Score_Team(SDL_Surface* pScreen);
+#endif //#if COMPLETE_GAME > 0
         virtual ~Score_Team(){}
         void Display(GAME_PHASES currentPhase);
         void Update();

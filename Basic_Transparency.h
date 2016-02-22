@@ -4,6 +4,8 @@
 /**
 ** Class to help dealing with the transparency of the images.
 **/
+#include "Definitions.h"
+
 #if COMPLETE_GAME > 0
 	#if defined (__GNUC__)
 		#include "SDL/SDL.h"
@@ -12,8 +14,6 @@
 	#endif  //SDL include
 #endif //COMPLETE_GAME
 
-namespace SDL
-{
 	class Basic_Transparency
 	{
 	protected:
@@ -34,5 +34,5 @@ namespace SDL
 		virtual void transparency(); //to ajust alpha the proper way
 	private:
 	};
-};
+
 #endif // BASIC_TRANSPARENCY_H

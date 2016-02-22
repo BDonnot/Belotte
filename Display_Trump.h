@@ -24,8 +24,6 @@
 #endif //SDL include
 #endif //COMPLETE_GAME > 0
 
-namespace SDL
-{
 #if COMPLETE_GAME > 0
 class Display_trump
 {
@@ -81,5 +79,5 @@ class Display_trump
 		Display_trump& operator=(const Display_trump& other) {}
 	};
 #endif //COMPLETE_GAME > 0
-};
+
 #endif // DISPLAY_TRUNK_H

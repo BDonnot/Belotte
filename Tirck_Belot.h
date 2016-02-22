@@ -14,7 +14,7 @@ class Tirck_Belot
         virtual ~Tirck_Belot();
     protected:
     private:
-        SDL::Trump_Image _Trump_Image;
+        Trump_Image _Trump_Image;
         std::array<int,2> _number_point;
         std::array<Cards*,4> _trick;
         std::array<Cards*,4> _trick_old;

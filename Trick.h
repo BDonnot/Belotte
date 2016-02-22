@@ -26,18 +26,29 @@
 class Trick :public Trick_Basic
 {
     protected :
+#if COMPLETE_GAME > 0
         SDL_Surface* _pScreen;
-		SDL::Images_SpriteEvent<4> _logo;
-		SDL::Images_Text _teamName;
-		SDL::Images_Text _contract;
-		SDL::Images_Text _infoPreviousTrick;
-		SDL::Images_Button _ok;
-        SDL::PositionGraphic _posCard;
+#endif //#if COMPLETE_GAME > 0
+		Images_SpriteEvent<4> _logo;
+		Images_Text _teamName;
+		Images_Text _contract;
+		Images_Text _infoPreviousTrick;
+		Images_Button _ok;
+        PositionGraphic _posCard;
         Score_Team _scoreTeam;
 
     public:
         Trick(){}
-        Trick(Cards_Deck* pDeck,const std::array<Player*,4>& players,Uint windowsWidth,Uint WindowsHeight,SDL_Event* pevent,SDL_Surface* pScreen);
+#if COMPLETE_GAME > 0
+        Trick(Cards_Deck* pDeck
+			,const std::array<Player*,4>& players
+			,Uint windowsWidth,Uint WindowsHeight
+			,SDL_Event* pevent
+			,SDL_Surface* pScreen);
+#endif //#if COMPLETE_GAME > 0
+		Trick(Cards_Deck* pDeck
+			, const std::array<Player*, 4>& players
+			, Uint windowsWidth, Uint WindowsHeight);
         virtual ~Trick(){}
 
         void Update(); //update the the logos of taker, trump color and the contract

@@ -1,6 +1,6 @@
 #include "Display_Trump.h"
 using namespace std;
-using namespace SDL;
+
 
 #if COMPLETE_GAME > 0
 Display_trump::Display_trump()

@@ -1,5 +1,5 @@
 #include "PositionGraphic.h"
-using namespace SDL;
+
 
 void PositionGraphic::Set(Uint x, Uint y, POSITION_OPTION opt)
 {

@@ -1,7 +1,7 @@
 #include "Bidding.h"
 
 using namespace std;
-using namespace SDL;
+
 
 #if COMPLETE_GAME > 0
 Bidding::Bidding(const array<Player*,4>& players,SDL_Event* pevent, SDL_Surface* pscreen,Cards_Deck* pDeck):

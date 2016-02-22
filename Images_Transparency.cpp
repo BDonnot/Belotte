@@ -1,6 +1,6 @@
 #include "Images_Transparency.h"
 using namespace::std;
-using namespace SDL;
+
 #if COMPLETE_GAME > 0
 void Images_Transparency::act()
 {

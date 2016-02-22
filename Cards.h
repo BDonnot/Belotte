@@ -12,7 +12,7 @@
 #include "Cards_Image.h"
 
 
-class Cards : public Cards_Basic, public SDL::Cards_Image
+class Cards : public Cards_Basic, public Cards_Image
 {
     public:
         Cards(){}
@@ -22,7 +22,7 @@ class Cards : public Cards_Basic, public SDL::Cards_Image
 #if COMPLETE_GAME > 0
 		Cards(const Card_Height& height, const Card_Color& color, SDL_Event* event, SDL_Surface * pScreen) :
 			Cards_Basic(height, color),
-			SDL::Cards_Image(height.ToInt(), color.ToInt(), event, pScreen) {}
+			Cards_Image(height.ToInt(), color.ToInt(), event, pScreen) {}
 		virtual void Display()
 		{
 			static_cast< Images_Sprite<2> * >(this)->Display(_pScreen);

@@ -1,6 +1,6 @@
 #include "Cards_Deck.h"
 using namespace::std;
-using namespace SDL;
+
 #if COMPLETE_GAME > 0
 Cards_Deck::Cards_Deck(SDL_Event* event,SDL_Surface* screen,Uint16 screenWidth, Uint16 screenHeight):
 _rand(3,28)
@@ -23,6 +23,9 @@ _rand(3,28)
     }
 }
 #else
+
+#endif //COMPLETE_GAME > 0
+
 Cards_Deck::Cards_Deck(Uint16 screenWidth, Uint16 screenHeight) :
 	_rand(3, 28)
 	, _randDecreasing(31)
@@ -40,7 +43,6 @@ Cards_Deck::Cards_Deck(Uint16 screenWidth, Uint16 screenHeight) :
 		}
 	}
 }
-#endif //COMPLETE_GAME > 0
 
 Cards_Deck::~Cards_Deck()
 {

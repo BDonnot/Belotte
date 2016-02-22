@@ -1,5 +1,5 @@
 #include "Basic_Transparency.h"
-using namespace SDL;
+
 
 Basic_Transparency::Basic_Transparency()
 {
@@ -37,7 +37,10 @@ void Basic_Transparency::Set_Transparent(bool increasing,Uint32 duration,Uint32 
     _timer_alpha_current = current_time;
     _timer_alpha_end = current_time+time_lag+duration;
     _timer_alpha_start = current_time+time_lag;
-    if (increasing) _alpha_end = ALPHA_OPAQUE;
+	if (increasing)
+	{
+		_alpha_end = ALPHA_OPAQUE;
+	}
     else _alpha_end = ALPHA_TRANSPARENT;
 }
 

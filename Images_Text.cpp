@@ -1,6 +1,6 @@
 #include "Images_Text.h"
 using namespace::std;
-using namespace SDL;
+
 
 #if COMPLETE_GAME > 0
 Images_Text::Images_Text()

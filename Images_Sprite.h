@@ -20,8 +20,7 @@
 #endif //#if COMPLETE_GAME > 0
 
 #include "Basic_Images.h"
-namespace SDL
-{
+
 	template<Uint numberOfSprite>
 	class Images_Sprite : public Basic_Images
 	{
@@ -100,14 +99,6 @@ namespace SDL
 		offset.y = y;
 		SDL_BlitSurface(source.get(), clip, destination, &offset);
 	}
-#endif //#if COMPLETE_GAME > 0
-	template<Uint numberOfSprite>
-	void Images_Sprite<numberOfSprite>::ChangeSprite(Uint sprite_number, PositionGraphic& pos)
-	{
-		_sprite_number = sprite_number;
-		SetPosition(pos);
-	}
-
 	template<Uint numberOfSprite>
 	void Images_Sprite<numberOfSprite>::ChangeSprite(Uint sprite_number)
 	{
@@ -124,5 +115,19 @@ namespace SDL
 		pos.SetProperPosition(_width, _height);
 		_pos = pos;
 	}
-};
+#else
+	template<Uint numberOfSprite>
+	void Images_Sprite<numberOfSprite>::ChangeSprite(Uint sprite_number) {}
+
+	template<Uint numberOfSprite>
+	void Images_Sprite<numberOfSprite>::SetPosition(PositionGraphic& pos) {}
+#endif //#if COMPLETE_GAME > 0
+	template<Uint numberOfSprite>
+	void Images_Sprite<numberOfSprite>::ChangeSprite(Uint sprite_number, PositionGraphic& pos)
+	{
+		_sprite_number = sprite_number;
+		SetPosition(pos);
+	}
+
+
 #endif // IMAGES_SPRITE_H

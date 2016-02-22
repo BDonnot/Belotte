@@ -8,8 +8,6 @@
 
 #include "Basic_Game_Info.h"
 #include "Images_Sprite.h"
-namespace SDL
-{
 	template<Uint numberOfSprite>
 	class Images_Sprite_Move : public Images_Sprite<numberOfSprite>
 	{
@@ -32,7 +30,7 @@ namespace SDL
 		void Set_animate(PositionGraphic& pos_final, Uint32 duration, Uint32 time_lag); //the first 2 numbers are for the final position, the 3rd for the time in milisecond, the last one is for the time
 		void Set_animate(PositionGraphic& pos_final); //init the mouvement without updating the current time
 #else
-		void Set_animate(PositionGraphic& pos_final, Uint32 duration, Uint32 time_lag); {}
+		void Set_animate(PositionGraphic& pos_final, Uint32 duration, Uint32 time_lag) {}
 		//the first 2 numbers are for the final position, the 3rd for the time in milisecond, the last one is for the time
 
 		void Set_animate(PositionGraphic& pos_final) {}
@@ -128,6 +126,18 @@ namespace SDL
 	{
 		Move();
 	}
+	template<Uint numberOfSprite>
+	void Images_Sprite_Move<numberOfSprite>::SetPosition(PositionGraphic& pos_final) //suppose every move is over
+	{
+		this->_height = this->_clip[this->_sprite_number].h;
+		this->_width = this->_clip[this->_sprite_number].w;
+		pos_final.SetProperPosition(this->_width, this->_height);
+		this->_pos = pos_final;
+		this->_pos_end = pos_final;
+	}
+#else
+	template<Uint numberOfSprite>
+	void Images_Sprite_Move<numberOfSprite>::SetPosition(PositionGraphic& pos_final) {}
 #endif //#if COMPLETE_GAME > 0
 	template<Uint numberOfSprite>
 	void Images_Sprite_Move<numberOfSprite>::setSpeed(Uint32 duration)
@@ -140,15 +150,5 @@ namespace SDL
 		_vy /= static_cast<double>(duration);
 	}
 
-	template<Uint numberOfSprite>
-	void Images_Sprite_Move<numberOfSprite>::SetPosition(PositionGraphic& pos_final) //suppose every move is over
-	{
-		this->_height = this->_clip[this->_sprite_number].h;
-		this->_width = this->_clip[this->_sprite_number].w;
-		pos_final.SetProperPosition(this->_width, this->_height);
-		this->_pos = pos_final;
-		this->_pos_end = pos_final;
-	}
 
-}
 #endif // IMAGES_SPRITE_MOVE_H

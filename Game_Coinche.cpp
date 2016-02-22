@@ -1,15 +1,14 @@
 #include "Game_Coinche.h"
 
 using namespace std;
-using namespace SDL;
 
 Game_Coinche::Game_Coinche(Uint16 screenWidth, Uint16 screenHeight) :
 	Quit()
 	, _infos()
 	, _backSide("images/tapis_moyen_2.jpg")
-	, _begin(&_backSide, _event, screenWidth, screenHeight)
-	, _end(&_backSide, _event, screenWidth, screenHeight, "Merci d'avoir joué !")
-	, _error(&_backSide, _event, screenWidth, screenHeight, "An unexpected error occurred :-(")
+	, _begin(&_backSide, screenWidth, screenHeight)
+	, _end(&_backSide, screenWidth, screenHeight, "Merci d'avoir joué !")
+	, _error(&_backSide, screenWidth, screenHeight, "An unexpected error occurred :-(")
 	, _deck(screenWidth, screenHeight)
 	, _currentPhase(BEGINNING)
 	, _bid(array<Player*, 4>(), &_deck)
@@ -378,7 +377,6 @@ void Game_Coinche::Play()
 	bool error = false;
 	updateTime(endLoop - startLoop);
 	if (error) throw 0;
-	startLoop = SDL_GetTicks();
 	updateEvent(keep_playing);
 	Display();
 	playGame(keep_playing);

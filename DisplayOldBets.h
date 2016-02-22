@@ -23,15 +23,14 @@
 #include "Player_Bid.h"
 #include "Images_Sprite.h"
 #include "Images_Text.h"
-
-namespace SDL
-{
-#if COMPLETE_GAME > 0
 	class DisplayOldBets //handle the positioning of the card in the hand
 	{
 	private:
 		Uint _nb_bets;
+
+#if COMPLETE_GAME > 0
 		SDL_Surface* _screen;
+#endif // #if COMPLETE_GAME > 0
 		Images_Text* _pText;
 		Images_Sprite<4>* _pLogo;
 
@@ -41,8 +40,15 @@ namespace SDL
 		Uint colorToInt(CARDS_COLOR color);
 	public:
 		DisplayOldBets() :_pText(nullptr), _pLogo(nullptr) {}
+#if COMPLETE_GAME > 0
 		DisplayOldBets(SDL_Surface* screen
 			, Uint windows_width
+			, Uint windows_height
+			, const Player_ID& player_number
+			, Images_Text* text
+			, Images_Sprite<4>* logo);
+#endif //#if COMPLETE_GAME > 0
+		DisplayOldBets(Uint windows_width
 			, Uint windows_height
 			, const Player_ID& player_number
 			, Images_Text* text
@@ -51,29 +57,5 @@ namespace SDL
 		void Reset();
 		void operator()(const Player_Bid& bid);
 	};
-#else
-	class DisplayOldBets //handle the positioning of the card in the hand
-	{
-	private:
-		Uint _nb_bets;
-		Images_Text* _pText;
-		Images_Sprite<4>* _pLogo;
 
-		PositionGraphic _pos_real;
-		PositionGraphic _pos_th;
-		std::array<Uint, 2> _shift; //the shift of the card (all the card must be visible)
-		Uint colorToInt(CARDS_COLOR color);
-	public:
-		DisplayOldBets() :_pText(nullptr), _pLogo(nullptr) {}
-		DisplayOldBets(Uint windows_width
-			, Uint windows_height
-			, const Player_ID& player_number
-			, Images_Text* text
-			, Images_Sprite<4>* logo) {}
-		static std::string IntToString(const Card_Color& color, const Uint& number) {}
-		void Reset(){}
-		void operator()(const Player_Bid& bid) {}
-	};
-#endif //COMPLETE_GAME > 0
-};
 #endif // DISPLAYOLDBETS_H

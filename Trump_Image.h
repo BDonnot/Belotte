@@ -12,8 +12,6 @@
 #include "Images_Sprite.h"
 #include "Player_Name.h"
 
-namespace SDL
-{
 	class Trump_Image : public Images_Sprite<4>, public Basic_Click
 	{
 	protected:
@@ -21,7 +19,9 @@ namespace SDL
 		int _taker;
 	public:
 		Trump_Image() {}
+#if COMPLETE_GAME > 0
 		Trump_Image(SDL_Event* event);
+#endif //#if COMPLETE_GAME > 0
 		void Set_Taker(int taker);
 		virtual ~Trump_Image() {}
 	protected:
@@ -30,5 +30,4 @@ namespace SDL
 		Trump_Image(const Trump_Image& other) {}
 		Trump_Image& operator=(const Trump_Image& other) { return *this; }
 	};
-}
 #endif // TRUMP_IMAGE_H

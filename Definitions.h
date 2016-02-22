@@ -23,18 +23,18 @@
 #define TEST_PLAY_GAME 0
 #define PLAY_HUMAN 0
 #define MULTITHREAD_GRAPHIC 1
-#define USE_BOOST 0 //EXPERIMENTAL : if 0; remove boost dependency
-#define COMPLETE_GAME 0 // COMPLETE_GAME 0 : Does not require SDL to compile and / or play . Useful to launch benchmarks
+#define USE_BOOST 0 //EXPERIMENTAL : if 0; remove boost dependency and use stl instead
+#define COMPLETE_GAME 1 // COMPLETE_GAME 0 : Does not require SDL to compile and / or play . Useful to launch benchmarks
 
-#if COMPLETE_GAME_GAME == 0
+#if COMPLETE_GAME == 0
 	typedef unsigned short Uint8;
 	typedef unsigned int Uint16;
 	typedef unsigned long Uint32;
-	#define ALPHA_TRANSPARENT 0;
-	#define ALPHA_OPAQUE 255;
+	#define ALPHA_TRANSPARENT 0 
+	#define ALPHA_OPAQUE 255 
 #else
-	#define ALPHA_TRANSPARENT SDL_ALPHA_TRANSPARENT;
-	#define ALPHA_OPAQUE SDL_ALPHA_OPAQUE;
+	#define ALPHA_TRANSPARENT SDL_ALPHA_TRANSPARENT
+	#define ALPHA_OPAQUE SDL_ALPHA_OPAQUE
 #endif
 
 #include<string>

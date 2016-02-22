@@ -18,7 +18,7 @@ Player_Bid()
                             ,{windows_width/2 + 150,0}
                             ,{0,windows_height/2-150}};
     POSITION_OPTION pos_opt[4] = {BOTTOM_CENTER,CENTER_RIGHT,TOP_CENTER,CENTER_LEFT};
-    SDL::PositionGraphic pos(position[player_number.ToInt()][0],position[player_number.ToInt()][1],pos_opt[player_number.ToInt()]);
+    PositionGraphic pos(position[player_number.ToInt()][0],position[player_number.ToInt()][1],pos_opt[player_number.ToInt()]);
 
     array<Uint,4> x = {0,200,400,600};
     array<Uint,4> y = {0,0,0,0};
@@ -29,7 +29,7 @@ Player_Bid()
     _bubble.SetPosition(pos);
 
     //positioning correctly the text and the images :
-    SDL::PositionGraphic pos2(pos.Getx()+60,pos.Gety()+40,CENTER);
+    PositionGraphic pos2(pos.Getx()+60,pos.Gety()+40,CENTER);
     _text.SetPosition(pos2);
 
     x = {1,64,129,197};
@@ -55,6 +55,11 @@ void Player_Bid_Graphic::Display(SDL_Surface* screen, GAME_PHASES currentPhase)
 		for_each(_listOldBet.begin(), _listOldBet.end(), _dsplOldBets);
 	}
 }
+void Player_Bid_Graphic::UpdateEvent()
+{
+	_bubble.Update_on_it();
+}
+
 #endif //#if COMPLETE_GAME > 0
 void Player_Bid_Graphic::HandleColor()
 {
@@ -98,11 +103,6 @@ void Player_Bid_Graphic::Coinche()
 {
     _displayed_logo_color = false;
     _text.ChangeText("Coinche");
-}
-
-void Player_Bid_Graphic::UpdateEvent()
-{
-    _bubble.Update_on_it();
 }
 
 bool Player_Bid_Graphic::AddBid(const Card_Color& color, Uint bid)

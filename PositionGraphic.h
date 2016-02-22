@@ -9,8 +9,6 @@
 #include <array>
 
 #include "Definitions.h"
-namespace SDL
-{
 	class PositionGraphic
 	{
 	protected:
@@ -44,5 +42,4 @@ namespace SDL
 	protected:
 	private:
 	};
-}
 #endif // POSITIONGRAPHIC_H

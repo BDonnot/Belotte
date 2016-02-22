@@ -13,14 +13,16 @@
 #include "Basic_Text.h"
 #include "Images_Click.h"
 
-namespace SDL
-{
 	class Text_Typing : public Images_Click, public Basic_Text
 	{
 	public:
 		Text_Typing() {}
+#if COMPLETE_GAME > 0
 		Text_Typing(std::string path_font, int size, char colR, char colG, char colB, SDL_Event* event);
 		Text_Typing(std::string path_font, int size, char colR, char colG, char colB, SDL_Event* event, std::string text);
+#endif //#if COMPLETE_GAME > 0
+		Text_Typing(std::string path_font, int size, char colR, char colG, char colB);
+		Text_Typing(std::string path_font, int size, char colR, char colG, char colB, std::string text);
 		virtual ~Text_Typing() {}
 		void Update_Text_OnIt();
 		void Change_Text(std::string text);
@@ -30,5 +32,4 @@ namespace SDL
 		void act();
 	private:
 	};
-}
 #endif // TEXT_TYPING_H

@@ -5,14 +5,14 @@ using namespace std;
 End_Of_Game::End_Of_Game(SDL_Event* pEvent,SDL_Surface* pScreen,Uint windowsWidth, Uint windowsHeight):
 _info()
 ,_pScreen(pScreen)
-,_again(pEvent,"Continuer",move(SDL::PositionGraphic()))
-,_quit(pEvent,"Quitter",move(SDL::PositionGraphic()))
+,_again(pEvent,"Continuer",move(PositionGraphic()))
+,_quit(pEvent,"Quitter",move(PositionGraphic()))
 ,_firstLine("fonts/MLSGY.ttf",25,255,255,255,"L'équipe 1 (attaquante) a gagné avec 123 points.")
 , _secondLine("fonts/MLSGY.ttf", 25, 255, 255, 255, "Le contrat est donc rempli, et les scores sont donc :")
 , _firstScore("fonts/MLSGY.ttf", 25, 255, 255, 255, "Equipe 0 : 445 points")
 , _secondScore("fonts/MLSGY.ttf", 25, 255, 255, 255, "Equipe 1 : 445 points")
 {
-    SDL::PositionGraphic pos(windowsWidth/2,windowsHeight/9-20,CENTER);
+    PositionGraphic pos(windowsWidth/2,windowsHeight/9-20,CENTER);
     _again.SetPosition(pos);
     pos.Set(windowsWidth/2,2*windowsHeight/9-20,CENTER);
     _quit.SetPosition(pos);
@@ -40,16 +40,22 @@ void End_Of_Game::Display(GAME_PHASES currentPhase)
 	_quit.Display(_pScreen);
 }
 #else
+void End_Of_Game::Display(GAME_PHASES currentPhase)
+{
+	return;
+}
+#endif //COMPLETE_GAME > 0
+
 End_Of_Game::End_Of_Game(Uint windowsWidth, Uint windowsHeight) :
 	_info()
-	, _again("Continuer", move(SDL::PositionGraphic()))
-	, _quit("Quitter", move(SDL::PositionGraphic()))
+	, _again("Continuer", move(PositionGraphic()))
+	, _quit("Quitter", move(PositionGraphic()))
 	, _firstLine("fonts/MLSGY.ttf", 25, 255, 255, 255, "L'équipe 1 (attaquante) a gagné avec 123 points.")
 	, _secondLine("fonts/MLSGY.ttf", 25, 255, 255, 255, "Le contrat est donc rempli, et les scores sont donc :")
 	, _firstScore("fonts/MLSGY.ttf", 25, 255, 255, 255, "Equipe 0 : 445 points")
 	, _secondScore("fonts/MLSGY.ttf", 25, 255, 255, 255, "Equipe 1 : 445 points")
 {
-	SDL::PositionGraphic pos(windowsWidth / 2, windowsHeight / 9 - 20, CENTER);
+	PositionGraphic pos(windowsWidth / 2, windowsHeight / 9 - 20, CENTER);
 	_again.SetPosition(pos);
 	pos.Set(windowsWidth / 2, 2 * windowsHeight / 9 - 20, CENTER);
 	_quit.SetPosition(pos);
@@ -66,11 +72,6 @@ End_Of_Game::End_Of_Game(Uint windowsWidth, Uint windowsHeight) :
 	pos.Set(windowsWidth / 2 - 100, 7 * windowsHeight / 9 - 20, CENTER);
 	_quit.SetPosition(pos);
 }
-void End_Of_Game::Display(GAME_PHASES currentPhase)
-{
-	return;
-}
-#endif //COMPLETE_GAME > 0
 
 void End_Of_Game::UpdateEvent(GAME_PHASES currentPhase)
 {

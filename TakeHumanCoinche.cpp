@@ -1,8 +1,9 @@
 #include "TakeHumanCoinche.h"
 
 using namespace std;
-using namespace SDL;
 
+
+#if COMPLETE_GAME > 0
 TakeHumanCoinche::TakeHumanCoinche(SDL_Event* event,SDL_Surface* screen,Uint16 windows_width, Uint16 windows_height):
         _windows_width(windows_width)
         ,_windows_height(windows_height)
@@ -139,3 +140,4 @@ void TakeHumanCoinche::Reset(bool reset_unconfirmedBid)
     _pass.Reset_Click();
     _ok.Reset_Click();
 }
+#endif //#if COMPLETE_GAME > 0

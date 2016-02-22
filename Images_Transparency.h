@@ -9,8 +9,6 @@
 #include "Basic_Images.h"
 #include "Basic_Transparency.h"
 
-namespace SDL
-{
 	class Images_Transparency : public Basic_Images, public Basic_Transparency
 	{
 	public:
@@ -26,5 +24,4 @@ namespace SDL
 #endif //#if COMPLETE_GAME > 0
 	private:
 	};
-}
 #endif // IMAGES_TRANSPARENCY_H

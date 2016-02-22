@@ -6,13 +6,12 @@
 **/
 
 #include "Cards.h"
-namespace SDL
-{
-#if COMPLETE_GAME > 0
 	class DisplayCardPlayer //handle the positioning of the card in the hand
 	{
 	public:
 		DisplayCardPlayer() {};
+		DisplayCardPlayer(Uint windows_width, Uint windows_height, const Player_ID& player_number) {}
+#if COMPLETE_GAME > 0
 		DisplayCardPlayer(SDL_Surface* screen, Uint windows_width, Uint windows_height, const Player_ID& player_number)
 		{
 			_screen = screen;
@@ -54,6 +53,7 @@ namespace SDL
 			}
 
 		}
+#endif //#if COMPLETE_GAME > 0
 		void Reset(unsigned int n)
 		{
 			_total_card = n;
@@ -72,7 +72,9 @@ namespace SDL
 		PositionGraphic _pos_player;
 		PositionGraphic _pos_hand;
 		std::array<Uint, 2> _shift; //the shift of the card (all the card must be visible)
+#if COMPLETE_GAME > 0
 		SDL_Surface* _screen;
+#endif //#if COMPLETE_GAME > 0
 		void UpdatePosHand(bool up)
 		{
 			Uint shift = 0;
@@ -91,13 +93,17 @@ namespace SDL
 	{
 	public:
 		DisplayCardPile() {}
+#if COMPLETE_GAME > 0
 		DisplayCardPile(SDL_Surface* screen) :_screen(screen) {}
+#endif // #if COMPLETE_GAME > 0
 		void operator()(Cards* pcard)
 		{
 			pcard->Display();
 		}
 	private:
+#if COMPLETE_GAME > 0
 		SDL_Surface* _screen;
+#endif //#if COMPLETE_GAME > 0
 
 	};
 
@@ -107,6 +113,7 @@ namespace SDL
 		UpdateCardMouse() :_on_it(true), _number(0), _number_click(255) {};
 		void operator()(Cards* pcard)
 		{
+#if COMPLETE_GAME > 0
 			pcard->Update_on_it();
 			if ((pcard->Mouse_Over()) && (_on_it)) //we click on the card, and we didn't click on an other card
 			{
@@ -116,12 +123,15 @@ namespace SDL
 			}
 			else pcard->Up(false);
 			_number++;
+#endif //#if COMPLETE_GAME > 0
 		}
 		void Reset()
 		{
+#if COMPLETE_GAME > 0
 			_on_it = true;
 			_number = 0;
 			_number_click = 255;
+#endif // #if COMPLETE_GAME > 0
 		}
 		Uint8 Click()
 		{
@@ -133,35 +143,4 @@ namespace SDL
 		Uint8 _number_click; //the number of the card we have click on
 
 	};
-#else
-class DisplayCardPlayer //handle the positioning of the card in the hand
-{
-public:
-	DisplayCardPlayer() {};
-	DisplayCardPlayer(Uint windows_width, Uint windows_height, const Player_ID& player_number) {}
-	void Reset(unsigned int n) {}
-	void operator()(Cards* pcard) {}
-};
-
-class DisplayCardPile
-{
-public:
-	DisplayCardPile() {}
-	void operator()(Cards* pcard)
-	{
-		pcard->Display();
-	}
-};
-
-class UpdateCardMouse
-{
-public:
-	UpdateCardMouse() :_on_it(true), _number(0), _number_click(255) {};
-	void operator()(Cards* pcard) {}
-	void Reset() {}
-	Uint8 Click() {}
-};
-
-#endif //#if COMPLETE_GAME > 0
-}
 #endif // FONCTEURS_CARDS_H_INCLUDED

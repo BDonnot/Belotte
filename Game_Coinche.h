@@ -46,7 +46,7 @@
 ///TO DO : future feature to be added here, one day... like handling an exception and trying to recover the game from the files saved...
 
 ///TO DO : code the "options" menu, and be able to choose against which AI I want to play.
-class Game_Coinche : public SDL::Quit
+class Game_Coinche : public Quit
 {
     protected :
         typedef Player_AI<AIGameMemoryImproved,AITakeBasic,AIPlayMonteCarlo<3000,1,AIGameMemoryImproved,AIMemPerfectInfo,AIPlayScores<Cards_Basic, AIGameMemoryImproved> > > AIMCScores;
@@ -55,10 +55,10 @@ class Game_Coinche : public SDL::Quit
         typedef Player_AI<AIGameMemoryImproved,AITakeBasic, AIPlayRandom<Cards*, AIGameMemoryImproved> > AIRandom;
 
         Basic_Game_Info _infos;
-		SDL::Basic_Images _backSide;
-		SDL::Screen_Begin _begin;
-		SDL::Screen_end _end;
-		SDL::Screen_end _error;
+		Basic_Images _backSide;
+		Screen_Begin _begin;
+		Screen_end _end;
+		Screen_end _error;
         Cards_Deck _deck;
         std::array<Player*,4> _players;
         GAME_PHASES _currentPhase;

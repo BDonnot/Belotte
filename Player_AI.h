@@ -43,11 +43,12 @@ class Player_AI : public Player
         WrapperPrint<PLAYER_AI_DEBUG> _printf;
     public:
         Player_AI(){}
+#if COMPLETE_GAME > 0
         Player_AI(const Player_ID& number
 			,Uint16 windows_width
 			,Uint16 windows_height
 			,SDL_Event* pevent
-			,SDL::Basic_Images* fond
+			,Basic_Images* fond
 			,SDL_Surface* screen):
             Player(number,windows_width,windows_height,pevent,fond,screen)
             ,_rand(rand())
@@ -56,6 +57,28 @@ class Player_AI : public Player
             ,_take()
             ,_play(_number)
             ,_threadLaunched(false){}
+#endif //#if COMPLETE_GAME > 0
+		Player_AI(const Player_ID& number
+			, Uint16 windows_width
+			, Uint16 windows_height
+			, Basic_Images* fond ) :
+			Player(number, windows_width, windows_height, fond)
+			, _rand(rand())
+			, _betsMemory()
+			, _gameMemory(number, &_hand)
+			, _take()
+			, _play(_number)
+			, _threadLaunched(false) {}
+		Player_AI(const Player_ID& number
+			, Uint16 windows_width
+			, Uint16 windows_height) :
+			Player(number, windows_width, windows_height)
+			, _rand(rand())
+			, _betsMemory()
+			, _gameMemory(number, &_hand)
+			, _take()
+			, _play(_number)
+			, _threadLaunched(false) {}
         virtual ~Player_AI(){}
     protected:
         virtual void updateMemoryTrick(const TrickBasic_Memory& trick,const Position_Trick& myPos);

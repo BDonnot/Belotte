@@ -11,10 +11,8 @@
 #include "Screen_Option.h"
 #include "Basic_Images.h"
 #include "Images_Button.h"
-namespace SDL
-{
 
-	class Screen_Begin : public Quit
+class Screen_Begin : public Quit
 	{
 	protected:
 		Basic_Images* _fond;
@@ -25,11 +23,18 @@ namespace SDL
 		Screen_Option _options;
 	public:
 		Screen_Begin() {}
+		Screen_Begin(Basic_Images* fond, double screen_width, double screen_height);
+
+#if COMPLETE_GAME > 0
+
 		Screen_Begin(Basic_Images* fond, SDL_Event* pevent, double screen_width, double screen_height);
-		virtual ~Screen_Begin() {}
 		OUTPUT_BEGIN Display(SDL_Surface* destination);
+
+#endif //#if COMPLETE_GAME > 0
+
+		virtual ~Screen_Begin() {}
+		OUTPUT_BEGIN Display() { return PLAY; }
 		void Update();
 	private:
 	};
-}
 #endif // SCREEN_BEGIN_H

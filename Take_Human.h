@@ -9,21 +9,21 @@
 #include "Basic_Game_Info.h"
 #include "Images_Button.h"
 #include "Images_Text.h"
-
+#if COMPLETE_GAME > 0
 class Take_Human
 {
     protected:
         Uint16 _windows_width;
         Uint16 _windows_height;
         const Basic_Game_Info _info;
-		SDL::Images_Button _carreau;
-		SDL::Images_Button _coeur;
-		SDL::Images_Button _pique;
-		SDL::Images_Button _trefle;
-		SDL::Images_Button _pass;
-		SDL::Images_Button _yes;
-		SDL::Images_Button _no;
-		SDL::Images_Text _question;
+		Images_Button _carreau;
+		Images_Button _coeur;
+		Images_Button _pique;
+		Images_Button _trefle;
+		Images_Button _pass;
+		Images_Button _yes;
+		Images_Button _no;
+		Images_Text _question;
         std::string _question_which_color;
         SDL_Surface* _screen;
 
@@ -44,5 +44,6 @@ class Take_Human
     private:
         std::string DefineQuestion();
 };
+#endif //#if COMPLETE_GAME > 0
 
 #endif // TAKE_HUMAN_H

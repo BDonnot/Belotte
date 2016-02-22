@@ -36,31 +36,31 @@
 class Player_Bid_Graphic : public Player_Bid
 {
     protected :
-        SDL::Images_SpriteEvent<4> _bubble; //the bubble around the text
-		SDL::Images_Text _text; //the text "passe" or "110", or "coinche"
-		SDL::Images_Sprite<4> _color; //logo of the color (if any)
+        Images_SpriteEvent<4> _bubble; //the bubble around the text
+		Images_Text _text; //the text "passe" or "110", or "coinche"
+		Images_Sprite<4> _color; //logo of the color (if any)
         bool _displayed_logo_color;
-		SDL::Images_Sprite<4> _oldColor;
-		SDL::Images_Text _oldText;
+		Images_Sprite<4> _oldColor;
+		Images_Text _oldText;
         std::list<Player_Bid> _listOldBet;
-		SDL::DisplayOldBets _dsplOldBets;
+		DisplayOldBets _dsplOldBets;
     public:
         Player_Bid_Graphic(){}
 #if COMPLETE_GAME > 0
         Player_Bid_Graphic(const Player_ID& player_number,SDL_Event* pevent,SDL_Surface* screen,Uint windows_width,Uint windows_height);
 		void Display(SDL_Surface* screen, GAME_PHASES currentPhase);
 #else
-		Player_Bid_Graphic(const Player_ID& player_number, Uint windows_width, Uint windows_height):
+		void Display(GAME_PHASES currentPhase) {}
+#endif //#if COMPLETE_GAME > 0
+		Player_Bid_Graphic(const Player_ID& player_number, Uint windows_width, Uint windows_height) :
 			Player_Bid()
-			, _bubble("images/sprite_bulles.png", pevent)
+			, _bubble("images/sprite_bulles.png")
 			, _text("fonts/MLSGY.ttf", 20, 255, 255, 255, "Passe")
 			, _color("images/sprite_take_color.png")
 			, _displayed_logo_color(true)
 			, _oldColor("images/sprite_take_color.png")
 			, _oldText("fonts/MLSGY.ttf", 20, 255, 255, 255, "Passe")
-			, _dsplOldBets(screen, windows_width, windows_height, player_number, &_oldText, &_oldColor) {}
-		void Display(GAME_PHASES currentPhase) {}
-#endif //#if COMPLETE_GAME > 0
+			, _dsplOldBets(windows_width, windows_height, player_number, &_oldText, &_oldColor) {}
 
 		virtual ~Player_Bid_Graphic(){}
         void Coinche();

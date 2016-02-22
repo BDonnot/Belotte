@@ -1,6 +1,6 @@
 #include "Images_Button.h"
 using namespace::std;
-using namespace SDL;
+
 
 #if COMPLETE_GAME > 0
 Images_Button::Images_Button(SDL_Event* event
@@ -66,7 +66,19 @@ void Images_Button::Update_on_it()
 	Set_click_on_long();
 	Set_click_on_short();
 }
+void Images_Button::SetPosition(PositionGraphic& pos)
+{
+	_height = _clip[_sprite_number].h;
+	_width = _clip[_sprite_number].w;
+
+	pos.SetProperPosition(_width, _height);
+	_pos = pos;
+	if (!_persistant)
+		PositionText();
+}
 #else
+
+void Images_Button::SetPosition(PositionGraphic& pos) {}
 void Images_Button::Update_on_it()
 {
 	_on_it = true;
@@ -90,13 +102,3 @@ void Images_Button::act()
     else _sprite_number = 1;
 }
 
-void Images_Button::SetPosition(PositionGraphic& pos)
-{
-    _height = _clip[_sprite_number].h;
-    _width = _clip[_sprite_number].w;
-
-    pos.SetProperPosition(_width,_height);
-    _pos = pos;
-    if(!_persistant)
-        PositionText();
-}

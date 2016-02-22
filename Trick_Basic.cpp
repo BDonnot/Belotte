@@ -1,7 +1,7 @@
 #include "Trick_Basic.h"
 
 using namespace::std;
-using namespace SDL;
+
 
 Trick_Basic::Trick_Basic(Cards_Deck* pDeck,const std::array<Player*,4>& players):
 _players(players),

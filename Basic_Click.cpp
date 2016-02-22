@@ -1,5 +1,4 @@
 #include "Basic_Click.h"
-using namespace SDL;
 
 #if COMPLETE_GAME > 0
 	Basic_Click::Basic_Click(SDL_Event* event)
@@ -18,7 +17,7 @@ using namespace SDL;
 	{
 		_click_on_short = (_on_it && (_pEvent->type == SDL_MOUSEBUTTONDOWN));
 	}
-#endif
+#endif //#if COMPLETE_GAME > 0
 
 void Basic_Click::Update_on_it()
 {

@@ -1,6 +1,6 @@
 #include "Player_Human.h"
 using namespace::std;
-
+#if COMPLETE_GAME > 0
 //Event/Display
 void Player_Human::Update_Mouse(GAME_PHASES currentPhase)
 {
@@ -62,3 +62,5 @@ void Player_Human::ResetBid(bool betFinished)
     if(!betFinished) return;
     _oldBid.Reset();
 }
+
+#endif //#if COMPLETE_GAME > 0

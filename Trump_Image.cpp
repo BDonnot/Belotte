@@ -1,7 +1,7 @@
 #include "Trump_Image.h"
 using namespace::std;
-using namespace SDL;
 
+#if COMPLETE_GAME > 0
 Trump_Image::Trump_Image(SDL_Event* event):Images_Sprite<4>("images/sprite_trunk.png"),Basic_Click(event)
 {
     array<Uint,4> coord_x = {0,150,0,150};
@@ -27,7 +27,9 @@ void Trump_Image::Update_on_it()
     Set_click_on_long();
     Set_click_on_short();
 }
-
+#else
+void Trump_Image::Update_on_it() {}
+#endif //#if COMPLETE_GAME > 0
 void Trump_Image::Set_Taker(int taker)
 {
     ChangeSprite(taker);

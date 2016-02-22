@@ -1,7 +1,7 @@
 #include "Score_Team.h"
 using namespace::std;
-using namespace SDL;
 
+#if COMPLETE_GAME > 0
 Score_Team::Score_Team(SDL_Surface* pScreen):
 _info()
 ,_pScreen(pScreen)
@@ -14,25 +14,28 @@ _info()
     pos.Set(_info.WindowsWidth()-30,60,TOP_RIGHT);
     _scoreSecondTeam.SetPosition(pos);
 }
-
 void Score_Team::Display(GAME_PHASES currentPhase)
 {
-    if ((currentPhase != PLAYING)&&(currentPhase != AFTER_TRICK0)&&(currentPhase != AFTER_TRICK1)) return;
-    _scoreFirstTeam.Display(_pScreen);
-    _scoreSecondTeam.Display(_pScreen);
+	if ((currentPhase != PLAYING) && (currentPhase != AFTER_TRICK0) && (currentPhase != AFTER_TRICK1)) return;
+	_scoreFirstTeam.Display(_pScreen);
+	_scoreSecondTeam.Display(_pScreen);
 }
+#else
+void Score_Team::Display(GAME_PHASES currentPhase) {}
+#endif //#if COMPLETE_GAME > 0
 void Score_Team::Update()
 {
-    const array<Uint,2>& scores = _info.RunningScores();
-    //first team
-    string newStr = "Equipe ";
-    newStr += " 1 : ";
-    newStr += IntToString(scores[0]);
-    _scoreFirstTeam.ChangeText(newStr);
+	const array<Uint, 2>& scores = _info.RunningScores();
+	//first team
+	string newStr = "Equipe ";
+	newStr += " 1 : ";
+	newStr += IntToString(scores[0]);
+	_scoreFirstTeam.ChangeText(newStr);
 
-    //Second team
-    newStr = "Equipe ";
-    newStr += " 2 : ";
-    newStr += IntToString(scores[1]);
-    _scoreSecondTeam.ChangeText(newStr);
+	//Second team
+	newStr = "Equipe ";
+	newStr += " 2 : ";
+	newStr += IntToString(scores[1]);
+	_scoreSecondTeam.ChangeText(newStr);
 }
+
