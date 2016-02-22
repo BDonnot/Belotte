@@ -131,35 +131,9 @@ void Trick::GatherCards()
 
 
 #else
-Trick::Trick(Cards_Deck* pDeck, const std::array<Player*, 4>& players, Uint windowsWidth, Uint windowsHeight) :
-	Trick_Basic(pDeck, players),
-	_logo("images/sprite_trunk.png"),
-	_teamName("fonts/MLSGY.ttf", 20, 255, 255, 255, "???"),
-	_contract("fonts/MLSGY.ttf", 20, 255, 255, 255, "???"),
-	_infoPreviousTrick("fonts/MLSGY.ttf", 25, 255, 255, 255, "???"),
-	_ok( "OK", PositionGraphic(windowsWidth / 2, windowsHeight - 225, CENTER)),
-	_posCard(),
-	_scoreTeam()
-{
-	array<Uint, 4> x = { 0,150,0,150 };
-	array<Uint, 4> y = { 0,0,150,150 };
-	array<Uint, 4> size_ = { 100,100,100,100 };
-	_logo.SetDimensionSprite(x, y, size_, size_);
-	_logo.ChangeSprite(0);
-	PositionGraphic pos(0, 0, TOP_LEFT);
-	_logo.SetPosition(pos);
-	pos.Set(50, 30, CENTER);
-	_teamName.SetPosition(pos);
-	pos.Set(50, 70, CENTER);
-	_contract.SetPosition(pos);
-	_infoPreviousTrick.ChangeText("Voici le dernier pli :");
-	pos.Set(windowsWidth / 2, windowsHeight / 3 - 20, CENTER);
-	_infoPreviousTrick.SetPosition(pos);
-}
-
 void Trick::updatePosCard(const Player_ID& player) {}
-void Trick::GatherCards() {}
-void Trick::Update() {}
+//void Trick::GatherCards() {}
+// void Trick::Update() {}
 #endif //#if COMPLETE_GAME > 0
 
 
@@ -183,4 +157,30 @@ void Trick::posReturn(const Player_ID& posPlayer)
 		_posCard.Set(0, 0, TOP_LEFT);
 		return;
 	}
+}
+
+Trick::Trick(Cards_Deck* pDeck, const std::array<Player*, 4>& players, Uint windowsWidth, Uint windowsHeight) :
+	Trick_Basic(pDeck, players),
+	_logo("images/sprite_trunk.png"),
+	_teamName("fonts/MLSGY.ttf", 20, 255, 255, 255, "???"),
+	_contract("fonts/MLSGY.ttf", 20, 255, 255, 255, "???"),
+	_infoPreviousTrick("fonts/MLSGY.ttf", 25, 255, 255, 255, "???"),
+	_ok("OK", PositionGraphic(windowsWidth / 2, windowsHeight - 225, CENTER)),
+	_posCard(),
+	_scoreTeam()
+{
+	array<Uint, 4> x = { 0,150,0,150 };
+	array<Uint, 4> y = { 0,0,150,150 };
+	array<Uint, 4> size_ = { 100,100,100,100 };
+	_logo.SetDimensionSprite(x, y, size_, size_);
+	_logo.ChangeSprite(0);
+	PositionGraphic pos(0, 0, TOP_LEFT);
+	_logo.SetPosition(pos);
+	pos.Set(50, 30, CENTER);
+	_teamName.SetPosition(pos);
+	pos.Set(50, 70, CENTER);
+	_contract.SetPosition(pos);
+	_infoPreviousTrick.ChangeText("Voici le dernier pli :");
+	pos.Set(windowsWidth / 2, windowsHeight / 3 - 20, CENTER);
+	_infoPreviousTrick.SetPosition(pos);
 }

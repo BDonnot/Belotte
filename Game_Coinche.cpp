@@ -252,6 +252,7 @@ void Game_Coinche::playGame(bool& keep_playing)
 		return;
 	}
 }
+
 void Game_Coinche::Play()
 {
 	bool keep_playing = true;
@@ -292,7 +293,9 @@ void Game_Coinche::Play()
 	}
 	_saveGame.Quit();
 }
+
 #else 
+
 void Game_Coinche::playGame(bool& keep_playing)
 {
 	switch (_currentPhase)

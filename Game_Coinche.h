@@ -81,6 +81,7 @@ class Game_Coinche : public Quit
         Game_Coinche(SDL_Surface* screen,Uint16 screenWidth, Uint16 screenHeight);
 #endif //#if COMPLETE_GAME > 0
         virtual ~Game_Coinche();
+
     protected:
 #if COMPLETE_GAME > 0
         void updateEvent(bool& keep_playing);

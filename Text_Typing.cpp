@@ -77,19 +77,6 @@ void Text_Typing::act()
    }
 }
 #else
-Text_Typing::Text_Typing(string path_font, int size, char colR, char colG, char colB) :
-	Images_Click(""),
-	Basic_Text(path_font, size, colR, colG, colB, " ")
-{
-	_text_old = " ";
-}
-
-Text_Typing::Text_Typing(string path_font, int size, char colR, char colG, char colB , string text) :
-	Images_Click(""),
-	Basic_Text(path_font, size, colR, colG, colB, text)
-{
-	_text_old = text;
-}
 
 void Text_Typing::Update_Text_OnIt()
 {
@@ -97,7 +84,23 @@ void Text_Typing::Update_Text_OnIt()
 }
 
 void Text_Typing::act() {}
+
 #endif //#if COMPLETE_GAME > 0
+
+Text_Typing::Text_Typing(string path_font, int size, char colR, char colG, char colB) :
+	Images_Click(""),
+	Basic_Text(path_font, size, colR, colG, colB, " ")
+{
+	_text_old = " ";
+}
+
+Text_Typing::Text_Typing(string path_font, int size, char colR, char colG, char colB, string text) :
+	Images_Click(""),
+	Basic_Text(path_font, size, colR, colG, colB, text)
+{
+	_text_old = text;
+}
+
 void Text_Typing::Change_Text(string text)
 {
     _current_text = text;

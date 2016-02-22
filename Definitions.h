@@ -21,10 +21,13 @@
 //Definition of some constant, used for simulation and testing
 #define NBGAMEMAX  3000
 #define TEST_PLAY_GAME 0
-#define PLAY_HUMAN 0
+#define PLAY_HUMAN 1
 #define MULTITHREAD_GRAPHIC 1
 #define USE_BOOST 0 //EXPERIMENTAL : if 0; remove boost dependency and use stl instead
-#define COMPLETE_GAME 1 // COMPLETE_GAME 0 : Does not require SDL to compile and / or play . Useful to launch benchmarks
+
+#ifndef COMPLETE_GAME
+	#define COMPLETE_GAME 1 // COMPLETE_GAME 0 : Does not require SDL to compile and / or play . Useful to launch benchmarks
+#endif //ifndef COMPLETE_GAME
 
 #if COMPLETE_GAME == 0
 	typedef unsigned short Uint8;

@@ -2,6 +2,7 @@
 
 
 #if COMPLETE_GAME > 0
+
 Screen_Begin::Screen_Begin(Basic_Images* fond,SDL_Event* pevent,double screen_width,double screen_height):
 Quit(pevent)
 ,_fond(fond)
@@ -18,6 +19,7 @@ Quit(pevent)
     pos.Set(screen_width/2.,5*screen_height/8,CENTER);
     _quit.SetPosition(pos);
 }
+
 OUTPUT_BEGIN Screen_Begin::Display(SDL_Surface* destination)
 {
 	if (!_onScreen) return PLAY;
@@ -74,6 +76,24 @@ OUTPUT_BEGIN Screen_Begin::Display(SDL_Surface* destination)
 	return PLAY;
 }
 #endif //#if COMPLETE_GAME > 0
+
+Screen_Begin::Screen_Begin(Basic_Images* fond, double screen_width, double screen_height) :
+	Quit()
+	, _fond(fond)
+	, _play("Jouer" , PositionGraphic())
+	, _option("Options", PositionGraphic())
+	, _quit("Quitter", PositionGraphic())
+	, _onScreen(true)
+	, _options(_fond, screen_width, screen_height)
+{
+	PositionGraphic pos(screen_width / 2, 3 * screen_height / 8, CENTER);
+	_play.SetPosition(pos);
+	pos.Set(screen_width / 2, 4 * screen_height / 8, CENTER);
+	_option.SetPosition(pos);
+	pos.Set(screen_width / 2., 5 * screen_height / 8, CENTER);
+	_quit.SetPosition(pos);
+}
+
 void Screen_Begin::Update()
 {
     if (!_onScreen) return;

@@ -4,6 +4,7 @@ using namespace std;
 
 
 #if COMPLETE_GAME > 0
+
 Bidding::Bidding(const array<Player*,4>& players,SDL_Event* pevent, SDL_Surface* pscreen,Cards_Deck* pDeck):
 _infos()
 ,_players(players)
@@ -37,7 +38,8 @@ bool Bidding::Click(bool Short)
 {
 	return _ok.Click(Short);
 }
-#else
+
+#endif //COMPLETE_GAME
 
 Bidding::Bidding(const std::array<Player*, 4>& players, Cards_Deck* pDeck) :
 	_infos()
@@ -54,8 +56,6 @@ Bidding::Bidding(const std::array<Player*, 4>& players, Cards_Deck* pDeck) :
 	_textAfterBet1.SetPosition(pos);
 	_bidder = _infos.Giver().NextPlayer();
 }
-
-#endif //COMPLETE_GAME
 
 bool Bidding::Bid(GAME_PHASES currentPhase) //TO DO test, test test !
 {

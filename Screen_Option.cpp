@@ -56,12 +56,15 @@ OPTION_OUTPUT Screen_Option::Display(SDL_Surface* destination)
 }
 
 #else
+void Screen_Option::Update()  { return OPTION_RETURN; }
+
+#endif //#if COMPLETE_GAME > 0
 
 Screen_Option::Screen_Option(Basic_Images* fond, Uint screen_width, Uint screen_height) :
 	Quit(),
-_nb_player( "Joueurs", PositionGraphic())
-, _screen_size( "Ecran", PositionGraphic())
-, _retour( "Retour", PositionGraphic())
+	_nb_player("Joueurs", PositionGraphic())
+	, _screen_size("Ecran", PositionGraphic())
+	, _retour("Retour", PositionGraphic())
 {
 	_fond = fond;
 	PositionGraphic pos(screen_width / 2, 3 * screen_height / 8, CENTER);
@@ -72,7 +75,4 @@ _nb_player( "Joueurs", PositionGraphic())
 	_retour.SetPosition(pos);
 }
 
-void Screen_Option::Update()  { return OPTION_RETURN; }
-
-#endif //#if COMPLETE_GAME > 0
 
