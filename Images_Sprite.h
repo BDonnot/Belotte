@@ -117,6 +117,12 @@
 	}
 #else
 	template<Uint numberOfSprite>
+	void Images_Sprite<numberOfSprite>::SetDimensionSprite(const std::array<Uint, numberOfSprite>& coord_x
+		, const std::array<Uint, numberOfSprite>& coord_y
+		, const std::array<Uint, numberOfSprite>& dimension_w
+		, const std::array<Uint, numberOfSprite>& dimension_h) {}
+
+	template<Uint numberOfSprite>
 	void Images_Sprite<numberOfSprite>::ChangeSprite(Uint sprite_number) {}
 
 	template<Uint numberOfSprite>

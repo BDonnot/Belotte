@@ -56,7 +56,7 @@ OPTION_OUTPUT Screen_Option::Display(SDL_Surface* destination)
 }
 
 #else
-void Screen_Option::Update()  { return OPTION_RETURN; }
+void Screen_Option::Update()  { }
 
 #endif //#if COMPLETE_GAME > 0
 

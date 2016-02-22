@@ -11,6 +11,7 @@
 #include "Cards_Basic.h"
 #include "Cards_Image.h"
 
+#define CARDS_DEBUG 1
 
 class Cards : public Cards_Basic, public Cards_Image
 {
@@ -26,11 +27,13 @@ class Cards : public Cards_Basic, public Cards_Image
 		virtual void Display()
 		{
 			static_cast< Images_Sprite<2> * >(this)->Display(_pScreen);
+			_printf("Cards displayed. \n");
 		}
 #else
 		virtual void Display(){}
 #endif //COMPLETE_GAME > 0
     private:
+		WrapperPrint<CARDS_DEBUG> _printf;
         Cards(const Cards& other){}
         Cards& operator=(const Cards& other){return *this;}
 

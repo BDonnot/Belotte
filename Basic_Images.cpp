@@ -65,6 +65,12 @@ void Basic_Images::apply_surface(const Uint& x, const Uint& y, const SMARTSurfac
 	SDL_BlitSurface(source.get(), nullptr, destination, &offset);
 }
 #else 
+Basic_Images::Basic_Images(std::string path) :
+	_info()
+	, _height(0)
+	, _width(0)
+	, _pos(0, 0, TOP_LEFT)
+{}
 Basic_Images::Basic_Images() :
 	_info()
 	, _height(0)

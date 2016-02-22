@@ -122,8 +122,10 @@ string Basic_Text::Character(SDLKey key)
     }
 }
 #else
-
+	Basic_Text::Basic_Text(std::string path_font, int size, char colR, char colG, char colB, std::string text) :
+		_size(size) {	}
 #endif //COMPLETE_GAME
+
 string Basic_Text::DeleteChar(string str)
 {
 	if (str == "") return "";

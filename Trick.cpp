@@ -3,6 +3,7 @@
 using namespace std;
 
 #if COMPLETE_GAME > 0
+
 Trick::Trick(Cards_Deck* pDeck,const std::array<Player*,4>& players,Uint windowsWidth,Uint windowsHeight,SDL_Event* pevent,SDL_Surface* pScreen):
 Trick_Basic(pDeck,players),
 _pScreen(pScreen),
@@ -131,9 +132,10 @@ void Trick::GatherCards()
 
 
 #else
+
 void Trick::updatePosCard(const Player_ID& player) {}
-//void Trick::GatherCards() {}
-// void Trick::Update() {}
+void Trick::GatherCards() {}
+void Trick::Update() {}
 #endif //#if COMPLETE_GAME > 0
 
 
