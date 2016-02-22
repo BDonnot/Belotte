@@ -1,13 +1,13 @@
 # Coinche
 This project is done for the course "Projet informatique" at ENSAE ParisTech. It aims to create a game of coinche (not very different from bridge) with an artificial intelligence.
 
-languages : c++
+languages : c++ (std c++11)
 
 dependencies :
 
 -SDL 1.2 (http://www.libsdl.org/download-1.2.php-- with help from the very good Lazy foo tutorial :http://lazyfoo.net/tutorials/SDL/index.php )
 
--Boost (1.55)
+-Boost (1.55) Can be removed
 
 --------------------------------------
 
