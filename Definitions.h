@@ -26,7 +26,7 @@
 #define USE_BOOST 0 //EXPERIMENTAL : if 0; remove boost dependency and use stl instead
 
 #ifndef COMPLETE_GAME
-	#define COMPLETE_GAME 1 // COMPLETE_GAME 0 : Does not require SDL to compile and / or play . Useful to launch benchmarks
+	#define COMPLETE_GAME 0 // COMPLETE_GAME 0 : Does not require SDL to compile and / or play . Useful to launch benchmarks
 #endif //ifndef COMPLETE_GAME
 
 #if COMPLETE_GAME == 0

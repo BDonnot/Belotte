@@ -301,13 +301,16 @@ void Game_Coinche::playGame(bool& keep_playing)
 	switch (_currentPhase)
 	{
 	case BEGINNING:
+		_printf("BEGINNING\n");
 		_currentPhase = GIVING;
 		return;
 	case SELECT_NAMES: case GIVING:
+		_printf("SELECT_NAMES\n");
 		_deck.Reset();
 		_currentPhase = PREBET;
 		return;
 	case PREBET:
+		_printf("SELECT_NAMES\n");
 		_deck.GiveCards(_players);
 		_saveGame.SaveHands(_players);
 		_trick.Reset();
@@ -315,6 +318,7 @@ void Game_Coinche::playGame(bool& keep_playing)
 		_bid.Reset();
 		return;
 	case BIDDING:
+		_printf("SELECT_NAMES\n");
 		if (_bid.Bid(_currentPhase))
 		{
 			_saveGame.SaveBet(_bid);
@@ -323,6 +327,7 @@ void Game_Coinche::playGame(bool& keep_playing)
 		}
 		return;
 	case AFTER_BET:
+		_printf("SELECT_NAMES\n");
 		_currentPhase = _bid.NextPhase();
 		if (_currentPhase == PLAYING)
 		{
@@ -361,11 +366,8 @@ void Game_Coinche::playGame(bool& keep_playing)
 		return;
 	case SCORES:
 		_printf("Should be displaying scores\n");
-		_currentPhase = _endGame.Next(); //HERE (inside function)
-		if (_currentPhase != SCORES)
-		{
-			_saveGame.EndGame();
-		}
+		_saveGame.EndGame();
+		//_currentPhase = _endGame.Next(); //HERE (inside function)
 		return;
 	default:
 		return;
@@ -382,7 +384,10 @@ void Game_Coinche::Play()
 	if (error) throw 0;
 	updateEvent(keep_playing);
 	Display();
-	playGame(keep_playing);
+	while (keep_playing)
+	{
+		playGame(keep_playing);
+	}
 	keep_playing = keep_playing && _currentPhase != EXIT;
 	_saveGame.Quit();
 }
